@@ -1,7 +1,7 @@
 import AuthLayout from "@/modules/auth/components/auth-layout";
 import SocialButtons from "@/modules/auth/components/social-buttons";
 import TrustBadges from "@/modules/auth/components/trust-badges";
-import SignupForm from "./(auth)/signup/components/signup-form";
+import SignupForm from "../modules/auth/signup/components/signup-form";
 
 export default function Home() {
   return (
