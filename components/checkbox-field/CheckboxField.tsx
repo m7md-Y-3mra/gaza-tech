@@ -1,6 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useField } from "formik";
+import { useFormContext, Controller } from "react-hook-form";
 import { AlertCircle } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -10,17 +10,27 @@ type CheckboxFieldProps = {
 };
 
 const CheckboxField: React.FC<CheckboxFieldProps> = ({ name, children }) => {
-  const [field, meta, helpers] = useField<boolean>(name);
-  const hasError = meta.touched && !!meta.error;
+  const {
+    control,
+    formState: { errors, isSubmitted, touchedFields },
+  } = useFormContext();
+  const error = errors[name];
+  const hasError = (isSubmitted || touchedFields[name]) && !!error;
 
   return (
     <div>
       <div className="flex items-start space-x-3">
-        <Checkbox
-          id={name}
-          checked={field.value === true}
-          onCheckedChange={(checked) => helpers.setValue(checked === true)}
-          className="mt-0.5 border-2"
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              id={name}
+              checked={field.value === true}
+              onCheckedChange={(checked) => field.onChange(checked === true)}
+              className="mt-0.5 border-2"
+            />
+          )}
         />
         <label
           htmlFor={name}
@@ -32,7 +42,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({ name, children }) => {
       {hasError && (
         <p className="text-destructive text-sm mt-1.5 flex items-center gap-1">
           <AlertCircle className="w-3.5 h-3.5" />
-          {meta.error}
+          {error?.message as string}
         </p>
       )}
     </div>

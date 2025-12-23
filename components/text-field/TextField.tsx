@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useField } from "formik";
+import { useFormContext } from "react-hook-form";
 import { AlertCircle, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import PasswordStrength from "./components/password-strength";
@@ -28,12 +28,19 @@ const TextField: React.FC<TextFieldProps> = ({
   showStrength,
   ...rest
 }) => {
-  const [field, meta] = useField<string>(name);
+  const {
+    register,
+    formState: { errors, touchedFields, isSubmitted },
+    watch,
+  } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
 
-  const hasError = meta.touched && !!meta.error;
+  const error = errors[name];
+  const touched = touchedFields[name];
+  const hasError = (isSubmitted || touched) && !!error;
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
+  const value = watch(name) || "";
 
   const getBorderClass = () => {
     if (hasError) return "border-destructive focus-visible:ring-destructive";
@@ -61,7 +68,7 @@ const TextField: React.FC<TextFieldProps> = ({
           className={`${Icon ? "pl-12" : ""} ${
             isPassword ? "pr-12" : ""
           } h-12 border-2 ${getBorderClass()}`}
-          {...field}
+          {...register(name)}
           {...rest}
         />
         {isPassword && (
@@ -78,13 +85,11 @@ const TextField: React.FC<TextFieldProps> = ({
           </button>
         )}
       </div>
-      {isPassword && showStrength && (
-        <PasswordStrength password={field.value} />
-      )}
-      {hasError && (!showStrength || !Boolean(field.value)) && (
+      {isPassword && showStrength && <PasswordStrength password={value} />}
+      {hasError && (!showStrength || !Boolean(value)) && (
         <p className="text-destructive text-sm mt-1.5 flex items-center gap-1">
           <AlertCircle className="w-3.5 h-3.5" />
-          {meta.error}
+          {error?.message as string}
         </p>
       )}
       {isSuccess && successMessage && (

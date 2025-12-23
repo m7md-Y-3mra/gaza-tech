@@ -2,16 +2,17 @@
 import { AlertCircle, Mail, User, Lock } from "lucide-react";
 import { useSignupForm } from "./hooks/useSignupForm";
 import { Button } from "@/components/ui/button";
-import { Form, FormikProvider } from "formik";
+import { FormProvider } from "react-hook-form";
 import TextField from "@/components/text-field";
 import CheckboxField from "@/components/checkbox-field";
 
 const SignupForm = () => {
-  const { formik, isSubmitting, serverError, passwordsMatch } = useSignupForm();
+  const { form, onSubmit, isSubmitting, serverError, passwordsMatch } =
+    useSignupForm();
 
   return (
-    <FormikProvider value={formik}>
-      <Form className="space-y-5">
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         {serverError && (
           <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-xl p-4 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
@@ -24,14 +25,14 @@ const SignupForm = () => {
           <TextField
             label="First Name"
             name="firstName"
-            placeholder="Enter your first name"
+            placeholder="First name"
             Icon={User}
           />
 
           <TextField
             label="Last Name"
             name="lastName"
-            placeholder="Enter your last name"
+            placeholder="Last name"
             Icon={User}
           />
         </div>
@@ -119,8 +120,8 @@ const SignupForm = () => {
             "Create Account"
           )}
         </Button>
-      </Form>
-    </FormikProvider>
+      </form>
+    </FormProvider>
   );
 };
 

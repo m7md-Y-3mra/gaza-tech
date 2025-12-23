@@ -1,18 +1,17 @@
 'use client';
 import { useState } from 'react';
-import { useFormik } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupFormSchemaType } from '../types';
 import { signupFormSchema } from '../signupForm.schema';
 
 export const useSignupForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const formik = useFormik<SignupFormSchemaType>({
-    initialValues: {
+  const form = useForm<SignupFormSchemaType>({
+    resolver: zodResolver(signupFormSchema),
+    mode: "onTouched",
+    defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
@@ -21,36 +20,28 @@ export const useSignupForm = () => {
       terms: false as unknown as true,
       newsletter: false,
     },
-    validationSchema: toFormikValidationSchema(signupFormSchema),
-    onSubmit: async (values) => {
-
-
-      setIsSubmitting(true);
-      setServerError(null);
-
-      try {
-        console.log("success")
-      } catch {
-        setServerError("error");
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
   });
 
+  const onSubmit = async (values: SignupFormSchemaType) => {
+    setServerError(null);
+
+    try {
+      console.log("success", values);
+    } catch {
+      setServerError("error");
+    }
+  };
+
+  const password = form.watch("password");
+  const confirmPassword = form.watch("confirmPassword");
   const passwordsMatch =
-    formik.values.confirmPassword.length > 0 &&
-    formik.values.password === formik.values.confirmPassword;
+    confirmPassword.length > 0 && password === confirmPassword;
 
   return {
-    formik,
-    showPassword,
-    setShowPassword,
-    showConfirmPassword,
-    setShowConfirmPassword,
-    isSubmitting,
+    form,
+    onSubmit,
+    isSubmitting: form.formState.isSubmitting,
     serverError,
     passwordsMatch,
   };
-
 }
