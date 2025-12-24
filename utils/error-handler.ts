@@ -10,7 +10,7 @@ type ApiResponseError = {
   errors: Record<string, string> | string
 }
 
-export function errorMiddleware<Args extends unknown[], Return>(
+export function errorHandler<Args extends unknown[], Return>(
   actionFn: (...args: Args) => Promise<Return>,
 ) {
   return async (...args: Args): Promise<ApiResponseSuccess<Return> | ApiResponseError> => {
