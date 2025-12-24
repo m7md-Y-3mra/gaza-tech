@@ -1,5 +1,6 @@
-import z, { ZodError } from "zod";
+import { ZodError } from "zod";
 import CustomError from "./CustomError";
+import { parseZodErrorServer } from "@/lib/zod-error";
 
 type ApiResponseSuccess<T> = {
   success: true,
@@ -29,7 +30,7 @@ export function errorHandler<Args extends unknown[], Return>(
       // ---------------------------
 
       if (err instanceof ZodError) {
-        const errors = z.flattenError(err, (issue) => issue.message).fieldErrors;
+        const errors = parseZodErrorServer(err);
 
         return {
           success: false,

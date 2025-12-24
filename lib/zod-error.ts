@@ -1,6 +1,6 @@
-import { ZodError } from "zod";
+import z, { ZodError } from "zod";
 
-export function parseZodErrorClient(error: string): string {
+export const parseZodErrorClient = (error: string): string => {
   const zodError = JSON.parse(error) as ZodError['issues'];
   const fieldNames = [...new Set(zodError.map((e) => e.path.join(".")))];
 
@@ -9,4 +9,8 @@ export function parseZodErrorClient(error: string): string {
   }
 
   return `Please add missing ${fieldNames.join(", ")} query parameter${fieldNames.length > 1 ? 's' : ''} in url`;
+}
+
+export const parseZodErrorServer = (error: ZodError) => {
+  return z.flattenError(error, (issue) => issue.message).fieldErrors;
 }
