@@ -3,9 +3,9 @@ import { SignupFormSchemaType } from "./types";
 
 export const signupFormSchema = z
   .object({
-    firstName: z.string().min(1, { error: "First name is required" }).regex(/^[a-z]+$/, { error: "First name must contain only letters" }),
+    firstName: z.string().min(1, { error: "First name is required" }).regex(/^[a-zA-Z ]+$/, { error: "First name must contain only letters" }),
 
-    lastName: z.string({ error: "Last name is required" }).min(1, { error: "Last name is required" }).regex(/^[a-z]+$/, { error: "Last name must contain only letters" }),
+    lastName: z.string({ error: "Last name is required" }).min(1, { error: "Last name is required" }).regex(/^[a-zA-Z ]+$/, { error: "Last name must contain only letters" }),
 
     email: z.email({ error: "Please enter a valid email address" }),
 
