@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, RefreshCw, Home } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
+import { parseZodErrorClient } from "@/lib/zod-error";
 
 export default function Error({
   error,
@@ -33,7 +34,10 @@ export default function Error({
             Something went wrong
           </h2>
           <p className="text-sm font-bold text-muted-foreground/80">
-            {error.message || "An unexpected error occurred. Please try again."}
+            {error.name === "ZodError"
+              ? parseZodErrorClient(error.message)
+              : error.message ||
+                "An unexpected error occurred. Please try again."}
           </p>
           {error.digest && (
             <p className="text-xs text-muted-foreground/60">
