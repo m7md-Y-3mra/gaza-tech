@@ -1,4 +1,5 @@
 import z, { ZodError } from "zod";
+import CustomError from "./CustomError";
 
 type ApiResponseSuccess<T> = {
   success: true,
@@ -7,7 +8,8 @@ type ApiResponseSuccess<T> = {
 
 type ApiResponseError = {
   success: false,
-  errors: Record<string, string> | string
+  message: string,
+  errors?: Record<string, string>
 }
 
 export function errorHandler<Args extends unknown[], Return>(
@@ -20,7 +22,7 @@ export function errorHandler<Args extends unknown[], Return>(
       return {
         success: true,
         data,
-      } as ApiResponseSuccess<Return>;
+      };
     } catch (err: unknown) {
       // ---------------------------
       // Zod
@@ -31,7 +33,19 @@ export function errorHandler<Args extends unknown[], Return>(
 
         return {
           success: false,
+          message: "Validation error",
           errors,
+        };
+      }
+
+      // ---------------------------
+      // Custom error fallback
+      // ---------------------------
+      if (err instanceof CustomError) {
+        return {
+          success: false,
+          message: err.message,
+          errors: err.errors,
         };
       }
 
@@ -43,7 +57,7 @@ export function errorHandler<Args extends unknown[], Return>(
 
       return {
         success: false,
-        errors: "Unexpected Server Action Error"
+        message: "Unexpected Server Action Error"
       };
     }
   };
