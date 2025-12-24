@@ -11,11 +11,8 @@ const VerifyEmailPage: FC<{ searchParams: Promise<SearchParams> }> = async (
   props
 ) => {
   const searchParams = await props.searchParams;
-  const query = querySchema.safeParse(searchParams);
-  if (query.error) {
-    throw new Error("You must provide a valid email");
-  }
-  return <VerifyEmail email={query.data.email} />;
+  const query = querySchema.parse(searchParams);
+  return <VerifyEmail email={query.email} />;
 };
 
 export default VerifyEmailPage;
