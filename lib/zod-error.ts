@@ -1,4 +1,14 @@
-import z, { ZodError } from "zod";
+import z, { ZodError, ZodType } from "zod";
+
+export const zodValidation = <T>(schema: ZodType<T>, payload: T) => {
+  const result = schema.safeParse(payload);
+
+  if (!result.success) {
+    throw result.error;
+  }
+
+  return result.data;
+};
 
 export const parseZodErrorClient = (error: string): string => {
   const zodError = JSON.parse(error) as ZodError['issues'];
