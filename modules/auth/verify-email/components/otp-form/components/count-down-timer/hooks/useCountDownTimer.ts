@@ -1,8 +1,12 @@
-'use client'
-import { useEffect } from "react";
-import { CountdownTimerProps } from "../types";
+'use client';
+import { useEffect } from 'react';
+import { CountdownTimerProps } from '../types';
 
-export const useCountDownTimer = ({ remainingSeconds, totalSeconds, onExpire }: CountdownTimerProps) => {
+export const useCountDownTimer = ({
+  remainingSeconds,
+  totalSeconds,
+  onExpire,
+}: CountdownTimerProps) => {
   const radius = 28;
   const circumference = 2 * Math.PI * radius;
   const progress = remainingSeconds / totalSeconds;
@@ -10,7 +14,7 @@ export const useCountDownTimer = ({ remainingSeconds, totalSeconds, onExpire }: 
 
   const minutes = Math.floor(remainingSeconds / 60);
   const seconds = remainingSeconds % 60;
-  const timeDisplay = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  const timeDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   const isExpired = remainingSeconds <= 0;
   const isWarning = remainingSeconds <= 60 && remainingSeconds > 0;
@@ -23,9 +27,9 @@ export const useCountDownTimer = ({ remainingSeconds, totalSeconds, onExpire }: 
   }, [isExpired, onExpire]);
 
   const getColor = () => {
-    if (isExpired || isWarning) return "#EF4444"; // red
-    if (isLow) return "#F59E0B"; // yellow/amber
-    return "#10B981"; // green (primary)
+    if (isExpired || isWarning) return '#EF4444'; // red
+    if (isLow) return '#F59E0B'; // yellow/amber
+    return '#10B981'; // green (primary)
   };
 
   return {
@@ -38,4 +42,4 @@ export const useCountDownTimer = ({ remainingSeconds, totalSeconds, onExpire }: 
     isLow,
     getColor,
   };
-}
+};

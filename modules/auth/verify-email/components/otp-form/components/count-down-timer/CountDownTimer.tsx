@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { CountdownTimerProps } from "./types";
-import { useCountDownTimer } from "./hooks/useCountDownTimer";
-import { Clock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { FC } from 'react';
+import { CountdownTimerProps } from './types';
+import { useCountDownTimer } from './hooks/useCountDownTimer';
+import { Clock } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const CountDownTimer: FC<CountdownTimerProps> = ({
   remainingSeconds,
@@ -24,30 +24,30 @@ const CountDownTimer: FC<CountdownTimerProps> = ({
     onExpire,
   });
   return (
-    <div className="bg-linear-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+    <div className="rounded-xl border border-green-200 bg-linear-to-r from-green-50 to-emerald-50 p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-            <Clock className="w-5 h-5 text-primary" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-sm">
+            <Clock className="text-primary h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm text-gray-600 font-medium">Code expires in</p>
+            <p className="text-sm font-medium text-gray-600">Code expires in</p>
             <p
               className={cn(
-                "text-lg font-bold",
+                'text-lg font-bold',
                 isExpired || isWarning
-                  ? "text-red-500"
+                  ? 'text-red-500'
                   : isLow
-                  ? "text-amber-500"
-                  : "text-primary"
+                    ? 'text-amber-500'
+                    : 'text-primary'
               )}
             >
-              {isExpired ? "Expired" : timeDisplay}
+              {isExpired ? 'Expired' : timeDisplay}
             </p>
           </div>
         </div>
-        <div className="relative w-16 h-16">
-          <svg className="transform -rotate-90 w-16 h-16">
+        <div className="relative h-16 w-16">
+          <svg className="h-16 w-16 -rotate-90 transform">
             <circle
               cx="32"
               cy="32"

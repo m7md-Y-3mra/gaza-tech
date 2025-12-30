@@ -1,22 +1,24 @@
-import { ZodError } from "zod";
-import CustomError from "./CustomError";
-import { parseZodErrorServer } from "@/lib/zod-error";
+import { ZodError } from 'zod';
+import CustomError from './CustomError';
+import { parseZodErrorServer } from '@/lib/zod-error';
 
 type ApiResponseSuccess<T> = {
-  success: true,
-  data: T,
-}
+  success: true;
+  data: T;
+};
 
 type ApiResponseError = {
-  success: false,
-  message: string,
-  errors?: Record<string, string>
-}
+  success: false;
+  message: string;
+  errors?: Record<string, string>;
+};
 
 export function errorHandler<Args extends unknown[], Return>(
-  actionFn: (...args: Args) => Promise<Return>,
+  actionFn: (...args: Args) => Promise<Return>
 ) {
-  return async (...args: Args): Promise<ApiResponseSuccess<Return> | ApiResponseError> => {
+  return async (
+    ...args: Args
+  ): Promise<ApiResponseSuccess<Return> | ApiResponseError> => {
     try {
       const data = await actionFn(...args);
 
@@ -34,7 +36,7 @@ export function errorHandler<Args extends unknown[], Return>(
 
         return {
           success: false,
-          message: "Validation error",
+          message: 'Validation error',
           errors,
         };
       }
@@ -54,11 +56,11 @@ export function errorHandler<Args extends unknown[], Return>(
       // Unknown error fallback
       // ---------------------------
 
-      console.error("Unexpected Server Action Error:", err);
+      console.error('Unexpected Server Action Error:', err);
 
       return {
         success: false,
-        message: "Unexpected Server Action Error"
+        message: 'Unexpected Server Action Error',
       };
     }
   };

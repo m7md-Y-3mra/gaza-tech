@@ -1,4 +1,3 @@
-
 class CustomError extends Error {
   errors?: Record<string, string>;
 

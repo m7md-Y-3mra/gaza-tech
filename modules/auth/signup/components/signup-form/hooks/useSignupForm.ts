@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'nextjs-toploader/app';
 import { toast } from 'sonner';
 import { SignupFormSchemaType } from '../types';
@@ -14,13 +14,13 @@ export const useSignupForm = () => {
 
   const form = useForm<SignupFormSchemaType>({
     resolver: zodResolver(signupFormSchema),
-    mode: "onTouched",
+    mode: 'onTouched',
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
       terms: false as unknown as true,
       newsletter: false,
     },
@@ -34,7 +34,9 @@ export const useSignupForm = () => {
     if (!result.success) {
       if (result.errors && Object.keys(result.errors).length > 0) {
         Object.entries(result.errors).forEach(([field, message]) => {
-          form.setError(field as keyof SignupFormSchemaType, { message: message[0] });
+          form.setError(field as keyof SignupFormSchemaType, {
+            message: message[0],
+          });
         });
       }
       setServerError(result.message);
@@ -42,12 +44,12 @@ export const useSignupForm = () => {
       return;
     }
 
-    toast.success("Account created successfully! Please verify your email.");
+    toast.success('Account created successfully! Please verify your email.');
     router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
   };
 
-  const password = form.watch("password");
-  const confirmPassword = form.watch("confirmPassword");
+  const password = form.watch('password');
+  const confirmPassword = form.watch('confirmPassword');
   const passwordsMatch =
     confirmPassword.length > 0 && password === confirmPassword;
 
@@ -58,4 +60,4 @@ export const useSignupForm = () => {
     serverError,
     passwordsMatch,
   };
-}
+};

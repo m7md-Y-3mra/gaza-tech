@@ -1,1 +1,1 @@
-export { default } from "./VerifyEmailPage";
+export { default } from './VerifyEmailPage';

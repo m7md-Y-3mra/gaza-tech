@@ -1,10 +1,10 @@
-"use server";
-import { createClient } from "@/lib/supabase/server";
-import { errorHandler } from "@/utils/error-handler";
-import CustomError from "@/utils/CustomError";
-import { zodValidation } from "@/lib/zod-error";
-import { verifyOtpSchema, resendOtpSchema } from "../otpForm.schema";
-import { VerifyOtpSchemaType, ResendOtpSchemaType } from "../types";
+'use server';
+import { createClient } from '@/lib/supabase/server';
+import { errorHandler } from '@/utils/error-handler';
+import CustomError from '@/utils/CustomError';
+import { zodValidation } from '@/lib/zod-error';
+import { verifyOtpSchema, resendOtpSchema } from '../otpForm.schema';
+import { VerifyOtpSchemaType, ResendOtpSchemaType } from '../types';
 
 export const verifyOtp = errorHandler(async (values: VerifyOtpSchemaType) => {
   const data = zodValidation(verifyOtpSchema, values);
@@ -13,7 +13,7 @@ export const verifyOtp = errorHandler(async (values: VerifyOtpSchemaType) => {
   const { error } = await supabase.auth.verifyOtp({
     email: data.email,
     token: data.otp,
-    type: "signup",
+    type: 'signup',
   });
 
   if (error) {
@@ -31,7 +31,7 @@ export const resendOtp = errorHandler(async (values: ResendOtpSchemaType) => {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.resend({
-    type: "signup",
+    type: 'signup',
     email: data.email,
   });
 

@@ -5,4 +5,4 @@ export type OtpInputProps = {
   disabled?: boolean;
   hasError?: boolean;
   length?: number;
-}
+};

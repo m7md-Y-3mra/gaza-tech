@@ -1,16 +1,16 @@
-import Link from "next/link";
-import { Shield } from "lucide-react";
-import AuthLayout from "../components/auth-layout";
-import SocialButtons from "../components/social-buttons";
-import SignupForm from "./components/signup-form";
-import TrustBadges from "../components/trust-badges";
+import Link from 'next/link';
+import { Shield } from 'lucide-react';
+import AuthLayout from '../components/auth-layout';
+import SocialButtons from '../components/social-buttons';
+import SignupForm from './components/signup-form';
+import TrustBadges from '../components/trust-badges';
 
 const SignupPage = () => {
   return (
     <AuthLayout variant="signup">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-3">
+      <div className="mb-8 text-center">
+        <h2 className="text-foreground mb-3 text-3xl font-bold lg:text-4xl">
           Create Your Account
         </h2>
         <p className="text-muted-foreground text-lg">
@@ -24,22 +24,22 @@ const SignupPage = () => {
       </div>
 
       {/* Divider */}
-      <div className="flex items-center mb-8">
-        <div className="flex-1 border-t-2 border-border" />
-        <span className="px-4 text-muted-foreground font-medium">OR</span>
-        <div className="flex-1 border-t-2 border-border" />
+      <div className="mb-8 flex items-center">
+        <div className="border-border flex-1 border-t-2" />
+        <span className="text-muted-foreground px-4 font-medium">OR</span>
+        <div className="border-border flex-1 border-t-2" />
       </div>
 
       {/* Signup Form */}
       <SignupForm />
 
       {/* Login Link */}
-      <div className="text-center mt-8">
+      <div className="mt-8 text-center">
         <p className="text-muted-foreground">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link
             href="/login"
-            className="font-bold text-primary hover:text-secondary transition-colors ml-1"
+            className="text-primary hover:text-secondary ml-1 font-bold transition-colors"
           >
             Sign In
           </Link>
@@ -47,14 +47,14 @@ const SignupPage = () => {
       </div>
 
       {/* Security Info */}
-      <div className="mt-8 bg-primary/10 border border-primary/20 rounded-xl p-4">
+      <div className="bg-primary/10 border-primary/20 mt-8 rounded-xl border p-4">
         <div className="flex items-start space-x-3">
-          <Shield className="w-5 h-5 text-primary mt-0.5" />
+          <Shield className="text-primary mt-0.5 h-5 w-5" />
           <div>
-            <h4 className="font-semibold text-foreground text-sm mb-1">
+            <h4 className="text-foreground mb-1 text-sm font-semibold">
               Your Data is Secure
             </h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground text-xs leading-relaxed">
               We use industry-standard encryption to protect your personal
               information. Your data will never be shared with third parties
               without your consent.

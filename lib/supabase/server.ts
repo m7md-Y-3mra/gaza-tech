@@ -1,6 +1,6 @@
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from "@/config/env.config";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@/config/env.config';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 export async function createClient() {
   const cookieStore = await cookies();

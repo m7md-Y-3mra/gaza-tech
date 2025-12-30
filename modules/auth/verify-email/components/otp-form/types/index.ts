@@ -16,4 +16,4 @@ export type VerifyOtpSchemaType = {
 
 export type ResendOtpSchemaType = {
   email: string;
-}
+};

@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import { ComponentType } from 'react';
 
 const withFullScreen = <P extends object>(
   Component: ComponentType<P>
@@ -12,7 +12,7 @@ const withFullScreen = <P extends object>(
   };
 
   WrappedComponent.displayName = `withFullScreen(${
-    Component.displayName || Component.name || "Component"
+    Component.displayName || Component.name || 'Component'
   })`;
 
   return WrappedComponent;
