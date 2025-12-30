@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'nextjs-toploader/app';
 import { toast } from 'sonner';
@@ -21,7 +21,6 @@ export const useOtpForm = ({
   const [resendCooldown, setResendCooldown] = useState(0);
   const [isResending, setIsResending] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
-  const [isExpired, setIsExpired] = useState(false);
 
   const form = useForm<OtpFormSchemaType>({
     resolver: zodResolver(otpFormSchema),
@@ -31,10 +30,12 @@ export const useOtpForm = ({
     },
   });
 
+  // Derive isExpired from remainingSeconds
+  const isExpired = remainingSeconds <= 0;
+
   // Countdown timer effect
   useEffect(() => {
     if (remainingSeconds <= 0) {
-      setIsExpired(true);
       return;
     }
 
@@ -75,7 +76,6 @@ export const useOtpForm = ({
 
     setResendCooldown(RESEND_COOLDOWN);
     setRemainingSeconds(TOTAL_SECONDS);
-    setIsExpired(false);
     setResendSuccess(true);
     toast.success('Verification code sent!');
     onResendSuccess?.();
@@ -109,7 +109,7 @@ export const useOtpForm = ({
     router.push('/login');
   };
 
-  const otp = form.watch('otp');
+  const otp = useWatch({ control: form.control, name: 'otp' });
 
   return {
     form,

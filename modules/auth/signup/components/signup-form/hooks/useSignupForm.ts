@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'nextjs-toploader/app';
 import { toast } from 'sonner';
@@ -48,8 +48,11 @@ export const useSignupForm = () => {
     router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
   };
 
-  const password = form.watch('password');
-  const confirmPassword = form.watch('confirmPassword');
+  const password = useWatch({ control: form.control, name: 'password' });
+  const confirmPassword = useWatch({
+    control: form.control,
+    name: 'confirmPassword',
+  });
   const passwordsMatch =
     confirmPassword.length > 0 && password === confirmPassword;
 
