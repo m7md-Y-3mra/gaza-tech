@@ -1,6 +1,6 @@
-import React from "react"
+import React from 'react';
 
 export type SocialButtonProps = {
-    label: string,
-    children: React.ReactNode;
-}
+  label: string;
+  children: React.ReactNode;
+};

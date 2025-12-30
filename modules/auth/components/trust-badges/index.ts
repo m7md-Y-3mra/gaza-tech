@@ -1,1 +1,1 @@
-export { default } from "./TrustBadges";
+export { default } from './TrustBadges';

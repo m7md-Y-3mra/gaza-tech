@@ -1,5 +1,5 @@
 export type CountdownTimerProps = {
-    totalSeconds: number;
-    remainingSeconds: number;
-    onExpire?: () => void;
-}
+  totalSeconds: number;
+  remainingSeconds: number;
+  onExpire?: () => void;
+};

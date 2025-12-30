@@ -1,6 +1,6 @@
-'use client'
-import { useMemo } from "react";
-import { passwordRequirements } from "../passwordStrength.constant";
+'use client';
+import { useMemo } from 'react';
+import { passwordRequirements } from '../passwordStrength.constant';
 
 export const usePasswordStrength = (password: string) => {
   return useMemo(() => {
@@ -16,21 +16,21 @@ export const usePasswordStrength = (password: string) => {
       100
     );
 
-    let strengthLabel = "";
-    let strengthColor = "";
+    let strengthLabel = '';
+    let strengthColor = '';
 
     if (strength <= 25) {
-      strengthLabel = "Weak";
-      strengthColor = "bg-red-500 text-red-500";
+      strengthLabel = 'Weak';
+      strengthColor = 'bg-red-500 text-red-500';
     } else if (strength <= 50) {
-      strengthLabel = "Fair";
-      strengthColor = "bg-orange-500 text-orange-500";
+      strengthLabel = 'Fair';
+      strengthColor = 'bg-orange-500 text-orange-500';
     } else if (strength <= 75) {
-      strengthLabel = "Good";
-      strengthColor = "bg-yellow-500 text-yellow-500";
+      strengthLabel = 'Good';
+      strengthColor = 'bg-yellow-500 text-yellow-500';
     } else {
-      strengthLabel = "Strong";
-      strengthColor = "bg-green-500 text-green-500";
+      strengthLabel = 'Strong';
+      strengthColor = 'bg-green-500 text-green-500';
     }
 
     return { strength, strengthLabel, strengthColor, requirements: reqs };

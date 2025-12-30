@@ -1,10 +1,10 @@
-"use client";
-import { AlertCircle, Mail, User, Lock } from "lucide-react";
-import { useSignupForm } from "./hooks/useSignupForm";
-import { Button } from "@/components/ui/button";
-import { FormProvider } from "react-hook-form";
-import TextField from "@/components/text-field";
-import CheckboxField from "@/components/checkbox-field";
+'use client';
+import { AlertCircle, Mail, User, Lock } from 'lucide-react';
+import { useSignupForm } from './hooks/useSignupForm';
+import { Button } from '@/components/ui/button';
+import { FormProvider } from 'react-hook-form';
+import TextField from '@/components/text-field';
+import CheckboxField from '@/components/checkbox-field';
 
 const SignupForm = () => {
   const { form, onSubmit, isSubmitting, serverError, passwordsMatch } =
@@ -14,14 +14,14 @@ const SignupForm = () => {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         {serverError && (
-          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-xl p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+          <div className="bg-destructive/10 border-destructive/20 text-destructive flex items-start gap-3 rounded-xl border p-4">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
             <p className="text-sm">{serverError}</p>
           </div>
         )}
 
         {/* Name Fields */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <TextField
             label="First Name"
             name="firstName"
@@ -69,17 +69,17 @@ const SignupForm = () => {
 
         {/* Terms Checkbox */}
         <CheckboxField name="terms">
-          I agree to the{" "}
+          I agree to the{' '}
           <a
             href="#"
-            className="font-semibold text-primary hover:text-secondary transition-colors"
+            className="text-primary hover:text-secondary font-semibold transition-colors"
           >
             Terms & Conditions
-          </a>{" "}
-          and{" "}
+          </a>{' '}
+          and{' '}
           <a
             href="#"
-            className="font-semibold text-primary hover:text-secondary transition-colors"
+            className="text-primary hover:text-secondary font-semibold transition-colors"
           >
             Privacy Policy
           </a>
@@ -94,11 +94,11 @@ const SignupForm = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full h-12 bg-linear-to-r from-primary to-secondary text-white font-bold text-lg hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+          className="from-primary to-secondary h-12 w-full bg-linear-to-r text-lg font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
                 <circle
                   className="opacity-25"
                   cx="12"
@@ -117,7 +117,7 @@ const SignupForm = () => {
               Creating Account...
             </span>
           ) : (
-            "Create Account"
+            'Create Account'
           )}
         </Button>
       </form>
