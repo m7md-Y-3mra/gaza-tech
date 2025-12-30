@@ -9,3 +9,5 @@ declare global {
     interface ProcessEnv extends MyEnvs { }
   }
 }
+
+export type SearchParams = { [key: string]: string | string[] | undefined };

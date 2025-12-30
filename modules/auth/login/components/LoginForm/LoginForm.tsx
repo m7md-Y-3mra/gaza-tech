@@ -1,0 +1,83 @@
+"use client";
+import { AlertCircle, Mail, Lock } from "lucide-react";
+import Link from "next/link";
+import { FormProvider } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import TextField from "@/components/text-field";
+import CheckboxField from "@/components/checkbox-field";
+import { useLoginForm } from "./hooks/useLoginForm";
+
+const LoginForm = () => {
+  const { form, onSubmit, isSubmitting, serverError } = useLoginForm();
+
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        {serverError && (
+          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-xl p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+            <p className="text-sm">{serverError}</p>
+          </div>
+        )}
+
+        <TextField
+          label="Email Address"
+          name="email"
+          type="email"
+          placeholder="Enter your email"
+          Icon={Mail}
+        />
+
+        <TextField
+          label="Password"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          Icon={Lock}
+        />
+
+        <div className="flex items-center justify-between">
+          <CheckboxField name="remember">Remember me</CheckboxField>
+          <Link
+            href="/forgot-password"
+            className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
+          >
+            Forgot Password?
+          </Link>
+        </div>
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-12 bg-linear-to-r from-primary to-secondary text-white font-bold text-lg hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center gap-2">
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              Signing In...
+            </span>
+          ) : (
+            "Sign In"
+          )}
+        </Button>
+      </form>
+    </FormProvider>
+  );
+};
+
+export default LoginForm;
