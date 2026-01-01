@@ -1,11 +1,11 @@
-"use client";
-import { AlertCircle, Mail, Lock } from "lucide-react";
-import Link from "next/link";
-import { FormProvider } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import TextField from "@/components/text-field";
-import CheckboxField from "@/components/checkbox-field";
-import { useLoginForm } from "./hooks/useLoginForm";
+'use client';
+import { AlertCircle, Mail, Lock } from 'lucide-react';
+import Link from 'next/link';
+import { FormProvider } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import TextField from '@/components/text-field';
+import CheckboxField from '@/components/checkbox-field';
+import { useLoginForm } from './hooks/useLoginForm';
 
 const LoginForm = () => {
   const { form, onSubmit, isSubmitting, serverError } = useLoginForm();
@@ -14,8 +14,8 @@ const LoginForm = () => {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         {serverError && (
-          <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-xl p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+          <div className="bg-destructive/10 border-destructive/20 text-destructive flex items-start gap-3 rounded-xl border p-4">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
             <p className="text-sm">{serverError}</p>
           </div>
         )}
@@ -40,7 +40,7 @@ const LoginForm = () => {
           <CheckboxField name="remember">Remember me</CheckboxField>
           <Link
             href="/forgot-password"
-            className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
+            className="text-primary hover:text-secondary text-sm font-semibold transition-colors"
           >
             Forgot Password?
           </Link>
@@ -49,11 +49,11 @@ const LoginForm = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full h-12 bg-linear-to-r from-primary to-secondary text-white font-bold text-lg hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+          className="from-primary to-secondary h-12 w-full bg-linear-to-r text-lg font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
                 <circle
                   className="opacity-25"
                   cx="12"
@@ -72,7 +72,7 @@ const LoginForm = () => {
               Signing In...
             </span>
           ) : (
-            "Sign In"
+            'Sign In'
           )}
         </Button>
       </form>

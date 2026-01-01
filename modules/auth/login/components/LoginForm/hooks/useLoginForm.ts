@@ -1,12 +1,12 @@
-"use client";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "nextjs-toploader/app";
-import { toast } from "sonner";
-import { LoginFormSchemaType } from "../types";
-import { loginFormSchema } from "../LoginForm.schema";
-import { signIn } from "../actions";
+'use client';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'nextjs-toploader/app';
+import { toast } from 'sonner';
+import { LoginFormSchemaType } from '../types';
+import { loginFormSchema } from '../LoginForm.schema';
+import { signIn } from '../actions';
 
 export const useLoginForm = () => {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -14,10 +14,10 @@ export const useLoginForm = () => {
 
   const form = useForm<LoginFormSchemaType>({
     resolver: zodResolver(loginFormSchema),
-    mode: "onTouched",
+    mode: 'onTouched',
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       remember: false,
     },
   });
@@ -33,8 +33,8 @@ export const useLoginForm = () => {
       return;
     }
 
-    toast.success("Signed in successfully!");
-    router.push("/");
+    toast.success('Signed in successfully!');
+    router.push('/');
   };
 
   return {

@@ -1,13 +1,18 @@
-import { useEffect, useRef, KeyboardEvent, ClipboardEvent } from "react";
-import { OtpInputProps } from "../types";
+import { useEffect, useRef, KeyboardEvent, ClipboardEvent } from 'react';
+import { OtpInputProps } from '../types';
 
-export const useOtpInput = ({ value, onChange, onComplete, length = 6 }: Omit<OtpInputProps, "disable" | "hasError">) => {
+export const useOtpInput = ({
+  value,
+  onChange,
+  onComplete,
+  length = 6,
+}: Omit<OtpInputProps, 'disable' | 'hasError'>) => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Split value into individual digits
-  const digits = value.split("").slice(0, length);
+  const digits = value.split('').slice(0, length);
   while (digits.length < length) {
-    digits.push("");
+    digits.push('');
   }
 
   // Focus first empty input on mount
@@ -26,12 +31,12 @@ export const useOtpInput = ({ value, onChange, onComplete, length = 6 }: Omit<Ot
 
   const handleChange = (index: number, newValue: string) => {
     // Only allow digits
-    const digit = newValue.replace(/\D/g, "").slice(-1);
+    const digit = newValue.replace(/\D/g, '').slice(-1);
 
     if (digit) {
       const newDigits = [...digits];
       newDigits[index] = digit;
-      const newOtp = newDigits.join("");
+      const newOtp = newDigits.join('');
       onChange(newOtp);
 
       // Move to next input
@@ -42,39 +47,39 @@ export const useOtpInput = ({ value, onChange, onComplete, length = 6 }: Omit<Ot
   };
 
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace") {
+    if (e.key === 'Backspace') {
       e.preventDefault();
       const newDigits = [...digits];
 
       if (digits[index]) {
         // Clear current digit
-        newDigits[index] = "";
-        onChange(newDigits.join(""));
+        newDigits[index] = '';
+        onChange(newDigits.join(''));
       } else if (index > 0) {
         // Move to previous and clear it
-        newDigits[index - 1] = "";
-        onChange(newDigits.join(""));
+        newDigits[index - 1] = '';
+        onChange(newDigits.join(''));
         inputRefs.current[index - 1]?.focus();
       }
-    } else if (e.key === "ArrowLeft" && index > 0) {
+    } else if (e.key === 'ArrowLeft' && index > 0) {
       e.preventDefault();
       inputRefs.current[index - 1]?.focus();
-    } else if (e.key === "ArrowRight" && index < length - 1) {
+    } else if (e.key === 'ArrowRight' && index < length - 1) {
       e.preventDefault();
       inputRefs.current[index + 1]?.focus();
-    } else if (e.key === "Delete") {
+    } else if (e.key === 'Delete') {
       e.preventDefault();
       const newDigits = [...digits];
-      newDigits[index] = "";
-      onChange(newDigits.join(""));
+      newDigits[index] = '';
+      onChange(newDigits.join(''));
     }
   };
 
   const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pastedData = e.clipboardData
-      .getData("text")
-      .replace(/\D/g, "")
+      .getData('text')
+      .replace(/\D/g, '')
       .slice(0, length);
 
     if (pastedData) {
@@ -96,5 +101,5 @@ export const useOtpInput = ({ value, onChange, onComplete, length = 6 }: Omit<Ot
     handleKeyDown,
     handlePaste,
     handleFocus,
-  }
-}
+  };
+};

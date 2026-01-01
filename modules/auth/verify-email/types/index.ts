@@ -1,3 +1,3 @@
 export type VerifyEmailPageProps = {
-    email: string;
-}
+  email: string;
+};

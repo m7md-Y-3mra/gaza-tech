@@ -6,4 +6,4 @@ export type SignupFormSchemaType = {
   confirmPassword: string;
   terms: true;
   newsletter?: boolean | undefined;
-}
+};

@@ -1,5 +1,5 @@
-export type SocialButtonsVariant = "login" | "signup";
+export type SocialButtonsVariant = 'login' | 'signup';
 
 export type SocialButtonsProps = {
-    mode: SocialButtonsVariant;
-}
+  mode: SocialButtonsVariant;
+};

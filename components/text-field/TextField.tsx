@@ -1,14 +1,14 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useFormContext } from "react-hook-form";
-import { AlertCircle, Eye, EyeOff, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
-import PasswordStrength from "./components/password-strength";
+'use client';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useFormContext } from 'react-hook-form';
+import { AlertCircle, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
+import PasswordStrength from './components/password-strength';
 
 type TextFieldProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  "name"
+  'name'
 > & {
   name: string;
   label?: string;
@@ -22,7 +22,7 @@ const TextField: React.FC<TextFieldProps> = ({
   name,
   label,
   Icon,
-  type = "text",
+  type = 'text',
   isSuccess,
   successMessage,
   showStrength,
@@ -38,35 +38,35 @@ const TextField: React.FC<TextFieldProps> = ({
   const error = errors[name];
   const touched = touchedFields[name];
   const hasError = (isSubmitted || touched) && !!error;
-  const isPassword = type === "password";
-  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
-  const value = watch(name) || "";
+  const isPassword = type === 'password';
+  const inputType = isPassword ? (showPassword ? 'text' : 'password') : type;
+  const value = watch(name) || '';
 
   const getBorderClass = () => {
-    if (hasError) return "border-destructive focus-visible:ring-destructive";
-    if (isSuccess) return "border-green-500 focus-visible:ring-green-500";
-    return "focus-visible:ring-primary";
+    if (hasError) return 'border-destructive focus-visible:ring-destructive';
+    if (isSuccess) return 'border-green-500 focus-visible:ring-green-500';
+    return 'focus-visible:ring-primary';
   };
 
   return (
     <div>
       {label && (
-        <Label htmlFor={name} className="text-sm font-semibold mb-2 block">
+        <Label htmlFor={name} className="mb-2 block text-sm font-semibold">
           {label}
         </Label>
       )}
       <div className="relative">
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Icon className="w-4 h-4 text-muted-foreground" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+            <Icon className="text-muted-foreground h-4 w-4" />
           </div>
         )}
         <Input
           id={name}
           type={inputType}
           aria-invalid={hasError || undefined}
-          className={`${Icon ? "pl-12" : ""} ${
-            isPassword ? "pr-12" : ""
+          className={`${Icon ? 'pl-12' : ''} ${
+            isPassword ? 'pr-12' : ''
           } h-12 border-2 ${getBorderClass()}`}
           {...register(name)}
           {...rest}
@@ -75,26 +75,26 @@ const TextField: React.FC<TextFieldProps> = ({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center"
+            className="absolute inset-y-0 right-0 flex items-center pr-4"
           >
             {showPassword ? (
-              <EyeOff className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+              <EyeOff className="text-muted-foreground hover:text-foreground h-4 w-4 transition-colors" />
             ) : (
-              <Eye className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+              <Eye className="text-muted-foreground hover:text-foreground h-4 w-4 transition-colors" />
             )}
           </button>
         )}
       </div>
       {isPassword && showStrength && <PasswordStrength password={value} />}
       {hasError && (!showStrength || !Boolean(value)) && (
-        <p className="text-destructive text-sm mt-1.5 flex items-center gap-1">
-          <AlertCircle className="w-3.5 h-3.5" />
+        <p className="text-destructive mt-1.5 flex items-center gap-1 text-sm">
+          <AlertCircle className="h-3.5 w-3.5" />
           {error?.message as string}
         </p>
       )}
       {isSuccess && successMessage && (
-        <p className="text-green-600 text-sm mt-1.5 flex items-center gap-1">
-          <CheckCircle2 className="w-3.5 h-3.5" />
+        <p className="mt-1.5 flex items-center gap-1 text-sm text-green-600">
+          <CheckCircle2 className="h-3.5 w-3.5" />
           {successMessage}
         </p>
       )}

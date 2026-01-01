@@ -1,8 +1,8 @@
-"use client";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useFormContext, Controller } from "react-hook-form";
-import { AlertCircle } from "lucide-react";
-import { ReactNode } from "react";
+'use client';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useFormContext, Controller } from 'react-hook-form';
+import { AlertCircle } from 'lucide-react';
+import { ReactNode } from 'react';
 
 type CheckboxFieldProps = {
   name: string;
@@ -34,14 +34,14 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({ name, children }) => {
         />
         <label
           htmlFor={name}
-          className="text-sm text-muted-foreground cursor-pointer leading-relaxed"
+          className="text-muted-foreground cursor-pointer text-sm leading-relaxed"
         >
           {children}
         </label>
       </div>
       {hasError && (
-        <p className="text-destructive text-sm mt-1.5 flex items-center gap-1">
-          <AlertCircle className="w-3.5 h-3.5" />
+        <p className="text-destructive mt-1.5 flex items-center gap-1 text-sm">
+          <AlertCircle className="h-3.5 w-3.5" />
           {error?.message as string}
         </p>
       )}
