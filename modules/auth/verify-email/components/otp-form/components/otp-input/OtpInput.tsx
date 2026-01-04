@@ -40,15 +40,15 @@ const OtpInput: FC<OtpInputProps> = ({
           onFocus={handleFocus}
           aria-label={`Digit ${index + 1} of ${length}`}
           className={cn(
-            'h-16 w-14 rounded-xl border-2 text-center text-2xl font-bold',
-            'focus:border-primary focus:ring-4 focus:ring-green-100 focus:outline-none',
+            'bg-background text-foreground h-16 w-14 rounded-xl border-2 text-center text-2xl font-bold',
+            'focus:border-primary focus:ring-primary/20 focus:ring-4 focus:outline-none',
             'transition-all duration-200',
             'disabled:cursor-not-allowed disabled:opacity-50',
             hasError
-              ? 'border-red-500 focus:border-red-500 focus:ring-red-100'
+              ? 'border-destructive focus:border-destructive focus:ring-destructive/20'
               : digit
-                ? 'border-primary bg-green-50'
-                : 'border-gray-300'
+                ? 'border-primary bg-primary/10'
+                : 'border-border'
           )}
         />
       ))}

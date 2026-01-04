@@ -32,7 +32,7 @@ export function OtpForm(props: OtpFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* OTP Input */}
         <div>
-          <label className="mb-3 block text-sm font-semibold text-gray-700">
+          <label className="text-foreground mb-3 block text-sm font-semibold">
             Verification Code
           </label>
           <OtpInput
@@ -47,7 +47,7 @@ export function OtpForm(props: OtpFormProps) {
             hasError={hasError}
           />
           {hasError && (
-            <p className="mt-2 flex items-center text-sm text-red-500">
+            <p className="text-destructive mt-2 flex items-center text-sm">
               <AlertCircle className="mr-1 h-4 w-4" />
               {errors.otp?.message}
             </p>
@@ -63,10 +63,12 @@ export function OtpForm(props: OtpFormProps) {
 
         {/* Server Error */}
         {serverError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+          <div className="bg-destructive/10 border-destructive/20 rounded-xl border p-4">
             <div className="flex items-center space-x-3">
-              <AlertCircle className="h-5 w-5 text-red-600" />
-              <p className="text-sm font-medium text-red-700">{serverError}</p>
+              <AlertCircle className="text-destructive h-5 w-5" />
+              <p className="text-destructive text-sm font-medium">
+                {serverError}
+              </p>
             </div>
           </div>
         )}
@@ -75,7 +77,7 @@ export function OtpForm(props: OtpFormProps) {
         <Button
           type="submit"
           disabled={isSubmitting || otp.length !== 6 || isExpired}
-          className="from-primary to-secondary h-auto w-full rounded-xl bg-gradient-to-r py-4 text-lg font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+          className="from-primary to-secondary h-auto w-full rounded-xl bg-linear-to-r py-4 text-lg font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
         >
           {isSubmitting ? (
             <>
@@ -90,15 +92,15 @@ export function OtpForm(props: OtpFormProps) {
         </Button>
 
         {/* Resend Section */}
-        <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+        <div className="bg-muted border-border rounded-xl border p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Send className="h-5 w-5 text-gray-400" />
+              <Send className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-sm font-semibold text-gray-900">
+                <p className="text-foreground text-sm font-semibold">
                   Didn&apos;t receive the code?
                 </p>
-                <p className="mt-0.5 text-xs text-gray-600">
+                <p className="text-muted-foreground mt-0.5 text-xs">
                   Check your spam folder or request a new code
                 </p>
               </div>
@@ -126,14 +128,14 @@ export function OtpForm(props: OtpFormProps) {
 
         {/* Resend Success */}
         {resendSuccess && (
-          <div className="rounded-xl border-2 border-green-200 bg-green-50 p-4">
+          <div className="bg-success border-success-foreground/20 rounded-xl border-2 p-4">
             <div className="flex items-center space-x-3">
-              <CheckCircle className="h-5 w-5 text-green-600" />
+              <CheckCircle className="text-success-foreground h-5 w-5" />
               <div>
-                <p className="font-semibold text-green-900">
+                <p className="text-success-foreground font-semibold">
                   Code Resent Successfully!
                 </p>
-                <p className="mt-0.5 text-sm text-green-700">
+                <p className="text-success-foreground/80 mt-0.5 text-sm">
                   A new verification code has been sent to your email.
                 </p>
               </div>

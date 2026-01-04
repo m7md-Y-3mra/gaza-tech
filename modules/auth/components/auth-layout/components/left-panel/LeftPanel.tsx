@@ -8,7 +8,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
   const { description, features, heading } = useLeftPanel(variant);
 
   return (
-    <div className="from-primary via-secondary relative hidden overflow-hidden bg-linear-to-br to-emerald-700 lg:flex lg:w-1/2">
+    <div className="from-primary via-secondary to-left-panel-gradient-to relative hidden overflow-hidden bg-linear-to-br lg:flex lg:w-1/2">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 h-64 w-64 rounded-full bg-white blur-3xl" />
         <div className="absolute right-20 bottom-20 h-96 w-96 rounded-full bg-white blur-3xl" />
@@ -25,7 +25,9 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
               <h1 className="text-2xl font-bold text-white">
                 Gaza Tech Market
               </h1>
-              <p className="text-sm text-green-100">Technology Marketplace</p>
+              <p className="text-left-panel-text-muted text-sm">
+                Technology Marketplace
+              </p>
             </div>
           </div>
         </div>
@@ -39,7 +41,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
                   <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-white shadow-xl">
                     <Mail className="text-primary h-12 w-12" />
                   </div>
-                  <p className="px-6 text-lg text-green-100">
+                  <p className="text-left-panel-text-muted px-6 text-lg">
                     Verification code sent
                   </p>
                 </div>
@@ -51,7 +53,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
             <h2 className="mb-4 text-4xl leading-tight font-bold text-white">
               {heading}
             </h2>
-            <p className="text-lg text-green-100">{description}</p>
+            <p className="text-left-panel-text-muted text-lg">{description}</p>
           </div>
 
           <div className="space-y-6">
@@ -64,7 +66,9 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
                   <h3 className="mb-1 text-lg font-semibold text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-green-100">{feature.description}</p>
+                  <p className="text-left-panel-text-muted">
+                    {feature.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -76,15 +80,21 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
           <div className="mt-5 grid grid-cols-3 gap-6">
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
               <div className="mb-1 text-3xl font-bold text-white">15K+</div>
-              <div className="text-sm text-green-100">Active Users</div>
+              <div className="text-left-panel-text-muted text-sm">
+                Active Users
+              </div>
             </div>
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
               <div className="mb-1 text-3xl font-bold text-white">8K+</div>
-              <div className="text-sm text-green-100">Products Listed</div>
+              <div className="text-left-panel-text-muted text-sm">
+                Products Listed
+              </div>
             </div>
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
               <div className="mb-1 text-3xl font-bold text-white">99%</div>
-              <div className="text-sm text-green-100">Satisfaction</div>
+              <div className="text-left-panel-text-muted text-sm">
+                Satisfaction
+              </div>
             </div>
           </div>
         ) : variant === 'signup' ? (
@@ -117,7 +127,9 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
                   <p className="text-sm font-semibold text-white">
                     Ahmed Hassan
                   </p>
-                  <p className="text-xs text-green-100">Verified Seller</p>
+                  <p className="text-left-panel-text-muted text-xs">
+                    Verified Seller
+                  </p>
                 </div>
               </div>
             </div>
