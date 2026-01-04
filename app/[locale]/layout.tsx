@@ -3,8 +3,9 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 import { Playpen_Sans_Arabic } from 'next/font/google';
+import { IBM_Plex_Sans_Arabic } from 'next/font/google';
 
-const playpenArabic = Playpen_Sans_Arabic({
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ['arabic', 'latin'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
@@ -24,7 +25,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
-      <body className={`${playpenArabic.className} antialiased`}>
+      <body className={`${ibmPlexSansArabic.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
