@@ -24,14 +24,14 @@ const CountDownTimer: FC<CountdownTimerProps> = ({
     onExpire,
   });
   return (
-    <div className="rounded-xl border border-green-200 bg-linear-to-r from-green-50 to-emerald-50 p-4">
+    <div className="bg-success rounded-xl p-4 border border-success-foreground/20">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-sm">
-            <Clock className="text-primary h-5 w-5" />
+          <div className="w-10 h-10 bg-background rounded-lg flex items-center justify-center shadow-sm">
+            <Clock className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-600">Code expires in</p>
+            <p className="text-sm text-muted-foreground font-medium">Code expires in</p>
             <p
               className={cn(
                 'text-lg font-bold',
@@ -52,7 +52,7 @@ const CountDownTimer: FC<CountdownTimerProps> = ({
               cx="32"
               cy="32"
               r={radius}
-              stroke="#E5E7EB"
+              className="stroke-circle-track"
               strokeWidth="4"
               fill="none"
             />

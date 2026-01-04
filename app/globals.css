@@ -25,6 +25,19 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-auth-gradient-from: var(--auth-gradient-from);
+  --color-auth-gradient-via: var(--auth-gradient-via);
+  --color-auth-gradient-to: var(--auth-gradient-to);
+  --color-circle-track: var(--circle-track);
+  --color-left-panel-gradient-to: var(--left-panel-gradient-to);
+  --color-left-panel-text-muted: var(--left-panel-text-muted);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -52,7 +65,8 @@
   --primary: oklch(0.696 0.17 162.48);
 
   /* Backgrounds & Surfaces (achromatic - no chroma) */
-  --background: oklch(from var(--primary) calc(l + 0.304) 0 0);
+  /* --background: oklch(from var(--primary) calc(l + 0.304) 0 0); */
+  --background: oklch(1 0 0);
   --foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
   --card: oklch(from var(--primary) calc(l + 0.304) 0 0);
   --card-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
@@ -72,6 +86,32 @@
 
   /* Destructive (red/orange hue shift) */
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.35 0.18 27);
+
+  /* Success (green - hue ~142) */
+  --success: oklch(0.925 0.04 142);
+  --success-foreground: oklch(0.35 0.12 142);
+
+  /* Info (blue - hue ~240) */
+  --info: oklch(0.95 0.035 240);
+  --info-foreground: oklch(0.35 0.15 240);
+
+  /* Warning (yellow/amber - hue ~85) */
+  --warning: oklch(0.95 0.06 85);
+  --warning-foreground: oklch(0.35 0.12 60);
+
+  /* Auth layout gradient (relative to primary) */
+  --auth-gradient-from: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --auth-gradient-via: oklch(from var(--primary) calc(l + 0.304) 0 0);
+  --auth-gradient-to: oklch(from var(--primary) calc(l + 0.274) calc(c - 0.12) h);
+
+  /* Circle track for SVG (relative to primary) */
+  --circle-track: oklch(from var(--primary) calc(l + 0.224) 0 0);
+
+  /* Left panel gradient end color (relative to primary) */
+  --left-panel-gradient-to: oklch(from var(--primary) calc(l - 0.15) calc(c + 0.02) h);
+  /* Light text on primary gradient */
+  --left-panel-text-muted: oklch(from var(--primary) calc(l + 0.35) calc(c - 0.08) h);
 
   /* Borders & Inputs */
   --border: oklch(from var(--primary) calc(l + 0.226) 0 0);
@@ -98,7 +138,7 @@
 
 .dark {
   /* Backgrounds & Surfaces (achromatic) */
-  --background: oklch(from var(--primary) calc(l - 0.551) 0 0);
+  --background: oklch(0.145 0 0);
   --foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
   --card: oklch(from var(--primary) calc(l - 0.491) 0 0);
   --card-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
@@ -118,6 +158,32 @@
 
   /* Destructive (red hue shift - slightly different in dark mode) */
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.9 0.08 22);
+
+  /* Success (green - hue ~142) */
+  --success: oklch(0.15 0.03 142 / 50%);
+  --success-foreground: oklch(0.85 0.08 142);
+
+  /* Info (blue - hue ~240) */
+  --info: oklch(0.15 0.03 240 / 50%);
+  --info-foreground: oklch(0.85 0.1 240);
+
+  /* Warning (yellow/amber - hue ~85) */
+  --warning: oklch(0.15 0.04 85 / 50%);
+  --warning-foreground: oklch(0.85 0.1 85);
+
+  /* Auth layout gradient (relative to primary) */
+  --auth-gradient-from: oklch(from var(--primary) calc(l - 0.486) 0 0);
+  --auth-gradient-via: oklch(from var(--primary) calc(l - 0.566) 0 0);
+  --auth-gradient-to: oklch(from var(--primary) calc(l - 0.486) 0 0);
+
+  /* Circle track for SVG (relative to primary) */
+  --circle-track: oklch(from var(--primary) calc(l - 0.346) 0 0);
+
+  /* Left panel gradient end color (relative to primary) */
+  --left-panel-gradient-to: oklch(from var(--primary) calc(l - 0.25) calc(c + 0.02) h);
+  /* Light text on primary gradient */
+  --left-panel-text-muted: oklch(from var(--primary) calc(l + 0.25) calc(c - 0.08) h);
 
   /* Borders & Inputs (using alpha for dark mode transparency) */
   --border: oklch(from var(--primary) calc(l + 0.304) 0 0 / 10%);
