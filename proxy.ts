@@ -4,11 +4,20 @@ import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
-export async function proxy(request: NextRequest) {
-  // update user's auth session
-  // return await updateSession(request);
-  return intlMiddleware(request);
 
+export async function proxy(request: NextRequest) {
+  // Update user's auth session first
+  const supabaseResponse = await updateSession(request);
+
+  // Run intl middleware
+  const intlResponse = intlMiddleware(request);
+
+  // Copy Supabase auth cookies to the intl response
+  supabaseResponse.cookies.getAll().forEach((cookie) => {
+    intlResponse.cookies.set(cookie.name, cookie.value, cookie);
+  });
+
+  return intlResponse;
 }
 
 export const config = {
