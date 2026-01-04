@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { Cpu, HelpCircle, Mail } from 'lucide-react';
 import { FC } from 'react';
 import { LeftPanelProps } from './types';
@@ -5,28 +8,29 @@ import { useLeftPanel } from './hooks/useLeftPanel';
 import Image from 'next/image';
 
 const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
+  const t = useTranslations('Auth.layout');
   const { description, features, heading } = useLeftPanel(variant);
 
   return (
     <div className="from-primary via-secondary to-left-panel-gradient-to relative hidden overflow-hidden bg-linear-to-br lg:flex lg:w-1/2">
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 h-64 w-64 rounded-full bg-white blur-3xl" />
-        <div className="absolute right-20 bottom-20 h-96 w-96 rounded-full bg-white blur-3xl" />
+        <div className="absolute top-20 start-20 h-64 w-64 rounded-full bg-white blur-3xl" />
+        <div className="absolute end-20 bottom-20 h-96 w-96 rounded-full bg-white blur-3xl" />
       </div>
 
       <div className="relative z-10 flex w-full flex-col justify-between p-12">
         {/* Brand Section */}
         <div>
-          <div className="mb-8 flex items-center space-x-3">
+          <div className="mb-8 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-lg">
               <Cpu className="text-primary h-6 w-6" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">
-                Gaza Tech Market
+                {t('brandName')}
               </h1>
               <p className="text-left-panel-text-muted text-sm">
-                Technology Marketplace
+                {t('brandTagline')}
               </p>
             </div>
           </div>
@@ -42,7 +46,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
                     <Mail className="text-primary h-12 w-12" />
                   </div>
                   <p className="text-left-panel-text-muted px-6 text-lg">
-                    Verification code sent
+                    {t('verificationCodeSent')}
                   </p>
                 </div>
               </div>
@@ -58,7 +62,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
 
           <div className="space-y-6">
             {features.map((feature) => (
-              <div key={feature.title} className="flex items-start space-x-4">
+              <div key={feature.title} className="flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white/20">
                   <feature.icon className="h-5 w-5 text-white" />
                 </div>
@@ -81,25 +85,25 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
               <div className="mb-1 text-3xl font-bold text-white">15K+</div>
               <div className="text-left-panel-text-muted text-sm">
-                Active Users
+                {t('stats.activeUsers')}
               </div>
             </div>
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
               <div className="mb-1 text-3xl font-bold text-white">8K+</div>
               <div className="text-left-panel-text-muted text-sm">
-                Products Listed
+                {t('stats.productsListed')}
               </div>
             </div>
             <div className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">
               <div className="mb-1 text-3xl font-bold text-white">99%</div>
               <div className="text-left-panel-text-muted text-sm">
-                Satisfaction
+                {t('stats.satisfaction')}
               </div>
             </div>
           </div>
         ) : variant === 'signup' ? (
           <div className="mt-5 rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm">
-            <div className="mb-4 flex items-start space-x-4">
+            <div className="mb-4 flex items-start gap-4">
               <Image
                 src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg"
                 alt="User testimonial"
@@ -108,7 +112,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
                 className="rounded-full border-2 border-white shadow-lg"
               />
               <div className="flex-1">
-                <div className="mb-2 flex items-center space-x-1">
+                <div className="mb-2 flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <svg
                       key={star}
@@ -120,15 +124,14 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
                   ))}
                 </div>
                 <p className="mb-3 text-sm leading-relaxed text-white">
-                  &quot;Best tech marketplace in Gaza! I sold my laptop in just
-                  2 days and the process was incredibly smooth.&quot;
+                  &quot;{t('testimonial.quote')}&quot;
                 </p>
                 <div>
                   <p className="text-sm font-semibold text-white">
-                    Ahmed Hassan
+                    {t('testimonial.author')}
                   </p>
                   <p className="text-left-panel-text-muted text-xs">
-                    Verified Seller
+                    {t('testimonial.role')}
                   </p>
                 </div>
               </div>
@@ -137,14 +140,12 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
         ) : (
           <div className="mt-5 rounded-xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-3">
                 <HelpCircle className="h-5 w-5 text-white" />
-                <span className="font-medium text-white">
-                  Need help with verification?
-                </span>
+                <span className="font-medium text-white">{t('needHelp')}</span>
               </div>
               <button className="rounded-lg bg-white/20 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/30">
-                Contact Support
+                {t('contactSupport')}
               </button>
             </div>
           </div>

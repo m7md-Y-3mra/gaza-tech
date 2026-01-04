@@ -22,6 +22,77 @@
       "continueWith": "Continue with",
       "signUpWith": "Sign up with"
     },
+    "layout": {
+      "brandName": "Gaza Tech Market",
+      "brandTagline": "Technology Marketplace",
+      "verificationCodeSent": "Verification code sent",
+      "stats": {
+        "activeUsers": "Active Users",
+        "productsListed": "Products Listed",
+        "satisfaction": "Satisfaction"
+      },
+      "testimonial": {
+        "quote": "Best tech marketplace in Gaza! I sold my laptop in just 2 days and the process was incredibly smooth.",
+        "author": "Ahmed Hassan",
+        "role": "Verified Seller"
+      },
+      "needHelp": "Need help with verification?",
+      "contactSupport": "Contact Support",
+      "login": {
+        "heading": "Connect, Buy & Sell Technology Products",
+        "description": "Join the leading tech marketplace in Gaza. Discover amazing deals, connect with tech enthusiasts, and grow your business.",
+        "features": {
+          "secureTransactions": {
+            "title": "Secure Transactions",
+            "description": "Buy and sell with confidence using our secure payment system and buyer protection."
+          },
+          "vibrantCommunity": {
+            "title": "Vibrant Community",
+            "description": "Connect with thousands of tech enthusiasts, share knowledge, and discuss trends."
+          },
+          "fastListing": {
+            "title": "Fast & Easy Listing",
+            "description": "List your products in minutes and reach thousands of potential buyers instantly."
+          }
+        }
+      },
+      "signup": {
+        "heading": "Start Your Tech Journey Today",
+        "description": "Create your free account and unlock access to thousands of tech products, exclusive deals, and a thriving community of technology enthusiasts.",
+        "features": {
+          "welcomeBonus": {
+            "title": "Welcome Bonus",
+            "description": "Get 100 points instantly when you create your account to use on your first purchase."
+          },
+          "instantNotifications": {
+            "title": "Instant Notifications",
+            "description": "Be the first to know about new products, price drops, and exclusive member-only deals."
+          },
+          "freeStoreSetup": {
+            "title": "Free Store Setup",
+            "description": "Launch your own tech store in minutes and start selling to our community of buyers."
+          },
+          "support": {
+            "title": "24/7 Support",
+            "description": "Our dedicated support team is always ready to help you with any questions or issues."
+          }
+        }
+      },
+      "verifyEmail": {
+        "heading": "Check Your Inbox",
+        "description": "We've sent a verification code to secure your account. Enter the code to complete your registration.",
+        "features": {
+          "enhancedSecurity": {
+            "title": "Enhanced Security",
+            "description": "Email verification helps protect your account from unauthorized access and ensures secure communication."
+          },
+          "timeLimitedCode": {
+            "title": "Time-Limited Code",
+            "description": "Your verification code is valid for 10 minutes. Request a new code if it expires."
+          }
+        }
+      }
+    },
     "login": {
       "title": "Welcome Back!",
       "subtitle": "Sign in to continue to Gaza Tech Market",
