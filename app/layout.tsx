@@ -1,15 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import NextTopLoader from 'nextjs-toploader';
-import { Toaster } from 'sonner';
-import { ThemeProvider } from '@/providers/ThemeProvider';
-import { Playpen_Sans_Arabic } from 'next/font/google';
-
-const playpenArabic = Playpen_Sans_Arabic({
-  subsets: ['arabic', 'latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,20 +11,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${playpenArabic.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextTopLoader color="#00bc7d" showSpinner={false} />
-          {children}
-          <Toaster richColors position="top-center" />
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  return children;
 }
