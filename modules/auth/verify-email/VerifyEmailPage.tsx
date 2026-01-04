@@ -14,7 +14,7 @@ const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ email }) => {
       <div className="mb-6">
         <Link
           href="/login"
-          className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-200 group"
+          className="text-muted-foreground hover:text-foreground group flex items-center space-x-2 transition-colors duration-200"
         >
           <ArrowLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1" />
           <span className="font-semibold">Back to Login</span>
@@ -22,9 +22,9 @@ const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ email }) => {
       </div>
 
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-success rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-          <Mail className="w-10 h-10 text-primary" />
+      <div className="mb-8 text-center">
+        <div className="bg-success mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl shadow-lg">
+          <Mail className="text-primary h-10 w-10" />
         </div>
         <h2 className="text-foreground mb-3 text-3xl font-bold lg:text-4xl">
           Verify Your Email
@@ -36,11 +36,13 @@ const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ email }) => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-info border-2 border-info-foreground/20 rounded-xl p-4 mb-8">
+      <div className="bg-info border-info-foreground/20 mb-8 rounded-xl border-2 p-4">
         <div className="flex items-start space-x-3">
-          <Info className="w-5 h-5 text-info-foreground mt-0.5 shrink-0" />
+          <Info className="text-info-foreground mt-0.5 h-5 w-5 shrink-0" />
           <div>
-            <p className="text-info-foreground font-semibold mb-1">Check your inbox</p>
+            <p className="text-info-foreground mb-1 font-semibold">
+              Check your inbox
+            </p>
             <p className="text-info-foreground/80 text-sm">
               Please enter the code we sent to your email address. The code will
               expire in 10 minutes.
@@ -60,8 +62,8 @@ const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ email }) => {
 
         {VERIFICATION_TIPS.map((tip, index) => (
           <div key={index} className="flex items-start space-x-3">
-            <div className="w-6 h-6 bg-success rounded-full flex items-center justify-center shrink-0 mt-0.5">
-              <Check className="w-3 h-3 text-primary" />
+            <div className="bg-success mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+              <Check className="text-primary h-3 w-3" />
             </div>
             <p className="text-muted-foreground text-sm">{tip}</p>
           </div>
@@ -82,11 +84,11 @@ const VerifyEmailPage: FC<VerifyEmailPageProps> = ({ email }) => {
       <TrustBadges />
 
       {/* Security Notice */}
-      <div className="mt-8 bg-warning border border-warning-foreground/20 rounded-xl p-4">
+      <div className="bg-warning border-warning-foreground/20 mt-8 rounded-xl border p-4">
         <div className="flex items-start space-x-3">
-          <AlertTriangle className="w-5 h-5 text-warning-foreground mt-0.5 shrink-0" />
+          <AlertTriangle className="text-warning-foreground mt-0.5 h-5 w-5 shrink-0" />
           <div>
-            <p className="text-warning-foreground font-semibold text-sm mb-1">
+            <p className="text-warning-foreground mb-1 text-sm font-semibold">
               Security Notice
             </p>
             <p className="text-warning-foreground/80 text-xs">
