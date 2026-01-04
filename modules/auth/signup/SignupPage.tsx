@@ -1,4 +1,7 @@
-import Link from 'next/link';
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { Shield } from 'lucide-react';
 import AuthLayout from '../components/auth-layout';
 import SocialButtons from '../components/social-buttons';
@@ -6,16 +9,16 @@ import SignupForm from './components/signup-form';
 import TrustBadges from '../components/trust-badges';
 
 const SignupPage = () => {
+  const t = useTranslations('Auth');
+
   return (
     <AuthLayout variant="signup">
       {/* Header */}
       <div className="mb-8 text-center">
         <h2 className="text-foreground mb-3 text-3xl font-bold lg:text-4xl">
-          Create Your Account
+          {t('signup.title')}
         </h2>
-        <p className="text-muted-foreground text-lg">
-          Join Gaza Tech Market in just a few steps
-        </p>
+        <p className="text-muted-foreground text-lg">{t('signup.subtitle')}</p>
       </div>
 
       {/* Social Signup */}
@@ -26,7 +29,9 @@ const SignupPage = () => {
       {/* Divider */}
       <div className="mb-8 flex items-center">
         <div className="border-border flex-1 border-t-2" />
-        <span className="text-muted-foreground px-4 font-medium">OR</span>
+        <span className="text-muted-foreground px-4 font-medium">
+          {t('common.or')}
+        </span>
         <div className="border-border flex-1 border-t-2" />
       </div>
 
@@ -36,28 +41,26 @@ const SignupPage = () => {
       {/* Login Link */}
       <div className="mt-8 text-center">
         <p className="text-muted-foreground">
-          Already have an account?{' '}
+          {t('signup.alreadyHaveAccount')}{' '}
           <Link
             href="/login"
-            className="text-primary hover:text-secondary ml-1 font-bold transition-colors"
+            className="text-primary hover:text-secondary ms-1 font-bold transition-colors"
           >
-            Sign In
+            {t('signup.signIn')}
           </Link>
         </p>
       </div>
 
       {/* Security Info */}
       <div className="bg-primary/10 border-primary/20 mt-8 rounded-xl border p-4">
-        <div className="flex items-start space-x-3">
+        <div className="flex items-start gap-3">
           <Shield className="text-primary mt-0.5 h-5 w-5" />
           <div>
             <h4 className="text-foreground mb-1 text-sm font-semibold">
-              Your Data is Secure
+              {t('signup.securityTitle')}
             </h4>
             <p className="text-muted-foreground text-xs leading-relaxed">
-              We use industry-standard encryption to protect your personal
-              information. Your data will never be shared with third parties
-              without your consent.
+              {t('signup.securityDescription')}
             </p>
           </div>
         </div>

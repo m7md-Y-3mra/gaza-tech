@@ -1,5 +1,101 @@
 {
   "HomePage": {
     "title": "Hello world!"
+  },
+  "Auth": {
+    "common": {
+      "or": "OR",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "google": "Google",
+      "facebook": "Facebook",
+      "apple": "Apple"
+    },
+    "trustBadges": {
+      "secureLogin": "Secure Login",
+      "ssl": "256-bit SSL",
+      "privacyProtected": "Privacy Protected"
+    },
+    "social": {
+      "continueWith": "Continue with",
+      "signUpWith": "Sign up with"
+    },
+    "login": {
+      "title": "Welcome Back!",
+      "subtitle": "Sign in to continue to Gaza Tech Market",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot Password?",
+      "signIn": "Sign In",
+      "signingIn": "Signing In...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up",
+      "english": "English",
+      "arabic": "العربية",
+      "toast": {
+        "success": "Signed in successfully!",
+        "error": "Failed to sign in"
+      }
+    },
+    "signup": {
+      "title": "Create Your Account",
+      "subtitle": "Join Gaza Tech Market in just a few steps",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "First name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Last name",
+      "createPassword": "Create a strong password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "passwordsMatch": "Passwords match",
+      "termsPrefix": "I agree to the",
+      "termsAndConditions": "Terms & Conditions",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "newsletter": "Send me exclusive deals, product updates, and tech news via email",
+      "createAccount": "Create Account",
+      "creatingAccount": "Creating Account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "securityTitle": "Your Data is Secure",
+      "securityDescription": "We use industry-standard encryption to protect your personal information. Your data will never be shared with third parties without your consent.",
+      "toast": {
+        "success": "Account created successfully! Please verify your email.",
+        "error": "Failed to create account"
+      }
+    },
+    "verifyEmail": {
+      "backToLogin": "Back to Login",
+      "title": "Verify Your Email",
+      "subtitle": "We've sent a 6-digit verification code to",
+      "checkInbox": "Check your inbox",
+      "checkInboxDescription": "Please enter the code we sent to your email address. The code will expire in 10 minutes.",
+      "verificationCode": "Verification Code",
+      "verifying": "Verifying...",
+      "codeExpired": "Code Expired",
+      "verifyEmail": "Verify Email",
+      "didntReceiveCode": "Didn't receive the code?",
+      "checkSpamOrResend": "Check your spam folder or request a new code",
+      "sending": "Sending...",
+      "resend": "Resend",
+      "resendCode": "Resend Code",
+      "codeResentTitle": "Code Resent Successfully!",
+      "codeResentDescription": "A new verification code has been sent to your email.",
+      "verificationTips": "Verification Tips:",
+      "tip1": "Check your spam or junk folder if you don't see the email in your inbox",
+      "tip2": "Make sure you entered the correct email address during signup",
+      "tip3": "Wait a few minutes - email delivery can sometimes be delayed",
+      "tip4": "Contact support if you continue having issues with verification",
+      "wrongEmail": "Wrong email address?",
+      "changeEmail": "Change Email",
+      "securityNoticeTitle": "Security Notice",
+      "securityNoticeDescription": "Never share your verification code with anyone. Gaza Tech Market will never ask for your code via phone or email.",
+      "toast": {
+        "verifySuccess": "Email verified successfully!",
+        "resendSuccess": "Verification code sent!",
+        "error": "Verification failed"
+      }
+    }
   }
 }

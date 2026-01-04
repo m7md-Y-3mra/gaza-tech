@@ -1,5 +1,6 @@
 'use client';
 import { AlertCircle, Mail, User, Lock } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useSignupForm } from './hooks/useSignupForm';
 import { Button } from '@/components/ui/button';
 import { FormProvider } from 'react-hook-form';
@@ -7,6 +8,7 @@ import TextField from '@/components/text-field';
 import CheckboxField from '@/components/checkbox-field';
 
 const SignupForm = () => {
+  const t = useTranslations('Auth');
   const { form, onSubmit, isSubmitting, serverError, passwordsMatch } =
     useSignupForm();
 
@@ -23,72 +25,70 @@ const SignupForm = () => {
         {/* Name Fields */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <TextField
-            label="First Name"
+            label={t('signup.firstName')}
             name="firstName"
-            placeholder="First name"
+            placeholder={t('signup.firstNamePlaceholder')}
             Icon={User}
           />
 
           <TextField
-            label="Last Name"
+            label={t('signup.lastName')}
             name="lastName"
-            placeholder="Last name"
+            placeholder={t('signup.lastNamePlaceholder')}
             Icon={User}
           />
         </div>
 
         {/* Email Field */}
         <TextField
-          label="Email Address"
+          label={t('common.email')}
           name="email"
-          placeholder="Enter your email"
+          placeholder={t('common.emailPlaceholder')}
           Icon={Mail}
           type="email"
         />
 
         {/* Password Field */}
         <TextField
-          label="Password"
+          label={t('common.password')}
           name="password"
           type="password"
-          placeholder="Create a strong password"
+          placeholder={t('signup.createPassword')}
           Icon={Lock}
           showStrength
         />
 
         {/* Confirm Password Field */}
         <TextField
-          label="Confirm Password"
+          label={t('signup.confirmPassword')}
           name="confirmPassword"
           type="password"
-          placeholder="Confirm your password"
+          placeholder={t('signup.confirmPasswordPlaceholder')}
           Icon={Lock}
           isSuccess={passwordsMatch}
-          successMessage="Passwords match"
+          successMessage={t('signup.passwordsMatch')}
         />
 
         {/* Terms Checkbox */}
         <CheckboxField name="terms">
-          I agree to the{' '}
+          {t('signup.termsPrefix')}{' '}
           <a
             href="#"
             className="text-primary hover:text-secondary font-semibold transition-colors"
           >
-            Terms & Conditions
+            {t('signup.termsAndConditions')}
           </a>{' '}
-          and{' '}
+          {t('signup.and')}{' '}
           <a
             href="#"
             className="text-primary hover:text-secondary font-semibold transition-colors"
           >
-            Privacy Policy
+            {t('signup.privacyPolicy')}
           </a>
         </CheckboxField>
 
         {/* Newsletter Checkbox */}
-        <CheckboxField name="newsletter">
-          Send me exclusive deals, product updates, and tech news via email
-        </CheckboxField>
+        <CheckboxField name="newsletter">{t('signup.newsletter')}</CheckboxField>
 
         {/* Submit Button */}
         <Button
@@ -114,10 +114,10 @@ const SignupForm = () => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              Creating Account...
+              {t('signup.creatingAccount')}
             </span>
           ) : (
-            'Create Account'
+            t('signup.createAccount')
           )}
         </Button>
       </form>

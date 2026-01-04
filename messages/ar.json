@@ -1,5 +1,101 @@
 {
   "HomePage": {
     "title": "مرحبا بالعالم!"
+  },
+  "Auth": {
+    "common": {
+      "or": "أو",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "google": "Google",
+      "facebook": "Facebook",
+      "apple": "Apple"
+    },
+    "trustBadges": {
+      "secureLogin": "تسجيل دخول آمن",
+      "ssl": "تشفير SSL 256-bit",
+      "privacyProtected": "خصوصية محمية"
+    },
+    "social": {
+      "continueWith": "المتابعة عبر",
+      "signUpWith": "التسجيل عبر"
+    },
+    "login": {
+      "title": "مرحباً بعودتك!",
+      "subtitle": "سجّل دخولك للمتابعة إلى غزة تك ماركت",
+      "rememberMe": "تذكرني",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "إنشاء حساب",
+      "english": "English",
+      "arabic": "العربية",
+      "toast": {
+        "success": "تم تسجيل الدخول بنجاح!",
+        "error": "فشل تسجيل الدخول"
+      }
+    },
+    "signup": {
+      "title": "إنشاء حسابك",
+      "subtitle": "انضم إلى غزة تك ماركت في خطوات بسيطة",
+      "firstName": "الاسم الأول",
+      "firstNamePlaceholder": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "lastNamePlaceholder": "اسم العائلة",
+      "createPassword": "أنشئ كلمة مرور قوية",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "أكد كلمة المرور",
+      "passwordsMatch": "كلمات المرور متطابقة",
+      "termsPrefix": "أوافق على",
+      "termsAndConditions": "الشروط والأحكام",
+      "and": "و",
+      "privacyPolicy": "سياسة الخصوصية",
+      "newsletter": "أرسل لي العروض الحصرية وتحديثات المنتجات وأخبار التقنية عبر البريد الإلكتروني",
+      "createAccount": "إنشاء حساب",
+      "creatingAccount": "جارٍ إنشاء الحساب...",
+      "alreadyHaveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول",
+      "securityTitle": "بياناتك آمنة",
+      "securityDescription": "نستخدم تشفيراً متوافقاً مع المعايير الصناعية لحماية معلوماتك الشخصية. لن تتم مشاركة بياناتك مع أطراف ثالثة دون موافقتك.",
+      "toast": {
+        "success": "تم إنشاء الحساب بنجاح! يرجى تأكيد بريدك الإلكتروني.",
+        "error": "فشل إنشاء الحساب"
+      }
+    },
+    "verifyEmail": {
+      "backToLogin": "العودة لتسجيل الدخول",
+      "title": "تأكيد بريدك الإلكتروني",
+      "subtitle": "لقد أرسلنا رمز تحقق مكون من 6 أرقام إلى",
+      "checkInbox": "تحقق من صندوق الوارد",
+      "checkInboxDescription": "يرجى إدخال الرمز الذي أرسلناه إلى بريدك الإلكتروني. ستنتهي صلاحية الرمز خلال 10 دقائق.",
+      "verificationCode": "رمز التحقق",
+      "verifying": "جارٍ التحقق...",
+      "codeExpired": "انتهت صلاحية الرمز",
+      "verifyEmail": "تأكيد البريد الإلكتروني",
+      "didntReceiveCode": "لم تستلم الرمز؟",
+      "checkSpamOrResend": "تحقق من مجلد البريد العشوائي أو اطلب رمزاً جديداً",
+      "sending": "جارٍ الإرسال...",
+      "resend": "إعادة إرسال",
+      "resendCode": "إعادة إرسال الرمز",
+      "codeResentTitle": "تم إعادة إرسال الرمز بنجاح!",
+      "codeResentDescription": "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.",
+      "verificationTips": "نصائح التحقق:",
+      "tip1": "تحقق من مجلد البريد العشوائي إذا لم تجد البريد في صندوق الوارد",
+      "tip2": "تأكد من إدخال البريد الإلكتروني الصحيح عند التسجيل",
+      "tip3": "انتظر بضع دقائق - قد يتأخر تسليم البريد أحياناً",
+      "tip4": "تواصل مع الدعم إذا استمرت مشاكل التحقق",
+      "wrongEmail": "بريد إلكتروني خاطئ؟",
+      "changeEmail": "تغيير البريد",
+      "securityNoticeTitle": "تنبيه أمني",
+      "securityNoticeDescription": "لا تشارك رمز التحقق مع أي شخص. غزة تك ماركت لن تطلب منك الرمز عبر الهاتف أو البريد الإلكتروني.",
+      "toast": {
+        "verifySuccess": "تم تأكيد البريد الإلكتروني بنجاح!",
+        "resendSuccess": "تم إرسال رمز التحقق!",
+        "error": "فشل التحقق"
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'nextjs-toploader/app';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { LoginFormSchemaType } from '../types';
 import { loginFormSchema } from '../LoginForm.schema';
@@ -11,6 +12,7 @@ import { signIn } from '../actions';
 export const useLoginForm = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+  const t = useTranslations('Auth.login.toast');
 
   const form = useForm<LoginFormSchemaType>({
     resolver: zodResolver(loginFormSchema),
@@ -33,7 +35,7 @@ export const useLoginForm = () => {
       return;
     }
 
-    toast.success('Signed in successfully!');
+    toast.success(t('success'));
     router.push('/');
   };
 

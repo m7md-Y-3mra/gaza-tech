@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'nextjs-toploader/app';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { OtpFormSchemaType, OtpFormProps } from '../types';
 import { otpFormSchema } from '../otpForm.schema';
@@ -16,6 +17,7 @@ export const useOtpForm = ({
   onResendSuccess,
 }: OtpFormProps) => {
   const router = useRouter();
+  const t = useTranslations('Auth.verifyEmail.toast');
   const [serverError, setServerError] = useState<string | null>(null);
   const [remainingSeconds, setRemainingSeconds] = useState(TOTAL_SECONDS);
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -77,7 +79,7 @@ export const useOtpForm = ({
     setResendCooldown(RESEND_COOLDOWN);
     setRemainingSeconds(TOTAL_SECONDS);
     setResendSuccess(true);
-    toast.success('Verification code sent!');
+    toast.success(t('resendSuccess'));
     onResendSuccess?.();
 
     // Hide success message after 5 seconds
@@ -104,7 +106,7 @@ export const useOtpForm = ({
       return;
     }
 
-    toast.success('Email verified successfully!');
+    toast.success(t('verifySuccess'));
     onSuccess?.();
     router.push('/login');
   };
