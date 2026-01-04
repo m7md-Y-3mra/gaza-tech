@@ -107,6 +107,10 @@
       "toast": {
         "success": "Signed in successfully!",
         "error": "Failed to sign in"
+      },
+      "validation": {
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "Password must be at least 8 characters"
       }
     },
     "signup": {
@@ -134,6 +138,20 @@
       "toast": {
         "success": "Account created successfully! Please verify your email.",
         "error": "Failed to create account"
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "firstNameLettersOnly": "First name must contain only letters",
+        "lastNameRequired": "Last name is required",
+        "lastNameLettersOnly": "Last name must contain only letters",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "At least 8 characters",
+        "passwordUppercase": "One uppercase letter required",
+        "passwordNumber": "One number required",
+        "passwordSpecial": "One special character required",
+        "confirmPasswordRequired": "Please confirm your password",
+        "passwordsMismatch": "Passwords do not match",
+        "termsRequired": "You must accept the terms and conditions"
       }
     },
     "verifyEmail": {
@@ -166,6 +184,11 @@
         "verifySuccess": "Email verified successfully!",
         "resendSuccess": "Verification code sent!",
         "error": "Verification failed"
+      },
+      "validation": {
+        "otpRequired": "Please enter all 6 digits",
+        "otpLength": "OTP must be 6 digits",
+        "otpNumbersOnly": "OTP must contain only numbers"
       }
     }
   }

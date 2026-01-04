@@ -1,40 +1,46 @@
 import { z, ZodType } from 'zod';
 import { SignupFormSchemaType } from './types';
+import { TranslationFunction } from '@/types';
 
-export const signupFormSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(1, { error: 'First name is required' })
-      .regex(/^[a-zA-Z ]+$/, { error: 'First name must contain only letters' }),
+export const createSignupFormSchema = (t: TranslationFunction) =>
+  z
+    .object({
+      firstName: z
+        .string()
+        .min(1, { error: t('firstNameRequired') })
+        .regex(/^[a-zA-Z\u0600-\u06FF ]+$/, {
+          error: t('firstNameLettersOnly'),
+        }),
 
-    lastName: z
-      .string({ error: 'Last name is required' })
-      .min(1, { error: 'Last name is required' })
-      .regex(/^[a-zA-Z ]+$/, { error: 'Last name must contain only letters' }),
+      lastName: z
+        .string({ error: t('lastNameRequired') })
+        .min(1, { error: t('lastNameRequired') })
+        .regex(/^[a-zA-Z\u0600-\u06FF ]+$/, {
+          error: t('lastNameLettersOnly'),
+        }),
 
-    email: z.email({ error: 'Please enter a valid email address' }),
+      email: z.email({ error: t('emailInvalid') }),
 
-    password: z
-      .string()
-      .min(8, { error: 'At least 8 characters' })
-      .regex(/[A-Z]/, { error: 'One uppercase letter required' })
-      .regex(/[0-9]/, { error: 'One number required' })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-        error: 'One special character required',
+      password: z
+        .string()
+        .min(8, { error: t('passwordMin') })
+        .regex(/[A-Z]/, { error: t('passwordUppercase') })
+        .regex(/[0-9]/, { error: t('passwordNumber') })
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+          error: t('passwordSpecial'),
+        }),
+
+      confirmPassword: z
+        .string()
+        .min(1, { error: t('confirmPasswordRequired') }),
+
+      terms: z.literal(true, {
+        error: t('termsRequired'),
       }),
 
-    confirmPassword: z
-      .string()
-      .min(1, { error: 'Please confirm your password' }),
-
-    terms: z.literal(true, {
-      error: 'You must accept the terms and conditions',
-    }),
-
-    newsletter: z.boolean().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    error: 'Passwords do not match',
-    path: ['confirmPassword'],
-  }) satisfies ZodType<SignupFormSchemaType>;
+      newsletter: z.boolean().optional(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      error: t('passwordsMismatch'),
+      path: ['confirmPassword'],
+    }) satisfies ZodType<SignupFormSchemaType>;

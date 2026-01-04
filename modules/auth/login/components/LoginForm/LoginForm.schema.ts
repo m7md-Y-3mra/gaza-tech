@@ -1,8 +1,10 @@
 import { z, ZodType } from 'zod';
 import { LoginFormSchemaType } from './types';
+import { TranslationFunction } from '@/types';
 
-export const loginFormSchema = z.object({
-  email: z.email('Please enter a valid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  remember: z.boolean().optional(),
-}) satisfies ZodType<LoginFormSchemaType>;
+export const createLoginFormSchema = (t: TranslationFunction) =>
+  z.object({
+    email: z.email(t('emailInvalid')),
+    password: z.string().min(8, t('passwordMin')),
+    remember: z.boolean().optional(),
+  }) satisfies ZodType<LoginFormSchemaType>;

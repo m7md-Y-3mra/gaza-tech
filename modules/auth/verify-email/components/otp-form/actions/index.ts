@@ -1,13 +1,16 @@
 'use server';
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import { errorHandler } from '@/utils/error-handler';
 import CustomError from '@/utils/CustomError';
 import { zodValidation } from '@/lib/zod-error';
-import { verifyOtpSchema, resendOtpSchema } from '../otpForm.schema';
+import { createVerifyOtpSchema, resendOtpSchema } from '../otpForm.schema';
 import { VerifyOtpSchemaType, ResendOtpSchemaType } from '../types';
 
 export const verifyOtp = errorHandler(async (values: VerifyOtpSchemaType) => {
-  const data = zodValidation(verifyOtpSchema, values);
+  const t = await getTranslations('Auth.verifyEmail.validation');
+  const schema = createVerifyOtpSchema(t);
+  const data = zodValidation(schema, values);
   const supabase = await createClient();
 
   const { error } = await supabase.auth.verifyOtp({

@@ -6,8 +6,10 @@ export interface MyEnvs {
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends MyEnvs {}
+    interface ProcessEnv extends MyEnvs { }
   }
 }
 
-export type SearchParams = { [key: string]: string | string[] | undefined };
+export type SearchParams = { [key: string]: string | string[] | undefined }
+
+export type TranslationFunction = (key: string) => string;

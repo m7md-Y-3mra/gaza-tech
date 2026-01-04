@@ -1,13 +1,16 @@
 'use server';
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import { SignupFormSchemaType } from '../types';
-import { signupFormSchema } from '../signupForm.schema';
+import { createSignupFormSchema } from '../signupForm.schema';
 import { errorHandler } from '@/utils/error-handler';
 import CustomError from '@/utils/CustomError';
 import { zodValidation } from '@/lib/zod-error';
 
 export const signUp = errorHandler(async (values: SignupFormSchemaType) => {
-  const userData = zodValidation(signupFormSchema, values);
+  const t = await getTranslations('Auth.signup.validation');
+  const schema = createSignupFormSchema(t);
+  const userData = zodValidation(schema, values);
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({

@@ -107,6 +107,10 @@
       "toast": {
         "success": "تم تسجيل الدخول بنجاح!",
         "error": "فشل تسجيل الدخول"
+      },
+      "validation": {
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "passwordMin": "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
       }
     },
     "signup": {
@@ -134,6 +138,20 @@
       "toast": {
         "success": "تم إنشاء الحساب بنجاح! يرجى تأكيد بريدك الإلكتروني.",
         "error": "فشل إنشاء الحساب"
+      },
+      "validation": {
+        "firstNameRequired": "الاسم الأول مطلوب",
+        "firstNameLettersOnly": "الاسم الأول يجب أن يحتوي على حروف فقط",
+        "lastNameRequired": "اسم العائلة مطلوب",
+        "lastNameLettersOnly": "اسم العائلة يجب أن يحتوي على حروف فقط",
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "passwordMin": "8 أحرف على الأقل",
+        "passwordUppercase": "حرف كبير واحد مطلوب",
+        "passwordNumber": "رقم واحد مطلوب",
+        "passwordSpecial": "رمز خاص واحد مطلوب",
+        "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+        "passwordsMismatch": "كلمات المرور غير متطابقة",
+        "termsRequired": "يجب الموافقة على الشروط والأحكام"
       }
     },
     "verifyEmail": {
@@ -166,6 +184,11 @@
         "verifySuccess": "تم تأكيد البريد الإلكتروني بنجاح!",
         "resendSuccess": "تم إرسال رمز التحقق!",
         "error": "فشل التحقق"
+      },
+      "validation": {
+        "otpRequired": "يرجى إدخال جميع الأرقام الستة",
+        "otpLength": "الرمز يجب أن يكون 6 أرقام",
+        "otpNumbersOnly": "الرمز يجب أن يحتوي على أرقام فقط"
       }
     }
   }
