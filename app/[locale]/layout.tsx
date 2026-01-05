@@ -2,7 +2,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
-import { Playpen_Sans_Arabic } from 'next/font/google';
 import { IBM_Plex_Sans_Arabic } from 'next/font/google';
 
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
