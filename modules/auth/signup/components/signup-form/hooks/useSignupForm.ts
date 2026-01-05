@@ -1,19 +1,27 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'nextjs-toploader/app';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { SignupFormSchemaType } from '../types';
-import { signupFormSchema } from '../signupForm.schema';
+import { createSignupFormSchema } from '../signupForm.schema';
 import { signUp } from '../actions';
 
 export const useSignupForm = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+  const t = useTranslations('Auth.signup.toast');
+  const tValidation = useTranslations('Auth.signup.validation');
+
+  const schema = useMemo(
+    () => createSignupFormSchema(tValidation),
+    [tValidation]
+  );
 
   const form = useForm<SignupFormSchemaType>({
-    resolver: zodResolver(signupFormSchema),
+    resolver: zodResolver(schema),
     mode: 'onTouched',
     defaultValues: {
       firstName: '',
@@ -44,7 +52,7 @@ export const useSignupForm = () => {
       return;
     }
 
-    toast.success('Account created successfully! Please verify your email.');
+    toast.success(t('success'));
     router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
   };
 

@@ -11,3 +11,5 @@ declare global {
 }
 
 export type SearchParams = { [key: string]: string | string[] | undefined };
+
+export type TranslationFunction = (key: string) => string;

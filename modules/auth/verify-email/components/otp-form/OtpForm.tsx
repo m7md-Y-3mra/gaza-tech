@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { FormProvider } from 'react-hook-form';
 import { AlertCircle, Loader2, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import CountDownTimer from './components/count-down-timer';
 import { TOTAL_SECONDS } from './otpForm.constant';
 
 export function OtpForm(props: OtpFormProps) {
+  const t = useTranslations('Auth.verifyEmail');
   const {
     form,
     onSubmit,
@@ -33,7 +35,7 @@ export function OtpForm(props: OtpFormProps) {
         {/* OTP Input */}
         <div>
           <label className="text-foreground mb-3 block text-sm font-semibold">
-            Verification Code
+            {t('verificationCode')}
           </label>
           <OtpInput
             value={otp}
@@ -48,7 +50,7 @@ export function OtpForm(props: OtpFormProps) {
           />
           {hasError && (
             <p className="text-destructive mt-2 flex items-center text-sm">
-              <AlertCircle className="mr-1 h-4 w-4" />
+              <AlertCircle className="me-1 h-4 w-4" />
               {errors.otp?.message}
             </p>
           )}
@@ -64,7 +66,7 @@ export function OtpForm(props: OtpFormProps) {
         {/* Server Error */}
         {serverError && (
           <div className="bg-destructive/10 border-destructive/20 rounded-xl border p-4">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-3">
               <AlertCircle className="text-destructive h-5 w-5" />
               <p className="text-destructive text-sm font-medium">
                 {serverError}
@@ -81,27 +83,27 @@ export function OtpForm(props: OtpFormProps) {
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Verifying...
+              <Loader2 className="me-2 h-5 w-5 animate-spin" />
+              {t('verifying')}
             </>
           ) : isExpired ? (
-            'Code Expired'
+            t('codeExpired')
           ) : (
-            'Verify Email'
+            t('verifyEmail')
           )}
         </Button>
 
         {/* Resend Section */}
         <div className="bg-muted border-border rounded-xl border p-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-3">
               <Send className="text-muted-foreground h-5 w-5" />
               <div>
                 <p className="text-foreground text-sm font-semibold">
-                  Didn&apos;t receive the code?
+                  {t('didntReceiveCode')}
                 </p>
                 <p className="text-muted-foreground mt-0.5 text-xs">
-                  Check your spam folder or request a new code
+                  {t('checkSpamOrResend')}
                 </p>
               </div>
             </div>
@@ -114,13 +116,13 @@ export function OtpForm(props: OtpFormProps) {
             >
               {isResending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sending...
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
+                  {t('sending')}
                 </>
               ) : resendCooldown > 0 ? (
-                `Resend (${resendCooldown}s)`
+                `${t('resend')} (${resendCooldown}s)`
               ) : (
-                'Resend Code'
+                t('resendCode')
               )}
             </Button>
           </div>
@@ -129,14 +131,14 @@ export function OtpForm(props: OtpFormProps) {
         {/* Resend Success */}
         {resendSuccess && (
           <div className="bg-success border-success-foreground/20 rounded-xl border-2 p-4">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-3">
               <CheckCircle className="text-success-foreground h-5 w-5" />
               <div>
                 <p className="text-success-foreground font-semibold">
-                  Code Resent Successfully!
+                  {t('codeResentTitle')}
                 </p>
                 <p className="text-success-foreground/80 mt-0.5 text-sm">
-                  A new verification code has been sent to your email.
+                  {t('codeResentDescription')}
                 </p>
               </div>
             </div>

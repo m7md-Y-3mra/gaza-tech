@@ -57,7 +57,7 @@ const TextField: React.FC<TextFieldProps> = ({
       )}
       <div className="relative">
         {Icon && (
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4">
             <Icon className="text-muted-foreground h-4 w-4" />
           </div>
         )}
@@ -65,8 +65,8 @@ const TextField: React.FC<TextFieldProps> = ({
           id={name}
           type={inputType}
           aria-invalid={hasError || undefined}
-          className={`${Icon ? 'pl-12' : ''} ${
-            isPassword ? 'pr-12' : ''
+          className={`${Icon ? 'ps-12' : ''} ${
+            isPassword ? 'pe-12' : ''
           } h-12 border-2 ${getBorderClass()}`}
           {...register(name)}
           {...rest}
@@ -75,7 +75,7 @@ const TextField: React.FC<TextFieldProps> = ({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 flex items-center pr-4"
+            className="absolute inset-y-0 end-0 flex items-center pe-4"
           >
             {showPassword ? (
               <EyeOff className="text-muted-foreground hover:text-foreground h-4 w-4 transition-colors" />

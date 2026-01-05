@@ -1,6 +1,7 @@
 'use client';
 import { AlertCircle, Mail, Lock } from 'lucide-react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { FormProvider } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import TextField from '@/components/text-field';
@@ -8,6 +9,7 @@ import CheckboxField from '@/components/checkbox-field';
 import { useLoginForm } from './hooks/useLoginForm';
 
 const LoginForm = () => {
+  const t = useTranslations('Auth');
   const { form, onSubmit, isSubmitting, serverError } = useLoginForm();
 
   return (
@@ -21,28 +23,28 @@ const LoginForm = () => {
         )}
 
         <TextField
-          label="Email Address"
+          label={t('common.email')}
           name="email"
           type="email"
-          placeholder="Enter your email"
+          placeholder={t('common.emailPlaceholder')}
           Icon={Mail}
         />
 
         <TextField
-          label="Password"
+          label={t('common.password')}
           name="password"
           type="password"
-          placeholder="Enter your password"
+          placeholder={t('common.passwordPlaceholder')}
           Icon={Lock}
         />
 
         <div className="flex items-center justify-between">
-          <CheckboxField name="remember">Remember me</CheckboxField>
+          <CheckboxField name="remember">{t('login.rememberMe')}</CheckboxField>
           <Link
             href="/forgot-password"
             className="text-primary hover:text-secondary text-sm font-semibold transition-colors"
           >
-            Forgot Password?
+            {t('login.forgotPassword')}
           </Link>
         </div>
 
@@ -69,10 +71,10 @@ const LoginForm = () => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              Signing In...
+              {t('login.signingIn')}
             </span>
           ) : (
-            'Sign In'
+            t('login.signIn')
           )}
         </Button>
       </form>
