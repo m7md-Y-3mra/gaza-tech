@@ -15,7 +15,10 @@ export const useLoginForm = () => {
   const t = useTranslations('Auth.login.toast');
   const tValidation = useTranslations('Auth.login.validation');
 
-  const schema = useMemo(() => createLoginFormSchema(tValidation), [tValidation]);
+  const schema = useMemo(
+    () => createLoginFormSchema(tValidation),
+    [tValidation]
+  );
 
   const form = useForm<LoginFormSchemaType>({
     resolver: zodResolver(schema),

@@ -88,7 +88,9 @@ const SignupForm = () => {
         </CheckboxField>
 
         {/* Newsletter Checkbox */}
-        <CheckboxField name="newsletter">{t('signup.newsletter')}</CheckboxField>
+        <CheckboxField name="newsletter">
+          {t('signup.newsletter')}
+        </CheckboxField>
 
         {/* Submit Button */}
         <Button

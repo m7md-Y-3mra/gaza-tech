@@ -14,7 +14,7 @@ const LeftPanel: FC<LeftPanelProps> = ({ variant }) => {
   return (
     <div className="from-primary via-secondary to-left-panel-gradient-to relative hidden overflow-hidden bg-linear-to-br lg:flex lg:w-1/2">
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 start-20 h-64 w-64 rounded-full bg-white blur-3xl" />
+        <div className="absolute start-20 top-20 h-64 w-64 rounded-full bg-white blur-3xl" />
         <div className="absolute end-20 bottom-20 h-96 w-96 rounded-full bg-white blur-3xl" />
       </div>
 
