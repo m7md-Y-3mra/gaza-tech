@@ -27,7 +27,7 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  // // Enable static rendering
+  // Enable static rendering
   setRequestLocale(locale);
 
   const dir = RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr';
