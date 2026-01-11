@@ -1,14 +1,12 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import AuthLayout from '../components/auth-layout';
 import SocialButtons from '../components/social-buttons';
 import LoginForm from './components/LoginForm';
 import TrustBadges from '../components/trust-badges';
+import { getTranslations } from 'next-intl/server';
 
-const LoginPage = () => {
-  const t = useTranslations('Auth');
+const LoginPage = async () => {
+  const t = await getTranslations('Auth');
 
   return (
     <AuthLayout variant="login">

@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { Shield } from 'lucide-react';
 import AuthLayout from '../components/auth-layout';
@@ -8,8 +6,8 @@ import SocialButtons from '../components/social-buttons';
 import SignupForm from './components/signup-form';
 import TrustBadges from '../components/trust-badges';
 
-const SignupPage = () => {
-  const t = useTranslations('Auth');
+const SignupPage = async () => {
+  const t = await getTranslations('Auth');
 
   return (
     <AuthLayout variant="signup">

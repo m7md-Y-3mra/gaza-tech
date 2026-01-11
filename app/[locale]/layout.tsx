@@ -1,8 +1,14 @@
 import { NextIntlClientProvider } from 'next-intl';
+import { setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 import { IBM_Plex_Sans_Arabic } from 'next/font/google';
+import { routing } from '@/i18n/routing';
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ['arabic', 'latin'],
@@ -20,6 +26,10 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+
+  // // Enable static rendering
+  setRequestLocale(locale);
+
   const dir = RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr';
 
   return (
