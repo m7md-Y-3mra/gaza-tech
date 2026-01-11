@@ -1,1 +1,5 @@
-export { default } from '@/modules/auth/signup';
+import SignupPage from '@/modules/auth/signup';
+
+export default async function Page() {
+  return <SignupPage />;
+}
