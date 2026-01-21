@@ -52,6 +52,6 @@ const ListingDetailsPage =  async ({ id }: ListingDetailsPageProps) => {
       </div>
     </div>
   );
-}
+};
 
 export default ListingDetailsPage;

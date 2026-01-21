@@ -1,13 +1,13 @@
 import { BadgeCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { VerificationBadgeProps } from './types';
-import { sizeClasses } from './constant';
+import { sizeClasses } from './constants';
 
-export function VerificationBadge({
+const VerificationBadge = ({
   isVerified,
   size = 'md',
   className,
-}: VerificationBadgeProps) {
+}: VerificationBadgeProps) => {
   if (!isVerified) return null;
 
   return (
@@ -20,4 +20,6 @@ export function VerificationBadge({
       aria-label="Verified"
     />
   );
-}
+};
+
+export default VerificationBadge;
