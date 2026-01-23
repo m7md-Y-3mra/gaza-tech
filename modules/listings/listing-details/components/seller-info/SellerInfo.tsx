@@ -59,7 +59,7 @@ const SellerInfo = async ({ sellerId }: SellerInfoProps) => {
 
       {/* Stats */}
       <div className="border-t pt-4">
-        <div className="flex items-center justify-between rounded-lg bg-gray-50 p-3 text-center">
+        <div className="flex items-center justify-between">
           <span className="text-muted-foreground text-sm">Active Listings</span>
           <span className="text-lg font-semibold">
             {mockSeller.listingsCount}
