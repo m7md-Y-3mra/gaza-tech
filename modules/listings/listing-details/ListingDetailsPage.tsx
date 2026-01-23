@@ -7,6 +7,7 @@ import SellerInfo, {
   SellerInfoSkeleton,
   SellerInfoError,
 } from './components/seller-info';
+import SafetyTips from './components/safety-tips';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
@@ -75,9 +76,7 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
               <SellerInfo sellerId="mock-seller-id" />
             </Suspense>
           </ErrorBoundary>
-          <div className="bg-card rounded-lg border p-6">
-            <p className="text-muted-foreground">Safety Tips (Stage 9)</p>
-          </div>
+          <SafetyTips />
         </div>
       </div>
 
