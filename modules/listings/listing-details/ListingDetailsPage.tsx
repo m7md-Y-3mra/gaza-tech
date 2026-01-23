@@ -1,5 +1,6 @@
 import ProductGallery from './components/product-gallery';
 import ProductInfoCard from './components/product-info-card';
+import ProductDescription from './components/product-description';
 import type { ListingDetailsPageProps } from './types';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
@@ -12,6 +13,12 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
     'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800',
   ];
 
+  const mockDescription = `This is a high-quality product in excellent condition. Perfect for everyday use with premium features and modern design.
+
+The item has been well-maintained and comes from a smoke-free environment. All original accessories are included.
+
+Feel free to contact me for more details or to arrange a viewing. Serious buyers only please.`;
+
   return (
     <div className="container py-8">
       <div className="grid gap-8 lg:grid-cols-3">
@@ -23,11 +30,7 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
             title="Sample Product"
             productCondition="new"
           />
-          <div className="bg-card rounded-lg border p-6">
-            <p className="text-muted-foreground">
-              Product Description (Stage 5)
-            </p>
-          </div>
+          <ProductDescription description={mockDescription} />
           <div className="bg-card rounded-lg border p-6">
             <p className="text-muted-foreground">Specifications (Stage 6)</p>
           </div>
