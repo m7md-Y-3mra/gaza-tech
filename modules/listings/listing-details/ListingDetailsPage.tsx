@@ -2,6 +2,7 @@ import ProductGallery from './components/product-gallery';
 import ProductInfoCard from './components/product-info-card';
 import ProductDescription from './components/product-description';
 import Specifications from './components/specifications';
+import LocationInfo from './components/location-info';
 import type { ListingDetailsPageProps } from './types';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
@@ -47,9 +48,11 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
           />
           <ProductDescription description={mockDescription} />
           <Specifications specifications={mockSpecifications} />
-          <div className="bg-card rounded-lg border p-6">
-            <p className="text-muted-foreground">Location Info (Stage 7)</p>
-          </div>
+          <LocationInfo
+            locationName="Gaza City"
+            createdAt={new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()}
+            listingId={id}
+          />
         </div>
 
         {/* Sidebar - 1 column on large screens, sticky */}
