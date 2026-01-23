@@ -1,4 +1,5 @@
 import ProductGallery from './components/product-gallery';
+import ProductInfoCard from './components/product-info-card';
 import type { ListingDetailsPageProps } from './types';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
@@ -37,9 +38,13 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
 
         {/* Sidebar - 1 column on large screens, sticky */}
         <div className="space-y-6 lg:sticky lg:top-20 lg:col-span-1 lg:self-start">
-          <div className="bg-card rounded-lg border p-6">
-            <p className="text-muted-foreground">Product Info Card (Stage 4)</p>
-          </div>
+          <ProductInfoCard
+            price={1299}
+            currency="USD"
+            title="Sample Product"
+            categoryName="Electronics"
+            phoneNumber="+1234567890"
+          />
           <div className="bg-card rounded-lg border p-6">
             <p className="text-muted-foreground">Seller Info (Stage 8)</p>
           </div>
