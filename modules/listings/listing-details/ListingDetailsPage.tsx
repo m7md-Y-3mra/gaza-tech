@@ -1,6 +1,7 @@
 import ProductGallery from './components/product-gallery';
 import ProductInfoCard from './components/product-info-card';
 import ProductDescription from './components/product-description';
+import Specifications from './components/specifications';
 import type { ListingDetailsPageProps } from './types';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
@@ -19,6 +20,20 @@ The item has been well-maintained and comes from a smoke-free environment. All o
 
 Feel free to contact me for more details or to arrange a viewing. Serious buyers only please.`;
 
+  const mockSpecifications = [
+    { label: 'Brand', value: 'Apple' },
+    { label: 'Model', value: 'MacBook Pro 16"' },
+    { label: 'Processor', value: 'M3 Max' },
+    { label: 'RAM', value: '32GB' },
+    { label: 'Storage', value: '1TB SSD' },
+    { label: 'Graphics Card', value: 'Integrated' },
+    { label: 'Display', value: '16.2" Liquid Retina XDR' },
+    { label: 'Battery', value: 'Up to 22 hours' },
+    { label: 'Operating System', value: 'macOS Sonoma' },
+    { label: 'Warranty Status', value: 'AppleCare+ until 2025' },
+    { label: 'Color', value: 'Space Black', isCustom: true },
+  ];
+
   return (
     <div className="container py-8">
       <div className="grid gap-8 lg:grid-cols-3">
@@ -31,9 +46,7 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
             productCondition="new"
           />
           <ProductDescription description={mockDescription} />
-          <div className="bg-card rounded-lg border p-6">
-            <p className="text-muted-foreground">Specifications (Stage 6)</p>
-          </div>
+          <Specifications specifications={mockSpecifications} />
           <div className="bg-card rounded-lg border p-6">
             <p className="text-muted-foreground">Location Info (Stage 7)</p>
           </div>
