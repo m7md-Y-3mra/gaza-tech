@@ -3,6 +3,12 @@ import ProductInfoCard from './components/product-info-card';
 import ProductDescription from './components/product-description';
 import Specifications from './components/specifications';
 import LocationInfo from './components/location-info';
+import SellerInfo, {
+  SellerInfoSkeleton,
+  SellerInfoError,
+} from './components/seller-info';
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
@@ -56,7 +62,7 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
         </div>
 
         {/* Sidebar - 1 column on large screens, sticky */}
-        <div className="space-y-6 lg:sticky lg:top-20 lg:col-span-1 lg:self-start">
+        <div className="space-y-6 lg:sticky lg:top-4 lg:col-span-1 lg:self-start">
           <ProductInfoCard
             price={1299}
             currency="USD"
@@ -64,9 +70,11 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
             categoryName="Electronics"
             phoneNumber="+1234567890"
           />
-          <div className="bg-card rounded-lg border p-6">
-            <p className="text-muted-foreground">Seller Info (Stage 8)</p>
-          </div>
+          <ErrorBoundary FallbackComponent={SellerInfoError}>
+            <Suspense fallback={<SellerInfoSkeleton />}>
+              <SellerInfo sellerId="mock-seller-id" />
+            </Suspense>
+          </ErrorBoundary>
           <div className="bg-card rounded-lg border p-6">
             <p className="text-muted-foreground">Safety Tips (Stage 9)</p>
           </div>
