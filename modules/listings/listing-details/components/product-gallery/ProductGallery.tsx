@@ -23,7 +23,7 @@ const ProductGallery = ({
     handleShare,
     handleBookmark,
     handleThumbnailClick,
-    isNew,
+    isNewProduct,
   } = useProductGallery({ images, title, productCondition });
 
   return (
@@ -46,7 +46,7 @@ const ProductGallery = ({
 
         {/* Badges Overlay - Top Left */}
         <div className="absolute top-4 left-4 flex gap-2">
-          {isNew && (
+          {isNewProduct && (
             <span className="bg-primary text-primary-foreground rounded-full px-3 py-1 text-sm font-medium">
               NEW
             </span>

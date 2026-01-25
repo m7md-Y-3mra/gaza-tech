@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import type { ProductCardProps } from './types';
+import { isNew } from '@/modules/listings/utils/is-new';
+import { formatPrice } from '@/modules/listings/utils/format-price';
 
 const ProductCard = ({
   id,
@@ -12,12 +14,8 @@ const ProductCard = ({
   productCondition,
   locationName,
 }: ProductCardProps) => {
-  const currencySymbol = currency === 'USD' ? '$' : '₪';
-  const formattedPrice = `${currencySymbol}${price.toLocaleString()}`;
-
-  const isNew = ['new', 'like new', 'brand new', 'good'].includes(
-    productCondition.toLowerCase()
-  );
+  const formattedPrice = formatPrice(price, currency);
+  const isNewProduct = isNew(productCondition);
 
   return (
     <Link href={`/listings/${id}`} className="group block">
@@ -31,7 +29,7 @@ const ProductCard = ({
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          {isNew && (
+          {isNewProduct && (
             <span className="bg-primary text-primary-foreground absolute top-2 left-2 rounded-full px-2 py-1 text-xs font-medium">
               NEW
             </span>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { UseProductGalleryProps } from '../types';
+import { isNew } from '@/modules/listings/utils/is-new';
 
 export const useProductGallery = ({ title, productCondition }: UseProductGalleryProps) => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -36,14 +37,12 @@ export const useProductGallery = ({ title, productCondition }: UseProductGallery
     };
 
     // Check if product is "new" based on condition
-    const isNew = ['new', 'like new', 'brand new', 'good'].includes(
-        productCondition.toLowerCase()
-    );
+    const isNewProduct = isNew(productCondition);
 
     return {
         selectedImageIndex,
         isBookmarked,
-        isNew,
+        isNewProduct,
         handleShare,
         handleBookmark,
         handleThumbnailClick,
