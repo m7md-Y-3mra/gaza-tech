@@ -1,9 +1,5 @@
-export type Specification = {
-    label: string;
-    value: string;
-    isCustom?: boolean;
-};
+import { Specification } from "@/types/supabase";
 
 export type SpecificationsProps = {
-    specifications: Specification[];
+    specifications: Specification[] | null;
 };

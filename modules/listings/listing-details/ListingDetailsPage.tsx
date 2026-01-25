@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import ProductGallery from './components/product-gallery';
 import ProductInfoCard from './components/product-info-card';
 import ProductDescription from './components/product-description';
@@ -13,36 +14,32 @@ import SellerListings from './components/seller-listings';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
+import { getListingDetails } from '@/modules/listings/queries';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
-  // TODO: Fetch listing details in Stage 12
-  // Mock data for now
-  const mockImages = [
-    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800',
-    'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800',
-    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800',
-    'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800',
-  ];
+  // Fetch listing details from Supabase
+  const listing = await getListingDetails(id);
 
-  const mockDescription = `This is a high-quality product in excellent condition. Perfect for everyday use with premium features and modern design.
+  // Handle listing not found
+  if (!listing) {
+    notFound();
+  }
 
-The item has been well-maintained and comes from a smoke-free environment. All original accessories are included.
+  // Extract images from listing_images array and sort by sort_order
+  const images =
+    listing.listing_images
+      ?.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+      .map((img) => img.image_url) || [];
 
-Feel free to contact me for more details or to arrange a viewing. Serious buyers only please.`;
+  // Parse specifications from JSON if stored as JSON, or use empty array
+  const specifications = listing.specifications;
 
-  const mockSpecifications = [
-    { label: 'Brand', value: 'Apple' },
-    { label: 'Model', value: 'MacBook Pro 16"' },
-    { label: 'Processor', value: 'M3 Max' },
-    { label: 'RAM', value: '32GB' },
-    { label: 'Storage', value: '1TB SSD' },
-    { label: 'Graphics Card', value: 'Integrated' },
-    { label: 'Display', value: '16.2" Liquid Retina XDR' },
-    { label: 'Battery', value: 'Up to 22 hours' },
-    { label: 'Operating System', value: 'macOS Sonoma' },
-    { label: 'Warranty Status', value: 'AppleCare+ until 2025' },
-    { label: 'Color', value: 'Space Black', isCustom: true },
-  ];
+  // Get category name from joined data
+  const categoryName =
+    listing.marketplace_categories[0]?.name || 'Uncategorized';
+
+  // Get location name from joined data
+  const locationName = listing.locations[0]?.name || 'Unknown';
 
   return (
     <div className="container py-8">
@@ -50,27 +47,27 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
         {/* Main Content - 2 columns on large screens */}
         <div className="space-y-6 lg:col-span-2">
           <ProductGallery
-            images={mockImages}
-            listingId={id}
-            title="Sample Product"
-            productCondition="new"
+            images={images}
+            listingId={listing.listing_id}
+            title={listing.title}
+            productCondition={listing.product_condition}
           />
-          <ProductDescription description={mockDescription} />
-          <Specifications specifications={mockSpecifications} />
+          <ProductDescription description={listing.description} />
+          <Specifications specifications={specifications} />
           <LocationInfo
-            locationName="Gaza City"
-            createdAt={new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()}
-            listingId={id}
+            locationName={locationName}
+            createdAt={listing.created_at || new Date().toISOString()}
+            listingId={listing.listing_id}
           />
         </div>
 
         {/* Sidebar - 1 column on large screens, sticky */}
         <div className="space-y-6 lg:sticky lg:top-4 lg:col-span-1 lg:self-start">
           <ProductInfoCard
-            price={1299}
-            currency="USD"
-            title="Sample Product"
-            categoryName="Electronics"
+            price={listing.price}
+            currency={listing.currency || 'USD'}
+            title={listing.title}
+            categoryName={categoryName}
             phoneNumber="+1234567890"
           />
           <ErrorBoundary FallbackComponent={SellerInfoError}>
