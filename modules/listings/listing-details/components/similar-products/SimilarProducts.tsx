@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import type { SimilarProductsProps } from './types';
-import ProductCard from './components/product-card';
+import ProductCard from '@/modules/listings/components/product-card';
 import {
   Carousel,
   CarouselContent,

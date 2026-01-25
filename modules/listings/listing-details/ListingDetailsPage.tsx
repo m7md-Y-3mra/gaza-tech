@@ -9,6 +9,7 @@ import SellerInfo, {
 } from './components/seller-info';
 import SafetyTips from './components/safety-tips';
 import SimilarProducts from './components/similar-products';
+import SellerListings from './components/seller-listings';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
@@ -88,9 +89,7 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
 
       {/* Seller Listings - Full width */}
       <div className="mt-12">
-        <div className="bg-card rounded-lg border p-6">
-          <p className="text-muted-foreground">Seller Listings (Stage 11)</p>
-        </div>
+        <SellerListings sellerId="mock-seller-id" currentListingId={id} />
       </div>
     </div>
   );
