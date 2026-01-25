@@ -8,6 +8,7 @@ import SellerInfo, {
   SellerInfoError,
 } from './components/seller-info';
 import SafetyTips from './components/safety-tips';
+import SimilarProducts from './components/similar-products';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
@@ -82,9 +83,7 @@ Feel free to contact me for more details or to arrange a viewing. Serious buyers
 
       {/* Similar Products - Full width */}
       <div className="mt-12">
-        <div className="bg-card rounded-lg border p-6">
-          <p className="text-muted-foreground">Similar Products (Stage 10)</p>
-        </div>
+        <SimilarProducts categoryId="electronics" />
       </div>
 
       {/* Seller Listings - Full width */}
