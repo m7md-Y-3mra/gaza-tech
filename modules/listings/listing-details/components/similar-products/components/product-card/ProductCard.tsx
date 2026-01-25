@@ -2,8 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import type { ProductCardProps } from './types';
-import { isNew } from '@/modules/listings/utils/is-new';
-import { formatPrice } from '@/modules/listings/utils/format-price';
+import { useProductCard } from './hooks/useProductCard';
 
 const ProductCard = ({
   id,
@@ -14,9 +13,11 @@ const ProductCard = ({
   productCondition,
   locationName,
 }: ProductCardProps) => {
-  const formattedPrice = formatPrice(price, currency);
-  const isNewProduct = isNew(productCondition);
-
+  const { formattedPrice, isNewProduct } = useProductCard({
+    price,
+    currency,
+    productCondition,
+  });
   return (
     <Link href={`/listings/${id}`} className="group block">
       <div className="bg-card overflow-hidden rounded-lg border transition-shadow hover:shadow-lg">
