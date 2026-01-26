@@ -9,8 +9,14 @@ import SellerInfo, {
   SellerInfoError,
 } from './components/seller-info';
 import SafetyTips from './components/safety-tips';
-import SimilarProducts from './components/similar-products';
-import SellerListings from './components/seller-listings';
+import SimilarProducts, {
+  SimilarProductsSkeleton,
+  SimilarProductsError,
+} from './components/similar-products';
+import SellerListings, {
+  SellerListingsSkeleton,
+  SellerListingsError,
+} from './components/seller-listings';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
@@ -81,18 +87,26 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
 
       {/* Similar Products - Full width */}
       <div className="mt-12">
-        <SimilarProducts
-          categoryId={listing.category_id}
-          currentListingId={listing.listing_id}
-        />
+        <ErrorBoundary fallbackRender={SimilarProductsError}>
+          <Suspense fallback={<SimilarProductsSkeleton />}>
+            <SimilarProducts
+              categoryId={listing.category_id}
+              currentListingId={listing.listing_id}
+            />
+          </Suspense>
+        </ErrorBoundary>
       </div>
 
       {/* Seller Listings - Full width */}
       <div className="mt-12">
-        <SellerListings
-          sellerId={listing.seller_id}
-          currentListingId={listing.listing_id}
-        />
+        <ErrorBoundary fallbackRender={SellerListingsError}>
+          <Suspense fallback={<SellerListingsSkeleton />}>
+            <SellerListings
+              sellerId={listing.seller_id}
+              currentListingId={listing.listing_id}
+            />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );

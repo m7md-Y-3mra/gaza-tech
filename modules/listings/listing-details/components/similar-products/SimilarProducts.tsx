@@ -29,7 +29,7 @@ const SimilarProducts = async ({
   }
 
   // Map listings to ProductCard props
-  const products = listings.map((listing) => {
+  const products = listings.map((listing: any) => {
     // Database already filters for thumbnails, so just use first image
     const imageUrl = listing.listing_images?.[0]?.image_url || '';
 
@@ -67,7 +67,7 @@ const SimilarProducts = async ({
         className="w-full"
       >
         <CarouselContent className="-ml-4">
-          {products.map((product) => (
+          {products.map((product: any) => (
             <CarouselItem
               key={product.id}
               className="basis-[85%] pl-4 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
