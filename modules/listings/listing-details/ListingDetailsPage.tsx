@@ -81,7 +81,10 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
 
       {/* Similar Products - Full width */}
       <div className="mt-12">
-        <SimilarProducts categoryId="electronics" />
+        <SimilarProducts
+          categoryId={listing.category_id}
+          currentListingId={listing.listing_id}
+        />
       </div>
 
       {/* Seller Listings - Full width */}

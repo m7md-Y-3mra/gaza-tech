@@ -1,5 +1,6 @@
 import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
+import { CAROUSEL_CARD_NUM } from '@/constant';
 
 // complete the type of getListingDetails (auto-complete this) in listing type - I wait it
 type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']['Row'] & {
@@ -55,4 +56,47 @@ export async function getListingDetails(listingId: string): Promise<GetListingDe
   }
 
   return data as GetListingDetailsRes;
+}
+
+/**
+ * Get similar listings by category
+ * Fetches listings from the same category, excluding the current listing
+ */
+export async function getSimilarListings(
+  categoryId: string,
+  currentListingId: string,
+  limit: number = CAROUSEL_CARD_NUM
+) {
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('marketplace_listings')
+    .select(
+      `
+      listing_id,
+      title,
+      price,
+      currency,
+      product_condition,
+      listing_images (
+        image_url,
+        is_thumbnail
+      ),
+      locations (
+        name
+      )
+    `
+    )
+    .eq('category_id', categoryId)
+    .neq('listing_id', currentListingId)
+    .eq('content_status', 'published')
+    .eq('listing_images.is_thumbnail', true)
+    .limit(limit);
+  console.log(data)
+  if (error) {
+    console.error('Error fetching similar listings:', error);
+    return [];
+  }
+
+  return data || [];
 }

@@ -1,0 +1,1 @@
+export const CAROUSEL_CARD_NUM = 6;

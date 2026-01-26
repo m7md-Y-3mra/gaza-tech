@@ -9,72 +9,40 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { getSimilarListings } from '@/modules/listings/queries';
+import { CAROUSEL_CARD_NUM } from '@/constant';
 
-const SimilarProducts = async ({ categoryId }: SimilarProductsProps) => {
-  // TODO: Fetch similar products from Supabase in Stage 12
-  // Mock data for now
-  const mockProducts = [
-    {
-      id: 'similar-1',
-      title: 'MacBook Pro 14" M3',
-      price: 1099,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400',
-      productCondition: 'new',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'similar-2',
-      title: 'MacBook Air M2',
-      price: 899,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=400',
-      productCondition: 'like new',
-      locationName: 'Khan Yunis',
-    },
-    {
-      id: 'similar-3',
-      title: 'iMac 24" M3',
-      price: 1499,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400',
-      productCondition: 'new',
-      locationName: 'Rafah',
-    },
-    {
-      id: 'similar-4',
-      title: 'Mac Mini M2',
-      price: 599,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400',
-      productCondition: 'good',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'similar-5',
-      title: 'MacBook Pro 13" M2',
-      price: 999,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400',
-      productCondition: 'used',
-      locationName: 'Deir al-Balah',
-    },
-    {
-      id: 'similar-6',
-      title: 'Mac Studio M2 Ultra',
-      price: 2499,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400',
-      productCondition: 'new',
-      locationName: 'Gaza City',
-    },
-  ];
+const SimilarProducts = async ({
+  categoryId,
+  currentListingId,
+}: SimilarProductsProps) => {
+  // Fetch similar products from Supabase
+  const listings = await getSimilarListings(
+    categoryId,
+    currentListingId,
+    CAROUSEL_CARD_NUM
+  );
+
+  // If no similar products, don't render the section
+  if (!listings || listings.length === 0) {
+    return null;
+  }
+
+  // Map listings to ProductCard props
+  const products = listings.map((listing) => {
+    // Database already filters for thumbnails, so just use first image
+    const imageUrl = listing.listing_images?.[0]?.image_url || '';
+
+    return {
+      id: listing.listing_id,
+      title: listing.title,
+      price: listing.price,
+      currency: listing.currency || 'USD',
+      imageUrl,
+      productCondition: listing.product_condition || 'used',
+      locationName: listing.locations[0]?.name || '',
+    };
+  });
 
   return (
     <div className="space-y-6">
@@ -99,7 +67,7 @@ const SimilarProducts = async ({ categoryId }: SimilarProductsProps) => {
         className="w-full"
       >
         <CarouselContent className="-ml-4">
-          {mockProducts.map((product) => (
+          {products.map((product) => (
             <CarouselItem
               key={product.id}
               className="basis-[85%] pl-4 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
