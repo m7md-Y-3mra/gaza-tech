@@ -1,11 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { VerificationBadge } from '@/components/verification-badge';
-import { formatDistanceToNow } from 'date-fns';
 import { User } from 'lucide-react';
 import Link from 'next/link';
 import type { SellerInfoProps } from './types';
 import { getUserAndListingsCount } from '@/modules/user/queries';
+import { formatMemberSince } from '@/utils/date.utils';
 
 const SellerInfo = async ({ sellerId }: SellerInfoProps) => {
   // Fetch seller data from Supabase
@@ -16,12 +16,7 @@ const SellerInfo = async ({ sellerId }: SellerInfoProps) => {
     throw new Error('Seller not found');
   }
 
-  const memberSince = formatDistanceToNow(
-    new Date(seller.created_at || new Date()),
-    {
-      addSuffix: true,
-    }
-  );
+  const memberSince = formatMemberSince(seller.created_at);
 
   const fullName = `${seller.first_name} ${seller.last_name}`;
 
