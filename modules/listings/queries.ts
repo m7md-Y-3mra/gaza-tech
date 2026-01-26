@@ -92,7 +92,7 @@ export async function getSimilarListings(
     .eq('content_status', 'published')
     .eq('listing_images.is_thumbnail', true)
     .limit(limit);
-  console.log(data)
+
   if (error) {
     console.error('Error fetching similar listings:', error);
     return [];
