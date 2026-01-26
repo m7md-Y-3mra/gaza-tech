@@ -1,6 +1,14 @@
 import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
+import {
+  createBaseQuery,
+  filterPublished,
+  filterByCategory,
+  excludeListing,
+  LISTING_FIELDS,
+  LISTING_RELATIONS,
+} from './repository';
 
 // complete the type of getListingDetails (auto-complete this) in listing type - I wait it
 type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']['Row'] & {
@@ -11,44 +19,20 @@ type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']
 
 export async function getListingDetails(listingId: string): Promise<GetListingDetailsRes | null> {
   const client = await createClient();
-  const { data, error } = await client
-    .from('marketplace_listings')
-    .select(
-      `
-      listing_id,
-      title,
-      description,
-      price,
-      currency,
-      product_condition,
-      created_at,
-      content_status,
-      specifications,
-      seller_id,
-      category_id,
-      location_id,
-      marketplace_categories (
-        marketplace_category_id,
-        name,
-        slug
-      ),
-      locations (
-        location_id,
-        name,
-        name_ar
-      ),
-      listing_images (
-        listing_image_id,
-        image_url,
-        is_thumbnail,
-        sort_order
-      )
-    `
-    )
+
+  const query = filterPublished(createBaseQuery(client))
+    .select(`
+      ${LISTING_FIELDS.MINIMAL},
+      ${LISTING_FIELDS.DETAILS},
+      ${LISTING_RELATIONS.CATEGORY},
+      ${LISTING_RELATIONS.LOCATION},
+      ${LISTING_RELATIONS.IMAGES_ALL}
+    `)
     .eq('listing_id', listingId)
-    .eq('content_status', 'published')
     .order('sort_order', { foreignTable: 'listing_images', ascending: true })
     .single();
+
+  const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching listing details:', error);
@@ -69,29 +53,17 @@ export async function getSimilarListings(
 ) {
   const client = await createClient();
 
-  const { data, error } = await client
-    .from('marketplace_listings')
-    .select(
-      `
-      listing_id,
-      title,
-      price,
-      currency,
-      product_condition,
-      listing_images (
-        image_url,
-        is_thumbnail
-      ),
-      locations (
-        name
-      )
-    `
-    )
-    .eq('category_id', categoryId)
-    .neq('listing_id', currentListingId)
-    .eq('content_status', 'published')
-    .eq('listing_images.is_thumbnail', true)
+  const query = filterPublished(
+    excludeListing(filterByCategory(createBaseQuery(client), categoryId), currentListingId)
+  )
+    .select(`
+      ${LISTING_FIELDS.MINIMAL},
+      ${LISTING_RELATIONS.IMAGES_THUMBNAIL},
+      ${LISTING_RELATIONS.LOCATION}
+    `)
     .limit(limit);
+
+  const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching similar listings:', error);
