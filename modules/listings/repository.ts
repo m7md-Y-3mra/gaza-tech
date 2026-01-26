@@ -70,3 +70,7 @@ export function excludeListing(query: any, listingId: string) {
 export function filterByCategory(query: any, categoryId: string) {
   return query.eq('category_id', categoryId);
 }
+
+export function filterBySeller(query: any, sellerId: string) {
+  return query.eq('seller_id', sellerId);
+}

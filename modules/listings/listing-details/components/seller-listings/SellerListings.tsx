@@ -10,74 +10,40 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
+import { CAROUSEL_CARD_NUM } from '@/constant';
+import { getSellerListings } from '@/modules/listings/queries';
+
 const SellerListings = async ({
   sellerId,
   currentListingId,
 }: SellerListingsProps) => {
-  // TODO: Fetch seller listings from Supabase in Stage 12
-  // Mock data for now
-  const mockListings = [
-    {
-      id: 'seller-1',
-      title: 'iPad Pro 12.9" M2',
-      price: 799,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400',
-      productCondition: 'like new',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'seller-2',
-      title: 'AirPods Pro 2nd Gen',
-      price: 199,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=400',
-      productCondition: 'new',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'seller-3',
-      title: 'Apple Watch Ultra',
-      price: 699,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=400',
-      productCondition: 'good',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'seller-4',
-      title: 'Magic Keyboard',
-      price: 149,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400',
-      productCondition: 'new',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'seller-5',
-      title: 'HomePod Mini',
-      price: 89,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1589492477829-5e65395b66cc?w=400',
-      productCondition: 'new',
-      locationName: 'Gaza City',
-    },
-    {
-      id: 'seller-6',
-      title: 'Apple Pencil 2nd Gen',
-      price: 99,
-      currency: 'USD',
-      imageUrl:
-        'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400',
-      productCondition: 'like new',
-      locationName: 'Gaza City',
-    },
-  ];
+  // Fetch seller listings from Supabase
+  const listings = await getSellerListings(
+    sellerId,
+    currentListingId,
+    CAROUSEL_CARD_NUM
+  );
+
+  // If no listings found, don't render the section
+  if (!listings || listings.length === 0) {
+    return null;
+  }
+
+  // Map listings to ProductCard props
+  const products = listings.map((listing: any) => {
+    // Database already filters for thumbnails, so just use first image
+    const imageUrl = listing.listing_images?.[0]?.image_url || '';
+
+    return {
+      id: listing.listing_id,
+      title: listing.title,
+      price: listing.price,
+      currency: listing.currency || 'USD',
+      imageUrl,
+      productCondition: listing.product_condition || 'used',
+      locationName: listing.locations[0]?.name || '',
+    };
+  });
 
   return (
     <div className="space-y-6">
@@ -102,7 +68,7 @@ const SellerListings = async ({
         className="w-full"
       >
         <CarouselContent className="-ml-4">
-          {mockListings.map((listing) => (
+          {products.map((listing: any) => (
             <CarouselItem
               key={listing.id}
               className="basis-[85%] pl-4 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"

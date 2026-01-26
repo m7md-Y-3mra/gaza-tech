@@ -89,7 +89,10 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
 
       {/* Seller Listings - Full width */}
       <div className="mt-12">
-        <SellerListings sellerId="mock-seller-id" currentListingId={id} />
+        <SellerListings
+          sellerId={listing.seller_id}
+          currentListingId={listing.listing_id}
+        />
       </div>
     </div>
   );

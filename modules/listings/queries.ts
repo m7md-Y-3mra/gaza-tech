@@ -5,6 +5,7 @@ import {
   createBaseQuery,
   filterPublished,
   filterByCategory,
+  filterBySeller,
   excludeListing,
   LISTING_FIELDS,
   LISTING_RELATIONS,
@@ -20,14 +21,15 @@ type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']
 export async function getListingDetails(listingId: string): Promise<GetListingDetailsRes | null> {
   const client = await createClient();
 
-  const query = filterPublished(createBaseQuery(client))
-    .select(`
+  const baseQuery = createBaseQuery(client).select(`
       ${LISTING_FIELDS.MINIMAL},
       ${LISTING_FIELDS.DETAILS},
       ${LISTING_RELATIONS.CATEGORY},
       ${LISTING_RELATIONS.LOCATION},
       ${LISTING_RELATIONS.IMAGES_ALL}
-    `)
+    `);
+
+  const query = filterPublished(baseQuery)
     .eq('listing_id', listingId)
     .order('sort_order', { foreignTable: 'listing_images', ascending: true })
     .single();
@@ -53,20 +55,53 @@ export async function getSimilarListings(
 ) {
   const client = await createClient();
 
-  const query = filterPublished(
-    excludeListing(filterByCategory(createBaseQuery(client), categoryId), currentListingId)
-  )
-    .select(`
+  const baseQuery = createBaseQuery(client).select(`
       ${LISTING_FIELDS.MINIMAL},
       ${LISTING_RELATIONS.IMAGES_THUMBNAIL},
       ${LISTING_RELATIONS.LOCATION}
-    `)
-    .limit(limit);
+    `);
+
+  const query = filterPublished(
+    excludeListing(filterByCategory(baseQuery, categoryId), currentListingId)
+  ).limit(limit);
 
   const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching similar listings:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Get aggregated listings for a seller
+ * Fetches listings by seller_id, excluding current listing
+ */
+export async function getSellerListings(
+  sellerId: string,
+  currentListingId: string,
+  limit: number = CAROUSEL_CARD_NUM
+) {
+  const client = await createClient();
+
+  // Select fields FIRST, then apply filters
+  const baseQuery = createBaseQuery(client).select(`
+      ${LISTING_FIELDS.MINIMAL},
+      ${LISTING_RELATIONS.IMAGES_THUMBNAIL},
+      ${LISTING_RELATIONS.LOCATION},
+      created_at
+    `);
+
+  const query = filterPublished(
+    excludeListing(filterBySeller(baseQuery, sellerId), currentListingId)
+  ).limit(limit);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching seller listings:', error);
     return [];
   }
 
