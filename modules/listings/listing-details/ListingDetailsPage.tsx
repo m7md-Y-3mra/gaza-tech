@@ -72,7 +72,7 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
           />
           <ErrorBoundary FallbackComponent={SellerInfoError}>
             <Suspense fallback={<SellerInfoSkeleton />}>
-              <SellerInfo sellerId="mock-seller-id" />
+              <SellerInfo sellerId={listing.seller_id} />
             </Suspense>
           </ErrorBoundary>
           <SafetyTips />

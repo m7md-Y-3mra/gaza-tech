@@ -5,25 +5,25 @@ import { formatDistanceToNow } from 'date-fns';
 import { User } from 'lucide-react';
 import Link from 'next/link';
 import type { SellerInfoProps } from './types';
+import { getUserAndListingsCount } from '@/modules/user/queries';
 
 const SellerInfo = async ({ sellerId }: SellerInfoProps) => {
-  // TODO: Fetch seller data from Supabase in Stage 12
-  // Mock data for now
-  const mockSeller = {
-    userId: sellerId,
-    firstName: 'John',
-    lastName: 'Doe',
-    avatarUrl: null,
-    isVerified: true,
-    createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(),
-    listingsCount: 12,
-  };
+  // Fetch seller data from Supabase
+  const seller = await getUserAndListingsCount(sellerId);
 
-  const memberSince = formatDistanceToNow(new Date(mockSeller.createdAt), {
-    addSuffix: true,
-  });
+  // If seller not found, return null (ErrorBoundary will catch this)
+  if (!seller) {
+    throw new Error('Seller not found');
+  }
 
-  const fullName = `${mockSeller.firstName} ${mockSeller.lastName}`;
+  const memberSince = formatDistanceToNow(
+    new Date(seller.created_at || new Date()),
+    {
+      addSuffix: true,
+    }
+  );
+
+  const fullName = `${seller.first_name} ${seller.last_name}`;
 
   return (
     <div className="bg-card space-y-4 rounded-lg border p-6">
@@ -35,15 +35,12 @@ const SellerInfo = async ({ sellerId }: SellerInfoProps) => {
         {/* Avatar */}
         <div className="relative">
           <Avatar className="size-16">
-            <AvatarImage
-              src={mockSeller.avatarUrl || undefined}
-              alt={fullName}
-            />
+            <AvatarImage src={seller.avatar_url || undefined} alt={fullName} />
             <AvatarFallback>
               <User className="size-8" />
             </AvatarFallback>
           </Avatar>
-          {mockSeller.isVerified && (
+          {seller.is_verified && (
             <div className="absolute -right-1 bottom-1">
               <VerificationBadge isVerified={true} size="md" />
             </div>
@@ -61,14 +58,12 @@ const SellerInfo = async ({ sellerId }: SellerInfoProps) => {
       <div className="border-t pt-4">
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground text-sm">Active Listings</span>
-          <span className="text-lg font-semibold">
-            {mockSeller.listingsCount}
-          </span>
+          <span className="text-lg font-semibold">{seller.listingsCount}</span>
         </div>
       </div>
 
       {/* View Profile Button */}
-      <Link href={`/profile/${mockSeller.userId}`} className="block">
+      <Link href={`/profile/${seller.user_id}`} className="block">
         <button className="bg-primary hover:bg-secondary w-full rounded-xl py-3 font-semibold text-white transition-all duration-200">
           View Profile
         </button>
