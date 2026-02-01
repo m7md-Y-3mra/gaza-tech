@@ -9,4 +9,5 @@ export interface UseProductGalleryProps {
     images: string[];
     title: string;
     productCondition: string;
+    listingId: string;
 }
