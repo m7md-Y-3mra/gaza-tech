@@ -26,6 +26,8 @@ const MainImageContainer = ({ images, title }: MainImageContainerProps) => {
         fill
         className="object-cover"
         priority={selectedImageIndex === 0}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+        quality={75}
       />
 
       {/* Image Counter - Bottom Right */}

@@ -70,14 +70,14 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
       )}
 
       {/* Main Image */}
-      <div className="relative h-[85vh] w-[85vw]">
+      <div className="relative h-full w-full max-w-5xl">
         <Image
           src={images[selectedImageIndex]}
           alt={`${title} - Image ${selectedImageIndex + 1}`}
           fill
           className="object-contain"
-          priority
-          sizes="90vw"
+          sizes="100vw"
+          quality={85}
         />
       </div>
 

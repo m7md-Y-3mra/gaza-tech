@@ -14,7 +14,7 @@ const ThumbnailGrid = ({ images, title }: ThumbnailGridProps) => {
   const { selectedImageIndex, handleThumbnailClick } = useProductGallery();
   const t = useTranslations('ListingDetails.a11y');
 
-  if (images <= 1) {
+  if (images.length <= 1) {
     return null;
   }
 
@@ -42,6 +42,8 @@ const ThumbnailGrid = ({ images, title }: ThumbnailGridProps) => {
             fill
             className="object-cover"
             sizes="(max-width: 768px) 25vw, 10vw"
+            loading="lazy"
+            quality={60}
           />
         </button>
       ))}
