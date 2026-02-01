@@ -191,5 +191,58 @@
         "otpNumbersOnly": "OTP must contain only numbers"
       }
     }
+  },
+  "ListingDetails": {
+    "ProductInfoCard": {
+      "callSeller": "Call Seller"
+    },
+    "SafetyTips": {
+      "title": "Safety Tips",
+      "learnMore": "Learn More",
+      "tips": {
+        "meetPublic": "Meet in a public place",
+        "inspectItem": "Inspect the item before paying",
+        "avoidPrepayment": "Avoid prepayment or deposits",
+        "trustInstincts": "Trust your instincts",
+        "reportSuspicious": "Report suspicious activity"
+      }
+    },
+    "SellerInfo": {
+      "title": "Seller Information",
+      "activeListings": "Active Listings",
+      "viewProfile": "View Profile",
+      "memberSince": "Member {date}",
+      "error": "Unable to load seller information"
+    },
+    "Specifications": {
+      "title": "Technical Specifications"
+    },
+    "LocationInfo": {
+      "title": "Location",
+      "listingInfo": "Listing Information",
+      "postedTime": "Posted {time}"
+    },
+    "ProductDescription": {
+      "title": "Product Description"
+    },
+    "SimilarProducts": {
+      "title": "Similar Products",
+      "viewAll": "View All",
+      "error": {
+        "title": "Failed to load similar products",
+        "tryAgain": "Try again"
+      }
+    },
+    "SellerListings": {
+      "title": "More from this Seller",
+      "viewAll": "View All",
+      "error": {
+        "title": "Failed to load seller listings",
+        "tryAgain": "Try again"
+      }
+    },
+    "BookmarkStatus": {
+      "error": "Failed to load bookmark status"
+    }
   }
 }

@@ -191,5 +191,58 @@
         "otpNumbersOnly": "الرمز يجب أن يحتوي على أرقام فقط"
       }
     }
+  },
+  "ListingDetails": {
+    "ProductInfoCard": {
+      "callSeller": "اتصل بالبائع"
+    },
+    "SafetyTips": {
+      "title": "نصائح للأمان",
+      "learnMore": "اعرف المزيد",
+      "tips": {
+        "meetPublic": "قابله في مكان عام",
+        "inspectItem": "افحص المنتج قبل الدفع",
+        "avoidPrepayment": "تجنب الدفع المسبق أو العربون",
+        "trustInstincts": "ثق بحدسك",
+        "reportSuspicious": "أبلغ عن أي نشاط مشبوه"
+      }
+    },
+    "SellerInfo": {
+      "title": "معلومات البائع",
+      "activeListings": "إعلانات نشطة",
+      "viewProfile": "عرض الملف الشخصي",
+      "memberSince": "عضو منذ {date}",
+      "error": "تعذر تحميل معلومات البائع"
+    },
+    "Specifications": {
+      "title": "المواصفات الفنية"
+    },
+    "LocationInfo": {
+      "title": "الموقع",
+      "listingInfo": "معلومات الإعلان",
+      "postedTime": "نشر {time}"
+    },
+    "ProductDescription": {
+      "title": "وصف المنتج"
+    },
+    "SimilarProducts": {
+      "title": "منتجات مشابهة",
+      "viewAll": "عرض الكل",
+      "error": {
+        "title": "فشل تحميل المنتجات المشابهة",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "SellerListings": {
+      "title": "المزيد من هذا البائع",
+      "viewAll": "عرض الكل",
+      "error": {
+        "title": "فشل تحميل قوائم البائع",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "BookmarkStatus": {
+      "error": "فشل تحميل حالة الإشارة المرجعية"
+    }
   }
 }

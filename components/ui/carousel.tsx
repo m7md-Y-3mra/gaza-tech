@@ -175,10 +175,10 @@ function CarouselPrevious({
   className,
   variant = 'outline',
   size = 'icon',
+  locale = 'en',
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button> & { locale?: string }) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
-
   return (
     <Button
       data-slot="carousel-previous"
@@ -195,7 +195,12 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ChevronLeft />
+      {locale === 'ar' ? (
+        <ChevronRight className="size-5" />
+      ) : (
+        <ChevronLeft className="size-5" />
+      )}
+
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -205,8 +210,9 @@ function CarouselNext({
   className,
   variant = 'outline',
   size = 'icon',
+  locale = 'en',
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button> & { locale?: string }) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
@@ -225,7 +231,11 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ChevronRight />
+      {locale === 'ar' ? (
+        <ChevronLeft className="size-5" />
+      ) : (
+        <ChevronRight className="size-5" />
+      )}
       <span className="sr-only">Next slide</span>
     </Button>
   );

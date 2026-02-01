@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useProductGallery } from '../../providers/ProductGalleryProvider';
 import { useImageLightbox } from './hooks/useImageLightbox';
+import { useLocale } from 'next-intl';
 
 interface ImageLightboxProps {
   images: string[];
@@ -12,6 +13,9 @@ interface ImageLightboxProps {
 }
 
 const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
+
   const {
     selectedImageIndex,
     isLightboxOpen,
@@ -42,16 +46,20 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
         <X className="size-6" />
       </Button>
 
-      {/* Previous Button */}
+      {/* Previous Button - Left (LTR) / Right (RTL) */}
       {images.length > 1 && (
         <Button
           variant="ghost"
           size="icon"
-          className="absolute -left-1 z-50 text-white hover:bg-white/20 hover:text-white sm:left-4"
+          className="rtl:-left-auto absolute -left-1 z-50 text-white hover:bg-white/20 hover:text-white sm:left-4 rtl:-right-1 sm:rtl:right-4 sm:rtl:left-auto"
           onClick={handlePrevious}
           aria-label="Previous image"
         >
-          <ChevronLeft className="size-6 sm:size-8" />
+          {isRTL ? (
+            <ChevronLeft className="size-6 sm:size-8" />
+          ) : (
+            <ChevronRight className="size-6 sm:size-8" />
+          )}
         </Button>
       )}
 
@@ -67,22 +75,28 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
         />
       </div>
 
-      {/* Next Button */}
+      {/* Next Button - Right (LTR) / Left (RTL) */}
       {images.length > 1 && (
         <Button
           variant="ghost"
           size="icon"
-          className="absolute -right-1 z-50 text-white hover:bg-white/20 hover:text-white sm:right-4"
+          className="rtl:-right-auto absolute -right-1 z-50 text-white hover:bg-white/20 hover:text-white sm:right-4 rtl:-left-1 sm:rtl:right-auto sm:rtl:left-4"
           onClick={handleNext}
           aria-label="Next image"
         >
-          <ChevronRight className="size-6 sm:size-8" />
+          {isRTL ? (
+            <ChevronRight className="size-6 sm:size-8" />
+          ) : (
+            <ChevronLeft className="size-6 sm:size-8" />
+          )}
         </Button>
       )}
 
-      {/* Counter */}
+      {/* Counter - RTL format: total / current */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-white/50 px-4 py-1 text-sm text-black backdrop-blur-md">
-        {selectedImageIndex + 1} / {images.length}
+        {isRTL
+          ? `${images.length} / ${selectedImageIndex + 1}`
+          : `${selectedImageIndex + 1} / ${images.length}`}
       </div>
     </div>
   );

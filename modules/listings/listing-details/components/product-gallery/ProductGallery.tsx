@@ -20,13 +20,13 @@ const ProductGallery = ({
         <div className="bg-muted group relative aspect-video">
           <MainImageContainer images={images} title={title} />
 
-          {/* Badges Overlay - Top Left */}
-          <div className="pointer-events-none absolute top-4 left-4 flex gap-2">
+          {/* Badges Overlay - Top Left (LTR) / Top Right (RTL) */}
+          <div className="pointer-events-none absolute top-4 left-4 flex gap-2 rtl:right-4 rtl:left-auto">
             <ProductBadge productCondition={productCondition} />
           </div>
 
-          {/* Action Buttons - Top Right */}
-          <div className="absolute top-4 right-4 flex gap-2">
+          {/* Action Buttons - Top Right (LTR) / Top Left (RTL) */}
+          <div className="absolute top-4 right-4 flex gap-2 rtl:right-auto rtl:left-4">
             <BookmarkStatus listingId={listingId} />
             <ShareButton title={title} />
           </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { SellerListingsProps } from './types';
 import ProductCard from '@/modules/listings/components/product-card';
 import {
@@ -12,11 +12,15 @@ import {
 
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { getSellerListings } from '@/modules/listings/queries';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 const SellerListings = async ({
   sellerId,
   currentListingId,
 }: SellerListingsProps) => {
+  const t = await getTranslations('ListingDetails.SellerListings');
+  const locale = await getLocale();
+
   // Fetch seller listings from Supabase
   const listings = await getSellerListings(
     sellerId,
@@ -49,13 +53,17 @@ const SellerListings = async ({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">More from this Seller</h2>
+        <h2 className="text-2xl font-bold">{t('title')}</h2>
         <Link
           href={`/profile/${sellerId}?tab=listings`}
           className="text-primary hover:text-primary/80 flex items-center gap-1 font-medium transition-colors"
         >
-          View All
-          <ChevronRight className="size-5" />
+          {t('viewAll')}
+          {locale === 'ar' ? (
+            <ChevronRight className="size-5" />
+          ) : (
+            <ChevronLeft className="size-5" />
+          )}
         </Link>
       </div>
 
@@ -64,6 +72,7 @@ const SellerListings = async ({
         opts={{
           align: 'start',
           loop: false,
+          direction: locale === 'ar' ? 'rtl' : 'ltr',
         }}
         className="w-full"
       >
@@ -77,8 +86,8 @@ const SellerListings = async ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden md:flex" />
-        <CarouselNext className="hidden md:flex" />
+        <CarouselPrevious className="hidden md:flex" locale={locale} />
+        <CarouselNext className="hidden md:flex" locale={locale} />
       </Carousel>
     </div>
   );

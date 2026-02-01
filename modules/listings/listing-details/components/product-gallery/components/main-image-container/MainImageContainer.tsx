@@ -27,7 +27,7 @@ const MainImageContainer = ({ images, title }: MainImageContainerProps) => {
       />
 
       {/* Image Counter - Bottom Right */}
-      <div className="pointer-events-none absolute right-4 bottom-4 flex items-center gap-2 rounded-lg bg-black/60 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+      <div className="pointer-events-none absolute bottom-4 flex items-center gap-2 rounded-lg bg-black/60 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm ltr:right-4 rtl:left-4">
         <Images className="size-5" />
         {selectedImageIndex + 1} / {images.length}
       </div>

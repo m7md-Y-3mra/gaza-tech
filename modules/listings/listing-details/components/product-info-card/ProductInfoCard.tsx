@@ -3,6 +3,7 @@
 import { Phone } from 'lucide-react';
 import type { ProductInfoCardProps } from './types';
 import { useProductInfoCard } from './hooks/useProductInfoCard';
+import { useTranslations } from 'next-intl';
 
 const ProductInfoCard = ({
   price,
@@ -11,6 +12,7 @@ const ProductInfoCard = ({
   categoryName,
   phoneNumber,
 }: ProductInfoCardProps) => {
+  const t = useTranslations('ListingDetails.ProductInfoCard');
   const { formattedPrice, handleCall } = useProductInfoCard({
     price,
     currency,
@@ -40,7 +42,7 @@ const ProductInfoCard = ({
         className="bg-primary text-primary-foreground hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-colors"
       >
         <Phone className="size-5" />
-        Call Seller
+        {t('callSeller')}
       </button>
     </div>
   );
