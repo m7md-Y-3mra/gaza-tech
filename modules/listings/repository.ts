@@ -74,3 +74,16 @@ export function filterByCategory(query: any, categoryId: string) {
 export function filterBySeller(query: any, sellerId: string) {
   return query.eq('seller_id', sellerId);
 }
+
+// Bookmark Repository Functions
+export function createBookmarkQuery(client: SupabaseClient<Database>) {
+  return client.from('bookmarked_listings');
+}
+
+export function filterByUser(query: any, userId: string) {
+  return query.eq('user_id', userId);
+}
+
+export function filterByListing(query: any, listingId: string) {
+  return query.eq('listing_id', listingId);
+}
