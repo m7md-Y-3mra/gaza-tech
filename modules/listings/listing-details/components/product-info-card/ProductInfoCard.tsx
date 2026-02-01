@@ -39,7 +39,8 @@ const ProductInfoCard = ({
       {/* Call Seller Button */}
       <button
         onClick={handleCall}
-        className="bg-primary text-primary-foreground hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-colors"
+        className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        aria-label={useTranslations('ListingDetails.a11y')('callSeller')}
       >
         <Phone className="size-5" />
         {t('callSeller')}

@@ -243,6 +243,19 @@
     },
     "BookmarkStatus": {
       "error": "Failed to load bookmark status"
+    },
+    "a11y": {
+      "productGallery": "Product image gallery",
+      "lightboxDialog": "Image viewer",
+      "shareButton": "Share this listing",
+      "bookmarkSaved": "Remove from saved listings",
+      "bookmarkUnsaved": "Save this listing",
+      "callSeller": "Call seller to inquire about this listing",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "closeDialog": "Close image viewer",
+      "thumbnailImage": "Thumbnail {index} of {total}",
+      "mainImage": "Main product image"
     }
   }
 }

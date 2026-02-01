@@ -6,16 +6,23 @@ import ProductBadge from './components/product-badge';
 import BookmarkStatus from './components/bookmark-status';
 import ThumbnailGrid from './components/thumbnail-grid';
 import ImageLightbox from './components/image-lightbox';
+import { getTranslations } from 'next-intl/server';
 
-const ProductGallery = ({
+const ProductGallery = async ({
   images,
   listingId,
   title,
   productCondition,
 }: ProductGalleryProps) => {
+  const t = await getTranslations('ListingDetails.a11y');
+
   return (
     <ProductGalleryProvider>
-      <div className="bg-card overflow-hidden rounded-lg border">
+      <div
+        className="bg-card overflow-hidden rounded-lg border"
+        role="region"
+        aria-label={t('productGallery')}
+      >
         {/* Main Image Container */}
         <div className="bg-muted group relative aspect-video">
           <MainImageContainer images={images} title={title} />

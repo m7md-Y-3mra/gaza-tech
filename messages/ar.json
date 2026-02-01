@@ -243,6 +243,19 @@
     },
     "BookmarkStatus": {
       "error": "فشل تحميل حالة الإشارة المرجعية"
+    },
+    "a11y": {
+      "productGallery": "معرض صور المنتج",
+      "lightboxDialog": "عارض الصور",
+      "shareButton": "مشاركة هذا الإعلان",
+      "bookmarkSaved": "إزالة من الإعلانات المحفوظة",
+      "bookmarkUnsaved": "حفظ هذا الإعلان",
+      "callSeller": "اتصل بالبائع للاستفسار عن هذا الإعلان",
+      "previousImage": "الصورة السابقة",
+      "nextImage": "الصورة التالية",
+      "closeDialog": "إغلاق عارض الصور",
+      "thumbnailImage": "الصورة المصغرة {index} من {total}",
+      "mainImage": "الصورة الرئيسية للمنتج"
     }
   }
 }

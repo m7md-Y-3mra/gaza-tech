@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useProductGallery } from '../../providers/ProductGalleryProvider';
 import { useImageLightbox } from './hooks/useImageLightbox';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface ImageLightboxProps {
   images: string[];
@@ -15,6 +15,7 @@ interface ImageLightboxProps {
 const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
   const locale = useLocale();
   const isRTL = locale === 'ar';
+  const t = useTranslations('ListingDetails.a11y');
 
   const {
     selectedImageIndex,
@@ -34,14 +35,19 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
   if (!isLightboxOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('lightboxDialog')}
+    >
       {/* Close Button */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 z-50 text-white hover:bg-white/20 hover:text-red-500"
+        className="absolute top-4 right-4 z-50 text-white hover:bg-white/20 hover:text-red-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
         onClick={closeLightbox}
-        aria-label="Close lightbox"
+        aria-label={t('closeDialog')}
       >
         <X className="size-6" />
       </Button>
@@ -51,9 +57,9 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
         <Button
           variant="ghost"
           size="icon"
-          className="rtl:-left-auto absolute -left-1 z-50 text-white hover:bg-white/20 hover:text-white sm:left-4 rtl:-right-1 sm:rtl:right-4 sm:rtl:left-auto"
+          className="rtl:-left-auto absolute -left-1 z-50 text-white hover:bg-white/20 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none sm:left-4 rtl:-right-1 sm:rtl:right-4 sm:rtl:left-auto"
           onClick={handlePrevious}
-          aria-label="Previous image"
+          aria-label={t('previousImage')}
         >
           {isRTL ? (
             <ChevronLeft className="size-6 sm:size-8" />
@@ -80,9 +86,9 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
         <Button
           variant="ghost"
           size="icon"
-          className="rtl:-right-auto absolute -right-1 z-50 text-white hover:bg-white/20 hover:text-white sm:right-4 rtl:-left-1 sm:rtl:right-auto sm:rtl:left-4"
+          className="rtl:-right-auto absolute -right-1 z-50 text-white hover:bg-white/20 hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none sm:right-4 rtl:-left-1 sm:rtl:right-auto sm:rtl:left-4"
           onClick={handleNext}
-          aria-label="Next image"
+          aria-label={t('nextImage')}
         >
           {isRTL ? (
             <ChevronRight className="size-6 sm:size-8" />
