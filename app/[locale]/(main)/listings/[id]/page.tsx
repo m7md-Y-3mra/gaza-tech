@@ -1,4 +1,4 @@
-import  ListingDetailsPage  from '@/modules/listings/listing-details';
+import ListingDetailsPage from '@/modules/listings/listing-details';
 
 interface PageProps {
   params: Promise<{
@@ -8,6 +8,5 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-  
   return <ListingDetailsPage id={id} />;
 }
