@@ -1,3 +1,5 @@
+import 'server-only'
+
 import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
@@ -9,7 +11,12 @@ import {
   excludeListing,
   LISTING_FIELDS,
   LISTING_RELATIONS,
+  createBookmarkQuery,
+  filterByUser,
+  filterByListing,
 } from './repository';
+import { authHandler } from '@/utils/auth-handler';
+import { PostgrestError } from '@supabase/supabase-js';
 
 // complete the type of getListingDetails (auto-complete this) in listing type - I wait it
 type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']['Row'] & {
@@ -19,6 +26,7 @@ type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']
 };
 
 export async function getListingDetails(listingId: string): Promise<GetListingDetailsRes | null> {
+  'use server'
   const client = await createClient();
 
   const baseQuery = createBaseQuery(client).select(`
@@ -53,6 +61,7 @@ export async function getSimilarListings(
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
 ) {
+  'use server'
   const client = await createClient();
 
   const baseQuery = createBaseQuery(client).select(`
@@ -80,10 +89,12 @@ export async function getSimilarListings(
  * Fetches listings by seller_id, excluding current listing
  */
 export async function getSellerListings(
+
   sellerId: string,
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
 ) {
+  'use server'
   const client = await createClient();
 
   // Select fields FIRST, then apply filters
@@ -106,4 +117,73 @@ export async function getSellerListings(
   }
 
   return data || [];
+}
+
+/**
+ * Check if a listing is bookmarked by the current user
+ */
+export async function checkIsBookmarked(listingId: string) {
+  'use server'
+  const user = await authHandler();
+
+  const client = await createClient();
+
+  const baseQuery = createBookmarkQuery(client).select('listing_id');
+
+  const query = filterByListing(filterByUser(baseQuery, user.id), listingId).single();
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw error as PostgrestError;
+  }
+
+  return !!data;
+}
+
+/**
+ * Toggle bookmark status for a listing
+ */
+export async function toggleBookmarkQuery(listingId: string) {
+  'use server'
+  const user = await authHandler();
+  const client = await createClient();
+
+  // Check if already bookmarked
+  const checkQuery = filterByListing(
+    filterByUser(createBookmarkQuery(client).select('listing_id'), user.id),
+    listingId
+  ).single();
+
+  const { data: existingBookmark, error: checkError } = await checkQuery;
+
+  if (checkError) {
+    throw checkError;
+  }
+
+  if (existingBookmark) {
+    // Remove bookmark
+    const { error: deleteError } = await createBookmarkQuery(client)
+      .delete()
+      .eq('user_id', user.id)
+      .eq('listing_id', listingId);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
+    return { isBookmarked: false };
+  } else {
+    // Add bookmark
+    const { error: insertError } = await createBookmarkQuery(client).insert({
+      user_id: user.id,
+      listing_id: listingId,
+    });
+
+    if (insertError) {
+      throw insertError;
+    }
+
+    return { isBookmarked: true };
+  }
 }
