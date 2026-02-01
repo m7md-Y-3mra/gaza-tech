@@ -4,9 +4,11 @@ import { Images, Maximize2 } from 'lucide-react';
 import Image from 'next/image';
 import { useProductGallery } from '../../providers/ProductGalleryProvider';
 import { MainImageContainerProps } from './types';
+import { useTranslations } from 'next-intl';
 
 const MainImageContainer = ({ images, title }: MainImageContainerProps) => {
   const { selectedImageIndex, openLightbox } = useProductGallery();
+  const t = useTranslations('ListingDetails.a11y');
 
   if (images.length === 0) {
     return (
@@ -35,8 +37,8 @@ const MainImageContainer = ({ images, title }: MainImageContainerProps) => {
       {/* Maximize Button - Center (Visible on Hover/Touch) */}
       <button
         onClick={openLightbox}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:bg-black/70"
-        aria-label="View full screen"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:bg-black/70 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+        aria-label={t('lightboxDialog')}
       >
         <Maximize2 className="size-8" />
       </button>
