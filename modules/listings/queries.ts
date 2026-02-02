@@ -3,49 +3,78 @@ import 'server-only';
 import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
-import {
-  createBaseQuery,
-  filterPublished,
-  filterByCategory,
-  filterBySeller,
-  excludeListing,
-  LISTING_FIELDS,
-  LISTING_RELATIONS,
-  createBookmarkQuery,
-  filterByUser,
-  filterByListing,
-} from './repository';
 import { authHandler } from '@/utils/auth-handler';
-import { PostgrestError } from '@supabase/supabase-js';
 
-// complete the type of getListingDetails (auto-complete this) in listing type - I wait it
-type GetListingDetailsRes =
-  Database['public']['Tables']['marketplace_listings']['Row'] & {
-    marketplace_categories: Database['public']['Tables']['marketplace_categories']['Row'][];
-    locations: Database['public']['Tables']['locations']['Row'][];
-    listing_images: Database['public']['Tables']['listing_images']['Row'][];
-  };
+// Type definitions for return types
+type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
+type CategoryRow = Database['public']['Tables']['marketplace_categories']['Row'];
+type LocationRow = Database['public']['Tables']['locations']['Row'];
+type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
 
+type GetListingDetailsRes = ListingRow & {
+  marketplace_categories: CategoryRow[];
+  locations: LocationRow[];
+  listing_images: ListingImageRow[];
+};
+
+type SimilarListingRes = Pick<
+  ListingRow,
+  'listing_id' | 'title' | 'price' | 'currency' | 'product_condition' | 'content_status'
+> & {
+  listing_images: Pick<ListingImageRow, 'image_url' | 'is_thumbnail'>[];
+  locations: Pick<LocationRow, 'location_id' | 'name' | 'name_ar'>[];
+};
+
+type SellerListingRes = SimilarListingRes & {
+  created_at: string;
+};
+
+/**
+ * Get listing details
+ * Fetches complete listing information including category, location, and images
+ */
 export async function getListingDetailsQuery(
   listingId: string
 ): Promise<GetListingDetailsRes | null> {
   'use server';
   const client = await createClient();
 
-  const baseQuery = createBaseQuery(client).select(`
-      ${LISTING_FIELDS.MINIMAL},
-      ${LISTING_FIELDS.DETAILS},
-      ${LISTING_RELATIONS.CATEGORY},
-      ${LISTING_RELATIONS.LOCATION},
-      ${LISTING_RELATIONS.IMAGES_ALL}
-    `);
-
-  const query = filterPublished(baseQuery)
+  const { data, error } = await client
+    .from('marketplace_listings')
+    .select(`
+      listing_id,
+      title,
+      price,
+      currency,
+      product_condition,
+      content_status,
+      description,
+      created_at,
+      specifications,
+      seller_id,
+      category_id,
+      location_id,
+      marketplace_categories (
+        marketplace_category_id,
+        name,
+        slug
+      ),
+      locations (
+        location_id,
+        name,
+        name_ar
+      ),
+      listing_images (
+        listing_image_id,
+        image_url,
+        is_thumbnail,
+        sort_order
+      )
+    `)
+    .eq('content_status', 'published')
     .eq('listing_id', listingId)
     .order('sort_order', { foreignTable: 'listing_images', ascending: true })
     .single();
-
-  const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching listing details:', error);
@@ -63,28 +92,40 @@ export async function getSimilarListingsQuery(
   categoryId: string,
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
-) {
+): Promise<SimilarListingRes[]> {
   'use server';
   const client = await createClient();
 
-  const baseQuery = createBaseQuery(client).select(`
-      ${LISTING_FIELDS.MINIMAL},
-      ${LISTING_RELATIONS.IMAGES_THUMBNAIL},
-      ${LISTING_RELATIONS.LOCATION}
-    `);
-
-  const query = filterPublished(
-    excludeListing(filterByCategory(baseQuery, categoryId), currentListingId)
-  ).limit(limit);
-
-  const { data, error } = await query;
+  const { data, error } = await client
+    .from('marketplace_listings')
+    .select(`
+      listing_id,
+      title,
+      price,
+      currency,
+      product_condition,
+      content_status,
+      listing_images (
+        image_url,
+        is_thumbnail
+      ),
+      locations (
+        location_id,
+        name,
+        name_ar
+      )
+    `)
+    .eq('content_status', 'published')
+    .eq('category_id', categoryId)
+    .neq('listing_id', currentListingId)
+    .limit(limit);
 
   if (error) {
     console.error('Error fetching similar listings:', error);
     return [];
   }
 
-  return data || [];
+  return (data || []) as SimilarListingRes[];
 }
 
 /**
@@ -95,52 +136,66 @@ export async function getSellerListingsQuery(
   sellerId: string,
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
-) {
+): Promise<SellerListingRes[]> {
   'use server';
   const client = await createClient();
 
-  // Select fields FIRST, then apply filters
-  const baseQuery = createBaseQuery(client).select(`
-      ${LISTING_FIELDS.MINIMAL},
-      ${LISTING_RELATIONS.IMAGES_THUMBNAIL},
-      ${LISTING_RELATIONS.LOCATION},
-      created_at
-    `);
-
-  const query = filterPublished(
-    excludeListing(filterBySeller(baseQuery, sellerId), currentListingId)
-  ).limit(limit);
-
-  const { data, error } = await query;
+  const { data, error } = await client
+    .from('marketplace_listings')
+    .select(`
+      listing_id,
+      title,
+      price,
+      currency,
+      product_condition,
+      content_status,
+      created_at,
+      listing_images (
+        image_url,
+        is_thumbnail
+      ),
+      locations (
+        location_id,
+        name,
+        name_ar
+      )
+    `)
+    .eq('content_status', 'published')
+    .eq('seller_id', sellerId)
+    .neq('listing_id', currentListingId)
+    .limit(limit);
 
   if (error) {
     console.error('Error fetching seller listings:', error);
     return [];
   }
 
-  return data || [];
+  return (data || []) as SellerListingRes[];
 }
 
 /**
  * Check if a listing is bookmarked by the current user
  */
-export async function checkIsBookmarkedQuery(listingId: string) {
+export async function checkIsBookmarkedQuery(
+  listingId: string
+): Promise<boolean> {
   'use server';
   const user = await authHandler();
-
   const client = await createClient();
 
-  const baseQuery = createBookmarkQuery(client).select('listing_id');
-
-  const query = filterByListing(
-    filterByUser(baseQuery, user.id),
-    listingId
-  ).single();
-
-  const { data, error } = await query;
+  const { data, error } = await client
+    .from('bookmarked_listings')
+    .select('listing_id')
+    .eq('user_id', user.id)
+    .eq('listing_id', listingId)
+    .single();
 
   if (error) {
-    throw error as PostgrestError;
+    // If error is "not found", it means not bookmarked
+    if (error.code === 'PGRST116') {
+      return false;
+    }
+    throw error;
   }
 
   return !!data;
@@ -149,26 +204,30 @@ export async function checkIsBookmarkedQuery(listingId: string) {
 /**
  * Toggle bookmark status for a listing
  */
-export async function toggleBookmarkQuery(listingId: string) {
+export async function toggleBookmarkQuery(
+  listingId: string
+): Promise<{ isBookmarked: boolean }> {
   'use server';
   const user = await authHandler();
   const client = await createClient();
 
   // Check if already bookmarked
-  const checkQuery = filterByListing(
-    filterByUser(createBookmarkQuery(client).select('listing_id'), user.id),
-    listingId
-  ).single();
+  const { data: existingBookmark, error: checkError } = await client
+    .from('bookmarked_listings')
+    .select('listing_id')
+    .eq('user_id', user.id)
+    .eq('listing_id', listingId)
+    .single();
 
-  const { data: existingBookmark, error: checkError } = await checkQuery;
-
-  if (checkError) {
+  // If error is "not found", it means not bookmarked, otherwise throw
+  if (checkError && checkError.code !== 'PGRST116') {
     throw checkError;
   }
 
   if (existingBookmark) {
     // Remove bookmark
-    const { error: deleteError } = await createBookmarkQuery(client)
+    const { error: deleteError } = await client
+      .from('bookmarked_listings')
       .delete()
       .eq('user_id', user.id)
       .eq('listing_id', listingId);
@@ -180,10 +239,12 @@ export async function toggleBookmarkQuery(listingId: string) {
     return { isBookmarked: false };
   } else {
     // Add bookmark
-    const { error: insertError } = await createBookmarkQuery(client).insert({
-      user_id: user.id,
-      listing_id: listingId,
-    });
+    const { error: insertError } = await client
+      .from('bookmarked_listings')
+      .insert({
+        user_id: user.id,
+        listing_id: listingId,
+      });
 
     if (insertError) {
       throw insertError;

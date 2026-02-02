@@ -31,7 +31,7 @@ export const SPEC_ICON_MAP: Record<string, LucideIcon> = {
 // Default icon for custom specifications
 export const DEFAULT_SPEC_ICON = Info;
 
-export const getSpecIcon = (label: string, isCustom?: boolean): LucideIcon => {
+export const getSpecIcon = (label: string, isCustom?: boolean) => {
   if (isCustom) return DEFAULT_SPEC_ICON;
 
   const normalizedLabel = label.toLowerCase().trim();
