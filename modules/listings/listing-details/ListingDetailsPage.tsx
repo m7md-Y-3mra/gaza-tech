@@ -49,65 +49,67 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
   const locationName = listing.locations[0]?.name || 'Unknown';
 
   return (
-    <div className="container py-8">
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Main Content - 2 columns on large screens */}
-        <div className="space-y-6 lg:col-span-2">
-          <ProductGallery
-            images={images}
-            listingId={listing.listing_id}
-            title={listing.title}
-            productCondition={listing.product_condition}
-          />
-          <ProductDescription description={listing.description} />
-          <Specifications specifications={specifications} />
-          <LocationInfo
-            locationName={locationName}
-            createdAt={listing.created_at || new Date().toISOString()}
-            listingId={listing.listing_id}
-          />
+    <div className="bg-background-alt">
+      <div className="container py-8">
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Main Content - 2 columns on large screens */}
+          <div className="space-y-6 lg:col-span-2">
+            <ProductGallery
+              images={images}
+              listingId={listing.listing_id}
+              title={listing.title}
+              productCondition={listing.product_condition}
+            />
+            <ProductDescription description={listing.description} />
+            <Specifications specifications={specifications} />
+            <LocationInfo
+              locationName={locationName}
+              createdAt={listing.created_at || new Date().toISOString()}
+              listingId={listing.listing_id}
+            />
+          </div>
+
+          {/* Sidebar - 1 column on large screens, sticky */}
+          <div className="space-y-6 lg:sticky lg:top-4 lg:col-span-1 lg:self-start">
+            <ProductInfoCard
+              price={listing.price}
+              currency={listing.currency || 'USD'}
+              title={listing.title}
+              categoryName={categoryName}
+              phoneNumber="+1234567890"
+            />
+            <ErrorBoundary FallbackComponent={SellerInfoError}>
+              <Suspense fallback={<SellerInfoSkeleton />}>
+                <SellerInfo sellerId={listing.seller_id} />
+              </Suspense>
+            </ErrorBoundary>
+            <SafetyTips />
+          </div>
         </div>
 
-        {/* Sidebar - 1 column on large screens, sticky */}
-        <div className="space-y-6 lg:sticky lg:top-4 lg:col-span-1 lg:self-start">
-          <ProductInfoCard
-            price={listing.price}
-            currency={listing.currency || 'USD'}
-            title={listing.title}
-            categoryName={categoryName}
-            phoneNumber="+1234567890"
-          />
-          <ErrorBoundary FallbackComponent={SellerInfoError}>
-            <Suspense fallback={<SellerInfoSkeleton />}>
-              <SellerInfo sellerId={listing.seller_id} />
+        {/* Similar Products - Full width */}
+        <div className="mt-12">
+          <ErrorBoundary fallbackRender={SimilarProductsError}>
+            <Suspense fallback={<SimilarProductsSkeleton />}>
+              <SimilarProducts
+                categoryId={listing.category_id}
+                currentListingId={listing.listing_id}
+              />
             </Suspense>
           </ErrorBoundary>
-          <SafetyTips />
         </div>
-      </div>
 
-      {/* Similar Products - Full width */}
-      <div className="mt-12">
-        <ErrorBoundary fallbackRender={SimilarProductsError}>
-          <Suspense fallback={<SimilarProductsSkeleton />}>
-            <SimilarProducts
-              categoryId={listing.category_id}
-              currentListingId={listing.listing_id}
-            />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
-
-      {/* Seller Listings - Full width */}
-      <div className="mt-12">
-        <ErrorBoundary fallbackRender={SellerListingsError}>
-          <Suspense fallback={<SellerListingsSkeleton />}>
-            <SellerListings
-              sellerId={listing.seller_id}
-              currentListingId={listing.listing_id}
-            />
-          </Suspense>
-        </ErrorBoundary>
+        {/* Seller Listings - Full width */}
+        <div className="mt-12">
+          <ErrorBoundary fallbackRender={SellerListingsError}>
+            <Suspense fallback={<SellerListingsSkeleton />}>
+              <SellerListings
+                sellerId={listing.seller_id}
+                currentListingId={listing.listing_id}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </div>
     </div>
   );
