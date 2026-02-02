@@ -61,11 +61,7 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
           onClick={handlePrevious}
           aria-label={t('previousImage')}
         >
-          {isRTL ? (
-            <ChevronLeft className="size-6 sm:size-8" />
-          ) : (
-            <ChevronRight className="size-6 sm:size-8" />
-          )}
+          <ChevronLeft className="size-6 sm:size-8" />
         </Button>
       )}
 
@@ -90,11 +86,7 @@ const ImageLightbox = ({ images, title }: ImageLightboxProps) => {
           onClick={handleNext}
           aria-label={t('nextImage')}
         >
-          {isRTL ? (
-            <ChevronRight className="size-6 sm:size-8" />
-          ) : (
-            <ChevronLeft className="size-6 sm:size-8" />
-          )}
+          <ChevronRight className="size-6 sm:size-8" />
         </Button>
       )}
 

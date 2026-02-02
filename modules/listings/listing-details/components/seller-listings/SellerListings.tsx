@@ -61,11 +61,7 @@ const SellerListings = async ({
           className="text-primary hover:text-primary/80 flex items-center gap-1 font-medium transition-colors"
         >
           {t('viewAll')}
-          {locale === 'ar' ? (
-            <ChevronRight className="size-5" />
-          ) : (
-            <ChevronLeft className="size-5" />
-          )}
+          <ChevronRight className="size-5" />
         </Link>
       </div>
 
