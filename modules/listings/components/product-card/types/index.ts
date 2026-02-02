@@ -1,4 +1,4 @@
-import { ProductCardData } from "@/modules/listings/listing-details/components/similar-products/types";
+import { ProductCardData } from '@/modules/listings/listing-details/components/similar-products/types';
 
 export type ProductCardProps = ProductCardData;
 
