@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { SpecificationItemProps } from './types';
 import { getSpecIcon } from './constants';
 
@@ -6,7 +7,7 @@ const SpecificationItem = ({
   value,
   isCustom,
 }: SpecificationItemProps) => {
-  const Icon = getSpecIcon(label, isCustom);
+  const Icon = useMemo(() => getSpecIcon(label, isCustom), [label, isCustom]);
 
   return (
     <div className="bg-muted/50 flex items-start gap-3 rounded-lg p-3">

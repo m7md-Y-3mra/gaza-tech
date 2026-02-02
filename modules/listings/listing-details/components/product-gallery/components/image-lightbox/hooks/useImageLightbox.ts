@@ -1,10 +1,12 @@
 import { useEffect, useCallback } from 'react';
-import { ImageLightboxProps } from '../types';
 
-type UseImageLightboxProps = Pick<
-  ImageLightboxProps,
-  'isOpen' | 'onClose' | 'onIndexChange' | 'initialIndex' | 'images'
->;
+interface UseImageLightboxProps {
+  images: string[];
+  initialIndex: number;
+  isOpen: boolean;
+  onClose: () => void;
+  onIndexChange: (index: number) => void;
+}
 
 export const useImageLightbox = ({
   images,
