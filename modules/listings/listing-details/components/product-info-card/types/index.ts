@@ -1,5 +1,3 @@
-import { string } from 'zod';
-
 export type ProductInfoCardProps = {
   price: number;
   currency: string;

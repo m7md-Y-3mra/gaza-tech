@@ -5,7 +5,7 @@ export const useLocationInfo = ({ createdAt }: UseLocationInfoProps) => {
   const getRelativeTime = () => {
     try {
       return formatDistanceToNow(new Date(createdAt), { addSuffix: true });
-    } catch (error) {
+    } catch {
       return 'Recently';
     }
   };

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import type { SellerListingsProps } from './types';
 import ProductCard from '@/modules/listings/components/product-card';
 import {

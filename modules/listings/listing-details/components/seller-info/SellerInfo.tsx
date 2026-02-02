@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { VerificationBadge } from '@/components/verification-badge';
 import { User } from 'lucide-react';
 import Link from 'next/link';
