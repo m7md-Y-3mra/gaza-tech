@@ -191,5 +191,85 @@
         "otpNumbersOnly": "OTP must contain only numbers"
       }
     }
+  },
+  "ListingDetails": {
+    "ProductInfoCard": {
+      "callSeller": "Call Seller"
+    },
+    "SafetyTips": {
+      "title": "Safety Tips",
+      "learnMore": "Learn More",
+      "tips": {
+        "meetPublic": "Meet in a public place",
+        "inspectItem": "Inspect the item before paying",
+        "avoidPrepayment": "Avoid prepayment or deposits",
+        "trustInstincts": "Trust your instincts",
+        "reportSuspicious": "Report suspicious activity"
+      }
+    },
+    "SellerInfo": {
+      "title": "Seller Information",
+      "activeListings": "Active Listings",
+      "viewProfile": "View Profile",
+      "memberSince": "Member {date}",
+      "error": "Unable to load seller information"
+    },
+    "Specifications": {
+      "title": "Technical Specifications"
+    },
+    "LocationInfo": {
+      "title": "Location",
+      "listingInfo": "Listing Information",
+      "postedTime": "Posted {time}"
+    },
+    "ProductDescription": {
+      "title": "Product Description"
+    },
+    "SimilarProducts": {
+      "title": "Similar Products",
+      "viewAll": "View All",
+      "error": {
+        "title": "Failed to load similar products",
+        "tryAgain": "Try again"
+      }
+    },
+    "SellerListings": {
+      "title": "More from this Seller",
+      "viewAll": "View All",
+      "error": {
+        "title": "Failed to load seller listings",
+        "tryAgain": "Try again"
+      }
+    },
+    "BookmarkStatus": {
+      "error": "Failed to load bookmark status"
+    },
+    "a11y": {
+      "productGallery": "Product image gallery",
+      "lightboxDialog": "Image viewer",
+      "shareButton": "Share this listing",
+      "bookmarkSaved": "Remove from saved listings",
+      "bookmarkUnsaved": "Save this listing",
+      "callSeller": "Call seller to inquire about this listing",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "closeDialog": "Close image viewer",
+      "thumbnailImage": "Thumbnail {index} of {total}",
+      "mainImage": "Main product image"
+    },
+    "errors": {
+      "notFound": {
+        "title": "Listing Not Found",
+        "description": "The listing you're looking for doesn't exist or has been removed.",
+        "goHome": "Go Home",
+        "searchListings": "Search Listings"
+      },
+      "unexpected": {
+        "title": "Something Went Wrong",
+        "description": "An unexpected error occurred while loading this listing. Please try again.",
+        "retry": "Try Again",
+        "goHome": "Go Home"
+      }
+    }
   }
 }

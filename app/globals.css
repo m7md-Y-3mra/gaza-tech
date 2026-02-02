@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -50,6 +51,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-background-alt: var(--background-alt);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -72,6 +74,7 @@
   --card-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
   --popover: oklch(from var(--primary) calc(l + 0.304) 0 0);
   --popover-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+  --background-alt: oklch(0.985 0.002 247.85);
 
   /* Primary variants */
   --primary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
@@ -164,6 +167,7 @@
   --card-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
   --popover: oklch(from var(--primary) calc(l - 0.491) 0 0);
   --popover-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --background-alt: oklch(0.17 0 0);
 
   /* Primary variants (primary itself inherited from :root) */
   --primary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
@@ -371,5 +375,55 @@
   html[dir='rtl'] .lucide-chevron-left,
   html[dir='rtl'] .lucide-chevron-right {
     transform: scaleX(-1);
+  }
+
+  /* ========================================
+   CONTAINER - Responsive Layout
+   ======================================== */
+
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem; /* 16px - mobile */
+  }
+
+  /* sm: 640px */
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+      padding-inline: 1.5rem; /* 24px */
+    }
+  }
+
+  /* md: 768px */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+      padding-inline: 2rem; /* 32px */
+    }
+  }
+
+  /* lg: 1024px */
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+      padding-inline: 2.5rem; /* 40px */
+    }
+  }
+
+  /* xl: 1280px */
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+      padding-inline: 3rem; /* 48px */
+    }
+  }
+
+  /* 2xl: 1536px */
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+      padding-inline: 4rem; /* 64px */
+    }
   }
 }
