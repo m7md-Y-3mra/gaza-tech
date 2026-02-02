@@ -25,7 +25,7 @@ type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']
   listing_images: Database['public']['Tables']['listing_images']['Row'][];
 };
 
-export async function getListingDetails(listingId: string): Promise<GetListingDetailsRes | null> {
+export async function getListingDetailsQuery(listingId: string): Promise<GetListingDetailsRes | null> {
   'use server'
   const client = await createClient();
 
@@ -56,7 +56,7 @@ export async function getListingDetails(listingId: string): Promise<GetListingDe
  * Get similar listings by category
  * Fetches listings from the same category, excluding the current listing
  */
-export async function getSimilarListings(
+export async function getSimilarListingsQuery(
   categoryId: string,
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
@@ -88,7 +88,7 @@ export async function getSimilarListings(
  * Get aggregated listings for a seller
  * Fetches listings by seller_id, excluding current listing
  */
-export async function getSellerListings(
+export async function getSellerListingsQuery(
 
   sellerId: string,
   currentListingId: string,
@@ -122,7 +122,7 @@ export async function getSellerListings(
 /**
  * Check if a listing is bookmarked by the current user
  */
-export async function checkIsBookmarked(listingId: string) {
+export async function checkIsBookmarkedQuery(listingId: string) {
   'use server'
   const user = await authHandler();
 

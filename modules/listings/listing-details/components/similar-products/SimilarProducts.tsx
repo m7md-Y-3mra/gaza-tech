@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { getSimilarListings } from '@/modules/listings/queries';
+import { getSimilarListingsAction } from '@/modules/listings/actions';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { getTranslations, getLocale } from 'next-intl/server';
 
@@ -21,11 +21,13 @@ const SimilarProducts = async ({
   const locale = await getLocale();
 
   // Fetch similar products from Supabase
-  const listings = await getSimilarListings(
+  const res = await getSimilarListingsAction(
     categoryId,
     currentListingId,
     CAROUSEL_CARD_NUM
   );
+
+  const listings = res.success ? res.data : [];
 
   // If no similar products, don't render the section
   if (!listings || listings.length === 0) {

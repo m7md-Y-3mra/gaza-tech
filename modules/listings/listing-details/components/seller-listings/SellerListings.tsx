@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/carousel';
 
 import { CAROUSEL_CARD_NUM } from '@/constant';
-import { getSellerListings } from '@/modules/listings/queries';
+import { getSellerListingsAction } from '@/modules/listings/actions';
 import { getTranslations, getLocale } from 'next-intl/server';
 
 const SellerListings = async ({
@@ -22,11 +22,13 @@ const SellerListings = async ({
   const locale = await getLocale();
 
   // Fetch seller listings from Supabase
-  const listings = await getSellerListings(
+  const res = await getSellerListingsAction(
     sellerId,
     currentListingId,
     CAROUSEL_CARD_NUM
   );
+
+  const listings = res.success ? res.data : [];
 
   // If no listings found, don't render the section
   if (!listings || listings.length === 0) {

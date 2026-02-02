@@ -2,13 +2,37 @@
 
 import { errorHandler } from '@/utils/error-handler';
 import { revalidatePath } from 'next/cache';
-import { checkIsBookmarked, toggleBookmarkQuery } from './queries';
+import {
+    checkIsBookmarkedQuery,
+    toggleBookmarkQuery,
+    getListingDetailsQuery,
+    getSimilarListingsQuery,
+    getSellerListingsQuery
+} from './queries';
+
+/**
+ * Get listing details
+ * Server action wrapped with error handler
+ */
+export const getListingDetailsAction = errorHandler(getListingDetailsQuery);
+
+/**
+ * Get similar listings
+ * Server action wrapped with error handler
+ */
+export const getSimilarListingsAction = errorHandler(getSimilarListingsQuery);
+
+/**
+ * Get seller listings
+ * Server action wrapped with error handler
+ */
+export const getSellerListingsAction = errorHandler(getSellerListingsQuery);
 
 /**
  * Check if a listing is bookmarked by the current user
  * Server action wrapped with error handler
  */
-export const checkIsBookmarkedAction = errorHandler(checkIsBookmarked);
+export const checkIsBookmarkedAction = errorHandler(checkIsBookmarkedQuery);
 
 /**
  * Toggle bookmark status for a listing

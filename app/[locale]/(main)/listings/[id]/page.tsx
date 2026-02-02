@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ListingDetailsPage from '@/modules/listings/listing-details';
-import { getListingDetails } from '@/modules/listings/queries';
+import { getListingDetailsAction } from '@/modules/listings/actions';
 import { getLocale } from 'next-intl/server';
 
 interface PageProps {
@@ -14,7 +14,8 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const locale = await getLocale();
-  const listing = await getListingDetails(id);
+  const res = await getListingDetailsAction(id);
+  const listing = res.success ? res.data : null;
 
   if (!listing) {
     return {

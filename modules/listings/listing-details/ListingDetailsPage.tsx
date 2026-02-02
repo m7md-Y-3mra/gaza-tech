@@ -20,11 +20,12 @@ import SellerListings, {
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import type { ListingDetailsPageProps } from './types';
-import { getListingDetails } from '@/modules/listings/queries';
+import { getListingDetailsAction } from '@/modules/listings/actions';
 
 const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
   // Fetch listing details from Supabase
-  const listing = await getListingDetails(id);
+  const res = await getListingDetailsAction(id);
+  const listing = res.success ? res.data : null;
 
   // Handle listing not found
   if (!listing) {
