@@ -256,6 +256,20 @@
       "closeDialog": "Close image viewer",
       "thumbnailImage": "Thumbnail {index} of {total}",
       "mainImage": "Main product image"
+    },
+    "errors": {
+      "notFound": {
+        "title": "Listing Not Found",
+        "description": "The listing you're looking for doesn't exist or has been removed.",
+        "goHome": "Go Home",
+        "searchListings": "Search Listings"
+      },
+      "unexpected": {
+        "title": "Something Went Wrong",
+        "description": "An unexpected error occurred while loading this listing. Please try again.",
+        "retry": "Try Again",
+        "goHome": "Go Home"
+      }
     }
   }
 }
