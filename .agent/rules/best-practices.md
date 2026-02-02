@@ -3,6 +3,7 @@
 ## Important Patterns
 
 1. **Locale Params**: All pages under `[locale]` receive async params:
+
    ```typescript
    async function Page({ params }: { params: Promise<{ locale: string }> }) {
      const { locale } = await params;

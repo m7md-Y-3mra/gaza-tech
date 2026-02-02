@@ -55,6 +55,7 @@ Modules live in:
 Any frontend page related to that domain must live inside its module.
 
 Example:
+
 - `modules/listings/`
 - `modules/orders/`
 - `modules/users/`
@@ -155,6 +156,7 @@ components/similar-products/
 ```
 
 This enforces:
+
 - Clear ownership
 - Better locality
 - Easier maintenance
@@ -165,6 +167,7 @@ This enforces:
 ✅ Server Components by default
 
 Use Client Components only when:
+
 - Client-side state
 - User interaction
 - Browser APIs

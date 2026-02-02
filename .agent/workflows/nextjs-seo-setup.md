@@ -6,6 +6,7 @@ description: Complete checklist for sitemap, robots, manifest, and JSON-LD
 
 1. **Metadata Base (Crucial)**:
    - In `src/app/layout.tsx`, define `metadataBase` to resolve relative URLs.
+
    ```tsx
    export const metadata: Metadata = {
      metadataBase: new URL('https://acme.com'),
@@ -16,6 +17,7 @@ description: Complete checklist for sitemap, robots, manifest, and JSON-LD
 
 2. **Dynamic Sitemap (`sitemap.ts`)**:
    - Create `src/app/sitemap.ts`.
+
    ```tsx
    import { MetadataRoute } from 'next';
 
@@ -34,6 +36,7 @@ description: Complete checklist for sitemap, robots, manifest, and JSON-LD
 
 3. **Robots.txt (`robots.ts`)**:
    - Create `src/app/robots.ts`.
+
    ```tsx
    import { MetadataRoute } from 'next';
 
@@ -51,6 +54,7 @@ description: Complete checklist for sitemap, robots, manifest, and JSON-LD
 
 4. **JSON-LD Structured Data**:
    - Add structured data to your `layout.tsx`.
+
    ```tsx
    <script
      type="application/ld+json"

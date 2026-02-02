@@ -9,13 +9,13 @@ import { formatDistanceToNow } from 'date-fns';
  * formatMemberSince(null) // "recently"
  */
 export function formatMemberSince(
-    date: string | Date | null | undefined
+  date: string | Date | null | undefined
 ): string {
-    if (!date) {
-        return 'recently';
-    }
+  if (!date) {
+    return 'recently';
+  }
 
-    return formatDistanceToNow(new Date(date), {
-        addSuffix: true,
-    });
+  return formatDistanceToNow(new Date(date), {
+    addSuffix: true,
+  });
 }

@@ -14,14 +14,17 @@ You must follow this workflow for every task or feature you work on.
 When building any feature, you must follow this order unless explicitly told otherwise:
 
 ### Design Phase
+
 - Work on UI / layout / structure first.
 - Implement design progressively in small steps.
 
 ### Frontend Logic Phase
+
 - Add the required frontend logic incrementally.
 - Keep logic changes isolated and minimal per stage.
 
 ### Enhancement Phase
+
 - Add extra capabilities such as:
   - Multi-language (i18n) support
   - Accessibility

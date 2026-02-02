@@ -13,6 +13,7 @@ Forms use a consistent pattern with react-hook-form + zod:
 ## Error Handling
 
 **Server Actions**: Wrap all server actions with `errorHandler()`:
+
 ```typescript
 import { errorHandler } from '@/utils/error-handler';
 
@@ -23,11 +24,13 @@ export const myAction = errorHandler(async (data) => {
 ```
 
 This provides automatic handling for:
+
 - Zod validation errors
 - Custom errors (extends `CustomError`)
 - Unexpected errors (logged to console)
 
 **Custom Errors**: Throw `CustomError` for business logic errors:
+
 ```typescript
 import CustomError from '@/utils/CustomError';
 

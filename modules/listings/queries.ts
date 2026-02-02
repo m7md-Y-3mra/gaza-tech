@@ -1,4 +1,4 @@
-import 'server-only'
+import 'server-only';
 
 import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
@@ -19,14 +19,17 @@ import { authHandler } from '@/utils/auth-handler';
 import { PostgrestError } from '@supabase/supabase-js';
 
 // complete the type of getListingDetails (auto-complete this) in listing type - I wait it
-type GetListingDetailsRes = Database['public']['Tables']['marketplace_listings']['Row'] & {
-  marketplace_categories: Database['public']['Tables']['marketplace_categories']['Row'][];
-  locations: Database['public']['Tables']['locations']['Row'][];
-  listing_images: Database['public']['Tables']['listing_images']['Row'][];
-};
+type GetListingDetailsRes =
+  Database['public']['Tables']['marketplace_listings']['Row'] & {
+    marketplace_categories: Database['public']['Tables']['marketplace_categories']['Row'][];
+    locations: Database['public']['Tables']['locations']['Row'][];
+    listing_images: Database['public']['Tables']['listing_images']['Row'][];
+  };
 
-export async function getListingDetailsQuery(listingId: string): Promise<GetListingDetailsRes | null> {
-  'use server'
+export async function getListingDetailsQuery(
+  listingId: string
+): Promise<GetListingDetailsRes | null> {
+  'use server';
   const client = await createClient();
 
   const baseQuery = createBaseQuery(client).select(`
@@ -61,7 +64,7 @@ export async function getSimilarListingsQuery(
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
 ) {
-  'use server'
+  'use server';
   const client = await createClient();
 
   const baseQuery = createBaseQuery(client).select(`
@@ -89,12 +92,11 @@ export async function getSimilarListingsQuery(
  * Fetches listings by seller_id, excluding current listing
  */
 export async function getSellerListingsQuery(
-
   sellerId: string,
   currentListingId: string,
   limit: number = CAROUSEL_CARD_NUM
 ) {
-  'use server'
+  'use server';
   const client = await createClient();
 
   // Select fields FIRST, then apply filters
@@ -123,14 +125,17 @@ export async function getSellerListingsQuery(
  * Check if a listing is bookmarked by the current user
  */
 export async function checkIsBookmarkedQuery(listingId: string) {
-  'use server'
+  'use server';
   const user = await authHandler();
 
   const client = await createClient();
 
   const baseQuery = createBookmarkQuery(client).select('listing_id');
 
-  const query = filterByListing(filterByUser(baseQuery, user.id), listingId).single();
+  const query = filterByListing(
+    filterByUser(baseQuery, user.id),
+    listingId
+  ).single();
 
   const { data, error } = await query;
 
@@ -145,7 +150,7 @@ export async function checkIsBookmarkedQuery(listingId: string) {
  * Toggle bookmark status for a listing
  */
 export async function toggleBookmarkQuery(listingId: string) {
-  'use server'
+  'use server';
   const user = await authHandler();
   const client = await createClient();
 

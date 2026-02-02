@@ -1,9 +1,9 @@
 export type BookmarkStatusClientProps = {
-    listingId: string;
-    initialIsBookmarked: boolean;
-}
+  listingId: string;
+  initialIsBookmarked: boolean;
+};
 
 export type useBookmarkStatusProps = {
-    initialIsBookmarked: BookmarkStatusClientProps["initialIsBookmarked"];
-    listingId: BookmarkStatusClientProps['listingId']
-}
+  initialIsBookmarked: BookmarkStatusClientProps['initialIsBookmarked'];
+  listingId: BookmarkStatusClientProps['listingId'];
+};

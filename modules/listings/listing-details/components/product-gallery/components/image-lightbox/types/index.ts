@@ -1,4 +1,4 @@
 export type ImageLightboxProps = {
-    images: string[];
-    title: string;
-}
+  images: string[];
+  title: string;
+};

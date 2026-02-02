@@ -6,12 +6,12 @@ description: Automatically fix linting and formatting issues across the project
 
 1. **Run ESLint Fix**:
    - Attempt to automatically fix all fixable ESLint errors.
-   // turbo
+     // turbo
    - Run `npm run lint -- --fix`
 
 2. **Run Prettier**:
    - Format all files in the project to ensure consistent style.
-   // turbo
+     // turbo
    - Run `npx prettier --write .`
 
 3. **Pro Tips**:

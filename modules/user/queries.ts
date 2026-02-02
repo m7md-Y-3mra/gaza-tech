@@ -8,12 +8,12 @@ type User = Database['public']['Tables']['users']['Row'];
  * Single purpose: Fetch user details from users table
  */
 export async function getUserById(userId: string) {
-    const client = await createClient();
+  const client = await createClient();
 
-    const { data, error } = await client
-        .from('users')
-        .select(
-            `
+  const { data, error } = await client
+    .from('users')
+    .select(
+      `
       user_id,
       first_name,
       last_name,
@@ -32,17 +32,17 @@ export async function getUserById(userId: string) {
       user_role,
       last_activity_at
     `
-        )
-        .eq('user_id', userId)
-        .eq('is_active', true)
-        .single();
+    )
+    .eq('user_id', userId)
+    .eq('is_active', true)
+    .single();
 
-    if (error) {
-        console.error('Error fetching user:', error);
-        return null;
-    }
+  if (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
 
-    return data as User;
+  return data as User;
 }
 
 /**
@@ -50,20 +50,20 @@ export async function getUserById(userId: string) {
  * Single purpose: Count published listings for a user
  */
 export async function getUserListingsCount(userId: string): Promise<number> {
-    const client = await createClient();
+  const client = await createClient();
 
-    const { count, error } = await client
-        .from('marketplace_listings')
-        .select('*', { count: 'exact', head: true })
-        .eq('seller_id', userId)
-        .eq('content_status', 'published');
+  const { count, error } = await client
+    .from('marketplace_listings')
+    .select('*', { count: 'exact', head: true })
+    .eq('seller_id', userId)
+    .eq('content_status', 'published');
 
-    if (error) {
-        console.error('Error counting user listings:', error);
-        return 0;
-    }
+  if (error) {
+    console.error('Error counting user listings:', error);
+    return 0;
+  }
 
-    return count || 0;
+  return count || 0;
 }
 
 /**
@@ -71,17 +71,17 @@ export async function getUserListingsCount(userId: string): Promise<number> {
  * Combines getUserById and getUserListingsCount
  */
 export async function getUserAndListingsCount(userId: string) {
-    const [user, listingsCount] = await Promise.all([
-        getUserById(userId),
-        getUserListingsCount(userId),
-    ]);
+  const [user, listingsCount] = await Promise.all([
+    getUserById(userId),
+    getUserListingsCount(userId),
+  ]);
 
-    if (!user) {
-        return null;
-    }
+  if (!user) {
+    return null;
+  }
 
-    return {
-        ...user,
-        listingsCount,
-    };
+  return {
+    ...user,
+    listingsCount,
+  };
 }

@@ -1,5 +1,9 @@
-import { ProductCardData } from "../../../types";
+import { ProductCardData } from '../../../types';
 
 export type ProductCardProps = ProductCardData;
 
-export type UseProductCardProps = { price: number; currency: string | null; productCondition: string }
+export type UseProductCardProps = {
+  price: number;
+  currency: string | null;
+  productCondition: string;
+};

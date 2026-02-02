@@ -1,13 +1,13 @@
-'use server'
+'use server';
 
 import { errorHandler } from '@/utils/error-handler';
 import { revalidatePath } from 'next/cache';
 import {
-    checkIsBookmarkedQuery,
-    toggleBookmarkQuery,
-    getListingDetailsQuery,
-    getSimilarListingsQuery,
-    getSellerListingsQuery
+  checkIsBookmarkedQuery,
+  toggleBookmarkQuery,
+  getListingDetailsQuery,
+  getSimilarListingsQuery,
+  getSellerListingsQuery,
 } from './queries';
 
 /**
@@ -39,13 +39,13 @@ export const checkIsBookmarkedAction = errorHandler(checkIsBookmarkedQuery);
  * Server action wrapped with error handler
  */
 export const toggleBookmarkAction = errorHandler(
-    async (listingId: string, pathname?: string) => {
-        const result = await toggleBookmarkQuery(listingId);
+  async (listingId: string, pathname?: string) => {
+    const result = await toggleBookmarkQuery(listingId);
 
-        if (pathname) {
-            revalidatePath(pathname);
-        }
-
-        return result;
+    if (pathname) {
+      revalidatePath(pathname);
     }
+
+    return result;
+  }
 );

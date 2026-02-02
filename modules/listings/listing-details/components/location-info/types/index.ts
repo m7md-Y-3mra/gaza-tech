@@ -1,9 +1,9 @@
 export type LocationInfoProps = {
-    locationName: string;
-    createdAt: string;
-    listingId: string;
+  locationName: string;
+  createdAt: string;
+  listingId: string;
 };
 
 export interface UseLocationInfoProps {
-    createdAt: string;
+  createdAt: string;
 }

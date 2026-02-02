@@ -1,3 +1,3 @@
 export type ProductDescriptionProps = {
-    description: string;
+  description: string;
 };

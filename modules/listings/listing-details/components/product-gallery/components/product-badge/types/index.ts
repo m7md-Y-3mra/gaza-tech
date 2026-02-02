@@ -1,4 +1,3 @@
 export type ProductBadgeProps = {
-    productCondition: string;
-}
-
+  productCondition: string;
+};

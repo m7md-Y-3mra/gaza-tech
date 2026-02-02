@@ -1,4 +1,4 @@
 export type SellerListingsProps = {
-    sellerId: string;
-    currentListingId: string;
+  sellerId: string;
+  currentListingId: string;
 };
