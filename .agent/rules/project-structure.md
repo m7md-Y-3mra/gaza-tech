@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Universal Project Structure & Module Workflow (MANDATORY)
 
 You are an agentic frontend engineer working in this repository.
@@ -90,12 +94,11 @@ modules/<module-name>/
 │   └── index.ts                     # Shared domain / database types
 ├── components/
 │   └── <component-name>/
-│       ├── actions/                 # Server actions (if used)
 │       ├── constants.ts             # Constants (if any)
-│       ├── logic.ts                 # Custom logic / hooks (if any)
+│       ├── hooks/use<ComponentName>.ts                 # Custom logic / hooks (if any)
 │       ├── types/index.ts           # Component-specific types
 │       ├── <Component>.tsx
-│       └── index.ts
+│       └── index.ts                 # re-export any thing can reuse from outside this folder
 ├── <module-page>/
 │   ├── types/index.ts               # All types used by this page
 │   ├── components/                 # Page-specific components
@@ -130,10 +133,9 @@ listing-edit/
 Every component must be split by responsibility:
 
 - UI → `<Component>.tsx`
-- Logic → `useComponentName.ts`
+- Logic → `hooks/useComponentName.ts`
 - Constants → `constants.ts`
 - Types → `types/index.ts`
-- Server actions → `actions/` (only if used)
 
 **Rules:**
 
@@ -141,30 +143,16 @@ Every component must be split by responsibility:
 - No unused folders
 - Only create what is needed
 
-## 7. Server Actions Location (IMPORTANT)
+## 7. Server Logic Location (IMPORTANT)
 
-❌ No `actions/` folder at the root of a page
-✅ Server actions live next to the component that uses them
-
-Example:
-
-```
-components/similar-products/
-├── actions/
-│   └── getSimilarProducts.ts
-├── SimilarProducts.tsx
-```
-
-This enforces:
-
-- Clear ownership
-- Better locality
-- Easier maintenance
+- we have two file in any module queries.ts and action.ts
+- queries.ts write inside it all queries to database
+- actions.ts wrappe all functions from queries file to error handler and use them in my app
 
 ## 8. Server vs Client Components
 
 **Default:**
-✅ Server Components by default
+✅ Server Components by default and when I need a client componenet make a small component to specific thing and if I has component between them can become server make a provider and make others as server component
 
 Use Client Components only when:
 
@@ -176,17 +164,3 @@ Use Client Components only when:
 
 ❌ No client-side data fetching for initial render
 ❌ No hooks for server data
-
-## 9. index.ts Re-export Rules (STRICT)
-
-Every `index.ts` at the root of a component or page:
-
-- Must re-export only the main component
-- No extra exports
-- No logic
-
-Example:
-
-```tsx
-export { ListingPage } from './ListingPage';
-```
