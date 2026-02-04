@@ -1,3 +1,5 @@
+import { Database } from "@/types/supabase";
+
 export const ProductCondition = {
     NEW: 'New',
     LIKE_NEW: 'Like New',
@@ -29,3 +31,5 @@ export const specifications = {
     warranty: 'Warranty',
     battery: 'Battery',
 } as const;
+
+export type InsertListingsWithoutSellerId = Omit<Database['public']['Tables']['marketplace_listings']['Insert'], 'seller_id'>;

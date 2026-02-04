@@ -4,6 +4,7 @@ import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { authHandler } from '@/utils/auth-handler';
+import { InsertListingsWithoutSellerId } from './types';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -319,7 +320,7 @@ export async function getLocationsQuery(): Promise<LocationRow[]> {
  * Inserts a new listing into the database
  */
 export async function createListingQuery(
-  listingData: Database['public']['Tables']['marketplace_listings']['Insert']
+  listingData: InsertListingsWithoutSellerId
 ): Promise<{ listingId: string }> {
   'use server';
   const client = await createClient();
