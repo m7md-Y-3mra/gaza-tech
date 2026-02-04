@@ -324,10 +324,14 @@ export async function createListingQuery(
 ): Promise<{ listingId: string }> {
   'use server';
   const client = await createClient();
+  const user = await authHandler();
 
   const { data, error } = await client
     .from('marketplace_listings')
-    .insert(listingData)
+    .insert({
+      ...listingData,
+      seller_id: user.id,
+    })
     .select('listing_id')
     .single();
 
