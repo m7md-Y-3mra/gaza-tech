@@ -265,3 +265,97 @@ export async function toggleBookmarkQuery(
     return { isBookmarked: true };
   }
 }
+
+/**
+ * Get all active categories
+ * Used for category selection in create/update listing forms
+ * Returns only top-level parent categories (parent_id IS NULL)
+ * For subcategories, use getSubcategoriesQuery with parent_id
+ */
+export async function getCategoriesQuery(): Promise<CategoryRow[]> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('marketplace_categories')
+    .select('*')
+    .eq('is_active', true)
+    .is('parent_id', null) // Only top-level parent categories
+    // .not('parent_id', 'is', null) // Only categories that HAVE a parent
+    .order('name', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Get all active locations
+ * Used for location selection in create/update listing forms
+ */
+export async function getLocationsQuery(): Promise<LocationRow[]> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('locations')
+    .select('*')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching locations:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Create a new listing
+ * Inserts a new listing into the database
+ */
+export async function createListingQuery(
+  listingData: Database['public']['Tables']['marketplace_listings']['Insert']
+): Promise<{ listingId: string }> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('marketplace_listings')
+    .insert(listingData)
+    .select('listing_id')
+    .single();
+
+  if (error) {
+    console.error('Error creating listing:', error);
+    throw new Error('Failed to create listing');
+  }
+
+  return { listingId: data.listing_id };
+}
+
+/**
+ * Update an existing listing
+ * Updates listing data in the database
+ */
+export async function updateListingQuery(
+  listingId: string,
+  listingData: Database['public']['Tables']['marketplace_listings']['Update']
+): Promise<void> {
+  'use server';
+  const client = await createClient();
+
+  const { error } = await client
+    .from('marketplace_listings')
+    .update(listingData)
+    .eq('listing_id', listingId);
+
+  if (error) {
+    console.error('Error updating listing:', error);
+    throw new Error('Failed to update listing');
+  }
+}
