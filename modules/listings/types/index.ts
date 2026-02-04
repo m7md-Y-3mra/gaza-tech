@@ -18,14 +18,14 @@ export const Currency = {
 export type CurrencyType = (typeof Currency)[keyof typeof Currency];
 
 export const specifications = {
-    brand: 'brand',
-    model: 'model',
-    processor: 'processor',
-    ram: 'ram',
-    storage: 'storage',
-    graphics_card: 'graphics_card',
-    display: 'display',
-    operating_system: 'operating_system',
-    warranty: 'warranty',
-    battery: 'battery',
+    brand: 'Brand',
+    model: 'Model',
+    processor: 'Processor',
+    ram: 'RAM',
+    storage: 'Storage',
+    graphics_card: 'Graphics Card',
+    display: 'Display',
+    operating_system: 'Operating System',
+    warranty: 'Warranty',
+    battery: 'Battery',
 } as const;

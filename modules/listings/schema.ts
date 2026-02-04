@@ -3,7 +3,7 @@ import { Database } from '@/types/supabase';
 import { Currency, ProductCondition, specifications } from './types';
 
 const PredefinedSpecificationSchema = z.object({
-    label: z.enum(Object.values(specifications), { message: 'Please select a valid specification type' }),
+    label: z.enum(Object.keys(specifications), { message: 'Please select a valid specification type' }),
     value: z.string({ message: 'Specification value is required' }),
     isCustom: z.literal(false),
 });
@@ -37,12 +37,12 @@ export const ListingSchema =
             .number({ message: 'Price must be a valid number' })
             .min(0, 'Price cannot be negative'),
 
-        currency: z.enum(Object.values(Currency)).nullable(),
+        currency: z.enum(Object.keys(Currency)).nullable(),
 
         category_id: z
             .uuid({ message: 'Please select a valid category' }),
 
-        product_condition: z.enum(Object.values(ProductCondition)),
+        product_condition: z.enum(Object.keys(ProductCondition)),
 
         location_id: z
             .uuid({ message: 'Please select a valid location' }),
