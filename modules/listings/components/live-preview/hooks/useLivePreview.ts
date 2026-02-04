@@ -21,15 +21,6 @@ export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) =
 
     const thumbnailImage = images.find((img) => img.isThumbnail) || images[0];
 
-    const conditionLabels: Record<string, string> = {
-        [ProductCondition.NEW]: 'New',
-        [ProductCondition.LIKE_NEW]: 'Like New',
-        [ProductCondition.EXCELLENT]: 'Excellent',
-        [ProductCondition.GOOD]: 'Good',
-        [ProductCondition.FAIR]: 'Fair',
-        [ProductCondition.PARTS]: 'For Parts',
-    };
-
     return {
         title,
         description,
@@ -40,7 +31,6 @@ export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) =
         productCondition,
         images,
         thumbnailImage,
-        conditionLabels,
     }
 
 }

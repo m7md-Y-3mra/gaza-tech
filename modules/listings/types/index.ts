@@ -1,10 +1,10 @@
 export const ProductCondition = {
-    NEW: 'new',
-    LIKE_NEW: 'like-new',
-    EXCELLENT: 'excellent',
-    GOOD: 'good',
-    FAIR: 'fair',
-    PARTS: 'parts',
+    NEW: 'New',
+    LIKE_NEW: 'Like New',
+    EXCELLENT: 'Excellent',
+    GOOD: 'Good',
+    FAIR: 'Fair',
+    PARTS: 'For Parts',
 } as const;
 
 export type ProductConditionType =

@@ -5,6 +5,7 @@ import { MapPin, Tag } from 'lucide-react';
 import Image from 'next/image';
 import { LivePreviewProps } from './types';
 import { useLivePreview } from './hooks/useLivePreview';
+import { ProductCondition as conditionLabels } from '@/modules/listings/types';
 
 /**
  * Live preview sidebar component
@@ -25,7 +26,6 @@ const LivePreview: React.FC<LivePreviewProps> = ({
     productCondition,
     images,
     thumbnailImage,
-    conditionLabels,
   } = useLivePreview({ categories, locations });
   return (
     <div className="border-border bg-card sticky top-4 rounded-lg border-2 p-6">
@@ -59,7 +59,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
       <div className="mb-4 flex flex-wrap gap-2">
         {productCondition && (
           <Badge variant="secondary">
-            {conditionLabels[productCondition] || productCondition}
+            {conditionLabels[productCondition as keyof typeof conditionLabels]}
           </Badge>
         )}
         {category && (
