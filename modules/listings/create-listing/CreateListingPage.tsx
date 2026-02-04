@@ -111,21 +111,23 @@ const CreateListingPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Create New Listing</h1>
-        <p className="text-muted-foreground mt-2">
-          Fill in the details below to create your listing
-        </p>
-      </div>
+    <div className="bg-background-alt">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Create New Listing</h1>
+          <p className="text-muted-foreground mt-2">
+            Fill in the details below to create your listing
+          </p>
+        </div>
 
-      <ListingForm
-        mode="create"
-        categories={categories}
-        locations={locations}
-        onSuccess={handleSuccess}
-        onCancel={handleCancel}
-      />
+        <ListingForm
+          mode="create"
+          categories={categories}
+          locations={locations}
+          onSuccess={handleSuccess}
+          onCancel={handleCancel}
+        />
+      </div>
     </div>
   );
 };

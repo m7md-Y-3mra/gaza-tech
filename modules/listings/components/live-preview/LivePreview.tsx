@@ -28,7 +28,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
     thumbnailImage,
   } = useLivePreview({ categories, locations });
   return (
-    <div className="border-border bg-card sticky top-4 rounded-lg border-2 p-6">
+    <div className="border-border bg-card sticky top-4 mb-6 rounded-2xl p-8 shadow-sm">
       <Label className="mb-4 block text-lg font-bold">Live Preview</Label>
 
       {/* Thumbnail Image */}

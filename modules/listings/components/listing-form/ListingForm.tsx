@@ -31,7 +31,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
           {/* Main Form Column */}
           <div className="space-y-6 lg:col-span-2">
             {/* Basic Information Section */}
-            <div className="border-border bg-card rounded-lg border-2 p-6">
+            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
               <h2 className="mb-4 text-xl font-bold">Basic Information</h2>
               <div className="space-y-4">
                 <TextField
@@ -52,7 +52,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
             </div>
 
             {/* Pricing Section */}
-            <div className="border-border bg-card rounded-lg border-2 p-6">
+            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
               <h2 className="mb-4 text-xl font-bold">Pricing</h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <TextField
@@ -73,7 +73,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
             </div>
 
             {/* Category & Location Section */}
-            <div className="border-border bg-card rounded-lg border-2 p-6">
+            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
               <h2 className="mb-4 text-xl font-bold">Category & Location</h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <SelectField
@@ -95,7 +95,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
             </div>
 
             {/* Condition Section */}
-            <div className="border-border bg-card rounded-lg border-2 p-6">
+            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
               <h2 className="mb-4 text-xl font-bold">Condition</h2>
               <SelectField
                 name="product_condition"
@@ -106,7 +106,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
             </div>
 
             {/* Images Section */}
-            <div className="border-border bg-card rounded-lg border-2 p-6">
+            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
               <h2 className="mb-4 text-xl font-bold">Images</h2>
               <ImageUpload
                 name="images"
@@ -117,7 +117,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
             </div>
 
             {/* Specifications Section */}
-            <div className="border-border bg-card rounded-lg border-2 p-6">
+            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
               <h2 className="mb-4 text-xl font-bold">Specifications</h2>
               <SpecificationFields disabled={isSubmitting} />
             </div>
