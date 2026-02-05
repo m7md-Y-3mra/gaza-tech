@@ -331,6 +331,7 @@ export async function createListingQuery(
     .insert({
       ...listingData,
       seller_id: user.id,
+      content_status: "published"
     })
     .select('listing_id')
     .single();
