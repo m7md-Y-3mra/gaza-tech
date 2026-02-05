@@ -1,19 +1,17 @@
 export type ListingFormMode = 'create' | 'update';
 
-type ListingForm = {
-    onSuccess?: (listingId: string) => void;
-    onCancel?: () => void;
+type ListingFormClient = {
     categories: Array<{ value: string; label: string }>;
     locations: Array<{ value: string; label: string }>;
 }
 
-type ListingFormCreate = ListingForm & {
+type ListingFormClientCreate = ListingFormClient & {
     mode: 'create';
 }
 
-type ListingFormUpdate = ListingForm & {
+type ListingFormClientUpdate = ListingFormClient & {
     mode: 'update';
     listingId: string;
 }
 
-export type ListingFormProps = ListingFormCreate | ListingFormUpdate;
+export type ListingFormClientProps = ListingFormClientCreate | ListingFormClientUpdate;

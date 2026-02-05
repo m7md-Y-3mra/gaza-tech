@@ -19,9 +19,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    cacheComponents: true,
-  },
+  cacheComponents: true,
 };
 
 const withNextIntl = createNextIntlPlugin();

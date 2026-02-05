@@ -13,7 +13,6 @@ type ListingFormData = z.infer<typeof createListingFormSchema>;
 export const useListingForm = (
     mode: ListingFormMode,
     listingId?: string,
-    onSuccess?: (listingId: string) => void
 ) => {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,11 +50,9 @@ export const useListingForm = (
                 const successData = await result.data;
 
                 // Call success callback or redirect
-                if (onSuccess && successData) {
-                    onSuccess(successData.listingId);
-                } else if (data) {
-                    router.push(`/listings/${successData.listingId}`);
-                }
+
+                router.push(`/listings/${successData.listingId}`);
+
             } else if (mode === 'update' && listingId) {
                 // Update existing listing
                 const result = await updateListingAction(listingId, data);
@@ -66,11 +63,9 @@ export const useListingForm = (
                 }
 
                 // Call success callback or redirect
-                if (onSuccess) {
-                    onSuccess(listingId);
-                } else {
-                    router.push(`/listings/${listingId}`);
-                }
+
+                router.back();
+
             }
         } catch (error) {
             console.error('Form submission error:', error);
@@ -80,10 +75,15 @@ export const useListingForm = (
         }
     };
 
+    const handleCancel = () => {
+        router.back();
+    }
+
     return {
         form,
         isSubmitting,
         submitError,
         onSubmit: form.handleSubmit(onSubmit),
+        handleCancel
     };
 };
