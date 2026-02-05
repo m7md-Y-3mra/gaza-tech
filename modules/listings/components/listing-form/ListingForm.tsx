@@ -26,25 +26,86 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={onSubmit} className="space-y-8">
+      <form onSubmit={onSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Main Form Column */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Images Section - FIRST */}
+            <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-foreground mb-2 text-2xl font-bold">
+                  Product Images
+                </h2>
+                <p className="text-muted-foreground">
+                  Upload up to 5 high-quality images. First image will be the
+                  cover.
+                </p>
+              </div>
+              <ImageUpload
+                name="images"
+                maxImages={5}
+                maxSizeMB={5}
+                disabled={isSubmitting}
+              />
+
+              {/* Tips Box */}
+              <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4">
+                <div className="flex items-start space-x-3">
+                  <i className="fa-solid fa-lightbulb mt-0.5 text-lg text-blue-600"></i>
+                  <div>
+                    <h4 className="mb-1 font-semibold text-blue-900">
+                      Tips for Great Product Photos
+                    </h4>
+                    <ul className="space-y-1 text-sm text-blue-800">
+                      <li>• Use natural lighting or well-lit environments</li>
+                      <li>• Show product from multiple angles</li>
+                      <li>• Include close-ups of important details</li>
+                      <li>• Use clean, uncluttered backgrounds</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Basic Information Section */}
-            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold">Basic Information</h2>
-              <div className="space-y-4">
+            <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-foreground mb-2 text-2xl font-bold">
+                  Basic Information
+                </h2>
+                <p className="text-muted-foreground">
+                  Provide essential details about your product
+                </p>
+              </div>
+              <div className="space-y-6">
                 <TextField
                   name="title"
-                  label="Title"
-                  placeholder="e.g., MacBook Pro 16-inch M2 Pro"
+                  label="Product Title"
+                  placeholder="e.g., Gaming Laptop ASUS ROG Strix G15 - RTX 3060"
                   disabled={isSubmitting}
                 />
+
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <SelectField
+                    name="category_id"
+                    label="Category"
+                    placeholder="Select a category"
+                    options={categories}
+                    disabled={isSubmitting}
+                  />
+
+                  <SelectField
+                    name="product_condition"
+                    label="Condition"
+                    options={productConditionOptions}
+                    disabled={isSubmitting}
+                  />
+                </div>
 
                 <TextField
                   name="description"
                   label="Description"
-                  placeholder="Describe your product in detail..."
+                  placeholder="Describe your product in detail. Include brand, model, specifications, condition details, what's included, reason for selling, etc."
                   disabled={isSubmitting}
                   type="textarea"
                 />
@@ -52,8 +113,15 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
             </div>
 
             {/* Pricing Section */}
-            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold">Pricing</h2>
+            <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-foreground mb-2 text-2xl font-bold">
+                  Pricing
+                </h2>
+                <p className="text-muted-foreground">
+                  Set your price in ILS or USD
+                </p>
+              </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <TextField
                   name="price"
@@ -72,53 +140,35 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
               </div>
             </div>
 
-            {/* Category & Location Section */}
-            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold">Category & Location</h2>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <SelectField
-                  name="category_id"
-                  label="Category"
-                  placeholder="Select a category"
-                  options={categories}
-                  disabled={isSubmitting}
-                />
-
-                <SelectField
-                  name="location_id"
-                  label="Location"
-                  placeholder="Select a location"
-                  options={locations}
-                  disabled={isSubmitting}
-                />
+            {/* Location Section */}
+            <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-foreground mb-2 text-2xl font-bold">
+                  Location
+                </h2>
+                <p className="text-muted-foreground">
+                  Where is the item located?
+                </p>
               </div>
-            </div>
-
-            {/* Condition Section */}
-            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold">Condition</h2>
               <SelectField
-                name="product_condition"
-                label="Product Condition"
-                options={productConditionOptions}
-                disabled={isSubmitting}
-              />
-            </div>
-
-            {/* Images Section */}
-            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold">Images</h2>
-              <ImageUpload
-                name="images"
-                maxImages={5}
-                maxSizeMB={5}
+                name="location_id"
+                label="City/Area"
+                placeholder="Select your location"
+                options={locations}
                 disabled={isSubmitting}
               />
             </div>
 
             {/* Specifications Section */}
-            <div className="border-border bg-card mb-6 rounded-2xl p-8 shadow-sm">
-              <h2 className="mb-4 text-xl font-bold">Specifications</h2>
+            <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-foreground mb-2 text-2xl font-bold">
+                  Technical Specifications
+                </h2>
+                <p className="text-muted-foreground">
+                  Add detailed specs to help buyers make informed decisions
+                </p>
+              </div>
               <SpecificationFields disabled={isSubmitting} />
             </div>
 
@@ -154,6 +204,7 @@ const ListingForm: React.FC<ListingFormProps> = (props) => {
                   onClick={onCancel}
                   disabled={isSubmitting}
                   size="lg"
+                  className="hover:text-white"
                 >
                   Cancel
                 </Button>

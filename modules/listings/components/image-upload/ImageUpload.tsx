@@ -1,13 +1,19 @@
 'use client';
 import { useFormContext } from 'react-hook-form';
-import { Label } from '@/components/ui/label';
-import { AlertCircle, Upload, X, Star } from 'lucide-react';
+import {
+  AlertCircle,
+  CloudUpload,
+  FolderOpen,
+  Plus,
+  Trash,
+  X,
+} from 'lucide-react';
 import { useImageUpload } from './hooks/useImageUpload';
 import type { ImageUploadProps } from './types';
+import Image from 'next/image';
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   name,
-  label = 'Product Images',
   maxImages = 5,
   maxSizeMB = 5,
   disabled = false,
@@ -57,20 +63,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div>
-      <Label className="mb-2 block text-sm font-semibold">{label}</Label>
-      <p className="text-muted-foreground mb-4 text-sm">
-        Upload up to {maxImages} images. First image will be the thumbnail.
-      </p>
-
-      {/* Upload Area */}
+      {/* Upload Area - Only show when not at max */}
       {images.length < maxImages && (
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`border-muted-foreground relative mb-4 flex h-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors ${
-            isDragging ? 'border-primary bg-primary/10' : ''
-          } ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:border-primary'}`}
+          className={`border-muted-foreground/30 relative mb-6 cursor-pointer rounded-xl border-3 border-dashed p-12 text-center transition-all duration-200 ${
+            isDragging
+              ? 'border-primary bg-green-50'
+              : 'hover:border-primary hover:bg-green-50'
+          } ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
         >
           <input
             type="file"
@@ -81,60 +84,95 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             className="absolute inset-0 cursor-pointer opacity-0"
             aria-label="Upload images"
           />
-          <div className="text-muted-foreground flex flex-col items-center gap-2">
-            <Upload className="h-8 w-8" />
-            <p className="text-sm">
-              Drag & drop images or <span className="text-primary">browse</span>
+          <div className="flex flex-col items-center">
+            <div className="from-primary to-secondary mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg">
+              <CloudUpload className="h-9 w-9 text-white" />
+            </div>
+            <h3 className="text-foreground mb-2 text-lg font-bold">
+              Upload Product Images
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              Drag and drop or click to browse
             </p>
-            <p className="text-xs">Max {maxSizeMB}MB per image</p>
+            <button
+              type="button"
+              className="bg-muted text-foreground hover:bg-muted/80 flex rounded-xl px-6 py-3 font-semibold transition-all duration-200"
+            >
+              <FolderOpen className="mr-2 h-5 w-5" /> Choose Files
+            </button>
+            <p className="text-muted-foreground mt-4 text-xs">
+              Supported formats: JPG, PNG, WEBP (Max {maxSizeMB}MB each)
+            </p>
           </div>
         </div>
       )}
 
-      {/* Image Previews */}
+      {/* Image Grid */}
       {images.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mb-6 grid grid-cols-5 gap-4">
           {images.map((image) => (
-            <div
-              key={image.id}
-              className="group border-border relative aspect-square overflow-hidden rounded-lg border-2"
-            >
-              <img
-                src={image.preview}
-                alt="Preview"
-                className="h-full w-full object-cover"
-              />
+            <div key={image.id} className="group relative">
+              <div
+                className={`bg-muted aspect-square overflow-hidden rounded-xl ${
+                  image.isThumbnail
+                    ? 'border-primary border-2'
+                    : 'border-2 border-transparent'
+                }`}
+              >
+                <Image
+                  src={image.preview}
+                  alt="Preview"
+                  className="h-full w-full object-cover"
+                  fill
+                />
+              </div>
 
-              {/* Thumbnail Badge */}
+              {/* Cover Badge */}
               {image.isThumbnail && (
-                <div className="bg-primary absolute top-2 left-2 flex items-center gap-1 rounded px-2 py-1 text-xs text-white">
-                  <Star className="h-3 w-3 fill-current" />
-                  Thumbnail
+                <div className="bg-primary absolute top-2 left-2 rounded-md px-2 py-1 text-xs font-bold text-white">
+                  Cover
                 </div>
               )}
 
-              {/* Actions Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                {!image.isThumbnail && (
+              {/* Delete Button */}
+              <button
+                type="button"
+                onClick={() => removeImage(image.id)}
+                disabled={disabled}
+                className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-lg bg-red-500 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 hover:bg-red-600"
+              >
+                <Trash className="h-5 w-5" />
+              </button>
+
+              {/* Set as Cover Button - Only show on hover if not already cover */}
+              {!image.isThumbnail && (
+                <div className="absolute right-2 bottom-2 left-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   <button
                     type="button"
                     onClick={() => setThumbnail(image.id)}
                     disabled={disabled}
-                    className="rounded bg-white px-3 py-1 text-xs font-medium text-black hover:bg-gray-200"
+                    className="bg-card bg-opacity-90 text-foreground hover:bg-opacity-100 w-full rounded py-1 text-xs"
                   >
-                    Set as Thumbnail
+                    Set as Cover
                   </button>
-                )}
-                <button
-                  type="button"
-                  onClick={() => removeImage(image.id)}
-                  disabled={disabled}
-                  className="bg-destructive hover:bg-destructive/90 flex items-center gap-1 rounded px-3 py-1 text-xs font-medium text-white"
-                >
-                  <X className="h-3 w-3" />
-                  Remove
-                </button>
-              </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* Empty Slots */}
+          {Array.from({ length: maxImages - images.length }).map((_, index) => (
+            <div
+              key={`empty-${index}`}
+              onClick={() =>
+                document
+                  .querySelector<HTMLInputElement>('input[type="file"]')
+                  ?.click()
+              }
+              className="border-muted-foreground/30 bg-muted/30 hover:border-primary flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200 hover:bg-green-50"
+            >
+              <i className="fa-solid fa-plus text-muted-foreground/50 text-2xl"></i>
+              <Plus className="text-muted-foreground h-5 w-5" />
             </div>
           ))}
         </div>
@@ -142,17 +180,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
       {/* Error Message */}
       {hasError && (
-        <div className="text-destructive mt-2 flex items-center gap-2 text-sm">
+        <div className="text-destructive mb-4 flex items-center gap-2 text-sm">
           <AlertCircle className="h-4 w-4" />
           <span>{error?.message as string}</span>
         </div>
       )}
 
-      {/* Image Count */}
+      {/* Image Count Badge */}
       {images.length > 0 && (
-        <p className="text-muted-foreground mt-2 text-sm">
-          {images.length} / {maxImages} images uploaded
-        </p>
+        <div className="flex justify-end">
+          <div className="rounded-lg bg-green-50 px-4 py-2">
+            <span className="text-primary text-sm font-semibold">
+              {images.length}/{maxImages} Images
+            </span>
+          </div>
+        </div>
       )}
     </div>
   );

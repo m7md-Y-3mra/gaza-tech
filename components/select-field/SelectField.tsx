@@ -60,7 +60,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
             >
               <SelectTrigger
                 id={name}
-                className={`${Icon ? 'ps-12' : ''} h-12 border-2 ${getBorderClass()}`}
+                className={`${Icon ? 'ps-12' : ''} h-[48]! w-full border-2 ${getBorderClass()}`}
                 aria-invalid={hasError || undefined}
               >
                 <SelectValue placeholder={placeholder} />

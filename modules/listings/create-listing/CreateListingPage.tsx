@@ -111,15 +111,8 @@ const CreateListingPage = () => {
   }
 
   return (
-    <div className="bg-background-alt">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Create New Listing</h1>
-          <p className="text-muted-foreground mt-2">
-            Fill in the details below to create your listing
-          </p>
-        </div>
-
+    <div className="min-h-screen bg-linear-to-br from-gray-50 via-white to-green-50">
+      <div className="container mx-auto px-6 py-8">
         <ListingForm
           mode="create"
           categories={categories}
