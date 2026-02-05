@@ -1,12 +1,10 @@
 import { Database } from "@/types/supabase";
 
 export const ProductCondition = {
-    NEW: 'New',
-    LIKE_NEW: 'Like New',
-    EXCELLENT: 'Excellent',
-    GOOD: 'Good',
-    FAIR: 'Fair',
-    PARTS: 'For Parts',
+    new: 'New',
+    used: "Used",
+    broken: "Broken",
+    refurbished: "Refurbished",
 } as const;
 
 export type ProductConditionType =
