@@ -35,7 +35,7 @@ export const ListingSchema =
 
         price: z
             .number({ message: 'Price must be a valid number' })
-            .min(0, 'Price cannot be negative'),
+            .min(1, 'Price cannot be zero or negative'),
 
         currency: z.enum(Object.keys(Currency)).nullable(),
 

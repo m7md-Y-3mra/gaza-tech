@@ -125,6 +125,7 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                   label="Price"
                   placeholder="0"
                   type="number"
+                  valueAsNumber
                   disabled={isSubmitting}
                 />
 

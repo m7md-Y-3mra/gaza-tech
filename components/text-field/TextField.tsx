@@ -16,6 +16,7 @@ type TextFieldProps = Omit<
   isSuccess?: boolean;
   successMessage?: string;
   showStrength?: boolean;
+  valueAsNumber?: boolean;
 };
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -26,6 +27,7 @@ const TextField: React.FC<TextFieldProps> = ({
   isSuccess,
   successMessage,
   showStrength,
+  valueAsNumber,
   ...rest
 }) => {
   const {
@@ -68,7 +70,7 @@ const TextField: React.FC<TextFieldProps> = ({
           className={`${Icon ? 'ps-12' : ''} ${
             isPassword ? 'pe-12' : ''
           } h-12 border-2 ${getBorderClass()}`}
-          {...register(name)}
+          {...register(name, { valueAsNumber })}
           {...rest}
         />
         {isPassword && (
