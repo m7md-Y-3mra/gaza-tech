@@ -31,3 +31,10 @@ export const specifications = {
 } as const;
 
 export type InsertListingsWithoutSellerId = Omit<Database['public']['Tables']['marketplace_listings']['Insert'], 'seller_id'>;
+
+// Type for uploaded image result from client-side upload
+export type ImageUploadResult = {
+    path: string;      // Storage path for cleanup
+    url: string;       // Public URL for display
+    isThumbnail: boolean;
+};
