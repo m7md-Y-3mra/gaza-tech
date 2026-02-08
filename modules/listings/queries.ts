@@ -4,7 +4,7 @@ import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { authHandler } from '@/utils/auth-handler';
-import { InsertListingsWithoutSellerId } from './types';
+import { ImageUploadResult, InsertListingsWithoutSellerId } from './types';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -316,22 +316,51 @@ export async function getLocationsQuery(): Promise<LocationRow[]> {
 }
 
 /**
- * Create a new listing
- * Inserts a new listing into the database
+ * Insert listing images into the database
+ * @param listingId - The listing ID to associate images with
+ * @param images - Array of image data to insert
+ */
+async function insertListingImagesQuery(
+  client: Awaited<ReturnType<typeof createClient>>,
+  listingId: string,
+  images: ImageUploadResult[]
+): Promise<void> {
+  if (images.length === 0) return;
+
+  const imageRecords = images.map((img, index) => ({
+    listing_id: listingId,
+    image_url: img.url,
+    is_thumbnail: img.isThumbnail || index === 0,
+    sort_order: index,
+  }));
+
+  const { error } = await client.from('listing_images').insert(imageRecords);
+
+  if (error) {
+    console.error('Error inserting listing images:', error);
+    throw new Error('Failed to save listing images');
+  }
+}
+
+/**
+ * Create a new listing with images
+ * Inserts a new listing and its images into the database
  */
 export async function createListingQuery(
-  listingData: InsertListingsWithoutSellerId
+  listingData: InsertListingsWithoutSellerId,
+  images: ImageUploadResult[]
 ): Promise<{ listingId: string }> {
   'use server';
   const client = await createClient();
   const user = await authHandler();
 
+  // Insert listing
   const { data, error } = await client
     .from('marketplace_listings')
     .insert({
       ...listingData,
       seller_id: user.id,
-      content_status: "published"
+      content_status: 'published',
     })
     .select('listing_id')
     .single();
@@ -339,6 +368,20 @@ export async function createListingQuery(
   if (error) {
     console.error('Error creating listing:', error);
     throw new Error('Failed to create listing');
+  }
+
+  // Insert images if provided
+  if (images.length > 0) {
+    try {
+      await insertListingImagesQuery(client, data.listing_id, images);
+    } catch (imageError) {
+      // Rollback: delete the created listing if image insert fails
+      await client
+        .from('marketplace_listings')
+        .delete()
+        .eq('listing_id', data.listing_id);
+      throw imageError;
+    }
   }
 
   return { listingId: data.listing_id };
@@ -365,3 +408,4 @@ export async function updateListingQuery(
     throw new Error('Failed to update listing');
   }
 }
+
