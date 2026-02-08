@@ -1,5 +1,5 @@
 'use client';
-import { FormProvider } from 'react-hook-form';
+import { Controller, FormProvider } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import TextField from '@/components/text-field';
@@ -18,9 +18,10 @@ import { currencyOptions, productConditionOptions } from './constant';
 const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
   const { mode, categories, locations } = props;
   const listingId = mode === 'update' ? props.listingId : undefined;
-  const { form, isSubmitting, submitError, onSubmit, handleCancel } =
+  const { form, isSubmitting, submitError, onSubmit, handleCancel, isPending } =
     useListingForm(mode, listingId);
 
+  console.log(form.getValues());
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit} className="space-y-6">
@@ -38,12 +39,8 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                   cover.
                 </p>
               </div>
-              <ImageUpload
-                name="images"
-                maxImages={5}
-                maxSizeMB={5}
-                disabled={isSubmitting}
-              />
+
+              <ImageUpload name="images" disabled={isSubmitting} />
 
               {/* Tips Box */}
               <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4">
@@ -182,17 +179,19 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
             <div className="flex gap-4">
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || isPending}
                 className="flex-1"
                 size="lg"
               >
-                {isSubmitting
-                  ? mode === 'create'
-                    ? 'Creating...'
-                    : 'Updating...'
-                  : mode === 'create'
-                    ? 'Create Listing'
-                    : 'Update Listing'}
+                {isPending
+                  ? 'Redirecting...'
+                  : isSubmitting
+                    ? mode === 'create'
+                      ? 'Creating...'
+                      : 'Updating...'
+                    : mode === 'create'
+                      ? 'Create Listing'
+                      : 'Update Listing'}
               </Button>
 
               {handleCancel && (
@@ -200,7 +199,7 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                   type="button"
                   variant="outline"
                   onClick={handleCancel}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isPending}
                   size="lg"
                   className="hover:text-white"
                 >
