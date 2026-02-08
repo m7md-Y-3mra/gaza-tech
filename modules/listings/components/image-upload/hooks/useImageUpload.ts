@@ -1,43 +1,22 @@
 import { useState, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { ImageFile } from '../types';
+import { MAX_IMAGES_NUMBER } from '@/constants/image-file';
 
-export const useImageUpload = (
-    name: string,
-    maxImages: number = 5,
-    maxSizeMB: number = 5
-) => {
+export const useImageUpload = (name: string) => {
     const { setValue, setError, clearErrors } = useFormContext();
     const [images, setImages] = useState<ImageFile[]>([]);
     const [isDragging, setIsDragging] = useState(false);
 
-    const validateFile = useCallback(
-        (file: File): string | null => {
-            // Check file size
-            const maxSizeBytes = maxSizeMB * 1024 * 1024;
-            if (file.size > maxSizeBytes) {
-                return `File size must be less than ${maxSizeMB}MB`;
-            }
-
-            // Check file type
-            if (!file.type.startsWith('image/')) {
-                return 'Only image files are allowed';
-            }
-
-            return null;
-        },
-        [maxSizeMB]
-    );
-
     const addImages = useCallback(
         (files: FileList | File[]) => {
             const fileArray = Array.from(files);
-            const remainingSlots = maxImages - images.length;
+            const remainingSlots = MAX_IMAGES_NUMBER - images.length;
 
             if (remainingSlots <= 0) {
                 setError(name, {
                     type: 'manual',
-                    message: `Maximum ${maxImages} images allowed`,
+                    message: `Maximum ${MAX_IMAGES_NUMBER} images allowed`,
                 });
                 return;
             }
@@ -46,18 +25,13 @@ export const useImageUpload = (
             const errors: string[] = [];
 
             fileArray.slice(0, remainingSlots).forEach((file) => {
-                const error = validateFile(file);
-                if (error) {
-                    errors.push(error);
-                } else {
-                    const imageFile: ImageFile = {
-                        id: `${Date.now()}-${Math.random()}`,
-                        file,
-                        preview: URL.createObjectURL(file),
-                        isThumbnail: images.length === 0 && validFiles.length === 0,
-                    };
-                    validFiles.push(imageFile);
-                }
+                const imageFile: ImageFile = {
+                    id: `${Date.now()}-${Math.random()}`,
+                    file,
+                    preview: URL.createObjectURL(file),
+                    isThumbnail: images.length === 0 && validFiles.length === 0,
+                };
+                validFiles.push(imageFile);
             });
 
             if (errors.length > 0) {
@@ -72,10 +46,18 @@ export const useImageUpload = (
             if (validFiles.length > 0) {
                 const newImages = [...images, ...validFiles];
                 setImages(newImages);
-                setValue(name, newImages);
+                const formImages = newImages.map((img) => ({
+                    file: img.file,
+                    isThumbnail: img.isThumbnail,
+                }));
+                setValue(name, formImages, {
+                    shouldTouch: true,
+                    shouldDirty: true,
+                    shouldValidate: true
+                });
             }
         },
-        [images, maxImages, name, setValue, setError, clearErrors, validateFile]
+        [images, name, setValue, setError, clearErrors]
     );
 
     const removeImage = useCallback(
@@ -91,7 +73,11 @@ export const useImageUpload = (
             }
 
             setImages(newImages);
-            setValue(name, newImages);
+            const formImages = newImages.map((img) => ({
+                file: img.file,
+                isThumbnail: img.isThumbnail,
+            }));
+            setValue(name, formImages);
             clearErrors(name);
 
             // Revoke object URL to prevent memory leaks
@@ -110,7 +96,11 @@ export const useImageUpload = (
                 isThumbnail: img.id === id,
             }));
             setImages(newImages);
-            setValue(name, newImages);
+            const formImages = newImages.map((img) => ({
+                file: img.file,
+                isThumbnail: img.isThumbnail,
+            }));
+            setValue(name, formImages);
         },
         [images, name, setValue]
     );
@@ -121,7 +111,11 @@ export const useImageUpload = (
             const [removed] = newImages.splice(startIndex, 1);
             newImages.splice(endIndex, 0, removed);
             setImages(newImages);
-            setValue(name, newImages);
+            const formImages = newImages.map((img) => ({
+                file: img.file,
+                isThumbnail: img.isThumbnail,
+            }));
+            setValue(name, formImages);
         },
         [images, name, setValue]
     );

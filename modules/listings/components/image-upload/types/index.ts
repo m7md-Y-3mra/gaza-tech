@@ -7,9 +7,5 @@ export type ImageFile = {
 
 export type ImageUploadProps = {
     name: string;
-    label?: string;
-    maxImages?: number;
-    maxSizeMB?: number;
-    acceptedFormats?: string[];
     disabled?: boolean;
 };

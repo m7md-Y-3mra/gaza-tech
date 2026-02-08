@@ -6,16 +6,18 @@ import {
   FolderOpen,
   Plus,
   Trash,
-  X,
 } from 'lucide-react';
 import { useImageUpload } from './hooks/useImageUpload';
 import type { ImageUploadProps } from './types';
 import Image from 'next/image';
+import {
+  ACCEPTED_FILE_TYPES,
+  MAX_IMAGES_NUMBER,
+  MAX_UPLOAD_SIZE,
+} from '@/constants/image-file';
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   name,
-  maxImages = 5,
-  maxSizeMB = 5,
   disabled = false,
 }) => {
   const {
@@ -29,7 +31,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     addImages,
     removeImage,
     setThumbnail,
-  } = useImageUpload(name, maxImages, maxSizeMB);
+  } = useImageUpload(name);
 
   const error = errors[name];
   const touched = touchedFields[name];
@@ -64,7 +66,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   return (
     <div>
       {/* Upload Area - Only show when not at max */}
-      {images.length < maxImages && (
+      {images.length < MAX_IMAGES_NUMBER && (
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -79,13 +81,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             type="file"
             accept="image/*"
             multiple
-            onChange={handleFileInput}
             disabled={disabled}
             className="absolute inset-0 cursor-pointer opacity-0"
             aria-label="Upload images"
+            onChange={handleFileInput}
           />
           <div className="flex flex-col items-center">
-            <div className="from-primary to-secondary mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br shadow-lg">
+            <div className="from-primary to-secondary mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br shadow-lg">
               <CloudUpload className="h-9 w-9 text-white" />
             </div>
             <h3 className="text-foreground mb-2 text-lg font-bold">
@@ -101,7 +103,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               <FolderOpen className="mr-2 h-5 w-5" /> Choose Files
             </button>
             <p className="text-muted-foreground mt-4 text-xs">
-              Supported formats: JPG, PNG, WEBP (Max {maxSizeMB}MB each)
+              Supported formats:{' '}
+              {ACCEPTED_FILE_TYPES.map((type) => type.split('/')[1]).join(', ')}{' '}
+              (Max {MAX_UPLOAD_SIZE}MB each)
             </p>
           </div>
         </div>
@@ -161,28 +165,42 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           ))}
 
           {/* Empty Slots */}
-          {Array.from({ length: maxImages - images.length }).map((_, index) => (
-            <div
-              key={`empty-${index}`}
-              onClick={() =>
-                document
-                  .querySelector<HTMLInputElement>('input[type="file"]')
-                  ?.click()
-              }
-              className="border-muted-foreground/30 bg-muted/30 hover:border-primary flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200 hover:bg-green-50"
-            >
-              <i className="fa-solid fa-plus text-muted-foreground/50 text-2xl"></i>
-              <Plus className="text-muted-foreground h-5 w-5" />
-            </div>
-          ))}
+          {Array.from({ length: MAX_IMAGES_NUMBER - images.length }).map(
+            (_, index) => (
+              <div
+                key={`empty-${index}`}
+                onClick={() =>
+                  document
+                    .querySelector<HTMLInputElement>('input[type="file"]')
+                    ?.click()
+                }
+                className="border-muted-foreground/30 bg-muted/30 hover:border-primary flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200 hover:bg-green-50"
+              >
+                <i className="fa-solid fa-plus text-muted-foreground/50 text-2xl"></i>
+                <Plus className="text-muted-foreground h-5 w-5" />
+              </div>
+            )
+          )}
         </div>
       )}
 
       {/* Error Message */}
       {hasError && (
         <div className="text-destructive mb-4 flex items-center gap-2 text-sm">
-          <AlertCircle className="h-4 w-4" />
-          <span>{error?.message as string}</span>
+          <span>
+            {Array.isArray(error) ? (
+              error?.map((err, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <p>
+                    File{index + 1}: {err.file.message}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>{error?.message as string}</p>
+            )}
+          </span>
         </div>
       )}
 
@@ -191,7 +209,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         <div className="flex justify-end">
           <div className="rounded-lg bg-green-50 px-4 py-2">
             <span className="text-primary text-sm font-semibold">
-              {images.length}/{maxImages} Images
+              {images.length}/{MAX_IMAGES_NUMBER} Images
             </span>
           </div>
         </div>
