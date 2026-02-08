@@ -1,6 +1,6 @@
 import { z, ZodType } from 'zod';
 import { Database } from '@/types/supabase';
-import { Currency, ProductCondition, specifications } from './types';
+import { Currency, ImageFile, ProductCondition, specifications } from './types';
 import { imageFileSchema } from '@/schemas/image-file';
 
 const PredefinedSpecificationSchema = z.object({
@@ -70,7 +70,7 @@ export const createListingSchema = ListingSchema
             file: imageFileSchema,
             isThumbnail: z.boolean(),
         }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
-    }) satisfies ZodType<Database['public']['Tables']['marketplace_listings']['Insert'] & { images: { file: File, isThumbnail: boolean }[] }>;
+    }) satisfies ZodType<Database['public']['Tables']['marketplace_listings']['Insert'] & { images: ImageFile[] }>;
 
 export const createListingFormSchema = createListingSchema
     .omit({

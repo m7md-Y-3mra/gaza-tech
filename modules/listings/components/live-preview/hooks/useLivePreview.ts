@@ -1,7 +1,6 @@
 import { useFormContext } from 'react-hook-form';
-import type { ImageFile } from '@/modules/listings/components/image-upload/types';
 import { UseLivePreviewProps } from '../types';
-import { ProductCondition } from '@/modules/listings/types';
+import { ImageFile } from '@/modules/listings/types';
 
 export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) => {
     const { watch } = useFormContext();
@@ -20,6 +19,7 @@ export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) =
     const location = locations?.find((l) => l.value === locationId);
 
     const thumbnailImage = images.find((img) => img.isThumbnail) || images[0];
+    const thumbnailImagePreview = thumbnailImage.file ? URL.createObjectURL(thumbnailImage.file) : '';
 
     return {
         title,
@@ -30,7 +30,7 @@ export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) =
         location,
         productCondition,
         images,
-        thumbnailImage,
+        thumbnailImagePreview
     }
 
 }

@@ -24,7 +24,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
     location,
     productCondition,
     images,
-    thumbnailImage,
+    thumbnailImagePreview,
   } = useLivePreview({ categories, locations });
   return (
     <div className="border-border bg-card sticky top-4 rounded-2xl p-6 shadow-sm">
@@ -38,13 +38,12 @@ const LivePreview: React.FC<LivePreviewProps> = ({
       </div>
 
       {/* Thumbnail Image */}
-      {thumbnailImage ? (
+      {Boolean(thumbnailImagePreview) ? (
         <div className="mb-4 aspect-square overflow-hidden rounded-xl bg-gray-100">
           <Image
-            src={thumbnailImage.preview}
+            src={thumbnailImagePreview}
             alt="Preview"
             className="h-full w-full object-cover"
-            // fill
             width={500}
             height={500}
           />

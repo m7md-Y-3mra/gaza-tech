@@ -32,6 +32,8 @@ export const specifications = {
 
 export type InsertListingsWithoutSellerId = Omit<Database['public']['Tables']['marketplace_listings']['Insert'], 'seller_id'>;
 
+export type ImageFile = { file: File, isThumbnail: boolean };
+
 // Type for uploaded image result from client-side upload
 export type ImageUploadResult = {
     path: string;      // Storage path for cleanup
