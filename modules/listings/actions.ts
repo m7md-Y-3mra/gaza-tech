@@ -69,15 +69,16 @@ export const getCategoriesAction = errorHandler(getCategoriesQuery);
 export const getLocationsAction = errorHandler(getLocationsQuery);
 
 /**
- * Create a new listing
+ * Create a new listing with images
  * Server action wrapped with error handler
  * Revalidates listings cache after creation
  */
 export const createListingAction = errorHandler(
   async (
-    listingData: Parameters<typeof createListingQuery>[0]
+    listingData: Parameters<typeof createListingQuery>[0],
+    images: Parameters<typeof createListingQuery>[1] = []
   ): Promise<ReturnType<typeof createListingQuery>> => {
-    const result = await createListingQuery(listingData);
+    const result = await createListingQuery(listingData, images);
 
     // Revalidate listings-related paths
     revalidatePath('/listings');
