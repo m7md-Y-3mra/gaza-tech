@@ -13,7 +13,7 @@ import {
     DEFAULT_CURRENCY,
     DEFAULT_PRODUCT_CONDITION,
 } from '@/modules/listings/constant';
-import { useImageUploader } from '../../image-upload/hooks/useImageUploader';
+import { useImageUploader } from '../components/image-upload/hooks/useImageUploader';
 import { toast } from 'sonner';
 
 type ListingFormData = z.infer<typeof createListingClientSchema>;
