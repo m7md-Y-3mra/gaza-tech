@@ -12,7 +12,7 @@ import { LayoutGrid, MapPin } from 'lucide-react';
  * Does NOT include seller information as per requirements
  */
 const LivePreview: React.FC<LivePreviewProps> = ({
-  categories = [],
+  groupedCategories = [],
   locations = [],
 }) => {
   const {
@@ -25,7 +25,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
     productCondition,
     images,
     thumbnailImagePreview,
-  } = useLivePreview({ categories, locations });
+  } = useLivePreview({ groupedCategories, locations });
   return (
     <div className="border-border bg-card sticky top-4 rounded-2xl p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">

@@ -1,5 +1,5 @@
 'use client';
-import { Controller, FormProvider } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import TextField from '@/components/text-field';
@@ -11,13 +11,14 @@ import { useListingForm } from './hooks/useListingForm';
 import type { ListingFormClientProps } from './types';
 import { currencyOptions, productConditionOptions } from './constant';
 import LoadingSubmittingSpinner from '@/components/loading-submitting-spinner';
+import CategorySelectField from './components/category-select-field';
 
 /**
  * Reusable listing form component
  * Supports both create and update modes
  */
 const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
-  const { mode, categories, locations } = props;
+  const { mode, groupedCategories, locations } = props;
   const listingId = mode === 'update' ? props.listingId : undefined;
   const { form, isSubmitting, submitError, onSubmit, handleCancel, isPending } =
     useListingForm(mode, listingId);
@@ -81,11 +82,11 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                 />
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <SelectField
+                  <CategorySelectField
                     name="category_id"
                     label="Category"
                     placeholder="Select a category"
-                    options={categories}
+                    groupedCategories={groupedCategories}
                     disabled={isSubmitting}
                   />
 
@@ -213,7 +214,10 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
 
           {/* Live Preview Sidebar */}
           <div className="lg:col-span-1">
-            <LivePreview categories={categories} locations={locations} />
+            <LivePreview
+              groupedCategories={groupedCategories}
+              locations={locations}
+            />
           </div>
         </div>
       </form>

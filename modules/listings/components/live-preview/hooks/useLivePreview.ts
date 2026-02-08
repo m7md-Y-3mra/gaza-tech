@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { UseLivePreviewProps } from '../types';
 import { ImageFile } from '@/modules/listings/types';
 
-export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) => {
+export const useLivePreview = ({ groupedCategories, locations }: UseLivePreviewProps) => {
     const { watch } = useFormContext();
 
     const title = watch('title');
@@ -15,7 +15,12 @@ export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) =
     const productCondition = watch('product_condition');
     const images: ImageFile[] = watch('images', []);
 
-    const category = categories?.find((c) => c.value === categoryId);
+    // Find category from grouped categories
+    // Need to search through all children in all groups
+    const category = groupedCategories
+        ?.flatMap(group => group.children)
+        .find((c) => c.value === categoryId);
+
     const location = locations?.find((l) => l.value === locationId);
 
     const thumbnailImage = images.find((img) => img.isThumbnail) || images[0];

@@ -1,10 +1,10 @@
-import { getCategoriesAction, getLocationsAction } from '../../actions';
+import { getGroupedCategoriesAction, getLocationsAction } from '../../actions';
 import ListingFormClient from './ListingFormClient';
 
 const ListingForm = async () => {
-  // Fetch categories and locations in parallel
+  // Fetch grouped categories and locations in parallel
   const [categoriesResult, locationsResult] = await Promise.all([
-    getCategoriesAction(),
+    getGroupedCategoriesAction(),
     getLocationsAction(),
   ]);
 
@@ -12,11 +12,6 @@ const ListingForm = async () => {
   if (!categoriesResult.success) {
     throw new Error(categoriesResult.message || 'Failed to fetch categories');
   }
-
-  const categories = categoriesResult.data.map((cat) => ({
-    value: cat.marketplace_category_id,
-    label: cat.name,
-  }));
 
   // Handle locations
   if (!locationsResult.success) {
@@ -33,7 +28,7 @@ const ListingForm = async () => {
       <div className="container mx-auto px-6 py-8">
         <ListingFormClient
           mode="create"
-          categories={categories}
+          groupedCategories={categoriesResult.data}
           locations={locations}
         />
       </div>

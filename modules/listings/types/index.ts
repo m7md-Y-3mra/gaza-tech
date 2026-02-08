@@ -42,3 +42,10 @@ export type ImageUploadResult = {
     url: string;       // Public URL for display
     isThumbnail: boolean;
 };
+
+// Type for grouped categories (matches database function return type)
+export type GroupedCategory = {
+    parentId: string;
+    parentLabel: string;
+    children: Array<{ value: string; label: string }>;
+};

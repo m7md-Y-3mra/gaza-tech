@@ -8,7 +8,7 @@ import {
   getListingDetailsQuery,
   getSimilarListingsQuery,
   getSellerListingsQuery,
-  getCategoriesQuery,
+  getGroupedCategoriesQuery,
   getLocationsQuery,
   createListingQuery,
   updateListingQuery,
@@ -55,11 +55,11 @@ export const toggleBookmarkAction = errorHandler(
 );
 
 /**
- * Get all active categories
+ * Get all active categories grouped by parent
  * Server action wrapped with error handler
- * Uses cache tag for revalidation
+ * Uses database function for grouping
  */
-export const getCategoriesAction = errorHandler(getCategoriesQuery);
+export const getGroupedCategoriesAction = errorHandler(getGroupedCategoriesQuery);
 
 /**
  * Get all active locations

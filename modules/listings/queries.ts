@@ -4,7 +4,7 @@ import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { authHandler } from '@/utils/auth-handler';
-import { ImageUploadResult, InsertListingsWithoutSellerId } from './types';
+import { GroupedCategory, ImageUploadResult } from './types';
 import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
 import { createListingServerSchema } from './schema';
@@ -271,25 +271,18 @@ export async function toggleBookmarkQuery(
 }
 
 /**
- * Get all active categories
- * Used for category selection in create/update listing forms
- * Returns only top-level parent categories (parent_id IS NULL)
- * For subcategories, use getSubcategoriesQuery with parent_id
+ * Get all active categories grouped by parent
+ * Uses the database function get_grouped_categories()
+ * Returns parent categories with their subcategories nested
  */
-export async function getCategoriesQuery(): Promise<CategoryRow[]> {
+export async function getGroupedCategoriesQuery(): Promise<GroupedCategory[]> {
   'use server';
   const client = await createClient();
 
-  const { data, error } = await client
-    .from('marketplace_categories')
-    .select('*')
-    .eq('is_active', true)
-    .is('parent_id', null) // Only top-level parent categories
-    // .not('parent_id', 'is', null) // Only categories that HAVE a parent
-    .order('name', { ascending: true });
+  const { data, error } = await client.rpc('get_grouped_categories');
 
   if (error) {
-    console.error('Error fetching categories:', error);
+    console.error('Error fetching grouped categories:', error);
     return [];
   }
 

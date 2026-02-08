@@ -1,5 +1,7 @@
+import { GroupedCategory } from "@/modules/listings/types";
+
 export type LivePreviewProps = {
-    categories?: Array<{ value: string; label: string }>;
+    groupedCategories?: GroupedCategory[];
     locations?: Array<{ value: string; label: string }>;
 };
 

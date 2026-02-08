@@ -1,7 +1,10 @@
+import { GroupedCategory } from "@/modules/listings/types";
+
 export type ListingFormMode = 'create' | 'update';
 
+
 type ListingFormClient = {
-    categories: Array<{ value: string; label: string }>;
+    groupedCategories: GroupedCategory[];
     locations: Array<{ value: string; label: string }>;
 }
 
