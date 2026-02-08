@@ -350,12 +350,12 @@ export async function createListingQuery(
   const user = await authHandler();
 
   const validatedListingData = zodValidation(createListingServerSchema, { ...listingData, seller_id: user.id });
-
+  const { images, ...newListingData } = validatedListingData;
   // Insert listing
   const { data, error } = await client
     .from('marketplace_listings')
     .insert({
-      ...validatedListingData,
+      ...newListingData,
       seller_id: user.id,
       content_status: 'published',
     })
@@ -367,7 +367,6 @@ export async function createListingQuery(
     throw new Error('Failed to create listing');
   }
 
-  const images = validatedListingData.images;
   // Insert images if provided
   if (images.length > 0) {
     try {
