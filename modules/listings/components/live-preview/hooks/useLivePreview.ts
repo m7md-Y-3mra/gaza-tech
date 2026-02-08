@@ -19,7 +19,7 @@ export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) =
     const location = locations?.find((l) => l.value === locationId);
 
     const thumbnailImage = images.find((img) => img.isThumbnail) || images[0];
-    const thumbnailImagePreview = thumbnailImage.file ? URL.createObjectURL(thumbnailImage.file) : '';
+    const thumbnailImagePreview = Boolean(thumbnailImage?.file) ? URL.createObjectURL(thumbnailImage.file) : '';
 
     return {
         title,
