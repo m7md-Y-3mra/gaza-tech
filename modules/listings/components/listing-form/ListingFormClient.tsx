@@ -10,6 +10,7 @@ import LivePreview from '../live-preview';
 import { useListingForm } from './hooks/useListingForm';
 import type { ListingFormClientProps } from './types';
 import { currencyOptions, productConditionOptions } from './constant';
+import LoadingSubmittingSpinner from '@/components/loading-submitting-spinner';
 
 /**
  * Reusable listing form component
@@ -183,6 +184,7 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                 className="flex-1"
                 size="lg"
               >
+                {(isSubmitting || isPending) && <LoadingSubmittingSpinner />}
                 {isPending
                   ? 'Redirecting...'
                   : isSubmitting
