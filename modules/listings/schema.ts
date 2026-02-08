@@ -1,6 +1,7 @@
 import { z, ZodType } from 'zod';
 import { Database } from '@/types/supabase';
 import { Currency, ProductCondition, specifications } from './types';
+import { imageFileSchema } from '@/schemas/image-file';
 
 const PredefinedSpecificationSchema = z.object({
     label: z.enum(Object.keys(specifications), { message: 'Please select a valid specification type' }),
@@ -30,7 +31,7 @@ export const ListingSchema =
 
         description: z
             .string({ message: 'Description is required' })
-            .min(50, 'Description must be at least 50 characters long')
+            .min(20, 'Description must be at least 20 characters long')
             .max(2000, 'Description cannot exceed 2000 characters'),
 
         price: z
@@ -64,7 +65,12 @@ export const createListingSchema = ListingSchema
         created_at: true,
         updated_at: true,
         content_status: true,
-    }) satisfies ZodType<Database['public']['Tables']['marketplace_listings']['Insert']>;
+    }).extend({
+        images: z.array(z.object({
+            file: imageFileSchema,
+            isThumbnail: z.boolean(),
+        }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
+    }) satisfies ZodType<Database['public']['Tables']['marketplace_listings']['Insert'] & { images: { file: File, isThumbnail: boolean }[] }>;
 
 export const createListingFormSchema = createListingSchema
     .omit({
