@@ -30,6 +30,8 @@ export const specifications = {
     battery: 'Battery',
 } as const;
 
+export type InsertListings = Database['public']['Tables']['marketplace_listings']['Insert'];
+
 export type InsertListingsWithoutSellerId = Omit<Database['public']['Tables']['marketplace_listings']['Insert'], 'seller_id'>;
 
 export type ImageFile = { file: File, isThumbnail: boolean };

@@ -1,6 +1,6 @@
 import { z, ZodType } from 'zod';
 import { Database } from '@/types/supabase';
-import { Currency, ImageFile, ProductCondition, specifications } from './types';
+import { Currency, ImageFile, ImageUploadResult, InsertListings, InsertListingsWithoutSellerId, ProductCondition, specifications } from './types';
 import { imageFileSchema } from '@/schemas/image-file';
 
 const PredefinedSpecificationSchema = z.object({
@@ -65,14 +65,22 @@ export const createListingSchema = ListingSchema
         created_at: true,
         updated_at: true,
         content_status: true,
+    }) satisfies ZodType<InsertListings>;
+
+export const createListingClientSchema = createListingSchema
+    .omit({
+        seller_id: true
     }).extend({
         images: z.array(z.object({
             file: imageFileSchema,
             isThumbnail: z.boolean(),
         }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
-    }) satisfies ZodType<Database['public']['Tables']['marketplace_listings']['Insert'] & { images: ImageFile[] }>;
+    }) satisfies ZodType<InsertListingsWithoutSellerId & { images: ImageFile[] }>
 
-export const createListingFormSchema = createListingSchema
-    .omit({
-        seller_id: true
-    }) satisfies ZodType<Omit<Database['public']['Tables']['marketplace_listings']['Insert'], 'seller_id'>>;
+export const createListingServerSchema = createListingSchema.extend({
+    images: z.array(z.object({
+        path: z.string(),
+        url: z.string(),
+        isThumbnail: z.boolean(),
+    }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
+}) satisfies ZodType<InsertListings & { images: ImageUploadResult[] }>;

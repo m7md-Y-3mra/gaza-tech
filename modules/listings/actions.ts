@@ -76,9 +76,8 @@ export const getLocationsAction = errorHandler(getLocationsQuery);
 export const createListingAction = errorHandler(
   async (
     listingData: Parameters<typeof createListingQuery>[0],
-    images: Parameters<typeof createListingQuery>[1] = []
   ): Promise<ReturnType<typeof createListingQuery>> => {
-    const result = await createListingQuery(listingData, images);
+    const result = await createListingQuery(listingData);
 
     // Revalidate listings-related paths
     revalidatePath('/listings');

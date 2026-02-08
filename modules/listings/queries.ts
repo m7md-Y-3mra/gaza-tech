@@ -5,6 +5,9 @@ import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { authHandler } from '@/utils/auth-handler';
 import { ImageUploadResult, InsertListingsWithoutSellerId } from './types';
+import { zodValidation } from '@/lib/zod-error';
+import z from 'zod';
+import { createListingServerSchema } from './schema';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -347,18 +350,19 @@ async function insertListingImagesQuery(
  * Inserts a new listing and its images into the database
  */
 export async function createListingQuery(
-  listingData: InsertListingsWithoutSellerId,
-  images: ImageUploadResult[]
+  listingData: Omit<z.infer<typeof createListingServerSchema>, 'seller_id'>,
 ): Promise<{ listingId: string }> {
   'use server';
   const client = await createClient();
   const user = await authHandler();
 
+  const validatedListingData = zodValidation(createListingServerSchema, { ...listingData, seller_id: user.id });
+
   // Insert listing
   const { data, error } = await client
     .from('marketplace_listings')
     .insert({
-      ...listingData,
+      ...validatedListingData,
       seller_id: user.id,
       content_status: 'published',
     })
@@ -370,6 +374,7 @@ export async function createListingQuery(
     throw new Error('Failed to create listing');
   }
 
+  const images = validatedListingData.images;
   // Insert images if provided
   if (images.length > 0) {
     try {

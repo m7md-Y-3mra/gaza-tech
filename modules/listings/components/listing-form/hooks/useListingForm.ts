@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useTransition } from 'react';
-import { createListingFormSchema } from '@/modules/listings/schema';
+import { createListingClientSchema } from '@/modules/listings/schema';
 import {
     createListingAction,
     updateListingAction,
@@ -14,8 +14,9 @@ import {
     DEFAULT_PRODUCT_CONDITION,
 } from '@/modules/listings/constant';
 import { useImageUploader } from '../../image-upload/hooks/useImageUploader';
+import { toast } from 'sonner';
 
-type ListingFormData = z.infer<typeof createListingFormSchema>;
+type ListingFormData = z.infer<typeof createListingClientSchema>;
 
 export const useListingForm = (mode: ListingFormMode, listingId?: string) => {
     const router = useRouter();
@@ -27,7 +28,7 @@ export const useListingForm = (mode: ListingFormMode, listingId?: string) => {
         useImageUploader();
 
     const form = useForm<ListingFormData>({
-        resolver: zodResolver(createListingFormSchema),
+        resolver: zodResolver(createListingClientSchema),
         defaultValues: {
             title: '',
             description: '',
@@ -60,7 +61,7 @@ export const useListingForm = (mode: ListingFormMode, listingId?: string) => {
                 // Remove images from data before sending (already processed)
                 const { images: _, ...listingData } = data;
 
-                const result = await createListingAction(listingData, uploadResults);
+                const result = await createListingAction({ ...listingData, images: uploadResults });
 
                 if (!result.success) {
                     // Cleanup uploaded images on server error
@@ -73,6 +74,7 @@ export const useListingForm = (mode: ListingFormMode, listingId?: string) => {
 
                 const successData = await result.data;
 
+                toast.success('Listing created successfully');
                 startTransition(() => {
                     router.push(`/listings/${successData.listingId}`);
                 })
@@ -91,6 +93,7 @@ export const useListingForm = (mode: ListingFormMode, listingId?: string) => {
                     return;
                 }
 
+                toast.success('Listing updated successfully');
                 router.back();
             }
         } catch (error) {
@@ -106,6 +109,8 @@ export const useListingForm = (mode: ListingFormMode, listingId?: string) => {
                     ? error.message
                     : 'An unexpected error occurred. Please try again.'
             );
+
+            toast.error('An unexpected error occurred. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
