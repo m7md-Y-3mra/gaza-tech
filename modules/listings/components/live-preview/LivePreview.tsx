@@ -57,7 +57,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
       {/* Title */}
       <div className="mb-2 flex items-start justify-between">
         <h3 className="text-foreground line-clamp-2 flex-1 text-lg font-bold">
-          {title}
+          {title || 'Product Title'}
         </h3>
         {productCondition && (
           <span className="text-muted-foreground ml-2 text-xs">
@@ -68,7 +68,7 @@ const LivePreview: React.FC<LivePreviewProps> = ({
 
       {/* Description */}
       <p className="text-muted-foreground mb-3 line-clamp-3 text-sm">
-        {description}
+        {description || 'Product description will appear here...'}
       </p>
 
       {/* Price */}

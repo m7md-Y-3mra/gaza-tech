@@ -5,11 +5,11 @@ import { ImageFile } from '@/modules/listings/types';
 export const useLivePreview = ({ categories, locations }: UseLivePreviewProps) => {
     const { watch } = useFormContext();
 
-    const title = watch('title', "Product Title");
+    const title = watch('title');
     const description =
-        watch('description', 'Product description will appear here...');
-    const price = watch('price', 0);
-    const currency = watch('currency', 'ILS');
+        watch('description');
+    const price = watch('price');
+    const currency = watch('currency');
     const categoryId = watch('category_id');
     const locationId = watch('location_id');
     const productCondition = watch('product_condition');
