@@ -17,8 +17,8 @@ type LocationRow = Database['public']['Tables']['locations']['Row'];
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
 
 type GetListingDetailsRes = ListingRow & {
-  marketplace_categories: CategoryRow[];
-  locations: LocationRow[];
+  marketplace_categories: CategoryRow;
+  locations: LocationRow;
   listing_images: ListingImageRow[];
 };
 
@@ -93,7 +93,7 @@ export async function getListingDetailsQuery(
     return null;
   }
 
-  return data as GetListingDetailsRes;
+  return data as unknown as GetListingDetailsRes;
 }
 
 /**
