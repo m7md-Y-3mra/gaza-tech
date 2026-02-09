@@ -16,10 +16,9 @@ import {
   MAX_UPLOAD_SIZE,
 } from '@/constants/image-file';
 
-const ImageUpload: React.FC<ImageUploadProps> = ({
-  name,
-  disabled = false,
-}) => {
+const ImageUpload: React.FC<ImageUploadProps> = (props) => {
+  const { mode, name, disabled = false } = props;
+  const initialImages = mode === 'update' ? props.initialImages : [];
   const {
     formState: { errors, touchedFields, isSubmitted },
   } = useFormContext();
@@ -31,7 +30,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     addImages,
     removeImage,
     setThumbnail,
-  } = useImageUpload(name);
+  } = useImageUpload(
+    mode === 'create' ? { mode, name } : { mode, name, initialImages }
+  );
 
   const error = errors[name];
   const touched = touchedFields[name];
@@ -123,6 +124,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                     : 'border-2 border-transparent'
                 }`}
               >
+                lks
                 <Image
                   src={image.preview}
                   alt="Preview"

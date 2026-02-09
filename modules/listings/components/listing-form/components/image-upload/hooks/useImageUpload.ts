@@ -1,11 +1,13 @@
 import { useState, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { ImageFile } from '../types';
+import type { CreateImageFile, ImageFile, UseImageUploadProps } from '../types';
 import { MAX_IMAGES_NUMBER } from '@/constants/image-file';
 
-export const useImageUpload = (name: string) => {
+export const useImageUpload = (props: UseImageUploadProps) => {
+    const { mode, name } = props
+    const initialImages = mode == 'update' ? props.initialImages : []
     const { setValue, setError, clearErrors } = useFormContext();
-    const [images, setImages] = useState<ImageFile[]>([]);
+    const [images, setImages] = useState<ImageFile[]>(initialImages);
     const [isDragging, setIsDragging] = useState(false);
 
     const addImages = useCallback(
@@ -30,6 +32,7 @@ export const useImageUpload = (name: string) => {
                     file,
                     preview: URL.createObjectURL(file),
                     isThumbnail: images.length === 0 && validFiles.length === 0,
+                    isExisting: false
                 };
                 validFiles.push(imageFile);
             });
@@ -46,7 +49,10 @@ export const useImageUpload = (name: string) => {
             if (validFiles.length > 0) {
                 const newImages = [...images, ...validFiles];
                 setImages(newImages);
-                const formImages = newImages.map((img) => ({
+                const formImages = newImages.filter(
+                    (img): img is CreateImageFile =>
+                        !img.isExisting
+                ).map((img) => ({
                     file: img.file,
                     isThumbnail: img.isThumbnail,
                 }));
@@ -73,7 +79,10 @@ export const useImageUpload = (name: string) => {
             }
 
             setImages(newImages);
-            const formImages = newImages.map((img) => ({
+            const formImages = newImages.filter(
+                (img): img is CreateImageFile =>
+                    !img.isExisting
+            ).map((img) => ({
                 file: img.file,
                 isThumbnail: img.isThumbnail,
             }));
@@ -96,7 +105,10 @@ export const useImageUpload = (name: string) => {
                 isThumbnail: img.id === id,
             }));
             setImages(newImages);
-            const formImages = newImages.map((img) => ({
+            const formImages = newImages.filter(
+                (img): img is CreateImageFile =>
+                    !img.isExisting
+            ).map((img) => ({
                 file: img.file,
                 isThumbnail: img.isThumbnail,
             }));
@@ -111,7 +123,10 @@ export const useImageUpload = (name: string) => {
             const [removed] = newImages.splice(startIndex, 1);
             newImages.splice(endIndex, 0, removed);
             setImages(newImages);
-            const formImages = newImages.map((img) => ({
+            const formImages = newImages.filter(
+                (img): img is CreateImageFile =>
+                    !img.isExisting
+            ).map((img) => ({
                 file: img.file,
                 isThumbnail: img.isThumbnail,
             }));

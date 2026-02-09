@@ -20,10 +20,9 @@ import CategorySelectField from './components/category-select-field';
 const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
   const { mode, groupedCategories, locations } = props;
   const listingId = mode === 'update' ? props.listingId : undefined;
+  const initialData = mode === 'update' ? props.initialData : undefined;
   const { form, isSubmitting, submitError, onSubmit, handleCancel, isPending } =
-    useListingForm(mode, listingId);
-
-  console.log(form.getValues());
+    useListingForm(mode, listingId, initialData);
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit} className="space-y-6">
@@ -42,7 +41,20 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                 </p>
               </div>
 
-              <ImageUpload name="images" disabled={isSubmitting} />
+              {mode == 'create' ? (
+                <ImageUpload
+                  mode="create"
+                  name="images"
+                  disabled={isSubmitting}
+                />
+              ) : (
+                <ImageUpload
+                  mode="update"
+                  name="images"
+                  disabled={isSubmitting}
+                  initialImages={initialData?.images || []}
+                />
+              )}
 
               {/* Tips Box */}
               <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4">

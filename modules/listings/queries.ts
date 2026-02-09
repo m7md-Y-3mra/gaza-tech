@@ -7,7 +7,7 @@ import { authHandler } from '@/utils/auth-handler';
 import { GroupedCategory, ImageUploadResult } from './types';
 import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
-import { createListingServerSchema } from './schema';
+import { createListingServerSchema, updateListingServerSchema } from './schema';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -385,24 +385,61 @@ export async function createListingQuery(
 }
 
 /**
- * Update an existing listing
- * Updates listing data in the database
+ * Update an existing listing with validation
+ * Updates listing data in the database with Zod schema validation
  */
 export async function updateListingQuery(
   listingId: string,
-  listingData: Database['public']['Tables']['marketplace_listings']['Update']
+  listingData: z.infer<typeof updateListingServerSchema>
 ): Promise<void> {
   'use server';
   const client = await createClient();
+  const user = await authHandler();
 
+  // Validate listing data
+  const validatedData = zodValidation(updateListingServerSchema, listingData);
+  const { images, ...updateData } = validatedData;
+
+  // Update listing - ensure user is the seller
   const { error } = await client
     .from('marketplace_listings')
-    .update(listingData)
-    .eq('listing_id', listingId);
+    .update(updateData)
+    .eq('listing_id', listingId)
+    .eq('seller_id', user.id);
 
   if (error) {
     console.error('Error updating listing:', error);
     throw new Error('Failed to update listing');
   }
-}
 
+  // Handle images update
+  if (images && images.length > 0) {
+    // Delete existing images
+    const { error: deleteError } = await client
+      .from('listing_images')
+      .delete()
+      .eq('listing_id', listingId);
+
+    if (deleteError) {
+      console.error('Error deleting existing images:', deleteError);
+      throw new Error('Failed to update listing images');
+    }
+
+    // Insert new/updated images
+    const imageRecords = images.map((img, index) => ({
+      listing_id: listingId,
+      image_url: img.url,
+      is_thumbnail: img.isThumbnail || index === 0,
+      sort_order: index,
+    }));
+
+    const { error: insertError } = await client
+      .from('listing_images')
+      .insert(imageRecords);
+
+    if (insertError) {
+      console.error('Error inserting updated images:', insertError);
+      throw new Error('Failed to save listing images');
+    }
+  }
+}

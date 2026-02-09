@@ -84,3 +84,33 @@ export const createListingServerSchema = createListingSchema.extend({
         isThumbnail: z.boolean(),
     }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
 }) satisfies ZodType<InsertListings & { images: ImageUploadResult[] }>;
+
+// Update listing schemas - allows partial updates
+export const updateListingClientSchema = createListingClientSchema.partial().extend({
+    // Images can be a mix of existing URLs and new uploads
+    images: z.array(z.union([
+        // Existing image (has url string)
+        z.object({
+            preview: z.string(),
+            isThumbnail: z.boolean(),
+            isExisting: z.literal(true),
+        }),
+        // New upload (has File)
+        z.object({
+            file: imageFileSchema,
+            isThumbnail: z.boolean(),
+            isExisting: z.literal(false).optional(),
+        }),
+    ]), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
+});
+
+export const updateListingServerSchema = createListingSchema.partial().omit({
+    seller_id: true,
+}).extend({
+    images: z.array(z.object({
+        path: z.string().optional(),
+        url: z.string(),
+        isThumbnail: z.boolean(),
+        isExisting: z.boolean().optional(),
+    }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
+});
