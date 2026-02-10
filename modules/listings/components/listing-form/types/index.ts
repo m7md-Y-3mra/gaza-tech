@@ -1,4 +1,6 @@
 import { GroupedCategory } from "@/modules/listings/types";
+import { Specification } from "@/types/supabase";
+import { ImageFileUploadImage } from "../components/image-upload/types";
 
 export type ListingFormMode = 'create' | 'update';
 
@@ -11,17 +13,8 @@ export type ListingFormInitialData = {
     category_id: string;
     product_condition: string;
     location_id: string;
-    specifications: Array<{
-        label: string;
-        value: string;
-        isCustom: boolean;
-    }>;
-    images: Array<{
-        id: string;
-        preview: string;
-        isThumbnail: boolean;
-        isExisting: true;
-    }>;
+    specifications: Array<Specification>;
+    images: Array<ImageFileUploadImage>
 };
 
 type ListingFormClient = {
@@ -40,4 +33,20 @@ type ListingFormClientUpdate = ListingFormClient & {
 }
 
 export type ListingFormClientProps = ListingFormClientCreate | ListingFormClientUpdate;
+
+export type ImageFileBase = {
+    isThumbnail: boolean;
+};
+
+export type CreateImageFile = ImageFileBase & {
+    isExisting?: false,
+    file: File;
+}
+
+export type UpdateImageFile = ImageFileBase & {
+    preview: string;
+    isExisting: true,
+}
+
+export type ImageFile = CreateImageFile | UpdateImageFile;
 

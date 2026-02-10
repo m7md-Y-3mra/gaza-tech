@@ -15,10 +15,13 @@ import {
   MAX_IMAGES_NUMBER,
   MAX_UPLOAD_SIZE,
 } from '@/constants/image-file';
+import type { ImageFileUploadImage } from './types';
 
 const ImageUpload: React.FC<ImageUploadProps> = (props) => {
   const { mode, name, disabled = false } = props;
-  const initialImages = mode === 'update' ? props.initialImages : [];
+  const initialImages = (
+    mode === 'update' ? props.initialImages : []
+  ) as ImageFileUploadImage[];
   const {
     formState: { errors, touchedFields, isSubmitted },
   } = useFormContext();

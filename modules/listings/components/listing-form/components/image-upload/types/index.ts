@@ -1,19 +1,16 @@
-export type ImageFileBase = {
+import { CreateImageFile, ImageFileBase, UpdateImageFile } from "../../../types";
+
+export type ImageFileBaseUploadImage = ImageFileBase & {
     id: string;
-    preview: string;
-    isThumbnail: boolean;
 };
 
-export type CreateImageFile = ImageFileBase & {
-    isExisting: false,
-    file: File;
+export type CreateImageFileUploadImage = ImageFileBaseUploadImage & CreateImageFile & {
+    preview: string;
 }
 
-export type UpdateImageFile = ImageFileBase & {
-    isExisting: true,
-}
+export type UpdateImageFileUploadImage = ImageFileBaseUploadImage & UpdateImageFile
 
-export type ImageFile = CreateImageFile | UpdateImageFile;
+export type ImageFileUploadImage = CreateImageFileUploadImage | UpdateImageFileUploadImage;
 
 type ImageUploadCreateProps = {
     mode: 'create'
@@ -21,7 +18,7 @@ type ImageUploadCreateProps = {
 
 type ImageUploadUpdateProps = {
     mode: 'update'
-    initialImages: UpdateImageFile[]
+    initialImages: ImageFileUploadImage[]
 }
 
 export type ImageUploadProps = {

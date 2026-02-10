@@ -1,7 +1,8 @@
 import { z, ZodType } from 'zod';
 import { Database } from '@/types/supabase';
-import { Currency, ImageFile, ImageUploadResult, InsertListings, InsertListingsWithoutSellerId, ProductCondition, specifications } from './types';
+import { Currency, ImageUploadResult, InsertListings, InsertListingsWithoutSellerId, ProductCondition, specifications } from './types';
 import { imageFileSchema } from '@/schemas/image-file';
+import { CreateImageFile } from './components/listing-form/types';
 
 const PredefinedSpecificationSchema = z.object({
     label: z.enum(Object.keys(specifications), { message: 'Please select a valid specification type' }),
@@ -67,16 +68,24 @@ export const createListingSchema = ListingSchema
         content_status: true,
     }) satisfies ZodType<InsertListings>;
 
+const createListingImageSchema = z.object({
+    file: imageFileSchema,
+    isThumbnail: z.boolean(),
+    isExisting: z.literal(false).optional(),
+});
+
+const updateListingImageSchema = z.object({
+    preview: z.string(),
+    isThumbnail: z.boolean(),
+    isExisting: z.literal(true),
+});
+
 export const createListingClientSchema = createListingSchema
     .omit({
         seller_id: true
     }).extend({
-        images: z.array(z.object({
-            file: imageFileSchema,
-            isThumbnail: z.boolean(),
-            isExisting: z.literal(false).optional(),
-        }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
-    }) satisfies ZodType<InsertListingsWithoutSellerId & { images: ImageFile[] }>
+        images: z.array(createListingImageSchema).min(1, { message: "Please upload at least one image" })
+    }) satisfies ZodType<InsertListingsWithoutSellerId & { images: CreateImageFile[] }>
 
 export const createListingServerSchema = createListingSchema.extend({
     images: z.array(z.object({
@@ -90,18 +99,10 @@ export const createListingServerSchema = createListingSchema.extend({
 export const updateListingClientSchema = createListingClientSchema.partial().extend({
     // Images can be a mix of existing URLs and new uploads
     images: z.array(z.union([
-        // Existing image (has url string)
-        z.object({
-            preview: z.string(),
-            isThumbnail: z.boolean(),
-            isExisting: z.literal(true),
-        }),
         // New upload (has File)
-        z.object({
-            file: imageFileSchema,
-            isThumbnail: z.boolean(),
-            isExisting: z.literal(false).optional(),
-        }),
+        createListingImageSchema,
+        // Existing image (has url string)
+        updateListingImageSchema
     ]), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
 });
 

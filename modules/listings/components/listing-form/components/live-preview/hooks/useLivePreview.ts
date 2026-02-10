@@ -1,13 +1,15 @@
 import { useFormContext } from 'react-hook-form';
 import { UseLivePreviewProps } from '../types';
-import { ImageFile } from '@/modules/listings/types';
+import { ImageFile } from '@/modules/listings/components/listing-form/types';
 
-export const useLivePreview = ({ groupedCategories, locations }: UseLivePreviewProps) => {
+export const useLivePreview = ({
+    groupedCategories,
+    locations,
+}: UseLivePreviewProps) => {
     const { watch } = useFormContext();
 
     const title = watch('title');
-    const description =
-        watch('description');
+    const description = watch('description');
     const price = watch('price');
     const currency = watch('currency');
     const categoryId = watch('category_id');
@@ -18,13 +20,18 @@ export const useLivePreview = ({ groupedCategories, locations }: UseLivePreviewP
     // Find category from grouped categories
     // Need to search through all children in all groups
     const category = groupedCategories
-        ?.flatMap(group => group.children)
+        ?.flatMap((group) => group.children)
         .find((c) => c.value === categoryId);
 
     const location = locations?.find((l) => l.value === locationId);
 
     const thumbnailImage = images.find((img) => img.isThumbnail) || images[0];
-    const thumbnailImagePreview = Boolean(thumbnailImage?.file) ? URL.createObjectURL(thumbnailImage.file) : '';
+
+    const thumbnailImagePreview = Boolean(thumbnailImage)
+        ? thumbnailImage.isExisting === true
+            ? thumbnailImage.preview
+            : URL.createObjectURL(thumbnailImage.file)
+        : '';
 
     return {
         title,
@@ -35,7 +42,6 @@ export const useLivePreview = ({ groupedCategories, locations }: UseLivePreviewP
         location,
         productCondition,
         images,
-        thumbnailImagePreview
-    }
-
-}
+        thumbnailImagePreview,
+    };
+};

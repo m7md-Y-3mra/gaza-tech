@@ -1,8 +1,8 @@
-import type { ImageFile } from '../types';
+import type { ImageFileUploadImage } from '../types';
 
 // ─── State ───────────────────────────────────────────────────────────
 export type ImageState = {
-    images: ImageFile[];
+    images: ImageFileUploadImage[];
 };
 
 // ─── Actions ─────────────────────────────────────────────────────────
@@ -40,7 +40,7 @@ export const imageReducer = (
     switch (action.type) {
         case 'ADD_IMAGES': {
             const { files, remainingSlots } = action.payload;
-            const newImageFiles: ImageFile[] = files
+            const newImageFiles: ImageFileUploadImage[] = files
                 .slice(0, remainingSlots)
                 .map((file, i) => ({
                     id: `${Date.now()}-${Math.random()}`,

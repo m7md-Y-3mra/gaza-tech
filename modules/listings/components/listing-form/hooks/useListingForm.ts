@@ -1,12 +1,20 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useTransition, useMemo } from 'react';
-import { createListingClientSchema, updateListingClientSchema } from '@/modules/listings/schema';
+import {
+    createListingClientSchema,
+    updateListingClientSchema,
+} from '@/modules/listings/schema';
 import {
     createListingAction,
     updateListingAction,
 } from '@/modules/listings/actions';
-import type { ListingFormInitialData, ListingFormMode } from '../types';
+import type {
+    CreateImageFile,
+    ListingFormInitialData,
+    ListingFormMode,
+    UpdateImageFile,
+} from '../types';
 import type { z } from 'zod';
 import { useRouter } from 'nextjs-toploader/app';
 import {
@@ -56,11 +64,13 @@ export const useListingForm = (
             product_condition: DEFAULT_PRODUCT_CONDITION,
             location_id: '',
             specifications: [],
-            images: []
+            images: [],
         };
 
     const form = useForm<ListingFormData>({
-        resolver: zodResolver(mode === 'create' ? createListingClientSchema : updateListingClientSchema),
+        resolver: zodResolver(
+            mode === 'create' ? createListingClientSchema : updateListingClientSchema
+        ),
         defaultValues,
         mode: 'onBlur',
     });
@@ -68,7 +78,7 @@ export const useListingForm = (
     // Track initial image URLs for detecting removed images in update mode
     const initialImageUrls = useMemo(() => {
         if (mode === 'update' && initialData?.images) {
-            return initialData.images.map(img => img.preview);
+            return initialData.images.map((img) => img.preview);
         }
         return [];
     }, [mode, initialData?.images]);
@@ -86,7 +96,10 @@ export const useListingForm = (
                 const uploadResults = await uploadImages(images);
                 uploadedPaths = uploadResults.map((r) => r.path);
 
-                const result = await createListingAction({ ...listingData, images: uploadResults });
+                const result = await createListingAction({
+                    ...listingData,
+                    images: uploadResults,
+                });
 
                 if (!result.success) {
                     if (uploadedPaths.length > 0) {
@@ -106,29 +119,35 @@ export const useListingForm = (
                 const { images: formImages, ...listingDataWithoutImages } = data;
 
                 // Separate existing and new images
-                const existingImages = formImages.filter(
-                    (img): img is { preview: string; isThumbnail: boolean; isExisting: true } =>
-                        'isExisting' in img && img.isExisting === true
-                ).filter(
-                    (img): img is { preview: string; isThumbnail: boolean; isExisting: true } =>
-                        'isExisting' in img && img.isExisting === true
-                );
+                const existingImages = formImages
+                    .filter(
+                        (img): img is UpdateImageFile =>
+                            'isExisting' in img && img.isExisting === true
+                    )
+                    .filter(
+                        (img): img is UpdateImageFile =>
+                            'isExisting' in img && img.isExisting === true
+                    );
 
-                const newImages = formImages.filter(
-                    (img): img is { file: File; isThumbnail: boolean } =>
-                        'file' in img
-                ).filter(
-                    (img): img is { file: File; isThumbnail: boolean } =>
-                        'file' in img
-                );
+                const newImages = formImages
+                    .filter(
+                        (img): img is CreateImageFile => 'file' in img
+                    )
+                    .filter(
+                        (img): img is CreateImageFile => 'file' in img
+                    );
 
                 // Find images that were removed (in initial but not in final)
-                const currentExistingUrls = new Set(existingImages.map(img => img.preview));
-                const removedImageUrls = initialImageUrls.filter(url => !currentExistingUrls.has(url));
+                const currentExistingUrls = new Set(
+                    existingImages.map((img) => img.preview)
+                );
+                const removedImageUrls = initialImageUrls.filter(
+                    (url) => !currentExistingUrls.has(url)
+                );
 
                 // Extract paths and delete removed images from storage
                 const removedPaths = removedImageUrls
-                    .map(url => extractPathFromUrl(url))
+                    .map((url) => extractPathFromUrl(url))
                     .filter((path): path is string => path !== null);
 
                 if (removedPaths.length > 0) {
@@ -141,7 +160,11 @@ export const useListingForm = (
                 }
 
                 // Upload new images
-                let uploadResults: { path: string; url: string; isThumbnail: boolean }[] = [];
+                let uploadResults: {
+                    path: string;
+                    url: string;
+                    isThumbnail: boolean;
+                }[] = [];
                 if (newImages.length > 0) {
                     uploadResults = await uploadImages(newImages);
                     uploadedPaths = uploadResults.map((r) => r.path);
@@ -209,7 +232,6 @@ export const useListingForm = (
         submitError: submitError || uploadError,
         onSubmit: form.handleSubmit(onSubmit),
         handleCancel,
-        isPending
+        isPending,
     };
 };
-
