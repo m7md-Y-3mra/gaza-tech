@@ -74,6 +74,7 @@ export const createListingClientSchema = createListingSchema
         images: z.array(z.object({
             file: imageFileSchema,
             isThumbnail: z.boolean(),
+            isExisting: z.literal(false).optional(),
         }), { message: "Images are required" }).min(1, { message: "Please upload at least one image" })
     }) satisfies ZodType<InsertListingsWithoutSellerId & { images: ImageFile[] }>
 

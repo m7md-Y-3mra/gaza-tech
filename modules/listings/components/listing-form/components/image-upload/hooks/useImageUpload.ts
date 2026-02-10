@@ -1,14 +1,32 @@
-import { useState, useCallback } from 'react';
+import { useReducer, useState, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { CreateImageFile, ImageFile, UseImageUploadProps } from '../types';
+import type { ImageFile, UseImageUploadProps } from '../types';
+import { imageReducer } from '../reducers';
 import { MAX_IMAGES_NUMBER } from '@/constants/image-file';
 
 export const useImageUpload = (props: UseImageUploadProps) => {
-    const { mode, name } = props
-    const initialImages = mode == 'update' ? props.initialImages : []
+    const { mode, name } = props;
+    const initialImages: ImageFile[] =
+        mode === 'update' ? props.initialImages : [];
     const { setValue, setError, clearErrors } = useFormContext();
-    const [images, setImages] = useState<ImageFile[]>(initialImages);
+
+    const [state, dispatch] = useReducer(imageReducer, { images: initialImages });
     const [isDragging, setIsDragging] = useState(false);
+
+    const { images } = state;
+
+    /** Sync the reducer state to react-hook-form */
+    const syncFormValue = useCallback(
+        (imgs: ImageFile[]) => {
+            const images = imgs.map(({ id: _id, ...rest }) => rest);
+            setValue(name, images, {
+                shouldTouch: true,
+                shouldDirty: true,
+                shouldValidate: true,
+            });
+        },
+        [name, setValue]
+    );
 
     const addImages = useCallback(
         (files: FileList | File[]) => {
@@ -23,116 +41,40 @@ export const useImageUpload = (props: UseImageUploadProps) => {
                 return;
             }
 
-            const validFiles: ImageFile[] = [];
-            const errors: string[] = [];
-
-            fileArray.slice(0, remainingSlots).forEach((file) => {
-                const imageFile: ImageFile = {
-                    id: `${Date.now()}-${Math.random()}`,
-                    file,
-                    preview: URL.createObjectURL(file),
-                    isThumbnail: images.length === 0 && validFiles.length === 0,
-                    isExisting: false
-                };
-                validFiles.push(imageFile);
-            });
-
-            if (errors.length > 0) {
-                setError(name, {
-                    type: 'manual',
-                    message: errors[0],
-                });
-            } else {
+            if (fileArray.length > 0) {
                 clearErrors(name);
             }
 
-            if (validFiles.length > 0) {
-                const newImages = [...images, ...validFiles];
-                setImages(newImages);
-                const formImages = newImages.filter(
-                    (img): img is CreateImageFile =>
-                        !img.isExisting
-                ).map((img) => ({
-                    file: img.file,
-                    isThumbnail: img.isThumbnail,
-                }));
-                setValue(name, formImages, {
-                    shouldTouch: true,
-                    shouldDirty: true,
-                    shouldValidate: true
-                });
-            }
+            dispatch({ type: 'ADD_IMAGES', payload: { files: fileArray, remainingSlots } });
+
+            syncFormValue([...images]);
         },
-        [images, name, setValue, setError, clearErrors]
+        [images, name, setError, clearErrors, syncFormValue]
     );
 
     const removeImage = useCallback(
         (id: string) => {
-            const newImages = images.filter((img) => img.id !== id);
-
-            // If removed image was thumbnail, make first image the thumbnail
-            if (newImages.length > 0) {
-                const removedWasThumbnail = images.find((img) => img.id === id)?.isThumbnail;
-                if (removedWasThumbnail) {
-                    newImages[0].isThumbnail = true;
-                }
-            }
-
-            setImages(newImages);
-            const formImages = newImages.filter(
-                (img): img is CreateImageFile =>
-                    !img.isExisting
-            ).map((img) => ({
-                file: img.file,
-                isThumbnail: img.isThumbnail,
-            }));
-            setValue(name, formImages);
+            dispatch({ type: 'REMOVE_IMAGE', payload: { id } });
+            syncFormValue([...images]);
             clearErrors(name);
-
-            // Revoke object URL to prevent memory leaks
-            const removedImage = images.find((img) => img.id === id);
-            if (removedImage) {
-                URL.revokeObjectURL(removedImage.preview);
-            }
         },
-        [images, name, setValue, clearErrors]
+        [images, name, clearErrors, syncFormValue]
     );
 
     const setThumbnail = useCallback(
         (id: string) => {
-            const newImages = images.map((img) => ({
-                ...img,
-                isThumbnail: img.id === id,
-            }));
-            setImages(newImages);
-            const formImages = newImages.filter(
-                (img): img is CreateImageFile =>
-                    !img.isExisting
-            ).map((img) => ({
-                file: img.file,
-                isThumbnail: img.isThumbnail,
-            }));
-            setValue(name, formImages);
+            dispatch({ type: 'SET_THUMBNAIL', payload: { id } });
+            syncFormValue([...images]);
         },
-        [images, name, setValue]
+        [images, syncFormValue]
     );
 
     const reorderImages = useCallback(
         (startIndex: number, endIndex: number) => {
-            const newImages = Array.from(images);
-            const [removed] = newImages.splice(startIndex, 1);
-            newImages.splice(endIndex, 0, removed);
-            setImages(newImages);
-            const formImages = newImages.filter(
-                (img): img is CreateImageFile =>
-                    !img.isExisting
-            ).map((img) => ({
-                file: img.file,
-                isThumbnail: img.isThumbnail,
-            }));
-            setValue(name, formImages);
+            dispatch({ type: 'REORDER_IMAGES', payload: { startIndex, endIndex } });
+            syncFormValue([...images]);
         },
-        [images, name, setValue]
+        [images, syncFormValue]
     );
 
     return {

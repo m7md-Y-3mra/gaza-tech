@@ -109,8 +109,15 @@ export const useListingForm = (
                 const existingImages = formImages.filter(
                     (img): img is { preview: string; isThumbnail: boolean; isExisting: true } =>
                         'isExisting' in img && img.isExisting === true
+                ).filter(
+                    (img): img is { preview: string; isThumbnail: boolean; isExisting: true } =>
+                        'isExisting' in img && img.isExisting === true
                 );
+
                 const newImages = formImages.filter(
+                    (img): img is { file: File; isThumbnail: boolean } =>
+                        'file' in img
+                ).filter(
                     (img): img is { file: File; isThumbnail: boolean } =>
                         'file' in img
                 );
