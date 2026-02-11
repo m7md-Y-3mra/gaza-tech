@@ -17,17 +17,15 @@ import type {
 } from '../types';
 import type { z } from 'zod';
 import { useRouter } from 'nextjs-toploader/app';
-import {
-    DEFAULT_CURRENCY,
-    DEFAULT_PRODUCT_CONDITION,
-} from '@/modules/listings/constant';
 import { useImageUploader } from '../components/image-upload/hooks/useImageUploader';
 import { toast } from 'sonner';
 import { extractPathFromUrl } from '@/utils/supabase';
+import { getDefaultValues } from '../constant';
 
 type CreateFormData = z.infer<typeof createListingClientSchema>;
 type UpdateFormData = z.infer<typeof updateListingClientSchema>;
 type ListingFormData = CreateFormData | UpdateFormData;
+
 
 export const useListingForm = (
     mode: ListingFormMode,
@@ -42,36 +40,11 @@ export const useListingForm = (
     const { uploadImages, deleteImages, isUploading, uploadError } =
         useImageUploader();
 
-    // Determine default values based on mode
-    const defaultValues = initialData
-        ? {
-            title: initialData.title,
-            description: initialData.description,
-            price: initialData.price,
-            currency: initialData.currency,
-            category_id: initialData.category_id,
-            product_condition: initialData.product_condition,
-            location_id: initialData.location_id,
-            specifications: initialData.specifications,
-            images: initialData.images,
-        }
-        : {
-            title: '',
-            description: '',
-            price: 0,
-            currency: DEFAULT_CURRENCY,
-            category_id: '',
-            product_condition: DEFAULT_PRODUCT_CONDITION,
-            location_id: '',
-            specifications: [],
-            images: [],
-        };
-
     const form = useForm<ListingFormData>({
         resolver: zodResolver(
             mode === 'create' ? createListingClientSchema : updateListingClientSchema
         ),
-        defaultValues,
+        defaultValues: getDefaultValues(initialData),
         mode: 'onBlur',
     });
 

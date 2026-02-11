@@ -3,6 +3,7 @@ import {
   getLocationsAction,
   getListingDetailsAction,
 } from '../../actions';
+import { Specification } from '../../types';
 import ListingFormClient from './ListingFormClient';
 import type { ListingFormInitialData } from './types';
 
@@ -56,9 +57,7 @@ const ListingForm = async ({
       category_id: listing.category_id,
       product_condition: listing.product_condition,
       location_id: listing.location_id,
-      specifications:
-        (listing.specifications as ListingFormInitialData['specifications']) ||
-        [],
+      specifications: listing.specifications || [],
       images: listing.listing_images.map((img) => ({
         id: img.listing_image_id,
         preview: img.image_url,

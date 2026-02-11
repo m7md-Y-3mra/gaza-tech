@@ -1,5 +1,4 @@
-import { GroupedCategory } from "@/modules/listings/types";
-import { Specification } from "@/types/supabase";
+import { GroupedCategory, Specification } from "@/modules/listings/types";
 import { ImageFileUploadImage } from "../components/image-upload/types";
 
 export type ListingFormMode = 'create' | 'update';
@@ -49,4 +48,3 @@ export type UpdateImageFile = ImageFileBase & {
 }
 
 export type ImageFile = CreateImageFile | UpdateImageFile;
-

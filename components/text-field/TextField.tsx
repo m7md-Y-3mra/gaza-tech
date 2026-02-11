@@ -1,7 +1,7 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, get } from 'react-hook-form';
 import { AlertCircle, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import PasswordStrength from './components/password-strength';
@@ -37,8 +37,8 @@ const TextField: React.FC<TextFieldProps> = ({
   } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
 
-  const error = errors[name];
-  const touched = touchedFields[name];
+  const error = get(errors, name);
+  const touched = get(touchedFields, name);
   const hasError = (isSubmitted || touched) && !!error;
   const isPassword = type === 'password';
   const inputType = isPassword ? (showPassword ? 'text' : 'password') : type;

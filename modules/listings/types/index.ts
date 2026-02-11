@@ -30,6 +30,8 @@ export const specifications = {
     battery: 'Battery',
 } as const;
 
+export type SpecificationEnum = (typeof specifications)[keyof typeof specifications];
+
 export type InsertListings = Database['public']['Tables']['marketplace_listings']['Insert'];
 
 export type InsertListingsWithoutSellerId = Omit<Database['public']['Tables']['marketplace_listings']['Insert'], 'seller_id'>;
@@ -47,3 +49,17 @@ export type GroupedCategory = {
     parentLabel: string;
     children: Array<{ value: string; label: string }>;
 };
+
+export type PredefinedSpecificationType = {
+    label: SpecificationEnum;
+    value: string;
+    isCustom: false;
+}
+
+export type CustomSpecificationType = {
+    label: string;
+    value: string;
+    isCustom: true;
+}
+
+export type Specification = PredefinedSpecificationType | CustomSpecificationType;
