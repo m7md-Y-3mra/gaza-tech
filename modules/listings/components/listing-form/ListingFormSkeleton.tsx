@@ -17,14 +17,33 @@ export const ListingFormSkeleton = () => {
                   <Skeleton className="mb-2 h-8 w-40" />
                   <Skeleton className="h-4 w-80" />
                 </div>
-                {/* Image upload grid skeleton */}
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                  <Skeleton className="aspect-square rounded-xl" />
-                  <Skeleton className="aspect-square rounded-xl" />
-                  <Skeleton className="aspect-square rounded-xl" />
-                  <Skeleton className="aspect-square rounded-xl" />
-                  <Skeleton className="aspect-square rounded-xl" />
+
+                {/* Upload Area Skeleton - matches the dashed drag-and-drop zone */}
+                <div className="border-muted-foreground/30 mb-6 rounded-xl border-3 border-dashed p-12">
+                  <div className="flex flex-col items-center">
+                    {/* Gradient icon placeholder */}
+                    <Skeleton className="mb-4 h-20 w-20 rounded-2xl" />
+                    {/* "Upload Product Images" title */}
+                    <Skeleton className="mb-2 h-6 w-52" />
+                    {/* "Drag and drop or click to browse" */}
+                    <Skeleton className="mb-4 h-4 w-56" />
+                    {/* "Choose Files" button */}
+                    <Skeleton className="h-12 w-40 rounded-xl" />
+                    {/* Supported formats text */}
+                    <Skeleton className="mt-4 h-3 w-72" />
+                  </div>
                 </div>
+
+                {/* Image Grid Skeleton - responsive cols matching the real grid */}
+                <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Skeleton
+                      key={i}
+                      className="border-muted-foreground/30 aspect-square rounded-xl border-2 border-dashed"
+                    />
+                  ))}
+                </div>
+
                 {/* Tips Box skeleton */}
                 <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4">
                   <div className="flex items-start space-x-3">
