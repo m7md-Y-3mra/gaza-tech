@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/client';
 import { useState, useCallback } from 'react';
 import type { ImageUploadResult } from '@/modules/listings/types';
-
-const BUCKET_NAME = 'marketplace-image';
+import { LISTING_BUCKET_NAME } from '@/constants/listings';
 
 /**
  * Hook for uploading/deleting images to Supabase storage (client-side)
@@ -38,7 +37,7 @@ export const useImageUploader = () => {
 
                     // Upload to storage
                     const { data, error } = await supabase.storage
-                        .from(BUCKET_NAME)
+                        .from(LISTING_BUCKET_NAME)
                         .upload(fileName, file, {
                             cacheControl: '3600',
                             upsert: false,
@@ -51,7 +50,7 @@ export const useImageUploader = () => {
                     // Get public URL
                     const {
                         data: { publicUrl },
-                    } = supabase.storage.from(BUCKET_NAME).getPublicUrl(data.path);
+                    } = supabase.storage.from(LISTING_BUCKET_NAME).getPublicUrl(data.path);
 
                     results.push({
                         path: data.path,
@@ -70,7 +69,7 @@ export const useImageUploader = () => {
                 // Cleanup any successfully uploaded images on error
                 if (results.length > 0) {
                     const paths = results.map((r) => r.path);
-                    await supabase.storage.from(BUCKET_NAME).remove(paths);
+                    await supabase.storage.from(LISTING_BUCKET_NAME).remove(paths);
                 }
 
                 throw error;
@@ -90,7 +89,7 @@ export const useImageUploader = () => {
 
         const supabase = createClient();
 
-        const { error } = await supabase.storage.from(BUCKET_NAME).remove(paths);
+        const { error } = await supabase.storage.from(LISTING_BUCKET_NAME).remove(paths);
 
         if (error) {
             console.error('Failed to delete images:', error);
