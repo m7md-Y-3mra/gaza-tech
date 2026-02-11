@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useState, useCallback } from 'react';
 import type { ImageUploadResult } from '@/modules/listings/types';
 import { LISTING_BUCKET_NAME } from '@/constants/listings';
+import { compressImage } from '@/lib/compress-image';
 
 /**
  * Hook for uploading/deleting images to Supabase storage (client-side)
@@ -29,16 +30,18 @@ export const useImageUploader = () => {
 
             try {
                 for (const { file, isThumbnail } of files) {
+                    // Compress image before upload
+                    const compressedFile = await compressImage(file);
+
                     // Generate unique filename
                     const timestamp = Date.now();
                     const randomId = Math.random().toString(36).substring(2, 8);
-                    const extension = file.name.split('.').pop();
-                    const fileName = `listings/${timestamp}-${randomId}.${extension}`;
+                    const fileName = `listings/${timestamp}-${randomId}.webp`;
 
-                    // Upload to storage
+                    // Upload compressed image to storage
                     const { data, error } = await supabase.storage
                         .from(LISTING_BUCKET_NAME)
-                        .upload(fileName, file, {
+                        .upload(fileName, compressedFile, {
                             cacheControl: '3600',
                             upsert: false,
                         });
