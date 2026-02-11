@@ -1,7 +1,9 @@
 import { useReducer, useState, useCallback, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { toast } from 'sonner';
 import type { UseImageUploadProps } from '../types';
 import { imageReducer } from '../reducers';
+import { imageFileSchema } from '@/schemas/image-file';
 import { MAX_IMAGES_NUMBER } from '@/constants/image-file';
 
 export const useImageUpload = (props: UseImageUploadProps) => {
@@ -37,12 +39,23 @@ export const useImageUpload = (props: UseImageUploadProps) => {
                 return;
             }
 
-            if (fileArray.length > 0) {
-                clearErrors(name);
+            // Validate each file before adding to state
+            const validFiles: File[] = [];
+
+            for (const file of fileArray) {
+                const result = imageFileSchema.safeParse(file);
+                if (result.success) {
+                    validFiles.push(file);
+                } else {
+                    const errorMsg = result.error.issues[0]?.message ?? 'Invalid file';
+                    toast.error(`"${file.name}": ${errorMsg}`);
+                }
             }
 
-            dispatch({ type: 'ADD_IMAGES', payload: { files: fileArray, remainingSlots } });
-
+            if (validFiles.length > 0) {
+                clearErrors(name);
+                dispatch({ type: 'ADD_IMAGES', payload: { files: validFiles, remainingSlots } });
+            }
         },
         [state.images, name, setError, clearErrors]
     );
