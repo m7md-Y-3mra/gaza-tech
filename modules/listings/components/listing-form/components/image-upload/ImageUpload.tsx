@@ -16,6 +16,7 @@ import {
   MAX_UPLOAD_SIZE,
 } from '@/constants/image-file';
 import type { ImageFileUploadImage } from './types';
+import { useTranslations } from 'next-intl';
 
 const ImageUpload: React.FC<ImageUploadProps> = (props) => {
   const { mode, name, disabled = false } = props;
@@ -25,6 +26,7 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
   const {
     formState: { errors, touchedFields, isSubmitted },
   } = useFormContext();
+  const t = useTranslations('ListingForm.images');
 
   const {
     images,
@@ -87,7 +89,7 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
             multiple
             disabled={disabled}
             className="absolute inset-0 cursor-pointer opacity-0"
-            aria-label="Upload images"
+            aria-label={t('uploadTitle')}
             onChange={handleFileInput}
           />
           <div className="flex flex-col items-center">
@@ -95,21 +97,22 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
               <CloudUpload className="h-9 w-9 text-white" />
             </div>
             <h3 className="text-foreground mb-2 text-lg font-bold">
-              Upload Product Images
+              {t('uploadTitle')}
             </h3>
-            <p className="text-muted-foreground mb-4">
-              Drag and drop or click to browse
-            </p>
+            <p className="text-muted-foreground mb-4">{t('dragDrop')}</p>
             <button
               type="button"
               className="bg-muted text-foreground hover:bg-muted/80 flex rounded-xl px-6 py-3 font-semibold transition-all duration-200"
             >
-              <FolderOpen className="mr-2 h-5 w-5" /> Choose Files
+              <FolderOpen className="me-2 h-5 w-5" /> {t('chooseFiles')}
             </button>
             <p className="text-muted-foreground mt-4 text-xs">
-              Supported formats:{' '}
-              {ACCEPTED_FILE_TYPES.map((type) => type.split('/')[1]).join(', ')}{' '}
-              (Max {MAX_UPLOAD_SIZE}MB each)
+              {t('supportedFormats', {
+                formats: ACCEPTED_FILE_TYPES.map(
+                  (type) => type.split('/')[1]
+                ).join(', '),
+                maxSize: String(MAX_UPLOAD_SIZE / 1_000_000),
+              })}
             </p>
           </div>
         </div>
@@ -127,7 +130,6 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                     : 'border-2 border-transparent'
                 }`}
               >
-                lks
                 <Image
                   src={image.preview}
                   alt="Preview"
@@ -138,8 +140,8 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
 
               {/* Cover Badge */}
               {image.isThumbnail && (
-                <div className="bg-primary absolute top-2 left-2 rounded-md px-2 py-1 text-xs font-bold text-white">
-                  Cover
+                <div className="bg-primary absolute start-2 top-2 rounded-md px-2 py-1 text-xs font-bold text-white">
+                  {t('cover')}
                 </div>
               )}
 
@@ -148,21 +150,21 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                 type="button"
                 onClick={() => removeImage(image.id)}
                 disabled={disabled}
-                className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-lg bg-red-500 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 hover:bg-red-600"
+                className="absolute end-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-red-500 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 hover:bg-red-600"
               >
                 <Trash className="h-5 w-5" />
               </button>
 
               {/* Set as Cover Button - Only show on hover if not already cover */}
               {!image.isThumbnail && (
-                <div className="absolute right-2 bottom-2 left-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <div className="absolute start-2 end-2 bottom-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   <button
                     type="button"
                     onClick={() => setThumbnail(image.id)}
                     disabled={disabled}
                     className="bg-card bg-opacity-90 text-foreground hover:bg-opacity-100 w-full rounded py-1 text-xs"
                   >
-                    Set as Cover
+                    {t('setAsCover')}
                   </button>
                 </div>
               )}
@@ -181,7 +183,6 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                 }
                 className="border-muted-foreground/30 bg-muted/30 hover:border-primary flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200 hover:bg-green-50"
               >
-                <i className="fa-solid fa-plus text-muted-foreground/50 text-2xl"></i>
                 <Plus className="text-muted-foreground h-5 w-5" />
               </div>
             )
@@ -198,7 +199,10 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                 <div key={index} className="flex items-center gap-2">
                   <AlertCircle className="h-4 w-4" />
                   <p>
-                    File{index + 1}: {err.file.message}
+                    {t('fileError', {
+                      index: index + 1,
+                      message: err.file.message,
+                    })}
                   </p>
                 </div>
               ))
@@ -214,7 +218,10 @@ const ImageUpload: React.FC<ImageUploadProps> = (props) => {
         <div className="flex justify-end">
           <div className="rounded-lg bg-green-50 px-4 py-2">
             <span className="text-primary text-sm font-semibold">
-              {images.length}/{MAX_IMAGES_NUMBER} Images
+              {t('imageCount', {
+                count: images.length,
+                max: MAX_IMAGES_NUMBER,
+              })}
             </span>
           </div>
         </div>

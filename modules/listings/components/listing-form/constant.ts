@@ -2,12 +2,19 @@ import { DEFAULT_CURRENCY, DEFAULT_PRODUCT_CONDITION } from "../../constant";
 import { Currency, ProductCondition, SpecificationEnum, specifications } from "../../types";
 import { ListingFormInitialData } from "./types";
 
-export const productConditionOptions = Object.entries(ProductCondition).map(
-    ([key, value]) => ({
-        value: key,
-        label: value,
-    })
-);
+// export const productConditionOptions = Object.entries(ProductCondition).map(
+//     ([key, value]) => ({
+//         value: key,
+//         label: value,
+//     })
+// );
+
+// Build locale-aware options
+export const getProductConditionOptions = (t: (msg: string) => string) => Object.keys(ProductCondition).map((key) => ({
+    value: key,
+    label: t(`condition.${key}`),
+}));
+
 
 export const currencyOptions = Object.entries(Currency).map(([key, value]) => ({
     value: key,

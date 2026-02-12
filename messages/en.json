@@ -271,5 +271,133 @@
         "goHome": "Go Home"
       }
     }
+  },
+  "ListingForm": {
+    "images": {
+      "title": "Product Images",
+      "subtitle": "Upload up to 5 high-quality images. First image will be the cover.",
+      "uploadTitle": "Upload Product Images",
+      "dragDrop": "Drag and drop or click to browse",
+      "chooseFiles": "Choose Files",
+      "supportedFormats": "Supported formats: {formats} (Max {maxSize}MB each)",
+      "cover": "Cover",
+      "setAsCover": "Set as Cover",
+      "imageCount": "{count}/{max} Images",
+      "fileError": "File{index}: {message}",
+      "tipsTitle": "Tips for Great Product Photos",
+      "tip1": "Use natural lighting or well-lit environments",
+      "tip2": "Show product from multiple angles",
+      "tip3": "Include close-ups of important details",
+      "tip4": "Use clean, uncluttered backgrounds",
+      "noImage": "No image uploaded"
+    },
+    "basicInfo": {
+      "title": "Basic Information",
+      "subtitle": "Provide essential details about your product",
+      "titleLabel": "Product Title",
+      "titlePlaceholder": "e.g., Gaming Laptop ASUS ROG Strix G15 - RTX 3060",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Describe your product in detail — condition, features, and why someone should buy it..."
+    },
+    "pricing": {
+      "title": "Pricing",
+      "subtitle": "Set your asking price",
+      "priceLabel": "Price",
+      "pricePlaceholder": "Enter price",
+      "currencyLabel": "Currency",
+      "currencyPlaceholder": "Select currency"
+    },
+    "category": {
+      "label": "Category",
+      "placeholder": "Select a category",
+      "searchPlaceholder": "Search categories...",
+      "noResults": "No categories found",
+      "selected": "Selected"
+    },
+    "condition": {
+      "label": "Condition",
+      "placeholder": "Select condition",
+      "new": "New",
+      "used": "Used",
+      "broken": "Broken",
+      "refurbished": "Refurbished"
+    },
+    "location": {
+      "title": "Location",
+      "subtitle": "Where is this item located?",
+      "label": "Location",
+      "placeholder": "Select location"
+    },
+    "specifications": {
+      "title": " Specifications",
+      "subtitle": "Add product specifications to help buyers",
+      "brand": "Brand",
+      "model": "Model",
+      "processor": "Processor",
+      "ram": "RAM",
+      "storage": "Storage",
+      "graphicsCard": "Graphics Card",
+      "display": "Display",
+      "operatingSystem": "Operating System",
+      "warranty": "Warranty",
+      "battery": "Battery",
+      "brandPlaceholder": "e.g., Apple, Dell, HP",
+      "modelPlaceholder": "e.g., MacBook Pro 16\"",
+      "processorPlaceholder": "e.g., Intel Core i7, M2 Pro",
+      "ramPlaceholder": "e.g., 16GB DDR4",
+      "storagePlaceholder": "e.g., 512GB SSD",
+      "graphicsCardPlaceholder": "e.g., NVIDIA RTX 3060",
+      "displayPlaceholder": "e.g., 15.6\" FHD IPS",
+      "operatingSystemPlaceholder": "e.g., Windows 11, macOS",
+      "warrantyPlaceholder": "e.g., 1 year manufacturer warranty",
+      "batteryPlaceholder": "e.g., 80Wh, 10 hours",
+      "customSpecName": "Specification Name",
+      "customSpecValue": "Value",
+      "addCustomSpec": "Add Custom Specification",
+      "removeSpec": "Remove"
+    },
+    "preview": {
+      "title": "Live Preview",
+      "noTitle": "Product Title",
+      "noDescription": "Product description will appear here...",
+      "noPrice": "Price",
+      "noCategory": "Category",
+      "noLocation": "Location",
+      "conditionLabel": "Condition"
+    },
+    "buttons": {
+      "create": "Create Listing",
+      "update": "Update Listing",
+      "creating": "Creating...",
+      "updating": "Updating..."
+    },
+    "toast": {
+      "createSuccess": "Your listing has been created successfully!",
+      "updateSuccess": "Your listing has been updated successfully!",
+      "createError": "Failed to create listing",
+      "updateError": "Failed to update listing",
+      "unexpectedError": "An unexpected error occurred. Please try again."
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMin": "Title must be at least 10 characters long",
+      "titleMax": "Title cannot exceed 100 characters",
+      "descriptionRequired": "Description is required",
+      "descriptionMin": "Description must be at least 20 characters long",
+      "descriptionMax": "Description cannot exceed 2000 characters",
+      "priceRequired": "Price must be a valid number",
+      "priceMin": "Price cannot be zero or negative",
+      "categoryRequired": "Please select a valid category",
+      "locationRequired": "Please select a valid location",
+      "sellerIdRequired": "Seller ID must be valid",
+      "specificationsRequired": "Please fill all specifications",
+      "specLabelRequired": "Specification name is required",
+      "specValueRequired": "Specification value is required",
+      "imageMinSize": "File size must be at least 10KB",
+      "imageMaxSize": "File size must be less than 2MB",
+      "imageInvalidType": "Invalid file type. Only JPG, JPEG, PNG, WEBP and GIF are allowed.",
+      "imagesRequired": "Please upload at least one image",
+      "imagesMax": "You can upload a maximum of 5 images"
+    }
   }
 }

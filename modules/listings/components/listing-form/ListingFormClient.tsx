@@ -9,9 +9,10 @@ import SpecificationFields from './components/specification-fields';
 import LivePreview from './components/live-preview';
 import { useListingForm } from './hooks/useListingForm';
 import type { ListingFormClientProps } from './types';
-import { currencyOptions, productConditionOptions } from './constant';
+import { currencyOptions, getProductConditionOptions } from './constant';
 import LoadingSubmittingSpinner from '@/components/loading-submitting-spinner';
 import CategorySelectField from './components/category-select-field';
+import { useTranslations } from 'next-intl';
 
 /**
  * Reusable listing form component
@@ -21,8 +22,11 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
   const { mode, groupedCategories, locations } = props;
   const listingId = mode === 'update' ? props.listingId : undefined;
   const initialData = mode === 'update' ? props.initialData : undefined;
+  const t = useTranslations('ListingForm');
+
   const { form, isSubmitting, submitError, onSubmit, handleCancel, isPending } =
     useListingForm(mode, listingId, initialData);
+
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit} className="space-y-6">
@@ -33,12 +37,9 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
             <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
               <div className="mb-6">
                 <h2 className="text-foreground mb-2 text-2xl font-bold">
-                  Product Images
+                  {t('images.title')}
                 </h2>
-                <p className="text-muted-foreground">
-                  Upload up to 5 high-quality images. First image will be the
-                  cover.
-                </p>
+                <p className="text-muted-foreground">{t('images.subtitle')}</p>
               </div>
 
               {mode == 'create' ? (
@@ -58,17 +59,17 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
 
               {/* Tips Box */}
               <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4">
-                <div className="flex items-start space-x-3">
+                <div className="flex items-start gap-3">
                   <i className="fa-solid fa-lightbulb mt-0.5 text-lg text-blue-600"></i>
                   <div>
                     <h4 className="mb-1 font-semibold text-blue-900">
-                      Tips for Great Product Photos
+                      {t('images.tipsTitle')}
                     </h4>
                     <ul className="space-y-1 text-sm text-blue-800">
-                      <li>• Use natural lighting or well-lit environments</li>
-                      <li>• Show product from multiple angles</li>
-                      <li>• Include close-ups of important details</li>
-                      <li>• Use clean, uncluttered backgrounds</li>
+                      <li>• {t('images.tip1')}</li>
+                      <li>• {t('images.tip2')}</li>
+                      <li>• {t('images.tip3')}</li>
+                      <li>• {t('images.tip4')}</li>
                     </ul>
                   </div>
                 </div>
@@ -79,41 +80,41 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
             <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
               <div className="mb-6">
                 <h2 className="text-foreground mb-2 text-2xl font-bold">
-                  Basic Information
+                  {t('basicInfo.title')}
                 </h2>
                 <p className="text-muted-foreground">
-                  Provide essential details about your product
+                  {t('basicInfo.subtitle')}
                 </p>
               </div>
               <div className="space-y-6">
                 <TextField
                   name="title"
-                  label="Product Title"
-                  placeholder="e.g., Gaming Laptop ASUS ROG Strix G15 - RTX 3060"
+                  label={t('basicInfo.titleLabel')}
+                  placeholder={t('basicInfo.titlePlaceholder')}
                   disabled={isSubmitting}
                 />
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <CategorySelectField
                     name="category_id"
-                    label="Category"
-                    placeholder="Select a category"
+                    label={t('category.label')}
+                    placeholder={t('category.placeholder')}
                     groupedCategories={groupedCategories}
                     disabled={isSubmitting}
                   />
 
                   <SelectField
                     name="product_condition"
-                    label="Condition"
-                    options={productConditionOptions}
+                    label={t('condition.label')}
+                    options={getProductConditionOptions(t)}
                     disabled={isSubmitting}
                   />
                 </div>
 
                 <TextField
                   name="description"
-                  label="Description"
-                  placeholder="Describe your product in detail. Include brand, model, specifications, condition details, what's included, reason for selling, etc."
+                  label={t('basicInfo.descriptionLabel')}
+                  placeholder={t('basicInfo.descriptionPlaceholder')}
                   disabled={isSubmitting}
                   type="textarea"
                 />
@@ -124,17 +125,15 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
             <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
               <div className="mb-6">
                 <h2 className="text-foreground mb-2 text-2xl font-bold">
-                  Pricing
+                  {t('pricing.title')}
                 </h2>
-                <p className="text-muted-foreground">
-                  Set your price in ILS or USD
-                </p>
+                <p className="text-muted-foreground">{t('pricing.subtitle')}</p>
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <TextField
                   name="price"
-                  label="Price"
-                  placeholder="0"
+                  label={t('pricing.priceLabel')}
+                  placeholder={t('pricing.pricePlaceholder')}
                   type="number"
                   valueAsNumber
                   disabled={isSubmitting}
@@ -142,7 +141,7 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
 
                 <SelectField
                   name="currency"
-                  label="Currency"
+                  label={t('pricing.currencyLabel')}
                   options={currencyOptions}
                   disabled={isSubmitting}
                 />
@@ -153,16 +152,16 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
             <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
               <div className="mb-6">
                 <h2 className="text-foreground mb-2 text-2xl font-bold">
-                  Location
+                  {t('location.title')}
                 </h2>
                 <p className="text-muted-foreground">
-                  Where is the item located?
+                  {t('location.subtitle')}
                 </p>
               </div>
               <SelectField
                 name="location_id"
-                label="City/Area"
-                placeholder="Select your location"
+                label={t('location.label')}
+                placeholder={t('location.placeholder')}
                 options={locations}
                 disabled={isSubmitting}
               />
@@ -172,10 +171,10 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
             <div className="border-border bg-card rounded-2xl p-8 shadow-sm">
               <div className="mb-6">
                 <h2 className="text-foreground mb-2 text-2xl font-bold">
-                  Technical Specifications
+                  {t('specifications.title')}
                 </h2>
                 <p className="text-muted-foreground">
-                  Add detailed specs to help buyers make informed decisions
+                  {t('specifications.subtitle')}
                 </p>
               </div>
               <SpecificationFields disabled={isSubmitting} />
@@ -202,11 +201,11 @@ const ListingFormClient: React.FC<ListingFormClientProps> = (props) => {
                   ? 'Redirecting...'
                   : isSubmitting
                     ? mode === 'create'
-                      ? 'Creating...'
-                      : 'Updating...'
+                      ? t('buttons.creating')
+                      : t('buttons.updating')
                     : mode === 'create'
-                      ? 'Create Listing'
-                      : 'Update Listing'}
+                      ? t('buttons.create')
+                      : t('buttons.update')}
               </Button>
 
               {handleCancel && (

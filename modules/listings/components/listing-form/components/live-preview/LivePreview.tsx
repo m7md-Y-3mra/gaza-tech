@@ -3,8 +3,8 @@ import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { LivePreviewProps } from './types';
 import { useLivePreview } from './hooks/useLivePreview';
-import { ProductCondition as conditionLabels } from '@/modules/listings/types';
 import { LayoutGrid, MapPin } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 /**
  * Live preview sidebar component
@@ -15,6 +15,8 @@ const LivePreview: React.FC<LivePreviewProps> = ({
   groupedCategories = [],
   locations = [],
 }) => {
+  const t = useTranslations('ListingForm');
+
   const {
     title,
     description,
@@ -26,11 +28,17 @@ const LivePreview: React.FC<LivePreviewProps> = ({
     images,
     thumbnailImagePreview,
   } = useLivePreview({ groupedCategories, locations });
+
+  // Get translated condition label
+  const conditionLabel = productCondition
+    ? t(`condition.${productCondition.toLowerCase()}`)
+    : undefined;
+
   return (
     <div className="border-border bg-card sticky top-4 rounded-2xl p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <Label className="text-foreground text-lg font-bold">
-          Live Preview
+          {t('preview.title')}
         </Label>
         <span className="text-primary rounded-full bg-green-100 px-3 py-1 text-xs font-bold">
           LIVE
@@ -50,25 +58,25 @@ const LivePreview: React.FC<LivePreviewProps> = ({
         </div>
       ) : (
         <div className="bg-muted mb-4 flex aspect-square items-center justify-center rounded-xl">
-          <p className="text-muted-foreground text-sm">No image uploaded</p>
+          <p className="text-muted-foreground text-sm">{t('images.noImage')}</p>
         </div>
       )}
 
       {/* Title */}
       <div className="mb-2 flex items-start justify-between">
         <h3 className="text-foreground line-clamp-2 flex-1 text-lg font-bold">
-          {title || 'Product Title'}
+          {title || t('preview.noTitle')}
         </h3>
-        {productCondition && (
-          <span className="text-muted-foreground ml-2 text-xs">
-            {conditionLabels[productCondition as keyof typeof conditionLabels]}
+        {conditionLabel && (
+          <span className="text-muted-foreground ms-2 text-xs">
+            {conditionLabel}
           </span>
         )}
       </div>
 
       {/* Description */}
       <p className="text-muted-foreground mb-3 line-clamp-3 text-sm">
-        {description || 'Product description will appear here...'}
+        {description || t('preview.noDescription')}
       </p>
 
       {/* Price */}
@@ -85,13 +93,13 @@ const LivePreview: React.FC<LivePreviewProps> = ({
       <div className="mb-4 space-y-2">
         {location && (
           <div className="text-muted-foreground flex items-center text-sm">
-            <MapPin className="mr-2 h-5 w-5" />
+            <MapPin className="me-2 h-5 w-5" />
             <span>{location.label}</span>
           </div>
         )}
         {category && (
           <div className="text-muted-foreground flex items-center text-sm">
-            <LayoutGrid className="mr-2 h-5 w-5" />
+            <LayoutGrid className="me-2 h-5 w-5" />
             <span>{category.label}</span>
           </div>
         )}
@@ -101,7 +109,10 @@ const LivePreview: React.FC<LivePreviewProps> = ({
       {images.length > 0 && (
         <div className="border-border border-t pt-4">
           <p className="text-muted-foreground text-xs">
-            {images.length} image{images.length > 1 ? 's' : ''} uploaded
+            {t('images.imageCount', {
+              count: images.length,
+              max: images.length,
+            })}
           </p>
         </div>
       )}

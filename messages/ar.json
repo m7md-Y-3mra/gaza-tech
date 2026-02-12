@@ -271,5 +271,133 @@
         "goHome": "الصفحة الرئيسية"
       }
     }
+  },
+  "ListingForm": {
+    "images": {
+      "title": "صور المنتج",
+      "subtitle": "ارفع حتى 5 صور عالية الجودة. الصورة الأولى ستكون الغلاف.",
+      "uploadTitle": "ارفع صور المنتج",
+      "dragDrop": "اسحب وأفلت أو اضغط للتصفح",
+      "chooseFiles": "اختر ملفات",
+      "supportedFormats": "الصيغ المدعومة: {formats} (حد أقصى {maxSize} ميجابايت لكل صورة)",
+      "cover": "الغلاف",
+      "setAsCover": "تعيين كغلاف",
+      "imageCount": "{count}/{max} صور",
+      "fileError": "ملف{index}: {message}",
+      "tipsTitle": "نصائح لصور منتج رائعة",
+      "tip1": "استخدم الإضاءة الطبيعية أو البيئات المضاءة جيداً",
+      "tip2": "أظهر المنتج من زوايا متعددة",
+      "tip3": "أضف لقطات قريبة للتفاصيل المهمة",
+      "tip4": "استخدم خلفيات نظيفة وغير مزدحمة",
+      "noImage": "لم يتم رفع صورة"
+    },
+    "basicInfo": {
+      "title": "المعلومات الأساسية",
+      "subtitle": "أضف التفاصيل الأساسية عن منتجك",
+      "titleLabel": "عنوان المنتج",
+      "titlePlaceholder": "مثال: لابتوب ألعاب ASUS ROG Strix G15 - RTX 3060",
+      "descriptionLabel": "الوصف",
+      "descriptionPlaceholder": "صف منتجك بالتفصيل — الحالة، المميزات، ولماذا يجب على شخص شرائه..."
+    },
+    "pricing": {
+      "title": "التسعير",
+      "subtitle": "حدد السعر المطلوب",
+      "priceLabel": "السعر",
+      "pricePlaceholder": "أدخل السعر",
+      "currencyLabel": "العملة",
+      "currencyPlaceholder": "اختر العملة"
+    },
+    "category": {
+      "label": "الفئة",
+      "placeholder": "اختر فئة",
+      "searchPlaceholder": "ابحث عن فئة...",
+      "noResults": "لم يتم العثور على فئات",
+      "selected": "مختارة"
+    },
+    "condition": {
+      "label": "الحالة",
+      "placeholder": "اختر الحالة",
+      "new": "جديد",
+      "used": "مستخدم",
+      "broken": "مكسور",
+      "refurbished": "مجدد"
+    },
+    "location": {
+      "title": "الموقع",
+      "subtitle": "أين يوجد هذا المنتج؟",
+      "label": "الموقع",
+      "placeholder": "اختر الموقع"
+    },
+    "specifications": {
+      "title": "المواصفات التقنية",
+      "subtitle": "أضف مواصفات المنتج لمساعدة المشترين",
+      "brand": "العلامة التجارية",
+      "model": "الموديل",
+      "processor": "المعالج",
+      "ram": "الذاكرة العشوائية",
+      "storage": "التخزين",
+      "graphics_card": "كرت الشاشة",
+      "display": "الشاشة",
+      "operating_system": "نظام التشغيل",
+      "warranty": "الضمان",
+      "battery": "البطارية",
+      "brandPlaceholder": "مثال: Apple، Dell، HP",
+      "modelPlaceholder": "مثال: MacBook Pro 16\"",
+      "processorPlaceholder": "مثال: Intel Core i7، M2 Pro",
+      "ramPlaceholder": "مثال: 16GB DDR4",
+      "storagePlaceholder": "مثال: 512GB SSD",
+      "graphics_cardPlaceholder": "مثال: NVIDIA RTX 3060",
+      "displayPlaceholder": "مثال: 15.6\" FHD IPS",
+      "operating_systemPlaceholder": "مثال: Windows 11، macOS",
+      "warrantyPlaceholder": "مثال: ضمان سنة من الشركة المصنعة",
+      "batteryPlaceholder": "مثال: 80Wh، 10 ساعات",
+      "customSpecName": "اسم المواصفة",
+      "customSpecValue": "القيمة",
+      "addCustomSpec": "إضافة مواصفة مخصصة",
+      "removeSpec": "حذف"
+    },
+    "preview": {
+      "title": "معاينة مباشرة",
+      "noTitle": "عنوان المنتج",
+      "noDescription": "وصف المنتج سيظهر هنا...",
+      "noPrice": "السعر",
+      "noCategory": "الفئة",
+      "noLocation": "الموقع",
+      "conditionLabel": "الحالة"
+    },
+    "buttons": {
+      "create": "إنشاء إعلان",
+      "update": "تحديث الإعلان",
+      "creating": "جاري الإنشاء...",
+      "updating": "جاري التحديث..."
+    },
+    "toast": {
+      "createSuccess": "تم إنشاء إعلانك بنجاح!",
+      "updateSuccess": "تم تحديث إعلانك بنجاح!",
+      "createError": "فشل في إنشاء الإعلان",
+      "updateError": "فشل في تحديث الإعلان",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMin": "يجب أن يكون العنوان 10 أحرف على الأقل",
+      "titleMax": "لا يمكن أن يتجاوز العنوان 100 حرف",
+      "descriptionRequired": "الوصف مطلوب",
+      "descriptionMin": "يجب أن يكون الوصف 20 حرفاً على الأقل",
+      "descriptionMax": "لا يمكن أن يتجاوز الوصف 2000 حرف",
+      "priceRequired": "يجب أن يكون السعر رقماً صحيحاً",
+      "priceMin": "لا يمكن أن يكون السعر صفراً أو سالباً",
+      "categoryRequired": "يرجى اختيار فئة صحيحة",
+      "locationRequired": "يرجى اختيار موقع صحيح",
+      "sellerIdRequired": "معرف البائع غير صحيح",
+      "specificationsRequired": "يرجى ملء جميع المواصفات",
+      "specLabelRequired": "اسم المواصفة مطلوب",
+      "specValueRequired": "قيمة المواصفة مطلوبة",
+      "imageMinSize": "يجب أن يكون حجم الملف 10 كيلوبايت على الأقل",
+      "imageMaxSize": "يجب أن يكون حجم الملف أقل من 2 ميجابايت",
+      "imageInvalidType": "نوع الملف غير صالح. فقط JPG، JPEG، PNG، WEBP و GIF مسموح بها.",
+      "imagesRequired": "يرجى رفع صورة واحدة على الأقل",
+      "imagesMax": "يمكنك رفع 5 صور كحد أقصى"
+    }
   }
 }

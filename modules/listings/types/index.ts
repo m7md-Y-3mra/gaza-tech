@@ -47,7 +47,8 @@ export type ImageUploadResult = {
 export type GroupedCategory = {
     parentId: string;
     parentLabel: string;
-    children: Array<{ value: string; label: string }>;
+    parentLabelAr: string;
+    children: Array<{ value: string; label: string; labelAr: string }>;
 };
 
 export type PredefinedSpecificationType = {

@@ -3,9 +3,9 @@ import {
   getLocationsAction,
   getListingDetailsAction,
 } from '../../actions';
-import { Specification } from '../../types';
 import ListingFormClient from './ListingFormClient';
 import type { ListingFormInitialData } from './types';
+import { getLocale } from 'next-intl/server';
 
 interface ListingFormProps {
   mode?: 'create' | 'update';
@@ -16,6 +16,8 @@ const ListingForm = async ({
   mode = 'create',
   listingId,
 }: ListingFormProps) => {
+  const locale = await getLocale();
+
   // Fetch grouped categories and locations in parallel
   const [categoriesResult, locationsResult] = await Promise.all([
     getGroupedCategoriesAction(),
@@ -32,9 +34,21 @@ const ListingForm = async ({
     throw new Error(locationsResult.message || 'Failed to fetch locations');
   }
 
+  const isAr = locale === 'ar';
+
   const locations = locationsResult.data.map((loc) => ({
     value: loc.location_id,
-    label: loc.name,
+    label: isAr ? loc.name_ar : loc.name,
+  }));
+
+  // Resolve category labels by locale so child components don't need locale checks
+  const groupedCategories = categoriesResult.data.map((group) => ({
+    ...group,
+    parentLabel: isAr ? group.parentLabelAr : group.parentLabel,
+    children: group.children.map((child) => ({
+      ...child,
+      label: isAr ? child.labelAr : child.label,
+    })),
   }));
 
   // For update mode, fetch the listing data
@@ -73,14 +87,14 @@ const ListingForm = async ({
         {mode === 'create' ? (
           <ListingFormClient
             mode="create"
-            groupedCategories={categoriesResult.data}
+            groupedCategories={groupedCategories}
             locations={locations}
           />
         ) : (
           <ListingFormClient
             mode="update"
             listingId={listingId!}
-            groupedCategories={categoriesResult.data}
+            groupedCategories={groupedCategories}
             locations={locations}
             initialData={initialData!}
           />

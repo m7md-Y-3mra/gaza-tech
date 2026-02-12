@@ -387,6 +387,7 @@ export type Database = {
           is_active: boolean | null;
           marketplace_category_id: string;
           name: string;
+          name_ar: string;
           parent_id: string | null;
           slug: string;
           updated_at: string | null;
@@ -398,6 +399,7 @@ export type Database = {
           is_active?: boolean | null;
           marketplace_category_id?: string;
           name: string;
+          name_ar: string;
           parent_id?: string | null;
           slug: string;
           updated_at?: string | null;
@@ -409,6 +411,7 @@ export type Database = {
           is_active?: boolean | null;
           marketplace_category_id?: string;
           name?: string;
+          name_ar?: string;
           parent_id?: string | null;
           slug?: string;
           updated_at?: string | null;

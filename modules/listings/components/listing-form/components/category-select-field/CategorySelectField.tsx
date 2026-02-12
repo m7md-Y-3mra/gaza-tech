@@ -94,7 +94,7 @@ const CategorySelectField: React.FC<CategorySelectFieldProps> = ({
                       <SelectItem
                         key={child.value}
                         value={child.value}
-                        className="pl-4"
+                        className="ps-4"
                       >
                         {child.label}
                       </SelectItem>
