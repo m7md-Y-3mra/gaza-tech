@@ -59,7 +59,9 @@ export const toggleBookmarkAction = errorHandler(
  * Server action wrapped with error handler
  * Uses database function for grouping
  */
-export const getGroupedCategoriesAction = errorHandler(getGroupedCategoriesQuery);
+export const getGroupedCategoriesAction = errorHandler(
+  getGroupedCategoriesQuery
+);
 
 /**
  * Get all active locations
@@ -75,7 +77,7 @@ export const getLocationsAction = errorHandler(getLocationsQuery);
  */
 export const createListingAction = errorHandler(
   async (
-    listingData: Parameters<typeof createListingQuery>[0],
+    listingData: Parameters<typeof createListingQuery>[0]
   ): Promise<ReturnType<typeof createListingQuery>> => {
     const result = await createListingQuery(listingData);
 

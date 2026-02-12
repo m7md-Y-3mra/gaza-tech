@@ -70,15 +70,15 @@ const createBaseListingSchema = (t: TranslationFunction) =>
       .min(20, t('descriptionMin'))
       .max(2000, t('descriptionMax')),
 
-    price: z
-      .number({ message: t('priceRequired') })
-      .min(1, t('priceMin')),
+    price: z.number({ message: t('priceRequired') }).min(1, t('priceMin')),
 
     currency: z.enum(Object.keys(Currency)).nullable(),
 
     category_id: z.uuid({ message: t('categoryRequired') }),
 
-    product_condition: z.enum(Object.keys(ProductCondition), { message: t('productConditionRequired') }),
+    product_condition: z.enum(Object.keys(ProductCondition), {
+      message: t('productConditionRequired'),
+    }),
 
     location_id: z.uuid({ message: t('locationRequired') }),
 
@@ -129,8 +129,8 @@ export const createCreateListingClientSchema = (t: TranslationFunction) =>
         .array(createListingImageSchema(t))
         .min(1, { message: t('imagesRequired') }),
     }) satisfies ZodType<
-      InsertListingsWithoutSellerId & { images: CreateImageFile[] }
-    >;
+    InsertListingsWithoutSellerId & { images: CreateImageFile[] }
+  >;
 
 export const createUpdateListingClientSchema = (t: TranslationFunction) =>
   createCreateListingClientSchema(t)
@@ -148,8 +148,10 @@ export const createUpdateListingClientSchema = (t: TranslationFunction) =>
 
 const defaultT: TranslationFunction = (key: string) => key;
 
-export const createListingClientSchema = createCreateListingClientSchema(defaultT);
-export const updateListingClientSchema = createUpdateListingClientSchema(defaultT);
+export const createListingClientSchema =
+  createCreateListingClientSchema(defaultT);
+export const updateListingClientSchema =
+  createUpdateListingClientSchema(defaultT);
 
 export const ListingSchema = createBaseListingSchema(defaultT);
 export const SpecificationSchema = createSpecificationSchema(defaultT);

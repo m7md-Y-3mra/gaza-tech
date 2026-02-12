@@ -1,1 +1,1 @@
-export { default } from "./LoadingSubmittingSpinner";
+export { default } from './LoadingSubmittingSpinner';

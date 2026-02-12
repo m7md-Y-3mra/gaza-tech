@@ -1,1 +1,1 @@
-export { default } from "./CategorySelectField"
+export { default } from './CategorySelectField';

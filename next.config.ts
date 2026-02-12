@@ -18,9 +18,9 @@ const nextConfig: NextConfig = {
         hostname: 'picsum.photos',
       },
       {
-        protocol: "https",
-        hostname: "biekkaxdittvxqgvmepf.supabase.co"
-      }
+        protocol: 'https',
+        hostname: 'biekkaxdittvxqgvmepf.supabase.co',
+      },
     ],
   },
   cacheComponents: true,

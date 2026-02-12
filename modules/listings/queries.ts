@@ -343,13 +343,16 @@ async function insertListingImagesQuery(
  * Inserts a new listing and its images into the database
  */
 export async function createListingQuery(
-  listingData: Omit<z.infer<typeof createListingServerSchema>, 'seller_id'>,
+  listingData: Omit<z.infer<typeof createListingServerSchema>, 'seller_id'>
 ): Promise<{ listingId: string }> {
   'use server';
   const client = await createClient();
   const user = await authHandler();
 
-  const validatedListingData = zodValidation(createListingServerSchema, { ...listingData, seller_id: user.id });
+  const validatedListingData = zodValidation(createListingServerSchema, {
+    ...listingData,
+    seller_id: user.id,
+  });
   const { images, ...newListingData } = validatedListingData;
   // Insert listing
   const { data, error } = await client

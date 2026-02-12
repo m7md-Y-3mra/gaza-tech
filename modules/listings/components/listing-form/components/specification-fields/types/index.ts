@@ -1,3 +1,3 @@
 export type SpecificationFieldsProps = {
-    disabled?: boolean;
+  disabled?: boolean;
 };
