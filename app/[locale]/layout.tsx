@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
 import { IBM_Plex_Sans_Arabic } from 'next/font/google';
 import { routing } from '@/i18n/routing';
+import { DirectionProvider } from '@/components/ui/direction';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -35,16 +36,18 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body className={`${ibmPlexSansArabic.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextTopLoader color="#00bc7d" showSpinner={false} />
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
-          <Toaster richColors position="top-center" />
-        </ThemeProvider>
+        <DirectionProvider dir={dir}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NextTopLoader color="#00bc7d" showSpinner={false} />
+            <NextIntlClientProvider>{children}</NextIntlClientProvider>
+            <Toaster richColors position="top-center" />
+          </ThemeProvider>
+        </DirectionProvider>
       </body>
     </html>
   );
