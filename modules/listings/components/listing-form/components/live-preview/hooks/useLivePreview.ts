@@ -27,11 +27,7 @@ export const useLivePreview = ({
 
     const thumbnailImage = images.find((img) => img.isThumbnail) || images[0];
 
-    const thumbnailImagePreview = Boolean(thumbnailImage)
-        ? thumbnailImage.isExisting === true
-            ? thumbnailImage.preview
-            : URL.createObjectURL(thumbnailImage.file)
-        : '';
+    const thumbnailImagePreview = thumbnailImage?.preview ?? '';
 
     return {
         title,

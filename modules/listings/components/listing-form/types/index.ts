@@ -35,6 +35,7 @@ export type ListingFormClientProps = ListingFormClientCreate | ListingFormClient
 
 export type ImageFileBase = {
     isThumbnail: boolean;
+    preview: string;
 };
 
 export type CreateImageFile = ImageFileBase & {
@@ -43,7 +44,6 @@ export type CreateImageFile = ImageFileBase & {
 }
 
 export type UpdateImageFile = ImageFileBase & {
-    preview: string;
     isExisting: true,
 }
 

@@ -112,6 +112,7 @@ const createListingImageSchema = (t: TranslationFunction) =>
     file: createImageFileSchema(t),
     isThumbnail: z.boolean(),
     isExisting: z.literal(false).optional(),
+    preview: z.string(),
   });
 
 const updateListingImageSchema = z.object({
