@@ -1,4 +1,35 @@
 {
+  "Metadata": {
+    "siteName": "Gaza Tech Market",
+    "home": {
+      "title": "Gaza Tech Market - Buy & Sell Technology Products",
+      "description": "The leading tech marketplace in Gaza. Discover amazing deals, connect with tech enthusiasts, and buy or sell technology products."
+    },
+    "createListing": {
+      "title": "Create New Listing - Gaza Tech Market",
+      "description": "List your tech product for sale on Gaza Tech Market. Reach thousands of potential buyers in Gaza."
+    },
+    "editListing": {
+      "title": "Edit: {title} - Gaza Tech Market",
+      "description": "Update your listing details, images, and pricing on Gaza Tech Market."
+    },
+    "listingDetails": {
+      "notFoundTitle": "Listing Not Found - Gaza Tech Market",
+      "notFoundDescription": "The requested listing could not be found on Gaza Tech Market."
+    },
+    "login": {
+      "title": "Sign In - Gaza Tech Market",
+      "description": "Sign in to your Gaza Tech Market account to buy and sell technology products."
+    },
+    "signup": {
+      "title": "Create Account - Gaza Tech Market",
+      "description": "Join Gaza Tech Market today. Create your free account and start buying or selling tech products."
+    },
+    "verifyEmail": {
+      "title": "Verify Your Email - Gaza Tech Market",
+      "description": "Verify your email address to complete your Gaza Tech Market registration."
+    }
+  },
   "HomePage": {
     "title": "Hello world!"
   },
