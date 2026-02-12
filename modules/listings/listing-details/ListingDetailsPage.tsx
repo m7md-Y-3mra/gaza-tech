@@ -42,11 +42,10 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
   const specifications = listing.specifications;
 
   // Get category name from joined data
-  const categoryName =
-    listing.marketplace_categories[0]?.name || 'Uncategorized';
+  const categoryName = listing.marketplace_categories?.name || 'Uncategorized';
 
   // Get location name from joined data
-  const locationName = listing.locations[0]?.name || 'Unknown';
+  const locationName = listing.locations?.name;
 
   return (
     <div className="bg-background-alt">

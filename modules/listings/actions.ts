@@ -8,6 +8,10 @@ import {
   getListingDetailsQuery,
   getSimilarListingsQuery,
   getSellerListingsQuery,
+  getGroupedCategoriesQuery,
+  getLocationsQuery,
+  createListingQuery,
+  updateListingQuery,
 } from './queries';
 
 /**
@@ -47,5 +51,56 @@ export const toggleBookmarkAction = errorHandler(
     }
 
     return result;
+  }
+);
+
+/**
+ * Get all active categories grouped by parent
+ * Server action wrapped with error handler
+ * Uses database function for grouping
+ */
+export const getGroupedCategoriesAction = errorHandler(
+  getGroupedCategoriesQuery
+);
+
+/**
+ * Get all active locations
+ * Server action wrapped with error handler
+ * Uses cache tag for revalidation
+ */
+export const getLocationsAction = errorHandler(getLocationsQuery);
+
+/**
+ * Create a new listing with images
+ * Server action wrapped with error handler
+ * Revalidates listings cache after creation
+ */
+export const createListingAction = errorHandler(
+  async (
+    listingData: Parameters<typeof createListingQuery>[0]
+  ): Promise<ReturnType<typeof createListingQuery>> => {
+    const result = await createListingQuery(listingData);
+
+    // Revalidate listings-related paths
+    revalidatePath('/listings');
+    return result;
+  }
+);
+
+/**
+ * Update an existing listing
+ * Server action wrapped with error handler
+ * Revalidates specific listing and listings cache
+ */
+export const updateListingAction = errorHandler(
+  async (
+    listingId: string,
+    listingData: Parameters<typeof updateListingQuery>[1]
+  ): Promise<void> => {
+    await updateListingQuery(listingId, listingData);
+
+    // Revalidate specific listing and listings cache
+    revalidatePath(`/listings/${listingId}`);
+    revalidatePath('/listings');
   }
 );

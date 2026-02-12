@@ -1,4 +1,4 @@
-import { Specification } from '@/types/supabase';
+import { Specification } from '@/modules/listings/types';
 
 export type SpecificationsProps = {
   specifications: Specification[] | null;

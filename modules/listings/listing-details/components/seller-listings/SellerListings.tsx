@@ -84,8 +84,8 @@ const SellerListings = async ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden md:flex" locale={locale} />
-        <CarouselNext className="hidden md:flex" locale={locale} />
+        <CarouselPrevious className="hidden md:flex" />
+        <CarouselNext className="hidden md:flex" />
       </Carousel>
     </div>
   );

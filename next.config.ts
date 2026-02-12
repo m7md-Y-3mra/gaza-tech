@@ -17,11 +17,13 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'picsum.photos',
       },
+      {
+        protocol: 'https',
+        hostname: 'biekkaxdittvxqgvmepf.supabase.co',
+      },
     ],
   },
-  experimental: {
-    cacheComponents: true,
-  },
+  cacheComponents: true,
 };
 
 const withNextIntl = createNextIntlPlugin();

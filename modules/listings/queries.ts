@@ -4,6 +4,10 @@ import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { authHandler } from '@/utils/auth-handler';
+import { GroupedCategory, ImageUploadResult } from './types';
+import { zodValidation } from '@/lib/zod-error';
+import z from 'zod';
+import { createListingServerSchema, updateListingServerSchema } from './schema';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -13,8 +17,8 @@ type LocationRow = Database['public']['Tables']['locations']['Row'];
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
 
 type GetListingDetailsRes = ListingRow & {
-  marketplace_categories: CategoryRow[];
-  locations: LocationRow[];
+  marketplace_categories: CategoryRow;
+  locations: LocationRow;
   listing_images: ListingImageRow[];
 };
 
@@ -89,7 +93,7 @@ export async function getListingDetailsQuery(
     return null;
   }
 
-  return data as GetListingDetailsRes;
+  return data as unknown as GetListingDetailsRes;
 }
 
 /**
@@ -263,5 +267,182 @@ export async function toggleBookmarkQuery(
     }
 
     return { isBookmarked: true };
+  }
+}
+
+/**
+ * Get all active categories grouped by parent
+ * Uses the database function get_grouped_categories()
+ * Returns parent categories with their subcategories nested
+ */
+export async function getGroupedCategoriesQuery(): Promise<GroupedCategory[]> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client.rpc('get_grouped_categories');
+
+  if (error) {
+    console.error('Error fetching grouped categories:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Get all active locations
+ * Used for location selection in create/update listing forms
+ */
+export async function getLocationsQuery(): Promise<LocationRow[]> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('locations')
+    .select('*')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching locations:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Insert listing images into the database
+ * @param listingId - The listing ID to associate images with
+ * @param images - Array of image data to insert
+ */
+async function insertListingImagesQuery(
+  client: Awaited<ReturnType<typeof createClient>>,
+  listingId: string,
+  images: ImageUploadResult[]
+): Promise<void> {
+  if (images.length === 0) return;
+
+  const imageRecords = images.map((img, index) => ({
+    listing_id: listingId,
+    image_url: img.url,
+    is_thumbnail: img.isThumbnail || index === 0,
+    sort_order: index,
+  }));
+
+  const { error } = await client.from('listing_images').insert(imageRecords);
+
+  if (error) {
+    console.error('Error inserting listing images:', error);
+    throw new Error('Failed to save listing images');
+  }
+}
+
+/**
+ * Create a new listing with images
+ * Inserts a new listing and its images into the database
+ */
+export async function createListingQuery(
+  listingData: Omit<z.infer<typeof createListingServerSchema>, 'seller_id'>
+): Promise<{ listingId: string }> {
+  'use server';
+  const client = await createClient();
+  const user = await authHandler();
+
+  const validatedListingData = zodValidation(createListingServerSchema, {
+    ...listingData,
+    seller_id: user.id,
+  });
+  const { images, ...newListingData } = validatedListingData;
+  // Insert listing
+  const { data, error } = await client
+    .from('marketplace_listings')
+    .insert({
+      ...newListingData,
+      seller_id: user.id,
+      content_status: 'published',
+    })
+    .select('listing_id')
+    .single();
+
+  if (error) {
+    console.error('Error creating listing:', error);
+    throw new Error('Failed to create listing');
+  }
+
+  // Insert images if provided
+  if (images.length > 0) {
+    try {
+      await insertListingImagesQuery(client, data.listing_id, images);
+    } catch (imageError) {
+      // Rollback: delete the created listing if image insert fails
+      await client
+        .from('marketplace_listings')
+        .delete()
+        .eq('listing_id', data.listing_id);
+      throw imageError;
+    }
+  }
+
+  return { listingId: data.listing_id };
+}
+
+/**
+ * Update an existing listing with validation
+ * Updates listing data in the database with Zod schema validation
+ */
+export async function updateListingQuery(
+  listingId: string,
+  listingData: z.infer<typeof updateListingServerSchema>
+): Promise<void> {
+  'use server';
+  const client = await createClient();
+  const user = await authHandler();
+
+  // Validate listing data
+  const validatedData = zodValidation(updateListingServerSchema, listingData);
+  const { images, ...updateData } = validatedData;
+
+  // Update listing - ensure user is the seller
+  const { error } = await client
+    .from('marketplace_listings')
+    .update(updateData)
+    .eq('listing_id', listingId)
+    .eq('seller_id', user.id);
+
+  if (error) {
+    console.error('Error updating listing:', error);
+    throw new Error('Failed to update listing');
+  }
+
+  // Handle images update
+  if (images && images.length > 0) {
+    // Delete existing images
+    const { error: deleteError } = await client
+      .from('listing_images')
+      .delete()
+      .eq('listing_id', listingId);
+
+    if (deleteError) {
+      console.error('Error deleting existing images:', deleteError);
+      throw new Error('Failed to update listing images');
+    }
+
+    // Insert new/updated images
+    const imageRecords = images.map((img, index) => ({
+      listing_id: listingId,
+      image_url: img.url,
+      is_thumbnail: img.isThumbnail || index === 0,
+      sort_order: index,
+    }));
+
+    const { error: insertError } = await client
+      .from('listing_images')
+      .insert(imageRecords);
+
+    if (insertError) {
+      console.error('Error inserting updated images:', insertError);
+      throw new Error('Failed to save listing images');
+    }
   }
 }

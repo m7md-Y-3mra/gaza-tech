@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import ListingDetailsPage from '@/modules/listings/listing-details';
 import { getListingDetailsAction } from '@/modules/listings/actions';
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 interface PageProps {
   params: Promise<{
@@ -14,13 +14,14 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
   const res = await getListingDetailsAction(id);
   const listing = res.success ? res.data : null;
 
   if (!listing) {
     return {
-      title: 'Listing Not Found',
-      description: 'The requested listing could not be found.',
+      title: t('listingDetails.notFoundTitle'),
+      description: t('listingDetails.notFoundDescription'),
     };
   }
 
@@ -37,7 +38,7 @@ export async function generateMetadata({
       images: images.map((img) => img.image_url),
       type: 'website',
       locale: locale === 'ar' ? 'ar_AR' : 'en_US',
-      siteName: 'Gaza Tech',
+      siteName: t('siteName'),
     },
     twitter: {
       card: 'summary_large_image',

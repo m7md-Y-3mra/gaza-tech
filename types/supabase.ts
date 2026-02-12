@@ -1,3 +1,5 @@
+import { Specification } from '@/modules/listings/types';
+
 export type Json =
   | string
   | number
@@ -5,12 +7,6 @@ export type Json =
   | null
   | { [key: string]: Json | undefined }
   | Json[];
-
-export type Specification = {
-  label: string;
-  value: string;
-  isCustom: boolean;
-};
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
@@ -391,6 +387,7 @@ export type Database = {
           is_active: boolean | null;
           marketplace_category_id: string;
           name: string;
+          name_ar: string;
           parent_id: string | null;
           slug: string;
           updated_at: string | null;
@@ -402,6 +399,7 @@ export type Database = {
           is_active?: boolean | null;
           marketplace_category_id?: string;
           name: string;
+          name_ar: string;
           parent_id?: string | null;
           slug: string;
           updated_at?: string | null;
@@ -413,6 +411,7 @@ export type Database = {
           is_active?: boolean | null;
           marketplace_category_id?: string;
           name?: string;
+          name_ar?: string;
           parent_id?: string | null;
           slug?: string;
           updated_at?: string | null;
