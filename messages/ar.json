@@ -388,6 +388,7 @@
       "priceRequired": "يجب أن يكون السعر رقماً صحيحاً",
       "priceMin": "لا يمكن أن يكون السعر صفراً أو سالباً",
       "categoryRequired": "يرجى اختيار فئة صحيحة",
+      "productConditionRequired": "يرجى اختيار حالة المنتج",
       "locationRequired": "يرجى اختيار موقع صحيح",
       "sellerIdRequired": "معرف البائع غير صحيح",
       "specificationsRequired": "يرجى ملء جميع المواصفات",

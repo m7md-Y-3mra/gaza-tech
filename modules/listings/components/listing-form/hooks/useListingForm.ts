@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useTransition, useMemo } from 'react';
 import {
+    createCreateListingClientSchema,
+    createUpdateListingClientSchema,
     createListingClientSchema,
     updateListingClientSchema,
 } from '@/modules/listings/schema';
@@ -21,11 +23,11 @@ import { useImageUploader } from '../components/image-upload/hooks/useImageUploa
 import { toast } from 'sonner';
 import { extractPathFromUrl } from '@/utils/supabase';
 import { getDefaultValues } from '../constant';
+import { useTranslations } from 'next-intl';
 
 type CreateFormData = z.infer<typeof createListingClientSchema>;
 type UpdateFormData = z.infer<typeof updateListingClientSchema>;
 type ListingFormData = CreateFormData | UpdateFormData;
-
 
 export const useListingForm = (
     mode: ListingFormMode,
@@ -36,14 +38,21 @@ export const useListingForm = (
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
+    const tValidation = useTranslations('ListingForm.validation');
+    const tToast = useTranslations('ListingForm.toast');
 
     const { uploadImages, deleteImages, isUploading, uploadError } =
         useImageUploader();
 
+    // Build translated schema using the factory
+    const schema = useMemo(() => {
+        return mode === 'create'
+            ? createCreateListingClientSchema(tValidation)
+            : createUpdateListingClientSchema(tValidation);
+    }, [mode, tValidation]);
+
     const form = useForm<ListingFormData>({
-        resolver: zodResolver(
-            mode === 'create' ? createListingClientSchema : updateListingClientSchema
-        ),
+        resolver: zodResolver(schema),
         defaultValues: getDefaultValues(initialData),
         mode: 'onBlur',
     });
@@ -78,12 +87,12 @@ export const useListingForm = (
                     if (uploadedPaths.length > 0) {
                         await deleteImages(uploadedPaths);
                     }
-                    setSubmitError(result.message || 'Failed to create listing');
+                    setSubmitError(result.message || tToast('createError'));
                     return;
                 }
 
                 const successData = await result.data;
-                toast.success('Listing created successfully');
+                toast.success(tToast('createSuccess'));
                 startTransition(() => {
                     router.push(`/listings/${successData.listingId}`);
                 });
@@ -167,11 +176,11 @@ export const useListingForm = (
                     if (uploadedPaths.length > 0) {
                         await deleteImages(uploadedPaths);
                     }
-                    setSubmitError(result.message || 'Failed to update listing');
+                    setSubmitError(result.message || tToast('updateError'));
                     return;
                 }
 
-                toast.success('Listing updated successfully');
+                toast.success(tToast('updateSuccess'));
                 startTransition(() => {
                     router.push(`/listings/${listingId}`);
                 });
@@ -186,10 +195,10 @@ export const useListingForm = (
             setSubmitError(
                 error instanceof Error
                     ? error.message
-                    : 'An unexpected error occurred. Please try again.'
+                    : tToast('unexpectedError')
             );
 
-            toast.error('An unexpected error occurred. Please try again.');
+            toast.error(tToast('unexpectedError'));
         } finally {
             setIsSubmitting(false);
         }

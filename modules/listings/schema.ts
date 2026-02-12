@@ -11,88 +11,108 @@ import {
   SpecificationEnum,
   specifications,
 } from './types';
-import { imageFileSchema } from '@/schemas/image-file';
+import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@/constants/image-file';
 import { CreateImageFile } from './components/listing-form/types';
+import { TranslationFunction } from '@/types';
 
 const specificationKeys = Object.keys(specifications) as SpecificationEnum[];
 
-const PredefinedSpecificationSchema = z.object({
-  label: z.enum(specificationKeys, {
-    message: 'Please select a valid specification type',
-  }),
-  value: z
-    .string({ message: 'Specification value is required' })
-    .min(1, 'Specification value cannot be empty'),
-  isCustom: z.literal(false),
-}) satisfies ZodType<PredefinedSpecificationType>;
+// ── Specification schemas (factory) ──────────────────────────────────
 
-const CustomSpecificationSchema = z.object({
-  label: z
-    .string({ message: 'Specification label is required' })
-    .min(1, 'Specification label cannot be empty'),
-  value: z
-    .string({ message: 'Specification value is required' })
-    .min(1, 'Specification value cannot be empty'),
-  isCustom: z.literal(true),
-}) satisfies ZodType<CustomSpecificationType>;
+const createPredefinedSpecificationSchema = (t: TranslationFunction) =>
+  z.object({
+    label: z.enum(specificationKeys),
+    value: z
+      .string({ message: t('specValueRequired') })
+      .min(1, t('specValueRequired')),
+    isCustom: z.literal(false),
+  }) satisfies ZodType<PredefinedSpecificationType>;
 
-export const SpecificationSchema = z.discriminatedUnion('isCustom', [
-  PredefinedSpecificationSchema,
-  CustomSpecificationSchema,
-]);
+const createCustomSpecificationSchema = (t: TranslationFunction) =>
+  z.object({
+    label: z
+      .string({ message: t('specLabelRequired') })
+      .min(1, t('specLabelRequired')),
+    value: z
+      .string({ message: t('specValueRequired') })
+      .min(1, t('specValueRequired')),
+    isCustom: z.literal(true),
+  }) satisfies ZodType<CustomSpecificationType>;
 
-export const ListingSchema = z.object({
-  listing_id: z.uuid(),
+const createSpecificationSchema = (t: TranslationFunction) =>
+  z.discriminatedUnion('isCustom', [
+    createPredefinedSpecificationSchema(t),
+    createCustomSpecificationSchema(t),
+  ]);
 
-  title: z
-    .string({ message: 'Title is required' })
-    .min(10, 'Title must be at least 10 characters long')
-    .max(100, 'Title cannot exceed 100 characters'),
+// ── Image file schema (factory) ──────────────────────────────────────
 
-  description: z
-    .string({ message: 'Description is required' })
-    .min(20, 'Description must be at least 20 characters long')
-    .max(2000, 'Description cannot exceed 2000 characters'),
+const createImageFileSchema = (t: TranslationFunction) =>
+  z
+    .file()
+    .min(10_000, t('imageMinSize'))
+    .max(MAX_UPLOAD_SIZE, t('imageMaxSize'))
+    .mime(ACCEPTED_FILE_TYPES, t('imageInvalidType'));
 
-  price: z
-    .number({ message: 'Price must be a valid number' })
-    .min(1, 'Price cannot be zero or negative'),
+// ── Base listing schema (factory) ────────────────────────────────────
 
-  currency: z.enum(Object.keys(Currency)).nullable(),
+const createBaseListingSchema = (t: TranslationFunction) =>
+  z.object({
+    listing_id: z.uuid(),
 
-  category_id: z.uuid({ message: 'Please select a valid category' }),
+    title: z
+      .string({ message: t('titleRequired') })
+      .min(10, t('titleMin'))
+      .max(100, t('titleMax')),
 
-  product_condition: z.enum(Object.keys(ProductCondition)),
+    description: z
+      .string({ message: t('descriptionRequired') })
+      .min(20, t('descriptionMin'))
+      .max(2000, t('descriptionMax')),
 
-  location_id: z.uuid({ message: 'Please select a valid location' }),
+    price: z
+      .number({ message: t('priceRequired') })
+      .min(1, t('priceMin')),
 
-  seller_id: z.uuid({ message: 'Seller ID must be valid' }),
+    currency: z.enum(Object.keys(Currency)).nullable(),
 
-  specifications: z
-    .array(SpecificationSchema)
-    .min(specificationKeys.length, { message: 'Please fill all specifications' }),
+    category_id: z.uuid({ message: t('categoryRequired') }),
 
-  content_status: z.string().nullable(),
+    product_condition: z.enum(Object.keys(ProductCondition), { message: t('productConditionRequired') }),
 
-  created_at: z.string().nullable(),
+    location_id: z.uuid({ message: t('locationRequired') }),
 
-  updated_at: z.string().nullable(),
-}) satisfies ZodType<
-  Database['public']['Tables']['marketplace_listings']['Row']
->;
+    seller_id: z.uuid({ message: t('sellerIdRequired') }),
 
-export const createListingSchema = ListingSchema.omit({
-  listing_id: true,
-  created_at: true,
-  updated_at: true,
-  content_status: true,
-}) satisfies ZodType<InsertListings>;
+    specifications: z
+      .array(createSpecificationSchema(t))
+      .min(specificationKeys.length, { message: t('specificationsRequired') }),
 
-const createListingImageSchema = z.object({
-  file: imageFileSchema,
-  isThumbnail: z.boolean(),
-  isExisting: z.literal(false).optional(),
-});
+    content_status: z.string().nullable(),
+    created_at: z.string().nullable(),
+    updated_at: z.string().nullable(),
+  }) satisfies ZodType<
+    Database['public']['Tables']['marketplace_listings']['Row']
+  >;
+
+// ── Insert schema (factory) ──────────────────────────────────────────
+
+const createInsertListingSchema = (t: TranslationFunction) =>
+  createBaseListingSchema(t).omit({
+    listing_id: true,
+    created_at: true,
+    updated_at: true,
+    content_status: true,
+  }) satisfies ZodType<InsertListings>;
+
+// ── Client schemas (factories — used with useTranslations) ───────────
+
+const createListingImageSchema = (t: TranslationFunction) =>
+  z.object({
+    file: createImageFileSchema(t),
+    isThumbnail: z.boolean(),
+    isExisting: z.literal(false).optional(),
+  });
 
 const updateListingImageSchema = z.object({
   preview: z.string(),
@@ -100,17 +120,41 @@ const updateListingImageSchema = z.object({
   isExisting: z.literal(true),
 });
 
-export const createListingClientSchema = createListingSchema
-  .omit({
-    seller_id: true,
-  })
-  .extend({
-    images: z
-      .array(createListingImageSchema)
-      .min(1, { message: 'Please upload at least one image' }),
-  }) satisfies ZodType<
-    InsertListingsWithoutSellerId & { images: CreateImageFile[] }
-  >;
+export const createCreateListingClientSchema = (t: TranslationFunction) =>
+  createInsertListingSchema(t)
+    .omit({ seller_id: true })
+    .extend({
+      images: z
+        .array(createListingImageSchema(t))
+        .min(1, { message: t('imagesRequired') }),
+    }) satisfies ZodType<
+      InsertListingsWithoutSellerId & { images: CreateImageFile[] }
+    >;
+
+export const createUpdateListingClientSchema = (t: TranslationFunction) =>
+  createCreateListingClientSchema(t)
+    .partial()
+    .extend({
+      images: z
+        .array(
+          z.union([createListingImageSchema(t), updateListingImageSchema]),
+          { message: t('imagesRequired') }
+        )
+        .min(1, { message: t('imagesRequired') }),
+    });
+
+// ── Static exports (for type inference & server schemas) ─────────────
+
+const defaultT: TranslationFunction = (key: string) => key;
+
+export const createListingClientSchema = createCreateListingClientSchema(defaultT);
+export const updateListingClientSchema = createUpdateListingClientSchema(defaultT);
+
+export const ListingSchema = createBaseListingSchema(defaultT);
+export const SpecificationSchema = createSpecificationSchema(defaultT);
+export const createListingSchema = createInsertListingSchema(defaultT);
+
+// ── Server schemas (no translation needed) ───────────────────────────
 
 export const createListingServerSchema = createListingSchema.extend({
   images: z
@@ -125,29 +169,9 @@ export const createListingServerSchema = createListingSchema.extend({
     .min(1, { message: 'Please upload at least one image' }),
 }) satisfies ZodType<InsertListings & { images: ImageUploadResult[] }>;
 
-// Update listing schemas - allows partial updates
-export const updateListingClientSchema = createListingClientSchema
-  .partial()
-  .extend({
-    // Images can be a mix of existing URLs and new uploads
-    images: z
-      .array(
-        z.union([
-          // New upload (has File)
-          createListingImageSchema,
-          // Existing image (has url string)
-          updateListingImageSchema,
-        ]),
-        { message: 'Images are required' }
-      )
-      .min(1, { message: 'Please upload at least one image' }),
-  });
-
 export const updateListingServerSchema = createListingSchema
   .partial()
-  .omit({
-    seller_id: true,
-  })
+  .omit({ seller_id: true })
   .extend({
     images: z
       .array(

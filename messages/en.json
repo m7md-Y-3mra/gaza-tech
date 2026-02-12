@@ -388,6 +388,7 @@
       "priceRequired": "Price must be a valid number",
       "priceMin": "Price cannot be zero or negative",
       "categoryRequired": "Please select a valid category",
+      "productConditionRequired": "Please select a valid product condition",
       "locationRequired": "Please select a valid location",
       "sellerIdRequired": "Seller ID must be valid",
       "specificationsRequired": "Please fill all specifications",
