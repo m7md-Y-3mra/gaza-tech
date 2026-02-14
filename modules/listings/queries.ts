@@ -290,6 +290,27 @@ export async function getGroupedCategoriesQuery(): Promise<GroupedCategory[]> {
 }
 
 /**
+ * Get all active categories without parent
+ */
+export async function getCategoriesWithoutParentQuery(): Promise<CategoryRow[]> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('marketplace_categories')
+    .select('*')
+    .eq('is_active', true)
+    .not('parent_id', 'is', null)
+
+  if (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
  * Get all active locations
  * Used for location selection in create/update listing forms
  */

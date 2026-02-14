@@ -12,6 +12,7 @@ import {
   getLocationsQuery,
   createListingQuery,
   updateListingQuery,
+  getCategoriesWithoutParentQuery,
 } from './queries';
 
 /**
@@ -62,6 +63,12 @@ export const toggleBookmarkAction = errorHandler(
 export const getGroupedCategoriesAction = errorHandler(
   getGroupedCategoriesQuery
 );
+
+/**
+ * Get all active categories without parent
+ * Server action wrapped with error handler
+ */
+export const getCategoriesWithoutParentAction = errorHandler(getCategoriesWithoutParentQuery);
 
 /**
  * Get all active locations

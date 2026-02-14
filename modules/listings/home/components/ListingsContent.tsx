@@ -1,6 +1,12 @@
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { FilterOpenProvider } from '../providers/FilterOpenProvider';
 import SearchBar from './search-bar/SearchBar';
-import CategoryFilters from './category-filters/CategoryFilters';
+import {
+  CategoryFilters,
+  CategoryFiltersError,
+  CategoryFiltersSkeleton,
+} from './category-filters';
 import ListingsToolbar from './listings-toolbar';
 import ActiveFilters from './active-filters';
 import ListingsGrid from './listings-grid';
@@ -11,7 +17,11 @@ const ListingsContent = () => {
     <div className="container mx-auto px-4 pb-24 lg:px-6 lg:pb-8">
       <FilterOpenProvider>
         <SearchBar />
-        <CategoryFilters />
+        <ErrorBoundary FallbackComponent={CategoryFiltersError}>
+          <Suspense fallback={<CategoryFiltersSkeleton />}>
+            <CategoryFilters />
+          </Suspense>
+        </ErrorBoundary>
         <ListingsToolbar />
         <ActiveFilters />
         <ListingsGrid />
