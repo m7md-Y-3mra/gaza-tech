@@ -10,7 +10,11 @@ import {
 import ListingsToolbar from './listings-toolbar';
 import ActiveFilters from './active-filters';
 import ListingsGrid from './listings-grid';
-import FilterModal from './filter-modal';
+import {
+  FilterModal,
+  FilterModalError,
+  FilterModalSkeleton,
+} from './filter-modal';
 
 const ListingsContent = () => {
   return (
@@ -25,7 +29,11 @@ const ListingsContent = () => {
         <ListingsToolbar />
         <ActiveFilters />
         <ListingsGrid />
-        <FilterModal />
+        <ErrorBoundary FallbackComponent={FilterModalError}>
+          <Suspense fallback={<FilterModalSkeleton />}>
+            <FilterModal />
+          </Suspense>
+        </ErrorBoundary>
       </FilterOpenProvider>
     </div>
   );
