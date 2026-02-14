@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select';
 import { SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
 
-export const ListingsToolbar = () => {
+const ListingsToolbar = () => {
   return (
     <section className="flex flex-row flex-wrap items-center justify-between gap-2 py-4 sm:gap-4">
       <div className="flex items-center gap-2">
@@ -54,3 +54,5 @@ export const ListingsToolbar = () => {
     </section>
   );
 };
+
+export default ListingsToolbar;

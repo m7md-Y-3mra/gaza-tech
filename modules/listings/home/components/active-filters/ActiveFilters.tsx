@@ -8,7 +8,7 @@ const activeFilters = [
   { id: 3, label: 'Location: Gaza City' },
 ];
 
-export const ActiveFilters = () => {
+const ActiveFilters = () => {
   return (
     <section className="flex flex-wrap items-center gap-2 pb-6">
       <span className="text-foreground text-sm font-medium">
@@ -39,3 +39,5 @@ export const ActiveFilters = () => {
     </section>
   );
 };
+
+export default ActiveFilters;

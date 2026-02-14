@@ -1,7 +1,7 @@
 import SearchBar from './components/search-bar';
 import CategoryFilters from './components/category-filters';
-import { ListingsToolbar } from './components/listings-toolbar/ListingsToolbar';
-import { ActiveFilters } from './components/active-filters/ActiveFilters';
+import ListingsToolbar from './components/listings-toolbar';
+import ActiveFilters from './components/active-filters';
 
 const ListingsPage = () => {
   return (
