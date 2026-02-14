@@ -256,6 +256,53 @@
     @apply bg-background text-foreground;
   }
 
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @layer utilities {
+    .scrollbar-hide {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar only on touch devices (mobile/tablet) */
+    @media (pointer: coarse) {
+      .scrollbar-hide-touch {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .scrollbar-hide-touch::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
   /* ========================================
    RTL (Right-to-Left) SUPPORT
    ======================================== */
