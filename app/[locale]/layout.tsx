@@ -6,6 +6,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { IBM_Plex_Sans_Arabic } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { DirectionProvider } from '@/components/ui/direction';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -36,18 +37,20 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body className={`${ibmPlexSansArabic.className} antialiased`}>
-        <DirectionProvider dir={dir}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextTopLoader color="#00bc7d" showSpinner={false} />
-            <NextIntlClientProvider>{children}</NextIntlClientProvider>
-            <Toaster richColors position="top-center" />
-          </ThemeProvider>
-        </DirectionProvider>
+        <NuqsAdapter>
+          <DirectionProvider dir={dir}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NextTopLoader color="#00bc7d" showSpinner={false} />
+              <NextIntlClientProvider>{children}</NextIntlClientProvider>
+              <Toaster richColors position="top-center" />
+            </ThemeProvider>
+          </DirectionProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
