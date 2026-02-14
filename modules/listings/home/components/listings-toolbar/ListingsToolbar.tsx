@@ -7,14 +7,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
+import { ListingsToolbarProps } from './types';
 
-const ListingsToolbar = () => {
+const ListingsToolbar = ({ onFilterOpen }: ListingsToolbarProps) => {
   return (
     <section className="flex flex-row flex-wrap items-center justify-between gap-2 py-4 sm:gap-4">
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
           className="hover:border-primary hover:bg-background! h-10 gap-2 border-2"
+          onClick={onFilterOpen}
         >
           <SlidersHorizontal className="size-4" />
           <span>Filters</span>
