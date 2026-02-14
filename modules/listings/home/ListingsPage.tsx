@@ -1,5 +1,7 @@
 import SearchBar from './components/search-bar';
 import CategoryFilters from './components/category-filters';
+import { ListingsToolbar } from './components/listings-toolbar/ListingsToolbar';
+import { ActiveFilters } from './components/active-filters/ActiveFilters';
 
 const ListingsPage = () => {
   return (
@@ -7,8 +9,9 @@ const ListingsPage = () => {
       <div className="container mx-auto px-4 pb-20 lg:px-6 lg:pb-24">
         <SearchBar />
         <CategoryFilters />
-        {/* Toolbar will be added in Phase 2 */}
-        {/* ActiveFilters will be added in Phase 2 */}
+        <ListingsToolbar />
+        <ActiveFilters />
+
         {/* Grid will be added in Phase 3 */}
       </div>
     </div>
