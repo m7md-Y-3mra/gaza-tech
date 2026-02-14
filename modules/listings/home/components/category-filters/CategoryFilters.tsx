@@ -37,7 +37,7 @@ const CategoryFilters = () => {
               className={`h-11 rounded-full px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
                 isSelected
                   ? 'shadow-sm hover:shadow-md'
-                  : 'text-muted-foreground hover:text-primary hover:border-primary hover:bg-background! border-2'
+                  : 'text-foreground hover:text-primary hover:border-primary hover:bg-background! border-2'
               }`}
             >
               {Icon && <Icon className="size-4" />}

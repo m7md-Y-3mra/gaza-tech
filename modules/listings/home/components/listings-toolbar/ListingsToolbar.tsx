@@ -15,7 +15,7 @@ const ListingsToolbar = ({ onFilterOpen }: ListingsToolbarProps) => {
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
-          className="hover:border-primary hover:bg-background! h-10 gap-2 border-2"
+          className="text-foreground hover:border-primary hover:bg-background! h-10 gap-2 border-2"
           onClick={onFilterOpen}
         >
           <SlidersHorizontal className="size-4" />
