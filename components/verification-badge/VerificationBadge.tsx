@@ -1,4 +1,4 @@
-import { BadgeCheck } from 'lucide-react';
+import { BadgeCheck, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { VerificationBadgeProps } from './types';
 import { sizeClasses } from './constants';
@@ -11,13 +11,22 @@ const VerificationBadge = ({
   if (!isVerified) return null;
 
   return (
-    <BadgeCheck
+    // <BadgeCheck
+    //   className={cn(
+    //     'text-primary fill-primary/10',
+    //     sizeClasses[size],
+    //     className
+    //   )}
+    //   aria-label="Verified"
+    // />
+    <ShieldCheck
       className={cn(
-        'text-primary fill-primary/10',
+        'text-verification-icon fill-verification-bg',
         sizeClasses[size],
         className
       )}
       aria-label="Verified"
+      // className="size-3 fill-blue-500/10 text-blue-500"
     />
   );
 };
