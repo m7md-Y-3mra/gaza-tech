@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -8,15 +9,17 @@ import {
 } from '@/components/ui/select';
 import { SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
 import { ListingsToolbarProps } from './types';
+import { useFilterOpen } from '../../providers/FilterOpenProvider';
 
-const ListingsToolbar = ({ onFilterOpen }: ListingsToolbarProps) => {
+const ListingsToolbar = ({}: ListingsToolbarProps) => {
+  const { openFilter } = useFilterOpen();
   return (
     <section className="flex flex-row flex-wrap items-center justify-between gap-2 py-4 sm:gap-4">
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
           className="text-foreground hover:border-primary hover:bg-background! h-10 gap-2 border-2"
-          onClick={onFilterOpen}
+          onClick={openFilter}
         >
           <SlidersHorizontal className="size-4" />
           <span>Filters</span>

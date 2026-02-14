@@ -8,9 +8,11 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { FilterModalProps } from './types';
 import { ProductCondition } from '@/modules/listings/types';
+import { useFilterOpen } from '../../providers/FilterOpenProvider';
 
-const FilterModal = ({ isOpen, onClose }: FilterModalProps) => {
-  if (!isOpen) return null;
+const FilterModal = ({}: FilterModalProps) => {
+  const { isFilterOpen, closeFilter } = useFilterOpen();
+  if (!isFilterOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex">
@@ -18,23 +20,23 @@ const FilterModal = ({ isOpen, onClose }: FilterModalProps) => {
       <div
         className={cn(
           'fixed inset-0 bg-black/50 transition-opacity duration-300',
-          isOpen ? 'opacity-100' : 'opacity-0'
+          isFilterOpen ? 'opacity-100' : 'opacity-0'
         )}
-        onClick={onClose}
+        onClick={closeFilter}
       />
 
       {/* Slide-over Panel */}
       <div
         className={cn(
           'bg-background fixed inset-y-0 left-0 z-50 w-full max-w-xs shadow-xl transition-transform duration-300 sm:max-w-sm',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          isFilterOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         <div className="flex h-full flex-col">
           {/* Header */}
           <div className="flex items-center justify-between border-b px-6 py-4">
             <h2 className="text-lg font-semibold">Filters</h2>
-            <Button variant="ghost" size="icon" onClick={onClose}>
+            <Button variant="ghost" size="icon" onClick={closeFilter}>
               <X className="size-5" />
             </Button>
           </div>
@@ -104,10 +106,14 @@ const FilterModal = ({ isOpen, onClose }: FilterModalProps) => {
           {/* Footer Actions */}
           <div className="border-t p-6">
             <div className="flex gap-3">
-              <Button variant="outline" className="flex-1" onClick={onClose}>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={closeFilter}
+              >
                 Reset
               </Button>
-              <Button className="flex-1" onClick={onClose}>
+              <Button className="flex-1" onClick={closeFilter}>
                 Apply
               </Button>
             </div>
