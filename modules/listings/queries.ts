@@ -14,7 +14,22 @@ type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
 type CategoryRow =
   Database['public']['Tables']['marketplace_categories']['Row'];
 type LocationRow = Database['public']['Tables']['locations']['Row'];
+
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
+
+export type PriceRange = {
+  min: number;
+  max: number | null;
+};
+
+export type ListingsFilter = {
+  categories: string[];
+  locations: string[];
+  conditions: string[];
+  priceRanges: PriceRange[];
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
+};
 
 type GetListingDetailsRes = ListingRow & {
   marketplace_categories: CategoryRow;
@@ -467,3 +482,99 @@ export async function updateListingQuery(
     }
   }
 }
+
+/**
+ * Get listings with filters
+ * Supports filtering by category, location, condition, price, and sorting
+ */
+export async function getListingsQuery(
+  filters: Partial<ListingsFilter>,
+  page: number = 1,
+  limit: number = 12
+): Promise<{ data: SellerListingRes[]; count: number }> {
+  'use server';
+  const client = await createClient();
+
+  let query = client.from('marketplace_listings').select(
+    `
+      listing_id,
+      title,
+      price,
+      currency,
+      product_condition,
+      content_status,
+      created_at,
+      listing_images (
+        image_url,
+        is_thumbnail
+      ),
+      locations (
+        location_id,
+        name,
+        name_ar
+      )
+    `,
+    { count: 'exact' }
+  );
+
+  // Apply filters
+  query = query.eq('content_status', 'published');
+
+  if (filters.categories && filters.categories.length > 0) {
+    query = query.in('category_id', filters.categories);
+  }
+
+  if (filters.locations && filters.locations.length > 0) {
+    query = query.in('location_id', filters.locations);
+  }
+
+  if (filters.conditions && filters.conditions.length > 0) {
+    query = query.in('product_condition', filters.conditions);
+  }
+
+  if (filters.priceRanges && filters.priceRanges.length > 0) {
+    // Construct OR query for price ranges
+    const priceConditions = filters.priceRanges
+      .map((range) => {
+        const conditions = [];
+        if (range.min !== undefined && range.min !== null) {
+          conditions.push(`price.gte.${range.min}`);
+        }
+        if (range.max !== undefined && range.max !== null) {
+          conditions.push(`price.lte.${range.max}`);
+        }
+        return conditions.length > 0 ? `and(${conditions.join(',')})` : null;
+      })
+      .filter(Boolean)
+      .join(',');
+
+    if (priceConditions) {
+      query = query.or(priceConditions);
+    }
+  }
+
+  // Sorting
+  const sortBy = filters.sortBy || 'created_at';
+  const sortOrder = filters.sortOrder === 'asc';
+
+  if (sortBy === 'price') {
+    query = query.order('price', { ascending: sortOrder });
+  } else {
+    query = query.order('created_at', { ascending: sortOrder });
+  }
+
+  // Pagination
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+  query = query.range(from, to);
+
+  const { data, error, count } = await query;
+
+  if (error) {
+    console.error('Error fetching listings:', error);
+    return { data: [], count: 0 };
+  }
+
+  return { data: (data || []) as SellerListingRes[], count: count || 0 };
+}
+
