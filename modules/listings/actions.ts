@@ -13,6 +13,7 @@ import {
   createListingQuery,
   updateListingQuery,
   getCategoriesWithoutParentQuery,
+  getListingsQuery,
 } from './queries';
 
 /**
@@ -111,3 +112,5 @@ export const updateListingAction = errorHandler(
     revalidatePath('/listings');
   }
 );
+
+export const getListingsAction = errorHandler(getListingsQuery);

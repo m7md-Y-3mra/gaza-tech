@@ -9,14 +9,23 @@ import {
 } from './category-filters';
 import ListingsToolbar from './listings-toolbar';
 import ActiveFilters from './active-filters';
-import ListingsGrid from './listings-grid';
 import {
   FilterModal,
   FilterModalError,
   FilterModalSkeleton,
 } from './filter-modal';
+import { getListingsAction } from '../../actions';
+import LoadMore from './load-more';
+import ListingsGridWithTitle from './listings-grid/ListingsGridWithTitle';
 
-const ListingsContent = () => {
+const ListingsContent = async () => {
+  const listingsRes = await getListingsAction({
+    filters: {},
+  });
+  if (!listingsRes.success) {
+    throw Error('Failed to fetch listings');
+  }
+
   return (
     <div className="container mx-auto px-4 pb-24 lg:px-6 lg:pb-8">
       <FilterOpenProvider>
@@ -28,7 +37,8 @@ const ListingsContent = () => {
         </ErrorBoundary>
         <ListingsToolbar />
         <ActiveFilters />
-        <ListingsGrid />
+        <ListingsGridWithTitle listings={listingsRes.data.data} />
+        <LoadMore />
         <ErrorBoundary FallbackComponent={FilterModalError}>
           <Suspense fallback={<FilterModalSkeleton />}>
             <FilterModal />

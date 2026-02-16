@@ -4,16 +4,17 @@ import { Badge } from '@/components/ui/badge';
 import { VerificationBadge } from '@/components/verification-badge';
 import { ListingCardProps } from './types';
 
-const ListingCard = ({
-  title,
-  price,
-  currency,
-  image,
-  location,
-  condition,
-  sellerName,
-  isVerified,
-}: ListingCardProps) => {
+const ListingCard = ({ listing }: ListingCardProps) => {
+  const {
+    title,
+    price,
+    currency,
+    image,
+    location,
+    sellerName,
+    isVerified,
+    product_condition,
+  } = listing;
   return (
     <div className="group bg-card hover:border-primary relative overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg">
       {/* Image Container */}
@@ -29,10 +30,10 @@ const ListingCard = ({
         {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
           <Badge
-            variant={condition === 'New' ? 'default' : 'secondary'}
+            variant={product_condition === 'New' ? 'default' : 'secondary'}
             className="backdrop-blur-md"
           >
-            {condition}
+            {product_condition}
           </Badge>
         </div>
 

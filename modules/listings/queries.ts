@@ -8,6 +8,7 @@ import { GroupedCategory, ImageUploadResult } from './types';
 import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
 import { createListingServerSchema, updateListingServerSchema } from './schema';
+import { DEFAULT_LIMIT_NUMBER, DEFAULT_PAGE_NUMBER } from '@/constants/pagination';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -15,7 +16,17 @@ type CategoryRow =
   Database['public']['Tables']['marketplace_categories']['Row'];
 type LocationRow = Database['public']['Tables']['locations']['Row'];
 
+
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
+type UserRow = Database['public']['Tables']['users']['Row'];
+
+export type ListingCardItem = SimilarListingRes & {
+  created_at: string;
+  image: string;
+  location: string;
+  sellerName: string;
+  isVerified: boolean;
+};
 
 export type PriceRange = {
   min: number;
@@ -50,7 +61,7 @@ type SimilarListingRes = Pick<
   locations: Pick<LocationRow, 'location_id' | 'name' | 'name_ar'>[];
 };
 
-type SellerListingRes = SimilarListingRes & {
+export type SellerListingRes = SimilarListingRes & {
   created_at: string;
 };
 
@@ -488,10 +499,16 @@ export async function updateListingQuery(
  * Supports filtering by category, location, condition, price, and sorting
  */
 export async function getListingsQuery(
-  filters: Partial<ListingsFilter>,
-  page: number = 1,
-  limit: number = 12
-): Promise<{ data: SellerListingRes[]; count: number }> {
+  {
+    filters,
+    page = DEFAULT_PAGE_NUMBER,
+    limit = DEFAULT_LIMIT_NUMBER,
+  }: {
+    filters: Partial<ListingsFilter>;
+    page?: number;
+    limit?: number;
+  }
+): Promise<{ data: ListingCardItem[]; count: number }> {
   'use server';
   const client = await createClient();
 
@@ -512,6 +529,11 @@ export async function getListingsQuery(
         location_id,
         name,
         name_ar
+      ),
+      users!marketplace_listings_seller_id_fkey (
+        first_name,
+        last_name,
+        is_verified
       )
     `,
     { count: 'exact' }
@@ -575,6 +597,44 @@ export async function getListingsQuery(
     return { data: [], count: 0 };
   }
 
-  return { data: (data || []) as SellerListingRes[], count: count || 0 };
-}
+  const mappedData: ListingCardItem[] = (data || []).map((item) => {
+    // Cast item to a type that includes the joined fields
+    const rawItem = item as SellerListingRes & {
+      users: UserRow | UserRow[] | null;
+      locations: LocationRow | LocationRow[] | null;
+      listing_images: ListingImageRow[];
+    };
 
+    // Find thumbnail or first image
+    const images = rawItem.listing_images || [];
+    const thumbnailObj =
+      images.find((img) => img.is_thumbnail) || images[0];
+    const image = thumbnailObj ? thumbnailObj.image_url : '';
+
+    // Location name
+    // Assuming locations is an object (many-to-one) but Supabase might return array if not strictly single
+    // From similar listings types, it was modeled as array, but based on schema it should be one.
+    // We'll safely check if it's array or object.
+    const loc = Array.isArray(rawItem.locations)
+      ? rawItem.locations[0]
+      : rawItem.locations;
+    const location = loc ? loc.name : '';
+
+    // Seller info
+    const user = Array.isArray(rawItem.users) ? rawItem.users[0] : rawItem.users;
+    const sellerName = user
+      ? `${user.first_name} ${user.last_name}`.trim()
+      : 'Unknown Seller';
+    const isVerified = user ? !!user.is_verified : false;
+
+    return {
+      ...item,
+      image,
+      location,
+      sellerName,
+      isVerified,
+    };
+  });
+
+  return { data: mappedData, count: count || 0 };
+}
