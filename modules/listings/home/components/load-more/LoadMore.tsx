@@ -58,7 +58,7 @@ const LoadMore = ({ filters, initialHasMore }: LoadMoreProps) => {
 
   return (
     <>
-      <ListingsGrid listings={listings} />
+      <ListingsGrid listings={listings} className="mt-6" />
 
       {error && (
         <div className="flex flex-col items-center justify-center py-12 text-center">
