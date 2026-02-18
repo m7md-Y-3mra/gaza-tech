@@ -10,9 +10,27 @@ import {
 import { SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
 import { ListingsToolbarProps } from './types';
 import { useFilterOpen } from '../../providers/FilterOpenProvider';
+import { useQueryState } from 'nuqs';
+import { listingsSearchParams } from '../../search-params';
 
 const ListingsToolbar = ({}: ListingsToolbarProps) => {
   const { openFilter } = useFilterOpen();
+  const [sortBy, setSortBy] = useQueryState(
+    'sortBy',
+    listingsSearchParams.sortBy.withOptions({ shallow: false })
+  );
+  const [sortOrder, setSortOrder] = useQueryState(
+    'sortOrder',
+    listingsSearchParams.sortOrder.withOptions({ shallow: false })
+  );
+
+  const onSortByChange = (value: string) => {
+    setSortBy(value);
+  };
+
+  const onSortOrderChange = (value: 'asc' | 'desc') => {
+    setSortOrder(value);
+  };
   return (
     <section className="flex flex-row flex-wrap items-center justify-between gap-2 py-4 sm:gap-4">
       <div className="flex items-center gap-2">
@@ -27,15 +45,23 @@ const ListingsToolbar = ({}: ListingsToolbarProps) => {
       </div>
 
       <div className="flex items-center gap-2">
-        <Select defaultValue="newest">
+        <Select defaultValue={sortBy} onValueChange={onSortByChange}>
           <SelectTrigger className="bg-background hover:border-primary h-10! rounded-lg border-2 sm:w-[180px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="newest">Newest Listed</SelectItem>
-            <SelectItem value="price-low">Price: Low to High</SelectItem>
-            <SelectItem value="price-high">Price: High to Low</SelectItem>
-            <SelectItem value="rating">Highest Rated</SelectItem>
+            <SelectItem value="published">Published</SelectItem>
+            <SelectItem value="price">Price</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select defaultValue={sortOrder} onValueChange={onSortOrderChange}>
+          <SelectTrigger className="bg-background hover:border-primary h-10! rounded-lg border-2 sm:w-[180px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="desc">Desc</SelectItem>
+            <SelectItem value="asc">Asc</SelectItem>
           </SelectContent>
         </Select>
 
