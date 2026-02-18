@@ -581,7 +581,7 @@ export async function getListingsQuery({
   if (hasMinPrice || hasMaxPrice) {
     const userCurrency = filters.currency || 'ILS';
     const minPrice = filters.minPrice || 0;
-    const maxPrice = filters.maxPrice || Number.MAX_SAFE_INTEGER;
+    const maxPrice = filters.maxPrice || 0;
 
     const priceRanges = await getPriceRangesForBothCurrencies(
       minPrice,
@@ -590,8 +590,27 @@ export async function getListingsQuery({
     );
 
     // Build an .or() filter that matches both currencies
-    const usdFilter = `and(currency.eq.USD,price.gte.${priceRanges.usd.min},price.lte.${priceRanges.usd.max})`;
-    const ilsFilter = `and(currency.eq.ILS,price.gte.${priceRanges.ils.min},price.lte.${priceRanges.ils.max})`;
+    let usdFilter = ``;
+    if (hasMinPrice) {
+      usdFilter += `and(currency.eq.USD,price.gte.${priceRanges.usd.min})`;
+    }
+    if (hasMaxPrice) {
+      if (hasMinPrice)
+        usdFilter += `,price.lte.${priceRanges.usd.max}`;
+      else
+        usdFilter += `and(currency.eq.USD,price.lte.${priceRanges.usd.max})`;
+    }
+
+    let ilsFilter = ``;
+    if (hasMinPrice) {
+      ilsFilter = `and(currency.eq.ILS,price.gte.${priceRanges.ils.min})`;
+    }
+    if (hasMaxPrice) {
+      if (hasMinPrice)
+        ilsFilter += `,price.lte.${priceRanges.ils.max}`;
+      else
+        ilsFilter += `and(currency.eq.ILS,price.lte.${priceRanges.ils.max})`;
+    }
     query = query.or(`${usdFilter},${ilsFilter}`);
   }
 
