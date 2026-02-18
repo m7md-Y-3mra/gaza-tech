@@ -1,10 +1,15 @@
 import ListingsContent from './components/ListingsContent';
 import { FilterOpenProvider } from './providers/FilterOpenProvider';
+import type { ListingsSearchParamsType } from './search-params';
 
-const ListingsPage = () => {
+const ListingsPage = ({
+  searchParams,
+}: {
+  searchParams: ListingsSearchParamsType;
+}) => {
   return (
     <FilterOpenProvider>
-      <ListingsContent />
+      <ListingsContent searchParams={searchParams} />
     </FilterOpenProvider>
   );
 };

@@ -17,10 +17,23 @@ import {
 import { getListingsAction } from '../../actions';
 import LoadMore from './load-more';
 import ListingsGridWithTitle from './listings-grid/ListingsGridWithTitle';
+import { ListingsSearchParamsType } from '../search-params';
 
-const ListingsContent = async () => {
+const ListingsContent = async ({
+  searchParams,
+}: {
+  searchParams: ListingsSearchParamsType;
+}) => {
   const listingsRes = await getListingsAction({
-    filters: {},
+    filters: {
+      categories: searchParams.categories,
+      locations: searchParams.locations,
+      conditions: searchParams.conditions,
+      priceRanges: searchParams.priceRanges,
+      search: searchParams.search,
+      sortBy: searchParams.sortBy,
+      sortOrder: searchParams.sortOrder,
+    },
   });
   if (!listingsRes.success) {
     throw Error('Failed to fetch listings');
@@ -36,12 +49,12 @@ const ListingsContent = async () => {
           </Suspense>
         </ErrorBoundary>
         <ListingsToolbar />
-        <ActiveFilters />
+        {/* <ActiveFilters searchParams={searchParams} /> */}
         <ListingsGridWithTitle listings={listingsRes.data.data} />
         <LoadMore />
         <ErrorBoundary FallbackComponent={FilterModalError}>
           <Suspense fallback={<FilterModalSkeleton />}>
-            <FilterModal />
+            <FilterModal searchParams={searchParams} />
           </Suspense>
         </ErrorBoundary>
       </FilterOpenProvider>
