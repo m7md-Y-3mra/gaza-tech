@@ -1,7 +1,9 @@
 import { getLocationsAction } from '@/modules/listings/actions';
 import FilterModalClient from './FilterModalClient';
+import { FC } from 'react';
+import { FilterModalProps } from './types';
 
-const FilterModal = async () => {
+const FilterModal: FC<FilterModalProps> = async ({ searchParams }) => {
   const locationsRes = await getLocationsAction();
   if (!locationsRes.success) {
     throw new Error(locationsRes.message || 'Failed to fetch locations');
@@ -11,7 +13,9 @@ const FilterModal = async () => {
     name: location.name,
   }));
 
-  return <FilterModalClient locations={locations} />;
+  return (
+    <FilterModalClient locations={locations} searchParams={searchParams} />
+  );
 };
 
 export default FilterModal;
