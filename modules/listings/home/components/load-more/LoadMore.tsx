@@ -10,6 +10,7 @@ import {
   DEFAULT_LIMIT_NUMBER,
   DEFAULT_PAGE_NUMBER,
 } from '@/constants/pagination';
+import { useTranslations } from 'next-intl';
 
 type LoadMoreProps = {
   filters: ListingsFilters;
@@ -17,6 +18,7 @@ type LoadMoreProps = {
 };
 
 const LoadMore = ({ filters, initialHasMore }: LoadMoreProps) => {
+  const t = useTranslations('ListingsHome.LoadMore');
   const [listings, setListings] = useState<ListingCardItem[]>([]);
   const page = useRef(DEFAULT_PAGE_NUMBER);
   const [showSpinner, setShowSpinner] = useState(initialHasMore);
@@ -62,9 +64,7 @@ const LoadMore = ({ filters, initialHasMore }: LoadMoreProps) => {
 
       {error && (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <p className="text-muted-foreground text-sm">
-            Failed to load more listings. Please try again later.
-          </p>
+          <p className="text-muted-foreground text-sm">{t('error')}</p>
         </div>
       )}
 

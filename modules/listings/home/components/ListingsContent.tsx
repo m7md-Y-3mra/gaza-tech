@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FilterOpenProvider } from '../providers/FilterOpenProvider';
 import SearchBar from './search-bar/SearchBar';
@@ -25,6 +26,7 @@ const ListingsContent = async ({
 }: {
   searchParams: ListingsSearchParamsType;
 }) => {
+  const t = await getTranslations('ListingsHome.Content');
   const filters = {
     categories: searchParams.categories,
     locations: searchParams.locations,
@@ -75,9 +77,9 @@ const ListingsContent = async ({
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold">Something went wrong</h3>
+            <h3 className="text-lg font-semibold">{t('errorTitle')}</h3>
             <p className="text-muted-foreground mt-1 max-w-md text-sm">
-              We couldn&apos;t load the listings. Please try again later.
+              {t('errorDescription')}
             </p>
           </div>
         )}
@@ -100,10 +102,9 @@ const ListingsContent = async ({
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold">No listings found</h3>
+            <h3 className="text-lg font-semibold">{t('emptyTitle')}</h3>
             <p className="text-muted-foreground mt-1 max-w-md text-sm">
-              Try adjusting your filters or search to find what you&apos;re
-              looking for.
+              {t('emptyDescription')}
             </p>
           </div>
         )}

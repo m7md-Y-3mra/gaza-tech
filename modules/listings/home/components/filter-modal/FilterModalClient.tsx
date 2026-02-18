@@ -18,10 +18,13 @@ import {
 } from '@/components/ui/select';
 import { useQueryState } from 'nuqs';
 import { listingsSearchParams } from '../../search-params';
+import { useTranslations } from 'next-intl';
 
 const queryOptions = { shallow: false } as const;
 
 const FilterModalClient = ({ locations }: FilterModalClientProps) => {
+  const t = useTranslations('ListingsHome.FilterModal');
+  const tForm = useTranslations('ListingForm');
   const { isFilterOpen, closeFilter } = useFilterOpen();
 
   const [minPrice, setMinPrice] = useQueryState(
@@ -103,7 +106,7 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
         <div className="flex h-full flex-col">
           {/* Header */}
           <div className="flex items-center justify-between border-b px-6 py-4">
-            <h2 className="text-lg font-semibold">Filters</h2>
+            <h2 className="text-lg font-semibold">{t('title')}</h2>
             <Button variant="ghost" size="icon" onClick={closeFilter}>
               <X className="size-5" />
             </Button>
@@ -113,12 +116,12 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
           <div className="flex-1 overflow-y-auto px-6 py-4">
             {/* Price Range */}
             <div className="mb-6 space-y-4">
-              <h3 className="font-medium">Price Range</h3>
+              <h3 className="font-medium">{t('priceRange')}</h3>
               <div className="flex items-center gap-2">
                 <Input
                   type="number"
                   name="min"
-                  placeholder="Min"
+                  placeholder={t('min')}
                   className="h-9"
                   value={minPrice}
                   onChange={(e) => setMinPrice(Number(e.target.value))}
@@ -127,7 +130,7 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
                 <Input
                   type="number"
                   name="max"
-                  placeholder="Max"
+                  placeholder={t('max')}
                   className="h-9"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
@@ -140,7 +143,7 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
                   }
                 >
                   <SelectTrigger className="bg-background hover:border-primary h-10! rounded-lg border-2 sm:w-[180px]">
-                    <SelectValue placeholder="Currency" />
+                    <SelectValue placeholder={t('currency')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.values(Currency).map((cur) => (
@@ -155,9 +158,9 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
 
             {/* Condition */}
             <div className="mb-6 space-y-4">
-              <h3 className="font-medium">Condition</h3>
+              <h3 className="font-medium">{t('condition')}</h3>
               <div className="space-y-2">
-                {Object.entries(ProductCondition).map(([key, value]) => (
+                {Object.entries(ProductCondition).map(([key]) => (
                   <div key={key} className="flex items-center space-x-2">
                     <Checkbox
                       id={`condition-${key}`}
@@ -167,7 +170,7 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
                       }
                     />
                     <Label htmlFor={`condition-${key}`} className="font-normal">
-                      {value}
+                      {tForm(`condition.${key}`)}
                     </Label>
                   </div>
                 ))}
@@ -176,7 +179,7 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
 
             {/* Location */}
             <div className="mb-6 space-y-4">
-              <h3 className="font-medium">Location</h3>
+              <h3 className="font-medium">{t('location')}</h3>
               <div className="space-y-2">
                 {locations.map((location) => (
                   <div
@@ -202,7 +205,7 @@ const FilterModalClient = ({ locations }: FilterModalClientProps) => {
           {/* Footer Actions */}
           <div className="border-t p-6">
             <Button variant="outline" className="w-full" onClick={handleReset}>
-              Reset
+              {t('reset')}
             </Button>
           </div>
         </div>

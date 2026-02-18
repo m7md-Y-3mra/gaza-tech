@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import type { FallbackProps } from 'react-error-boundary';
+import { useTranslations } from 'next-intl';
 
 /**
  * Error component for CategoryFilters - used with ErrorBoundary
@@ -11,6 +12,7 @@ export const CategoryFiltersError = ({
   error,
   resetErrorBoundary,
 }: FallbackProps) => {
+  const t = useTranslations('ListingsHome.CategoryFilters.error');
   const handleRefresh = () => {
     if (resetErrorBoundary) {
       resetErrorBoundary();
@@ -37,7 +39,7 @@ export const CategoryFiltersError = ({
           </div>
           <div>
             <h3 className="text-sm font-semibold text-gray-900">
-              Failed to load categories
+              {t('title')}
             </h3>
             {errorMessage && (
               <p className="text-xs text-gray-600">{errorMessage}</p>
@@ -52,7 +54,7 @@ export const CategoryFiltersError = ({
           className="border-destructive/20 hover:bg-destructive/10 hover:text-destructive w-full md:w-auto"
         >
           <RefreshCw className="mr-2 h-3 w-3" />
-          Try Again
+          {t('tryAgain')}
         </Button>
       </div>
     </section>

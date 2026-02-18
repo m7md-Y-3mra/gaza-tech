@@ -6,10 +6,12 @@ import { CategoryFiltersClientProps } from './types';
 import { categoryIconMap } from './constant';
 import { useQueryState } from 'nuqs';
 import { listingsSearchParams } from '../../search-params';
+import { useTranslations } from 'next-intl';
 
 const CategoryFilters: FC<CategoryFiltersClientProps> = ({
   categories: categoriesRes,
 }) => {
+  const t = useTranslations('ListingsHome.CategoryFilters');
   const [selectedCategories, setSelectedCategories] = useQueryState(
     'categories',
     listingsSearchParams.categories.withOptions({
@@ -20,7 +22,7 @@ const CategoryFilters: FC<CategoryFiltersClientProps> = ({
   const categories = [
     {
       id: 'all',
-      label: 'All',
+      label: t('all'),
       icon: null,
     },
     ...categoriesRes.map((category) => ({

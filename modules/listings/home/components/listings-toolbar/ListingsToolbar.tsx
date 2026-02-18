@@ -12,8 +12,10 @@ import { ListingsToolbarProps } from './types';
 import { useFilterOpen } from '../../providers/FilterOpenProvider';
 import { useQueryState } from 'nuqs';
 import { listingsSearchParams } from '../../search-params';
+import { useTranslations } from 'next-intl';
 
 const ListingsToolbar = ({}: ListingsToolbarProps) => {
+  const t = useTranslations('ListingsHome.Toolbar');
   const { openFilter } = useFilterOpen();
   const [sortBy, setSortBy] = useQueryState(
     'sortBy',
@@ -40,28 +42,28 @@ const ListingsToolbar = ({}: ListingsToolbarProps) => {
           onClick={openFilter}
         >
           <SlidersHorizontal className="size-4" />
-          <span>Filters</span>
+          <span>{t('filters')}</span>
         </Button>
       </div>
 
       <div className="flex items-center gap-2">
         <Select defaultValue={sortBy} onValueChange={onSortByChange}>
           <SelectTrigger className="bg-background hover:border-primary h-10! rounded-lg border-2 sm:w-[180px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder={t('sortByPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="created_at">Created At</SelectItem>
-            <SelectItem value="price">Price</SelectItem>
+            <SelectItem value="created_at">{t('createdAt')}</SelectItem>
+            <SelectItem value="price">{t('price')}</SelectItem>
           </SelectContent>
         </Select>
 
         <Select defaultValue={sortOrder} onValueChange={onSortOrderChange}>
           <SelectTrigger className="bg-background hover:border-primary h-10! rounded-lg border-2 sm:w-[180px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder={t('sortByPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="desc">Desc</SelectItem>
-            <SelectItem value="asc">Asc</SelectItem>
+            <SelectItem value="desc">{t('desc')}</SelectItem>
+            <SelectItem value="asc">{t('asc')}</SelectItem>
           </SelectContent>
         </Select>
 
