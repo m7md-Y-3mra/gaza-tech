@@ -1,7 +1,22 @@
+'use client';
+
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
+import { useQueryState, debounce } from 'nuqs';
+import { listingsSearchParams } from '../../search-params';
 
 const SearchBar = () => {
+  const [searchParam, setSearchParam] = useQueryState(
+    'search',
+    listingsSearchParams.search.withOptions({ shallow: false })
+  );
+  const onSearchChange = (value: string) => {
+    setSearchParam(value, {
+      // Send immediate update if resetting, otherwise debounce at 500ms
+      limitUrlUpdates: value === '' ? undefined : debounce(500),
+    });
+  };
+
   return (
     <section className="py-4">
       <div className="relative">
@@ -10,6 +25,8 @@ const SearchBar = () => {
           type="text"
           placeholder="Search for products, brands, or sellers..."
           className="border-border h-12 rounded-xl border-2 bg-white pl-10 text-sm transition-all focus-visible:ring-2 focus-visible:ring-offset-0 md:h-14 md:pl-12 md:text-base"
+          value={searchParam}
+          onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
     </section>
