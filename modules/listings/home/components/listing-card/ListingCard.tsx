@@ -1,11 +1,14 @@
+'use client';
 import Image from 'next/image';
 import { Bookmark, MapPin, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { VerificationBadge } from '@/components/verification-badge';
 import { ListingCardProps } from './types';
+import { Link } from '@/i18n/navigation';
 
 const ListingCard = ({ listing }: ListingCardProps) => {
   const {
+    listing_id,
     title,
     price,
     currency,
@@ -16,7 +19,10 @@ const ListingCard = ({ listing }: ListingCardProps) => {
     product_condition,
   } = listing;
   return (
-    <div className="group bg-card hover:border-primary relative overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg">
+    <Link
+      href={`/listings/${listing_id}`}
+      className="group bg-card hover:border-primary relative block overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
+    >
       {/* Image Container */}
       <div className="bg-muted relative aspect-4/3 overflow-hidden">
         <Image
@@ -77,7 +83,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
