@@ -38,6 +38,7 @@ export type ListingsFilter = {
   locations: string[];
   conditions: string[];
   priceRanges: PriceRange[];
+  search: string;
   sortBy: string;
   sortOrder: 'asc' | 'desc';
 };
