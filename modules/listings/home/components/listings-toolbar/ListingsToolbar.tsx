@@ -50,7 +50,7 @@ const ListingsToolbar = ({}: ListingsToolbarProps) => {
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="created_at">created at</SelectItem>
+            <SelectItem value="created_at">Created At</SelectItem>
             <SelectItem value="price">Price</SelectItem>
           </SelectContent>
         </Select>
