@@ -65,7 +65,7 @@ const ListingsToolbar = ({}: ListingsToolbarProps) => {
           </SelectContent>
         </Select>
 
-        <div className="bg-background flex items-center rounded-lg border-2 p-1">
+        {/* <div className="bg-background flex items-center rounded-lg border-2 p-1">
           <Button
             variant="ghost"
             size="icon"
@@ -80,7 +80,7 @@ const ListingsToolbar = ({}: ListingsToolbarProps) => {
           >
             <List className="size-4" />
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
