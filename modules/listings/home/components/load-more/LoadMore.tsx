@@ -13,12 +13,13 @@ import {
 
 type LoadMoreProps = {
   filters: ListingsFilters;
+  initialHasMore: boolean;
 };
 
-const LoadMore = ({ filters }: LoadMoreProps) => {
+const LoadMore = ({ filters, initialHasMore }: LoadMoreProps) => {
   const [listings, setListings] = useState<ListingCardItem[]>([]);
   const page = useRef(DEFAULT_PAGE_NUMBER);
-  const [showSpinner, setShowSpinner] = useState(true);
+  const [showSpinner, setShowSpinner] = useState(initialHasMore);
   const [error, setError] = useState(false);
 
   const { ref, inView } = useInView();

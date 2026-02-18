@@ -41,7 +41,9 @@ const ListingsContent = async ({
 
   const hasError = !listingsRes.success;
   const listings = hasError ? [] : listingsRes.data.data;
+  const totalCount = hasError ? 0 : listingsRes.data.count;
   const hasListings = listings.length > 0;
+  const hasMore = listings.length < totalCount;
 
   return (
     <div className="container mx-auto px-4 pb-24 lg:px-6 lg:pb-8">
@@ -109,7 +111,7 @@ const ListingsContent = async ({
         {hasListings && (
           <>
             <ListingsGrid listings={listings} />
-            <LoadMore filters={filters} />
+            <LoadMore filters={filters} initialHasMore={hasMore} />
           </>
         )}
         <ErrorBoundary FallbackComponent={FilterModalError}>
