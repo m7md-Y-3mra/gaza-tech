@@ -9,6 +9,7 @@ import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
 import { createListingServerSchema, updateListingServerSchema } from './schema';
 import { DEFAULT_LIMIT_NUMBER, DEFAULT_PAGE_NUMBER } from '@/constants/pagination';
+import { getPriceRangesForBothCurrencies } from './home/utils/currency';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -31,16 +32,6 @@ export type ListingCardItem = SimilarListingRes & {
 export type PriceRange = {
   min: number;
   max: number | null;
-};
-
-export type ListingsFilter = {
-  categories: string[];
-  locations: string[];
-  conditions: string[];
-  priceRanges: PriceRange[];
-  search: string;
-  sortBy: string;
-  sortOrder: 'asc' | 'desc';
 };
 
 type GetListingDetailsRes = ListingRow & {
@@ -495,26 +486,53 @@ export async function updateListingQuery(
   }
 }
 
+// ─── Listings Query with Filters & Pagination ─────────────────────────────────
+
+export type ListingsFilters = {
+  categories?: string[];
+  locations?: string[];
+  conditions?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  currency?: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+};
+
+type GetListingsParams = {
+  filters: ListingsFilters;
+  page?: number;
+  limit?: number;
+};
+
+type GetListingsResult = {
+  data: ListingCardItem[];
+  count: number;
+};
+
 /**
- * Get listings with filters
- * Supports filtering by category, location, condition, price, and sorting
+ * Get paginated listings with filters for the home page.
+ * Supports: categories, locations, conditions, cross-currency price filtering,
+ * text search, sorting, and offset-based pagination for infinite scroll.
  */
-export async function getListingsQuery(
-  {
-    filters,
-    page = DEFAULT_PAGE_NUMBER,
-    limit = DEFAULT_LIMIT_NUMBER,
-  }: {
-    filters: Partial<ListingsFilter>;
-    page?: number;
-    limit?: number;
-  }
-): Promise<{ data: ListingCardItem[]; count: number }> {
+export async function getListingsQuery({
+  filters,
+  page = DEFAULT_PAGE_NUMBER,
+  limit = DEFAULT_LIMIT_NUMBER,
+}: GetListingsParams): Promise<GetListingsResult> {
   'use server';
   const client = await createClient();
 
-  let query = client.from('marketplace_listings').select(
-    `
+  // Calculate offset for pagination
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  // Build the base query
+  let query = client
+    .from('marketplace_listings')
+    .select(
+      `
       listing_id,
       title,
       price,
@@ -537,99 +555,103 @@ export async function getListingsQuery(
         is_verified
       )
     `,
-    { count: 'exact' }
-  );
+      { count: 'exact' }
+    )
+    .eq('content_status', 'published');
 
-  // Apply filters
-  query = query.eq('content_status', 'published');
-
+  // ── Category filter ──
   if (filters.categories && filters.categories.length > 0) {
     query = query.in('category_id', filters.categories);
   }
 
+  // ── Location filter ──
   if (filters.locations && filters.locations.length > 0) {
     query = query.in('location_id', filters.locations);
   }
 
+  // ── Condition filter ──
   if (filters.conditions && filters.conditions.length > 0) {
     query = query.in('product_condition', filters.conditions);
   }
 
-  if (filters.priceRanges && filters.priceRanges.length > 0) {
-    // Construct OR query for price ranges
-    const priceConditions = filters.priceRanges
-      .map((range) => {
-        const conditions = [];
-        if (range.min !== undefined && range.min !== null) {
-          conditions.push(`price.gte.${range.min}`);
-        }
-        if (range.max !== undefined && range.max !== null) {
-          conditions.push(`price.lte.${range.max}`);
-        }
-        return conditions.length > 0 ? `and(${conditions.join(',')})` : null;
-      })
-      .filter(Boolean)
-      .join(',');
+  // ── Price filter (cross-currency) ──
+  const hasMinPrice = filters.minPrice && filters.minPrice > 0;
+  const hasMaxPrice = filters.maxPrice && filters.maxPrice > 0;
 
-    if (priceConditions) {
-      query = query.or(priceConditions);
-    }
+  if (hasMinPrice || hasMaxPrice) {
+    const userCurrency = filters.currency || 'ILS';
+    const minPrice = filters.minPrice || 0;
+    const maxPrice = filters.maxPrice || Number.MAX_SAFE_INTEGER;
+
+    const priceRanges = await getPriceRangesForBothCurrencies(
+      minPrice,
+      maxPrice,
+      userCurrency
+    );
+
+    // Build an .or() filter that matches both currencies
+    const usdFilter = `and(currency.eq.USD,price.gte.${priceRanges.usd.min},price.lte.${priceRanges.usd.max})`;
+    const ilsFilter = `and(currency.eq.ILS,price.gte.${priceRanges.ils.min},price.lte.${priceRanges.ils.max})`;
+    query = query.or(`${usdFilter},${ilsFilter}`);
   }
 
-  // Sorting
+  // ── Text search ──
+  if (filters.search && filters.search.trim().length > 0) {
+    query = query.ilike('title', `%${filters.search.trim()}%`);
+  }
+
+  // ── Sorting ──
   const sortBy = filters.sortBy || 'created_at';
-  const sortOrder = filters.sortOrder === 'asc';
+  const ascending = filters.sortOrder === 'asc';
+  query = query.order(sortBy, { ascending });
 
-  if (sortBy === 'price') {
-    query = query.order('price', { ascending: sortOrder });
-  } else {
-    query = query.order('created_at', { ascending: sortOrder });
-  }
-
-  // Pagination
-  const from = (page - 1) * limit;
-  const to = from + limit - 1;
+  // ── Pagination ──
   query = query.range(from, to);
 
   const { data, error, count } = await query;
 
   if (error) {
     console.error('Error fetching listings:', error);
-    return { data: [], count: 0 };
+    throw new Error('Failed to fetch listings');
   }
 
-  const mappedData: ListingCardItem[] = (data || []).map((item) => {
-    // Cast item to a type that includes the joined fields
-    const rawItem = item as SellerListingRes & {
-      users: UserRow | UserRow[] | null;
-      locations: LocationRow | LocationRow[] | null;
-      listing_images: ListingImageRow[];
-    };
+  // Flatten the raw Supabase response into ListingCardItem[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const listings: ListingCardItem[] = (data || []).map((item: any) => {
+    // Get thumbnail image or first image
+    const thumbnailImage = item.listing_images?.find(
+      (img: { image_url: string; is_thumbnail: boolean | null }) => img.is_thumbnail
+    );
+    const image =
+      thumbnailImage?.image_url || item.listing_images?.[0]?.image_url || '';
 
-    // Find thumbnail or first image
-    const images = rawItem.listing_images || [];
-    const thumbnailObj =
-      images.find((img) => img.is_thumbnail) || images[0];
-    const image = thumbnailObj ? thumbnailObj.image_url : '';
+    // Get location name
+    const locationData = Array.isArray(item.locations)
+      ? item.locations[0]
+      : item.locations;
+    const location = locationData?.name || '';
 
-    // Location name
-    // Assuming locations is an object (many-to-one) but Supabase might return array if not strictly single
-    // From similar listings types, it was modeled as array, but based on schema it should be one.
-    // We'll safely check if it's array or object.
-    const loc = Array.isArray(rawItem.locations)
-      ? rawItem.locations[0]
-      : rawItem.locations;
-    const location = loc ? loc.name : '';
-
-    // Seller info
-    const user = Array.isArray(rawItem.users) ? rawItem.users[0] : rawItem.users;
-    const sellerName = user
-      ? `${user.first_name} ${user.last_name}`.trim()
-      : 'Unknown Seller';
-    const isVerified = user ? !!user.is_verified : false;
+    // Get seller info
+    const seller = Array.isArray(item.users) ? item.users[0] : item.users;
+    const sellerName = seller
+      ? `${seller.first_name} ${seller.last_name}`
+      : '';
+    const isVerified = seller?.is_verified ?? false;
 
     return {
-      ...item,
+      listing_id: item.listing_id,
+      title: item.title,
+      price: item.price,
+      currency: item.currency,
+      product_condition: item.product_condition,
+      content_status: item.content_status,
+      created_at: item.created_at,
+      listing_images: item.listing_images || [],
+      locations: Array.isArray(item.locations)
+        ? item.locations
+        : item.locations
+          ? [item.locations]
+          : [],
       image,
       location,
       sellerName,
@@ -637,5 +659,6 @@ export async function getListingsQuery(
     };
   });
 
-  return { data: mappedData, count: count || 0 };
+  return { data: listings, count: count || 0 };
 }
+

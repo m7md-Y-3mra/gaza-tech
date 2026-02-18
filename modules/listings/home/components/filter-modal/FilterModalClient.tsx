@@ -183,20 +183,17 @@ const FilterModalClient = ({
             <div className="mb-6 space-y-4">
               <h3 className="font-medium">Condition</h3>
               <div className="space-y-2">
-                {Object.values(ProductCondition).map((condition) => (
-                  <div key={condition} className="flex items-center space-x-2">
+                {Object.entries(ProductCondition).map(([key, value]) => (
+                  <div key={key} className="flex items-center space-x-2">
                     <Checkbox
-                      id={`condition-${condition}`}
-                      checked={selectedConditions.includes(condition)}
+                      id={`condition-${key}`}
+                      checked={selectedConditions.includes(key)}
                       onCheckedChange={(checked) =>
-                        handleConditionChange(checked, condition)
+                        handleConditionChange(checked, key)
                       }
                     />
-                    <Label
-                      htmlFor={`condition-${condition}`}
-                      className="font-normal"
-                    >
-                      {condition}
+                    <Label htmlFor={`condition-${key}`} className="font-normal">
+                      {value}
                     </Label>
                   </div>
                 ))}

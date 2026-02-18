@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { getListingsAction } from '@/modules/listings/actions';
-import { ListingCardItem } from '@/modules/listings/queries';
+import { ListingCardItem, ListingsFilters } from '@/modules/listings/queries';
 import { ListingCardSkeleton } from '../listing-card';
 import ListingsGrid from '../listings-grid';
 import {
@@ -11,10 +11,15 @@ import {
   DEFAULT_PAGE_NUMBER,
 } from '@/constants/pagination';
 
-const LoadMore = () => {
+type LoadMoreProps = {
+  filters: ListingsFilters;
+};
+
+const LoadMore = ({ filters }: LoadMoreProps) => {
   const [listings, setListings] = useState<ListingCardItem[]>([]);
   const page = useRef(DEFAULT_PAGE_NUMBER);
   const [showSpinner, setShowSpinner] = useState(true);
+  const [error, setError] = useState(false);
 
   const { ref, inView } = useInView();
 
@@ -23,11 +28,13 @@ const LoadMore = () => {
       const loadMoreListings = async () => {
         const nextPage = page.current + 1;
         const newListingsRes = await getListingsAction({
-          filters: {},
+          filters,
           page: nextPage,
         });
         if (!newListingsRes.success) {
-          throw Error('');
+          setError(true);
+          setShowSpinner(false);
+          return;
         }
         const newListings = newListingsRes.data.data;
         if (newListings.length < 1) {
@@ -46,11 +53,20 @@ const LoadMore = () => {
 
       loadMoreListings();
     }
-  }, [inView]);
+  }, [inView, filters]);
 
   return (
     <>
       <ListingsGrid listings={listings} />
+
+      {error && (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <p className="text-muted-foreground text-sm">
+            Failed to load more listings. Please try again later.
+          </p>
+        </div>
+      )}
+
       {showSpinner && (
         <div
           ref={ref}
