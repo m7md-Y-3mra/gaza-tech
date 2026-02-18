@@ -1,6 +1,5 @@
 import { getCategoriesWithoutParentAction } from '@/modules/listings/actions';
 import CategoryFiltersClient from './CategoryFiltersClient';
-import { categoryIconMap } from './constant';
 
 const CategoryFilters = async () => {
   const categoriesResult = await getCategoriesWithoutParentAction();
