@@ -38,9 +38,9 @@ const ListingCard = ({ listing }: ListingCardProps) => {
         </div>
 
         {/* Action Buttons */}
-        <button className="bg-background/80 hover:bg-background hover:text-primary absolute top-3 right-3 rounded-full p-2 backdrop-blur-md transition-colors duration-200">
+        {/* <button className="bg-background/80 hover:bg-background hover:text-primary absolute top-3 right-3 rounded-full p-2 backdrop-blur-md transition-colors duration-200">
           <Bookmark className="size-4" />
-        </button>
+        </button> */}
       </div>
 
       {/* Content */}
