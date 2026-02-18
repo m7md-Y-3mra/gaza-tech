@@ -48,79 +48,81 @@ const ListingsContent = async ({
   const hasMore = listings.length < totalCount;
 
   return (
-    <div className="container mx-auto px-4 pb-24 lg:px-6 lg:pb-8">
-      <FilterOpenProvider>
-        <SearchBar />
-        <ErrorBoundary FallbackComponent={CategoryFiltersError}>
-          <Suspense fallback={<CategoryFiltersSkeleton />}>
-            <CategoryFilters />
-          </Suspense>
-        </ErrorBoundary>
-        <ListingsToolbar />
-        {/* <ActiveFilters searchParams={searchParams} /> */}
+    <div className="bg-background-alt min-h-screen">
+      <div className="container mx-auto px-4 pb-24 lg:px-6 lg:pb-8">
+        <FilterOpenProvider>
+          <SearchBar />
+          <ErrorBoundary FallbackComponent={CategoryFiltersError}>
+            <Suspense fallback={<CategoryFiltersSkeleton />}>
+              <CategoryFilters />
+            </Suspense>
+          </ErrorBoundary>
+          <ListingsToolbar />
+          {/* <ActiveFilters searchParams={searchParams} /> */}
 
-        {hasError && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="bg-destructive/10 mb-4 rounded-full p-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-destructive h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+          {hasError && (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="bg-destructive/10 mb-4 rounded-full p-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-destructive h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold">{t('errorTitle')}</h3>
+              <p className="text-muted-foreground mt-1 max-w-md text-sm">
+                {t('errorDescription')}
+              </p>
             </div>
-            <h3 className="text-lg font-semibold">{t('errorTitle')}</h3>
-            <p className="text-muted-foreground mt-1 max-w-md text-sm">
-              {t('errorDescription')}
-            </p>
-          </div>
-        )}
+          )}
 
-        {!hasError && !hasListings && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="bg-muted mb-4 rounded-full p-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-muted-foreground h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+          {!hasError && !hasListings && (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="bg-muted mb-4 rounded-full p-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-muted-foreground h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold">{t('emptyTitle')}</h3>
+              <p className="text-muted-foreground mt-1 max-w-md text-sm">
+                {t('emptyDescription')}
+              </p>
             </div>
-            <h3 className="text-lg font-semibold">{t('emptyTitle')}</h3>
-            <p className="text-muted-foreground mt-1 max-w-md text-sm">
-              {t('emptyDescription')}
-            </p>
-          </div>
-        )}
+          )}
 
-        {hasListings && (
-          <>
-            <ListingsGrid listings={listings} />
-            <LoadMore filters={filters} initialHasMore={hasMore} />
-          </>
-        )}
-        <ErrorBoundary FallbackComponent={FilterModalError}>
-          <Suspense fallback={<FilterModalSkeleton />}>
-            <FilterModal />
-          </Suspense>
-        </ErrorBoundary>
-      </FilterOpenProvider>
+          {hasListings && (
+            <>
+              <ListingsGrid listings={listings} />
+              <LoadMore filters={filters} initialHasMore={hasMore} />
+            </>
+          )}
+          <ErrorBoundary FallbackComponent={FilterModalError}>
+            <Suspense fallback={<FilterModalSkeleton />}>
+              <FilterModal />
+            </Suspense>
+          </ErrorBoundary>
+        </FilterOpenProvider>
+      </div>
     </div>
   );
 };
