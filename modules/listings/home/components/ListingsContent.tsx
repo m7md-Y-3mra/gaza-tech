@@ -116,7 +116,7 @@ const ListingsContent = async ({
         )}
         <ErrorBoundary FallbackComponent={FilterModalError}>
           <Suspense fallback={<FilterModalSkeleton />}>
-            <FilterModal searchParams={searchParams} />
+            <FilterModal />
           </Suspense>
         </ErrorBoundary>
       </FilterOpenProvider>

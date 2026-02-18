@@ -7,11 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { FilterModalClientProps } from './types';
-import {
-  Currency,
-  CurrencyType,
-  ProductCondition,
-} from '@/modules/listings/types';
+import { Currency, ProductCondition } from '@/modules/listings/types';
 import { useFilterOpen } from '../../providers/FilterOpenProvider';
 import {
   Select,
@@ -20,90 +16,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useState, ChangeEvent } from 'react';
-import { serializeListingsSearchParams } from '../../search-params';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
+import { useQueryState } from 'nuqs';
+import { listingsSearchParams } from '../../search-params';
 
-const FilterModalClient = ({
-  locations,
-  searchParams,
-}: FilterModalClientProps) => {
+const queryOptions = { shallow: false } as const;
+
+const FilterModalClient = ({ locations }: FilterModalClientProps) => {
   const { isFilterOpen, closeFilter } = useFilterOpen();
-  const [price, setPrice] = useState<{
-    min: number;
-    max: number;
-    currency: CurrencyType;
-  }>({
-    min: searchParams?.minPrice,
-    max: searchParams?.maxPrice,
-    currency: searchParams?.currency,
-  });
-  const router = useRouter();
-  const pathname = usePathname();
-  const [selectedConditions, setSelectedConditions] = useState<string[]>(
-    searchParams.conditions
-  );
 
-  const [selectedLocations, setSelectedLocations] = useState<string[]>(
-    searchParams.locations
+  const [minPrice, setMinPrice] = useQueryState(
+    'minPrice',
+    listingsSearchParams.minPrice.withOptions(queryOptions)
   );
-
-  const handlePriceChange = (
-    e: ChangeEvent<HTMLInputElement> | { name: string; value: string | number }
-  ) => {
-    const { name, value } = 'target' in e ? e.target : e;
-    setPrice((prev) => ({
-      ...prev,
-      [name]: name === 'currency' ? value : Number(value),
-    }));
-  };
+  const [maxPrice, setMaxPrice] = useQueryState(
+    'maxPrice',
+    listingsSearchParams.maxPrice.withOptions(queryOptions)
+  );
+  const [currency, setCurrency] = useQueryState(
+    'currency',
+    listingsSearchParams.currency.withOptions(queryOptions)
+  );
+  const [selectedConditions, setSelectedConditions] = useQueryState(
+    'conditions',
+    listingsSearchParams.conditions.withOptions(queryOptions)
+  );
+  const [selectedLocations, setSelectedLocations] = useQueryState(
+    'locations',
+    listingsSearchParams.locations.withOptions(queryOptions)
+  );
 
   const handleConditionChange = (
     checked: boolean | 'indeterminate',
     condition: string
   ) => {
-    setSelectedConditions((prev) =>
-      checked === true
-        ? [...prev, condition]
-        : prev.filter((c) => c !== condition)
-    );
+    const current = selectedConditions || [];
+    if (checked === true) {
+      setSelectedConditions([...current, condition]);
+    } else {
+      const next = current.filter((c) => c !== condition);
+      setSelectedConditions(next.length > 0 ? next : null);
+    }
   };
 
   const handleLocationChange = (
     checked: boolean | 'indeterminate',
     locationId: string
   ) => {
-    setSelectedLocations((prev) =>
-      checked === true
-        ? [...prev, locationId]
-        : prev.filter((id) => id !== locationId)
-    );
-  };
-
-  const handleApply = () => {
-    const url = serializeListingsSearchParams({
-      conditions: selectedConditions,
-      locations: selectedLocations,
-      minPrice: price.min,
-      maxPrice: price.max,
-      currency: price.currency,
-    });
-    closeFilter();
-    router.push(url);
+    const current = selectedLocations || [];
+    if (checked === true) {
+      setSelectedLocations([...current, locationId]);
+    } else {
+      const next = current.filter((id) => id !== locationId);
+      setSelectedLocations(next.length > 0 ? next : null);
+    }
   };
 
   const handleReset = () => {
-    const url = serializeListingsSearchParams(pathname, {
-      conditions: null,
-      locations: null,
-      minPrice: null,
-      maxPrice: null,
-      currency: null,
-    });
-    console.log({ url, pathname });
+    setMinPrice(null);
+    setMaxPrice(null);
+    setCurrency(null);
+    setSelectedConditions(null);
+    setSelectedLocations(null);
     closeFilter();
-    router.push(pathname);
   };
 
   if (!isFilterOpen) return null;
@@ -146,8 +120,8 @@ const FilterModalClient = ({
                   name="min"
                   placeholder="Min"
                   className="h-9"
-                  value={price.min}
-                  onChange={handlePriceChange}
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(Number(e.target.value))}
                 />
                 <span className="text-muted-foreground">-</span>
                 <Input
@@ -155,23 +129,23 @@ const FilterModalClient = ({
                   name="max"
                   placeholder="Max"
                   className="h-9"
-                  value={price.max}
-                  onChange={handlePriceChange}
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Number(e.target.value))}
                 />
                 <span className="text-muted-foreground">-</span>
                 <Select
-                  value={price.currency}
+                  value={currency}
                   onValueChange={(value) =>
-                    handlePriceChange({ name: 'currency', value })
+                    setCurrency(value as typeof currency)
                   }
                 >
                   <SelectTrigger className="bg-background hover:border-primary h-10! rounded-lg border-2 sm:w-[180px]">
                     <SelectValue placeholder="Currency" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.values(Currency).map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
+                    {Object.values(Currency).map((cur) => (
+                      <SelectItem key={cur} value={cur}>
+                        {cur}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -187,7 +161,7 @@ const FilterModalClient = ({
                   <div key={key} className="flex items-center space-x-2">
                     <Checkbox
                       id={`condition-${key}`}
-                      checked={selectedConditions.includes(key)}
+                      checked={(selectedConditions || []).includes(key)}
                       onCheckedChange={(checked) =>
                         handleConditionChange(checked, key)
                       }
@@ -211,7 +185,7 @@ const FilterModalClient = ({
                   >
                     <Checkbox
                       id={location.id}
-                      checked={selectedLocations.includes(location.id)}
+                      checked={(selectedLocations || []).includes(location.id)}
                       onCheckedChange={(checked) =>
                         handleLocationChange(checked, location.id)
                       }
@@ -227,18 +201,9 @@ const FilterModalClient = ({
 
           {/* Footer Actions */}
           <div className="border-t p-6">
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={handleReset}
-              >
-                Reset
-              </Button>
-              <Button className="flex-1" onClick={handleApply}>
-                Apply
-              </Button>
-            </div>
+            <Button variant="outline" className="w-full" onClick={handleReset}>
+              Reset
+            </Button>
           </div>
         </div>
       </div>
