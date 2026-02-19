@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
-import { ListingsToolbarProps } from './types';
 import { useFilterOpen } from '../../providers/FilterOpenProvider';
 import { useQueryState } from 'nuqs';
 import { listingsSearchParams } from '../../search-params';
