@@ -19,7 +19,6 @@ type LocationRow = Database['public']['Tables']['locations']['Row'];
 
 
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
-type UserRow = Database['public']['Tables']['users']['Row'];
 
 export type ListingCardItem = SimilarListingRes & {
   created_at: string;

@@ -14,7 +14,7 @@ import { useQueryState } from 'nuqs';
 import { listingsSearchParams } from '../../search-params';
 import { useTranslations } from 'next-intl';
 
-const ListingsToolbar = ({}: ListingsToolbarProps) => {
+const ListingsToolbar = () => {
   const t = useTranslations('ListingsHome.Toolbar');
   const { openFilter } = useFilterOpen();
   const [sortBy, setSortBy] = useQueryState(

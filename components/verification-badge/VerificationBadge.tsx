@@ -1,4 +1,4 @@
-import { BadgeCheck, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { VerificationBadgeProps } from './types';
 import { sizeClasses } from './constants';
