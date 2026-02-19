@@ -9,7 +9,6 @@ import {
   CategoryFiltersSkeleton,
 } from './category-filters';
 import ListingsToolbar from './listings-toolbar';
-import ActiveFilters from './active-filters';
 import {
   FilterModal,
   FilterModalError,
@@ -17,7 +16,6 @@ import {
 } from './filter-modal';
 import { getListingsAction } from '../../actions';
 import LoadMore from './load-more';
-import ListingsGridWithTitle from './listings-grid/ListingsGridWithTitle';
 import { ListingsSearchParamsType } from '../search-params';
 import ListingsGrid from './listings-grid';
 
@@ -113,7 +111,11 @@ const ListingsContent = async ({
           {hasListings && (
             <>
               <ListingsGrid listings={listings} />
-              <LoadMore filters={filters} initialHasMore={hasMore} />
+              <LoadMore
+                key={JSON.stringify(filters)}
+                filters={filters}
+                initialHasMore={hasMore}
+              />
             </>
           )}
           <ErrorBoundary FallbackComponent={FilterModalError}>
