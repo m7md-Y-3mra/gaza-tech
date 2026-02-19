@@ -12,6 +12,8 @@ import {
   getLocationsQuery,
   createListingQuery,
   updateListingQuery,
+  getCategoriesWithoutParentQuery,
+  getListingsQuery,
 } from './queries';
 
 /**
@@ -64,6 +66,14 @@ export const getGroupedCategoriesAction = errorHandler(
 );
 
 /**
+ * Get all active categories without parent
+ * Server action wrapped with error handler
+ */
+export const getCategoriesWithoutParentAction = errorHandler(
+  getCategoriesWithoutParentQuery
+);
+
+/**
  * Get all active locations
  * Server action wrapped with error handler
  * Uses cache tag for revalidation
@@ -104,3 +114,5 @@ export const updateListingAction = errorHandler(
     revalidatePath('/listings');
   }
 );
+
+export const getListingsAction = errorHandler(getListingsQuery);

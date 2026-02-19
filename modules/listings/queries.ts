@@ -8,13 +8,32 @@ import { GroupedCategory, ImageUploadResult } from './types';
 import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
 import { createListingServerSchema, updateListingServerSchema } from './schema';
+import {
+  DEFAULT_LIMIT_NUMBER,
+  DEFAULT_PAGE_NUMBER,
+} from '@/constants/pagination';
+import { getPriceRangesForBothCurrencies } from './home/utils/currency';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
 type CategoryRow =
   Database['public']['Tables']['marketplace_categories']['Row'];
 type LocationRow = Database['public']['Tables']['locations']['Row'];
+
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
+
+export type ListingCardItem = SimilarListingRes & {
+  created_at: string;
+  image: string;
+  location: string;
+  sellerName: string;
+  isVerified: boolean;
+};
+
+export type PriceRange = {
+  min: number;
+  max: number | null;
+};
 
 type GetListingDetailsRes = ListingRow & {
   marketplace_categories: CategoryRow;
@@ -35,7 +54,7 @@ type SimilarListingRes = Pick<
   locations: Pick<LocationRow, 'location_id' | 'name' | 'name_ar'>[];
 };
 
-type SellerListingRes = SimilarListingRes & {
+export type SellerListingRes = SimilarListingRes & {
   created_at: string;
 };
 
@@ -290,6 +309,29 @@ export async function getGroupedCategoriesQuery(): Promise<GroupedCategory[]> {
 }
 
 /**
+ * Get all active categories without parent
+ */
+export async function getCategoriesWithoutParentQuery(): Promise<
+  CategoryRow[]
+> {
+  'use server';
+  const client = await createClient();
+
+  const { data, error } = await client
+    .from('marketplace_categories')
+    .select('*')
+    .eq('is_active', true)
+    .not('parent_id', 'is', null);
+
+  if (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
  * Get all active locations
  * Used for location selection in create/update listing forms
  */
@@ -445,4 +487,194 @@ export async function updateListingQuery(
       throw new Error('Failed to save listing images');
     }
   }
+}
+
+// ─── Listings Query with Filters & Pagination ─────────────────────────────────
+
+export type ListingsFilters = {
+  categories?: string[];
+  locations?: string[];
+  conditions?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  currency?: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+};
+
+type GetListingsParams = {
+  filters: ListingsFilters;
+  page?: number;
+  limit?: number;
+};
+
+type GetListingsResult = {
+  data: ListingCardItem[];
+  count: number;
+};
+
+/**
+ * Get paginated listings with filters for the home page.
+ * Supports: categories, locations, conditions, cross-currency price filtering,
+ * text search, sorting, and offset-based pagination for infinite scroll.
+ */
+export async function getListingsQuery({
+  filters,
+  page = DEFAULT_PAGE_NUMBER,
+  limit = DEFAULT_LIMIT_NUMBER,
+}: GetListingsParams): Promise<GetListingsResult> {
+  'use server';
+  const client = await createClient();
+
+  // Calculate offset for pagination
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  // Build the base query
+  let query = client
+    .from('marketplace_listings')
+    .select(
+      `
+      listing_id,
+      title,
+      price,
+      currency,
+      product_condition,
+      content_status,
+      created_at,
+      listing_images (
+        image_url,
+        is_thumbnail
+      ),
+      locations (
+        location_id,
+        name,
+        name_ar
+      ),
+      users!marketplace_listings_seller_id_fkey (
+        first_name,
+        last_name,
+        is_verified
+      )
+    `,
+      { count: 'exact' }
+    )
+    .eq('content_status', 'published');
+
+  // ── Category filter ──
+  if (filters.categories && filters.categories.length > 0) {
+    query = query.in('category_id', filters.categories);
+  }
+
+  // ── Location filter ──
+  if (filters.locations && filters.locations.length > 0) {
+    query = query.in('location_id', filters.locations);
+  }
+
+  // ── Condition filter ──
+  if (filters.conditions && filters.conditions.length > 0) {
+    query = query.in('product_condition', filters.conditions);
+  }
+
+  // ── Price filter (cross-currency) ──
+  const hasMinPrice = filters.minPrice && filters.minPrice > 0;
+  const hasMaxPrice = filters.maxPrice && filters.maxPrice > 0;
+
+  if (hasMinPrice || hasMaxPrice) {
+    const userCurrency = filters.currency || 'ILS';
+    const minPrice = filters.minPrice || 0;
+    const maxPrice = filters.maxPrice || 0;
+
+    const priceRanges = await getPriceRangesForBothCurrencies(
+      minPrice,
+      maxPrice,
+      userCurrency
+    );
+
+    // Build an .or() filter that matches both currencies
+    let usdFilter = ``;
+    if (hasMinPrice) {
+      usdFilter += `and(currency.eq.USD,price.gte.${priceRanges.usd.min})`;
+    }
+    if (hasMaxPrice) {
+      if (hasMinPrice) usdFilter += `,price.lte.${priceRanges.usd.max}`;
+      else usdFilter += `and(currency.eq.USD,price.lte.${priceRanges.usd.max})`;
+    }
+
+    let ilsFilter = ``;
+    if (hasMinPrice) {
+      ilsFilter = `and(currency.eq.ILS,price.gte.${priceRanges.ils.min})`;
+    }
+    if (hasMaxPrice) {
+      if (hasMinPrice) ilsFilter += `,price.lte.${priceRanges.ils.max}`;
+      else ilsFilter += `and(currency.eq.ILS,price.lte.${priceRanges.ils.max})`;
+    }
+    query = query.or(`${usdFilter},${ilsFilter}`);
+  }
+
+  // ── Text search ──
+  if (filters.search && filters.search.trim().length > 0) {
+    query = query.ilike('title', `%${filters.search.trim()}%`);
+  }
+
+  // ── Sorting ──
+  const sortBy = filters.sortBy || 'created_at';
+  const ascending = filters.sortOrder === 'asc';
+  query = query.order(sortBy, { ascending });
+
+  // ── Pagination ──
+  query = query.range(from, to);
+
+  const { data, error, count } = await query;
+
+  if (error) {
+    console.error('Error fetching listings:', error);
+    throw new Error('Failed to fetch listings');
+  }
+
+  // Flatten the raw Supabase response into ListingCardItem[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const listings: ListingCardItem[] = (data || []).map((item: any) => {
+    // Get thumbnail image or first image
+    const thumbnailImage = item.listing_images?.find(
+      (img: { image_url: string; is_thumbnail: boolean | null }) =>
+        img.is_thumbnail
+    );
+    const image =
+      thumbnailImage?.image_url || item.listing_images?.[0]?.image_url || '';
+
+    // Get location name
+    const locationData = Array.isArray(item.locations)
+      ? item.locations[0]
+      : item.locations;
+    const location = locationData?.name || '';
+
+    // Get seller info
+    const seller = Array.isArray(item.users) ? item.users[0] : item.users;
+    const sellerName = seller ? `${seller.first_name} ${seller.last_name}` : '';
+    const isVerified = seller?.is_verified ?? false;
+
+    return {
+      listing_id: item.listing_id,
+      title: item.title,
+      price: item.price,
+      currency: item.currency,
+      product_condition: item.product_condition,
+      content_status: item.content_status,
+      created_at: item.created_at,
+      listing_images: item.listing_images || [],
+      locations: Array.isArray(item.locations)
+        ? item.locations
+        : item.locations
+          ? [item.locations]
+          : [],
+      image,
+      location,
+      sellerName,
+      isVerified,
+    };
+  });
+
+  return { data: listings, count: count || 0 };
 }

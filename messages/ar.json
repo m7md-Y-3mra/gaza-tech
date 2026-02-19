@@ -431,5 +431,49 @@
       "imagesRequired": "يرجى رفع صورة واحدة على الأقل",
       "imagesMax": "يمكنك رفع 5 صور كحد أقصى"
     }
+  },
+  "ListingsHome": {
+    "SearchBar": {
+      "placeholder": "ابحث عن منتجات، علامات تجارية، أو بائعين..."
+    },
+    "Toolbar": {
+      "filters": "التصفية",
+      "sortByPlaceholder": "ترتيب حسب",
+      "createdAt": "تاريخ الإنشاء",
+      "price": "السعر",
+      "desc": "تنازلي",
+      "asc": "تصاعدي"
+    },
+    "CategoryFilters": {
+      "all": "الكل",
+      "error": {
+        "title": "فشل تحميل الفئات",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "FilterModal": {
+      "title": "التصفية",
+      "priceRange": "نطاق السعر",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "currency": "العملة",
+      "condition": "الحالة",
+      "location": "الموقع",
+      "reset": "إعادة تعيين",
+      "error": "فشل تحميل خيارات التصفية. يرجى تحديث الصفحة."
+    },
+    "Content": {
+      "errorTitle": "حدث خطأ ما",
+      "errorDescription": "لم نتمكن من تحميل الإعلانات. يرجى المحاولة مرة أخرى لاحقاً.",
+      "emptyTitle": "لم يتم العثور على إعلانات",
+      "emptyDescription": "حاول تعديل الفلاتر أو البحث للعثور على ما تبحث عنه."
+    },
+    "GridWithTitle": {
+      "title": "جميع الإعلانات",
+      "showingResults": "عرض {count} نتيجة"
+    },
+    "LoadMore": {
+      "error": "فشل تحميل المزيد من الإعلانات. يرجى المحاولة مرة أخرى لاحقاً."
+    }
   }
 }

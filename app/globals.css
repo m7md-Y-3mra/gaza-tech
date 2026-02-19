@@ -59,6 +59,10 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --color-active-filter-background: var(--active-filter-background);
+  --color-active-filter-border: var(--active-filter-border);
+  --color-verification-icon: var(--verification-icon);
+  --color-verification-bg: var(--verification-bg);
 }
 
 :root {
@@ -157,6 +161,14 @@
   --sidebar-accent-foreground: oklch(from var(--primary) calc(l - 0.491) 0 0);
   --sidebar-border: oklch(from var(--primary) calc(l + 0.226) 0 0);
   --sidebar-ring: var(--primary);
+
+  /* Active Filter Badge */
+  --active-filter-background: oklch(0.97 0.02 162.48);
+  --active-filter-border: oklch(0.9 0.05 162.48);
+
+  /* Verification Badge */
+  --verification-icon: oklch(0.623 0.214 259.815);
+  --verification-bg: oklch(0.623 0.214 259.815 / 10%);
 }
 
 .dark {
@@ -246,6 +258,14 @@
   --sidebar-accent-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
   --sidebar-border: oklch(from var(--primary) calc(l + 0.304) 0 0 / 10%);
   --sidebar-ring: var(--primary);
+
+  /* Active Filter Badge */
+  --active-filter-background: oklch(0.25 0.05 162.48);
+  --active-filter-border: oklch(0.35 0.08 162.48);
+
+  /* Verification Badge */
+  --verification-icon: oklch(0.707 0.165 254.624);
+  --verification-bg: oklch(0.707 0.165 254.624 / 15%);
 }
 
 @layer base {
@@ -254,6 +274,53 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @layer utilities {
+    .scrollbar-hide {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar only on touch devices (mobile/tablet) */
+    @media (pointer: coarse) {
+      .scrollbar-hide-touch {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .scrollbar-hide-touch::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 
   /* ========================================
