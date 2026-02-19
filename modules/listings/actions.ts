@@ -69,7 +69,9 @@ export const getGroupedCategoriesAction = errorHandler(
  * Get all active categories without parent
  * Server action wrapped with error handler
  */
-export const getCategoriesWithoutParentAction = errorHandler(getCategoriesWithoutParentQuery);
+export const getCategoriesWithoutParentAction = errorHandler(
+  getCategoriesWithoutParentQuery
+);
 
 /**
  * Get all active locations

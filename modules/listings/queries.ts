@@ -8,7 +8,10 @@ import { GroupedCategory, ImageUploadResult } from './types';
 import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
 import { createListingServerSchema, updateListingServerSchema } from './schema';
-import { DEFAULT_LIMIT_NUMBER, DEFAULT_PAGE_NUMBER } from '@/constants/pagination';
+import {
+  DEFAULT_LIMIT_NUMBER,
+  DEFAULT_PAGE_NUMBER,
+} from '@/constants/pagination';
 import { getPriceRangesForBothCurrencies } from './home/utils/currency';
 
 // Type definitions for return types
@@ -16,7 +19,6 @@ type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
 type CategoryRow =
   Database['public']['Tables']['marketplace_categories']['Row'];
 type LocationRow = Database['public']['Tables']['locations']['Row'];
-
 
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
 
@@ -309,7 +311,9 @@ export async function getGroupedCategoriesQuery(): Promise<GroupedCategory[]> {
 /**
  * Get all active categories without parent
  */
-export async function getCategoriesWithoutParentQuery(): Promise<CategoryRow[]> {
+export async function getCategoriesWithoutParentQuery(): Promise<
+  CategoryRow[]
+> {
   'use server';
   const client = await createClient();
 
@@ -317,7 +321,7 @@ export async function getCategoriesWithoutParentQuery(): Promise<CategoryRow[]> 
     .from('marketplace_categories')
     .select('*')
     .eq('is_active', true)
-    .not('parent_id', 'is', null)
+    .not('parent_id', 'is', null);
 
   if (error) {
     console.error('Error fetching categories:', error);
@@ -594,10 +598,8 @@ export async function getListingsQuery({
       usdFilter += `and(currency.eq.USD,price.gte.${priceRanges.usd.min})`;
     }
     if (hasMaxPrice) {
-      if (hasMinPrice)
-        usdFilter += `,price.lte.${priceRanges.usd.max}`;
-      else
-        usdFilter += `and(currency.eq.USD,price.lte.${priceRanges.usd.max})`;
+      if (hasMinPrice) usdFilter += `,price.lte.${priceRanges.usd.max}`;
+      else usdFilter += `and(currency.eq.USD,price.lte.${priceRanges.usd.max})`;
     }
 
     let ilsFilter = ``;
@@ -605,10 +607,8 @@ export async function getListingsQuery({
       ilsFilter = `and(currency.eq.ILS,price.gte.${priceRanges.ils.min})`;
     }
     if (hasMaxPrice) {
-      if (hasMinPrice)
-        ilsFilter += `,price.lte.${priceRanges.ils.max}`;
-      else
-        ilsFilter += `and(currency.eq.ILS,price.lte.${priceRanges.ils.max})`;
+      if (hasMinPrice) ilsFilter += `,price.lte.${priceRanges.ils.max}`;
+      else ilsFilter += `and(currency.eq.ILS,price.lte.${priceRanges.ils.max})`;
     }
     query = query.or(`${usdFilter},${ilsFilter}`);
   }
@@ -638,7 +638,8 @@ export async function getListingsQuery({
   const listings: ListingCardItem[] = (data || []).map((item: any) => {
     // Get thumbnail image or first image
     const thumbnailImage = item.listing_images?.find(
-      (img: { image_url: string; is_thumbnail: boolean | null }) => img.is_thumbnail
+      (img: { image_url: string; is_thumbnail: boolean | null }) =>
+        img.is_thumbnail
     );
     const image =
       thumbnailImage?.image_url || item.listing_images?.[0]?.image_url || '';
@@ -651,9 +652,7 @@ export async function getListingsQuery({
 
     // Get seller info
     const seller = Array.isArray(item.users) ? item.users[0] : item.users;
-    const sellerName = seller
-      ? `${seller.first_name} ${seller.last_name}`
-      : '';
+    const sellerName = seller ? `${seller.first_name} ${seller.last_name}` : '';
     const isVerified = seller?.is_verified ?? false;
 
     return {
@@ -679,4 +678,3 @@ export async function getListingsQuery({
 
   return { data: listings, count: count || 0 };
 }
-

@@ -1,5 +1,5 @@
-import { ListingsSearchParamsType } from "../../../search-params"
+import { ListingsSearchParamsType } from '../../../search-params';
 
 export type ActiveFiltersProps = {
-    searchParams: ListingsSearchParamsType
-}
+  searchParams: ListingsSearchParamsType;
+};

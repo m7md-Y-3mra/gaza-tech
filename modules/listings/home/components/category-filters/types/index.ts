@@ -1,5 +1,5 @@
-import { getCategoriesWithoutParentQuery } from "@/modules/listings/queries"
+import { getCategoriesWithoutParentQuery } from '@/modules/listings/queries';
 
 export type CategoryFiltersClientProps = {
-    categories: Awaited<ReturnType<typeof getCategoriesWithoutParentQuery>>
-}
+  categories: Awaited<ReturnType<typeof getCategoriesWithoutParentQuery>>;
+};
