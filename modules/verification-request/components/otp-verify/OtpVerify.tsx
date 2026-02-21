@@ -19,6 +19,7 @@ const OtpVerify = ({
   name,
   phone,
   initialVerified = false,
+  onVerified,
 }: OtpVerifyProps) => {
   const {
     formState: { errors, touchedFields, isSubmitted },
@@ -37,7 +38,7 @@ const OtpVerify = ({
     handleDigitChange,
     handleDigitKeyDown,
     setInputRef,
-  } = useOtpVerify({ name, phone, initialVerified });
+  } = useOtpVerify({ name, phone, initialVerified, onVerified });
 
   const error = errors[name];
   const touched = touchedFields[name];

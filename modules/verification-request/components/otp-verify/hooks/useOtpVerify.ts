@@ -9,7 +9,7 @@ import type { OtpStep, UseOtpVerifyProps } from '../types';
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN_SECONDS = 300; // 5 minutes
 
-export const useOtpVerify = ({ name, phone, initialVerified = false }: UseOtpVerifyProps) => {
+export const useOtpVerify = ({ name, phone, initialVerified = false, onVerified }: UseOtpVerifyProps) => {
     const { setValue, setError, clearErrors } = useFormContext();
 
     // Initialise as verified if the user already passed verification
@@ -48,7 +48,10 @@ export const useOtpVerify = ({ name, phone, initialVerified = false }: UseOtpVer
     const formattedTimer = `${String(Math.floor(secondsLeft / 60)).padStart(2, '0')}:${String(secondsLeft % 60).padStart(2, '0')}`;
     const canResend = secondsLeft === 0 && step === 'sent';
 
-    // ─── Send OTP ───────────────────────────────────────────────────────
+    // ─── Send OTP ─────────────────────────────────────────────────────────
+    // Uses updateUser({ phone }) — correct Supabase method for adding a phone
+    // to an existing email-authenticated user. Sends SMS without touching
+    // the current session.
     const sendOtp = useCallback(async () => {
         if (!phone) {
             toast.error('Phone number is required');
@@ -57,24 +60,22 @@ export const useOtpVerify = ({ name, phone, initialVerified = false }: UseOtpVer
         setIsSending(true);
         try {
             const supabase = createClient();
-            const { error } = await supabase.auth.signInWithOtp({ phone });
+            const { error } = await supabase.auth.updateUser({ phone });
             if (error) throw error;
 
             setStep('sent');
             startCountdown();
-            // Reset digits on each send
             setDigits(Array(OTP_LENGTH).fill(''));
             setTimeout(() => inputRefs.current[0]?.focus(), 100);
-            toast.success('OTP sent to your phone number');
+            toast.success('Verification code sent to your phone!');
         } catch (err) {
-            const message = err instanceof Error ? err.message : 'Failed to send OTP';
+            const message = err instanceof Error ? err.message : 'Failed to send code';
             toast.error(message);
         } finally {
             setIsSending(false);
         }
     }, [phone, startCountdown]);
 
-    // ─── Verify OTP ─────────────────────────────────────────────────────
     const verifyOtp = useCallback(async () => {
         const token = digits.join('');
         if (token.length < OTP_LENGTH) {
@@ -85,8 +86,17 @@ export const useOtpVerify = ({ name, phone, initialVerified = false }: UseOtpVer
         setIsVerifying(true);
         try {
             const supabase = createClient();
-            const { error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' });
+            // type: 'phone_change' — used when confirming a phone number
+            // added to an existing email-authenticated user (not a login).
+            const { error } = await supabase.auth.verifyOtp({
+                phone,
+                token,
+                type: 'phone_change',
+            });
             if (error) throw error;
+
+            // Notify parent to persist phone numbers to users table
+            if (onVerified) await onVerified();
 
             clearErrors(name);
             setStep('verified');
@@ -101,7 +111,8 @@ export const useOtpVerify = ({ name, phone, initialVerified = false }: UseOtpVer
         } finally {
             setIsVerifying(false);
         }
-    }, [digits, phone, name, setValue, setError, clearErrors]);
+    }, [digits, phone, name, onVerified, setValue, setError, clearErrors]);
+
 
     // ─── Digit input handling ────────────────────────────────────────────
     const handleDigitChange = useCallback(
