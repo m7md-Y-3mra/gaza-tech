@@ -1,8 +1,12 @@
 import { authHandler } from '@/utils/auth-handler';
 import VerificationFormClient from './VerificationFormClient';
+import { getTranslations } from 'next-intl/server';
 
 const VerificationForm = async () => {
-  const user = await authHandler();
+  const [user, t] = await Promise.all([
+    authHandler(),
+    getTranslations('VerificationForm'),
+  ]);
   // Phone is verified when the auth user has both:
   //   • user.phone          — a phone number was linked via updateUser({ phone })
   //   • user.phone_confirmed_at — OTP was confirmed via verifyOtp({ type: 'phone_change' })
@@ -16,12 +20,9 @@ const VerificationForm = async () => {
           {/* Page header */}
           <div className="mb-8 text-center">
             <h1 className="text-foreground text-3xl font-bold">
-              Seller Verification
+              {t('page.title')}
             </h1>
-            <p className="text-muted-foreground mt-2">
-              Complete the steps below to get your seller badge and build trust
-              with buyers.
-            </p>
+            <p className="text-muted-foreground mt-2">{t('page.subtitle')}</p>
           </div>
 
           <VerificationFormClient

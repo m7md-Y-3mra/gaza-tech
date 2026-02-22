@@ -475,5 +475,68 @@
     "LoadMore": {
       "error": "Failed to load more listings. Please try again later."
     }
+  },
+  "VerificationForm": {
+    "page": {
+      "title": "Seller Verification",
+      "subtitle": "Complete the steps below to get your seller badge and build trust with buyers."
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "subtitle": "Please provide your accurate personal details",
+      "banner": "We verify all sellers to ensure a safe marketplace. Your information is encrypted and secure.",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "As it appears on your ID",
+      "dateOfBirthLabel": "Date of Birth",
+      "genderLabel": "Gender",
+      "genderPlaceholder": "Select gender",
+      "nationalIdLabel": "National ID Number",
+      "nationalIdPlaceholder": "Enter your 9-digit ID number",
+      "addressLabel": "Street Address",
+      "addressPlaceholder": "Enter your full address"
+    },
+    "documentUpload": {
+      "title": "Document Upload",
+      "subtitle": "Upload clear photos of your identification documents",
+      "banner": "Ensure all text is clearly visible. Accepted formats: JPG, PNG (max 2MB each). Your face and ID must be clearly visible in the selfie.",
+      "documentTypeLabel": "Document Type",
+      "documentTypePlaceholder": "Select document type",
+      "frontLabel": "ID Card — Front Side",
+      "frontDescription": "Upload a clear photo of the front side of your ID",
+      "backLabel": "ID Card — Back Side",
+      "backDescription": "Upload a clear photo of the back side of your ID",
+      "selfieLabel": "Selfie with ID Card",
+      "selfieDescription": "Hold your ID next to your face — both must be clearly visible"
+    },
+    "phoneVerification": {
+      "title": "Phone Verification",
+      "subtitle": "Verify your phone number to complete seller verification",
+      "alreadyVerifiedSubtitle": "Already verified",
+      "verifiedLabel": "Phone Verified",
+      "verifiedDescription": "{phone} — confirmed via OTP",
+      "banner": "Enter your phone number below. A one-time code will be sent via SMS. Once verified, your number is saved to your profile.",
+      "bannerStrong": "Final Step!",
+      "phoneNumberLabel": "Phone Number",
+      "phoneNumberPlaceholder": "+970 59 XXX XXXX",
+      "whatsAppLabel": "WhatsApp Number",
+      "whatsAppPlaceholder": "+970 59 XXX XXXX (optional)",
+      "hint": "Use international format starting with your country code (e.g. +970 for Palestine)."
+    },
+    "terms": {
+      "text": "I confirm that all information and documents provided are accurate and authentic. I understand that providing false information may result in permanent account suspension."
+    },
+    "buttons": {
+      "submit": "Submit Verification Request",
+      "submitting": "Submitting…"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "documentType": {
+      "palestinianId": "Palestinian ID",
+      "passport": "Passport",
+      "drivingLicence": "Palestinian driving licence"
+    }
   }
 }

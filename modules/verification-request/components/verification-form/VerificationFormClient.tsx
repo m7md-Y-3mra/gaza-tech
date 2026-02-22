@@ -19,14 +19,16 @@ import {
 import Section from './components/section';
 import InfoBanner from './components/info-banner';
 import { VerificationFormClientProps } from './types';
-import { DOCUMENT_TYPE_OPTIONS, GENDER_OPTIONS } from './constant';
+import { getDocumentTypeOptions, getGenderOptions } from './constant';
 import { useVerificationForm } from './hooks/useVerificationForm';
 import { FormProvider } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 
 const VerificationFormClient = ({
   isPhoneVerified,
   existingPhone,
 }: VerificationFormClientProps) => {
+  const t = useTranslations('VerificationForm');
   const {
     methods,
     handleSubmit,
@@ -35,31 +37,29 @@ const VerificationFormClient = ({
     handleVerified,
     onSubmit,
   } = useVerificationForm({ isPhoneVerified, existingPhone });
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
         {/* ── Step 1: Personal Information ── */}
         <Section
           icon={User}
-          title="Personal Information"
-          subtitle="Please provide your accurate personal details"
+          title={t('personalInfo.title')}
+          subtitle={t('personalInfo.subtitle')}
         >
-          <InfoBanner variant="blue">
-            We verify all sellers to ensure a safe marketplace. Your information
-            is encrypted and secure.
-          </InfoBanner>
+          <InfoBanner variant="blue">{t('personalInfo.banner')}</InfoBanner>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <TextField
               name="id_full_name"
-              label="Full Name"
+              label={t('personalInfo.fullNameLabel')}
               Icon={User}
-              placeholder="As it appears on your ID"
+              placeholder={t('personalInfo.fullNamePlaceholder')}
               required
             />
             <TextField
               name="id_date_of_birth"
-              label="Date of Birth"
+              label={t('personalInfo.dateOfBirthLabel')}
               Icon={Calendar}
               type="date"
               required
@@ -69,15 +69,15 @@ const VerificationFormClient = ({
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <SelectField
               name="id_gender"
-              label="Gender"
-              placeholder="Select gender"
-              options={GENDER_OPTIONS}
+              label={t('personalInfo.genderLabel')}
+              placeholder={t('personalInfo.genderPlaceholder')}
+              options={getGenderOptions(t)}
             />
             <TextField
               name="national_id_number"
-              label="National ID Number"
+              label={t('personalInfo.nationalIdLabel')}
               Icon={IdCard}
-              placeholder="Enter your 9-digit ID number"
+              placeholder={t('personalInfo.nationalIdPlaceholder')}
               maxLength={9}
               required
             />
@@ -85,9 +85,9 @@ const VerificationFormClient = ({
 
           <TextField
             name="address"
-            label="Street Address"
+            label={t('personalInfo.addressLabel')}
             Icon={MapPin}
-            placeholder="Enter your full address"
+            placeholder={t('personalInfo.addressPlaceholder')}
             required
           />
         </Section>
@@ -95,42 +95,39 @@ const VerificationFormClient = ({
         {/* ── Step 2: Document Upload ── */}
         <Section
           icon={IdCard}
-          title="Document Upload"
-          subtitle="Upload clear photos of your identification documents"
+          title={t('documentUpload.title')}
+          subtitle={t('documentUpload.subtitle')}
         >
-          <InfoBanner variant="amber">
-            Ensure all text is clearly visible. Accepted formats: JPG, PNG (max
-            2MB each). Your face and ID must be clearly visible in the selfie.
-          </InfoBanner>
+          <InfoBanner variant="amber">{t('documentUpload.banner')}</InfoBanner>
 
           <SelectField
             name="document_type"
-            label="Document Type"
-            placeholder="Select document type"
-            options={DOCUMENT_TYPE_OPTIONS}
+            label={t('documentUpload.documentTypeLabel')}
+            placeholder={t('documentUpload.documentTypePlaceholder')}
+            options={getDocumentTypeOptions(t)}
           />
 
           <UploadImage
             id="document_front"
             name="document_front"
-            label="ID Card — Front Side"
-            description="Upload a clear photo of the front side of your ID"
+            label={t('documentUpload.frontLabel')}
+            description={t('documentUpload.frontDescription')}
             required
           />
 
           <UploadImage
             id="document_back"
             name="document_back"
-            label="ID Card — Back Side"
-            description="Upload a clear photo of the back side of your ID"
+            label={t('documentUpload.backLabel')}
+            description={t('documentUpload.backDescription')}
             required
           />
 
           <UploadImage
             id="selfie_with_id"
             name="selfie_with_id"
-            label="Selfie with ID Card"
-            description="Hold your ID next to your face — both must be clearly visible"
+            label={t('documentUpload.selfieLabel')}
+            description={t('documentUpload.selfieDescription')}
             required
           />
         </Section>
@@ -140,15 +137,15 @@ const VerificationFormClient = ({
           // ── Already verified — show a read-only badge ──────────────────
           <div className="border-border bg-card rounded-2xl border p-8 shadow-sm">
             <div className="mb-6 flex items-center gap-3">
-              <div className="from-primary to-secondary flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br shadow-md">
+              <div className="from-primary to-secondary flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br shadow-md">
                 <ShieldCheck className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h3 className="text-foreground text-xl font-bold">
-                  Phone Verification
+                  {t('phoneVerification.title')}
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Already verified
+                  {t('phoneVerification.alreadyVerifiedSubtitle')}
                 </p>
               </div>
             </div>
@@ -159,10 +156,12 @@ const VerificationFormClient = ({
               </div>
               <div>
                 <p className="text-sm font-bold text-green-900 dark:text-green-100">
-                  Phone Verified
+                  {t('phoneVerification.verifiedLabel')}
                 </p>
                 <p className="text-sm text-green-800 dark:text-green-200">
-                  {existingPhone} — confirmed via OTP
+                  {t('phoneVerification.verifiedDescription', {
+                    phone: existingPhone ?? '',
+                  })}
                 </p>
               </div>
             </div>
@@ -171,37 +170,35 @@ const VerificationFormClient = ({
           // ── Needs verification — show full OTP flow ────────────────────
           <Section
             icon={ShieldCheck}
-            title="Phone Verification"
-            subtitle="Verify your phone number to complete seller verification"
+            title={t('phoneVerification.title')}
+            subtitle={t('phoneVerification.subtitle')}
           >
             <InfoBanner variant="green">
-              <strong>Final Step!</strong> Enter your phone number below. A
-              one-time code will be sent via SMS. Once verified, your number is
-              saved to your profile.
+              <strong>{t('phoneVerification.bannerStrong')}</strong>{' '}
+              {t('phoneVerification.banner')}
             </InfoBanner>
 
             {/* Phone number inputs */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <TextField
                 name="phone_number"
-                label="Phone Number"
+                label={t('phoneVerification.phoneNumberLabel')}
                 Icon={Phone}
-                placeholder="+970 59 XXX XXXX"
+                placeholder={t('phoneVerification.phoneNumberPlaceholder')}
                 type="tel"
                 required
               />
               <TextField
                 name="whatsapp_number"
-                label="WhatsApp Number"
+                label={t('phoneVerification.whatsAppLabel')}
                 Icon={MessageCircle}
-                placeholder="+970 59 XXX XXXX (optional)"
+                placeholder={t('phoneVerification.whatsAppPlaceholder')}
                 type="tel"
               />
             </div>
 
             <p className="text-muted-foreground text-xs">
-              Use international format starting with your country code (e.g.{' '}
-              <span className="font-semibold">+970</span> for Palestine).
+              {t('phoneVerification.hint')}
             </p>
 
             <OtpVerify
@@ -215,28 +212,24 @@ const VerificationFormClient = ({
 
         {/* ── Terms ── */}
         <div className="border-border bg-card rounded-2xl border p-8 shadow-sm">
-          <CheckboxField name="terms_accepted">
-            I confirm that all information and documents provided are accurate
-            and authentic. I understand that providing false information may
-            result in permanent account suspension.
-          </CheckboxField>
+          <CheckboxField name="terms_accepted">{t('terms.text')}</CheckboxField>
         </div>
 
         {/* ── Submit ── */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="from-primary to-secondary w-full rounded-xl bg-gradient-to-r px-8 py-4 text-base font-bold text-white shadow-md transition-all duration-200 hover:scale-[1.01] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          className="from-primary to-secondary w-full rounded-xl bg-linear-to-r px-8 py-4 text-base font-bold text-white shadow-md transition-all duration-200 hover:scale-[1.01] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Submitting…
+              {t('buttons.submitting')}
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
               <Send className="h-5 w-5" />
-              Submit Verification Request
+              {t('buttons.submit')}
             </span>
           )}
         </button>
