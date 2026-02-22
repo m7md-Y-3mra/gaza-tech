@@ -128,12 +128,11 @@ export const createVerificationRequestClientSchema = (t: TranslationFunction) =>
             // Phone numbers collected from the user and saved to users table on verify
             phone_number: z
                 .string({ message: t('phoneRequired') })
-                .regex(/^\+[1-9]\d{6,14}$/, t('phoneInvalidFormat')),
+                .regex(/^\+(970|972)\d{9}$/, t('phoneInvalidFormat')),
 
             whatsapp_number: z
                 .string()
-                .regex(/^\+[1-9]\d{6,14}$/, t('whatsappInvalidFormat'))
-                .or(z.literal(''))
+                .regex(/^\+(970|972)\d{9}$/, t('whatsappInvalidFormat'))
                 .optional(),
 
             phone_verified: z

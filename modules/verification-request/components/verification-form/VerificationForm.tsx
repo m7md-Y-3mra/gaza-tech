@@ -7,7 +7,7 @@ const VerificationForm = async () => {
   //   • user.phone          — a phone number was linked via updateUser({ phone })
   //   • user.phone_confirmed_at — OTP was confirmed via verifyOtp({ type: 'phone_change' })
   const isPhoneVerified = Boolean(user?.phone && user?.phone_confirmed_at);
-  const existingPhone = user?.phone ?? null;
+  const existingPhone = user?.phone ? '+' + user?.phone : null;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 via-white to-green-50">
