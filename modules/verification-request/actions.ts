@@ -1,7 +1,10 @@
 'use server';
 
 import { errorHandler } from '@/utils/error-handler';
-import { createVerificationRequestQuery, updateUserPhoneNumbers } from './queries';
+import {
+  createVerificationRequestQuery,
+  updateUserPhoneNumbers,
+} from './queries';
 
 /**
  * Server action — called by OtpVerify's onVerified callback AFTER
@@ -17,10 +20,8 @@ import { createVerificationRequestQuery, updateUserPhoneNumbers } from './querie
  *  5. onVerified fires → this action updates users.phone_number + users.whatsapp_number.
  *  6. Form field phone_verified is set to true.
  */
-export const updateUserPhoneAction = errorHandler(
-    updateUserPhoneNumbers
-);
+export const updateUserPhoneAction = errorHandler(updateUserPhoneNumbers);
 
 export const createVerificationRequestAction = errorHandler(
-    createVerificationRequestQuery
+  createVerificationRequestQuery
 );

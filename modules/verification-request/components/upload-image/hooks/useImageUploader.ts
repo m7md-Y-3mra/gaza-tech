@@ -33,21 +33,28 @@ export const useImageUploader = () => {
               upsert: false,
             });
 
-          if (error) throw new Error(`Failed to upload image: ${error.message}`);
+          if (error)
+            throw new Error(`Failed to upload image: ${error.message}`);
 
           // Get public URL
-          const { data: { publicUrl } } = supabase.storage
-            .from(bucketName)
-            .getPublicUrl(data.path);
+          const {
+            data: { publicUrl },
+          } = supabase.storage.from(bucketName).getPublicUrl(data.path);
 
-          results.push({ path: data.path, url: publicUrl, originalName: file.name });
+          results.push({
+            path: data.path,
+            url: publicUrl,
+            originalName: file.name,
+          });
         }
 
         return results;
       } catch (error) {
         // Cleanup successfully uploaded images if the batch fails
         if (results.length > 0) {
-          await supabase.storage.from(bucketName).remove(results.map((r) => r.path));
+          await supabase.storage
+            .from(bucketName)
+            .remove(results.map((r) => r.path));
         }
         throw error;
       } finally {
@@ -57,11 +64,14 @@ export const useImageUploader = () => {
     []
   );
 
-  const deleteFiles = useCallback(async (bucketName: string, paths: string[]) => {
-    if (paths.length === 0) return;
-    const supabase = createClient();
-    await supabase.storage.from(bucketName).remove(paths);
-  }, []);
+  const deleteFiles = useCallback(
+    async (bucketName: string, paths: string[]) => {
+      if (paths.length === 0) return;
+      const supabase = createClient();
+      await supabase.storage.from(bucketName).remove(paths);
+    },
+    []
+  );
 
   return { isUploading, uploadFiles, deleteFiles };
 };

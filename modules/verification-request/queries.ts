@@ -16,56 +16,59 @@ import { z } from 'zod';
  * so we just persist the numbers to our public users table.
  */
 export async function updateUserPhoneNumbers({
-    phone_number,
-    whatsapp_number,
+  phone_number,
+  whatsapp_number,
 }: {
-    phone_number: string;
-    whatsapp_number?: string;
+  phone_number: string;
+  whatsapp_number?: string;
 }): Promise<void> {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const user = await authHandler();
+  const user = await authHandler();
 
-    const { error } = await supabase
-        .from('users')
-        .update({
-            phone_number,
-            whatsapp_number: whatsapp_number || null,
-        })
-        .eq('user_id', user.id);
+  const { error } = await supabase
+    .from('users')
+    .update({
+      phone_number,
+      whatsapp_number: whatsapp_number || null,
+    })
+    .eq('user_id', user.id);
 
-    if (error) {
-        throw new CustomError(
-            { message: error.message || 'Failed to update phone number' }
-        );
-    }
+  if (error) {
+    throw new CustomError({
+      message: error.message || 'Failed to update phone number',
+    });
+  }
 }
 
 export async function createVerificationRequestQuery(
-    requestData: Omit<z.infer<typeof verificationRequestServerSchema>, 'user_id'>
+  requestData: Omit<z.infer<typeof verificationRequestServerSchema>, 'user_id'>
 ) {
-    const supabase = await createClient();
-    const user = await authHandler();
+  const supabase = await createClient();
+  const user = await authHandler();
 
-    // Validate the data coming from the client against the server schema
-    const validatedData = zodValidation(verificationRequestServerSchema,
-        requestData,
-    );
+  // Validate the data coming from the client against the server schema
+  const validatedData = zodValidation(
+    verificationRequestServerSchema,
+    requestData
+  );
 
-    const { data, error } = await supabase
-        .from('verification_requests')
-        .insert({
-            ...validatedData,
-            verification_status: 'pending', // Default status upon creation
-            user_id: user.id
-        })
-        .select('verification_request_id')
-        .single();
+  const { data, error } = await supabase
+    .from('verification_requests')
+    .insert({
+      ...validatedData,
+      verification_status: 'pending', // Default status upon creation
+      user_id: user.id,
+    })
+    .select('verification_request_id')
+    .single();
 
-    if (error) {
-        console.error('Error creating verification request:', error);
-        throw new CustomError({ message: error.message || 'Failed to submit verification request' });
-    }
+  if (error) {
+    console.error('Error creating verification request:', error);
+    throw new CustomError({
+      message: error.message || 'Failed to submit verification request',
+    });
+  }
 
-    return data;
+  return data;
 }

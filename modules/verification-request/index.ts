@@ -1,1 +1,1 @@
-export { default } from './VerificationRequestPage'
+export { default } from './VerificationRequestPage';
