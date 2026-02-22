@@ -475,5 +475,87 @@
     "LoadMore": {
       "error": "فشل تحميل المزيد من الإعلانات. يرجى المحاولة مرة أخرى لاحقاً."
     }
+  },
+  "VerificationForm": {
+    "page": {
+      "title": "التحقق من هوية البائع",
+      "subtitle": "أكمل الخطوات التالية للحصول على شارة البائع وبناء الثقة مع المشترين."
+    },
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "subtitle": "يرجى تقديم بياناتك الشخصية الدقيقة",
+      "banner": "نتحقق من جميع البائعين لضمان سوق آمن. معلوماتك مشفرة وآمنة.",
+      "fullNameLabel": "الاسم الكامل",
+      "fullNamePlaceholder": "كما يظهر في بطاقة الهوية",
+      "dateOfBirthLabel": "تاريخ الميلاد",
+      "genderLabel": "الجنس",
+      "genderPlaceholder": "اختر الجنس",
+      "nationalIdLabel": "رقم الهوية الوطنية",
+      "nationalIdPlaceholder": "أدخل رقم الهوية المكون من 9 أرقام",
+      "addressLabel": "العنوان",
+      "addressPlaceholder": "أدخل عنوانك الكامل"
+    },
+    "documentUpload": {
+      "title": "رفع الوثائق",
+      "subtitle": "ارفع صوراً واضحة لوثائق هويتك",
+      "banner": "تأكد من وضوح جميع النصوص. الصيغ المقبولة: JPG، PNG (حد أقصى 2 ميجابايت لكل صورة). يجب أن يكون وجهك وهويتك واضحَين في صورة السيلفي.",
+      "documentTypeLabel": "نوع الوثيقة",
+      "documentTypePlaceholder": "اختر نوع الوثيقة",
+      "frontLabel": "بطاقة الهوية — الوجه الأمامي",
+      "frontDescription": "ارفع صورة واضحة للوجه الأمامي من بطاقة هويتك",
+      "backLabel": "بطاقة الهوية — الوجه الخلفي",
+      "backDescription": "ارفع صورة واضحة للوجه الخلفي من بطاقة هويتك",
+      "selfieLabel": "سيلفي مع بطاقة الهوية",
+      "selfieDescription": "أمسك بطاقة هويتك بجانب وجهك — يجب أن يكون كلاهما مرئيَّين بوضوح"
+    },
+    "phoneVerification": {
+      "title": "التحقق من رقم الهاتف",
+      "subtitle": "تحقق من رقم هاتفك لإتمام التحقق من هوية البائع",
+      "alreadyVerifiedSubtitle": "تم التحقق مسبقاً",
+      "verifiedLabel": "تم التحقق من الهاتف",
+      "verifiedDescription": "{phone} — تم التأكيد عبر رمز OTP",
+      "banner": "أدخل رقم هاتفك أدناه. سيتم إرسال رمز لمرة واحدة عبر الرسائل النصية. بعد التحقق، سيتم حفظ رقمك في ملفك الشخصي.",
+      "bannerStrong": "الخطوة الأخيرة!",
+      "phoneNumberLabel": "رقم الهاتف",
+      "phoneNumberPlaceholder": "+970 59 XXX XXXX",
+      "whatsAppLabel": "رقم واتساب",
+      "whatsAppPlaceholder": "+970 59 XXX XXXX (اختياري)",
+      "hint": "استخدم الصيغة الدولية التي تبدأ برمز البلد (مثال: +970 لفلسطين)."
+    },
+    "terms": {
+      "text": "أؤكد أن جميع المعلومات والوثائق المقدمة دقيقة وأصلية. أفهم أن تقديم معلومات كاذبة قد يؤدي إلى تعليق الحساب بشكل دائم."
+    },
+    "buttons": {
+      "submit": "إرسال طلب التحقق",
+      "submitting": "جاري الإرسال…"
+    },
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى"
+    },
+    "documentType": {
+      "palestinianId": "هوية فلسطينية",
+      "passport": "جواز سفر",
+      "drivingLicence": "رخصة القيادة الفلسطينية"
+    },
+    "validation": {
+      "fullNameRequired": "الاسم الكامل مطلوب",
+      "fullNameMin": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
+      "fullNameMax": "لا يمكن أن يتجاوز الاسم الكامل 100 حرف",
+      "dateOfBirthRequired": "تاريخ الميلاد مطلوب",
+      "nationalIdRequired": "رقم الهوية الوطنية مطلوب",
+      "nationalIdLength": "يجب أن يكون رقم الهوية مكوناً من 8 أرقام بالضبط",
+      "addressRequired": "العنوان مطلوب",
+      "addressMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
+      "documentTypeRequired": "يرجى اختيار نوع الوثيقة",
+      "documentFrontRequired": "يرجى رفع الوجه الأمامي من بطاقة الهوية",
+      "documentBackRequired": "يرجى رفع الوجه الخلفي من بطاقة الهوية",
+      "selfieRequired": "يرجى رفع صورة سيلفي مع بطاقة الهوية",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalidFormat": "يجب أن يبدأ رقم الهاتف بـ +970 أو +972 متبوعاً بـ 9 أرقام",
+      "whatsappInvalidFormat": "يجب أن يبدأ رقم واتساب بـ +970 أو +972 متبوعاً بـ 9 أرقام",
+      "phoneVerificationRequired": "يجب التحقق من رقم هاتفك قبل الإرسال",
+      "termsRequired": "يجب تأكيد دقة جميع المعلومات المقدمة"
+    }
   }
 }
