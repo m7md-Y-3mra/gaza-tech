@@ -537,6 +537,25 @@
       "palestinianId": "هوية فلسطينية",
       "passport": "جواز سفر",
       "drivingLicence": "رخصة القيادة الفلسطينية"
+    },
+    "validation": {
+      "fullNameRequired": "الاسم الكامل مطلوب",
+      "fullNameMin": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
+      "fullNameMax": "لا يمكن أن يتجاوز الاسم الكامل 100 حرف",
+      "dateOfBirthRequired": "تاريخ الميلاد مطلوب",
+      "nationalIdRequired": "رقم الهوية الوطنية مطلوب",
+      "nationalIdLength": "يجب أن يكون رقم الهوية مكوناً من 8 أرقام بالضبط",
+      "addressRequired": "العنوان مطلوب",
+      "addressMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
+      "documentTypeRequired": "يرجى اختيار نوع الوثيقة",
+      "documentFrontRequired": "يرجى رفع الوجه الأمامي من بطاقة الهوية",
+      "documentBackRequired": "يرجى رفع الوجه الخلفي من بطاقة الهوية",
+      "selfieRequired": "يرجى رفع صورة سيلفي مع بطاقة الهوية",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalidFormat": "يجب أن يبدأ رقم الهاتف بـ +970 أو +972 متبوعاً بـ 9 أرقام",
+      "whatsappInvalidFormat": "يجب أن يبدأ رقم واتساب بـ +970 أو +972 متبوعاً بـ 9 أرقام",
+      "phoneVerificationRequired": "يجب التحقق من رقم هاتفك قبل الإرسال",
+      "termsRequired": "يجب تأكيد دقة جميع المعلومات المقدمة"
     }
   }
 }

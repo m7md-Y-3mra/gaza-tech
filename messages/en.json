@@ -537,6 +537,25 @@
       "palestinianId": "Palestinian ID",
       "passport": "Passport",
       "drivingLicence": "Palestinian driving licence"
+    },
+    "validation": {
+      "fullNameRequired": "Full name is required",
+      "fullNameMin": "Full name must be at least 3 characters",
+      "fullNameMax": "Full name cannot exceed 100 characters",
+      "dateOfBirthRequired": "Date of birth is required",
+      "nationalIdRequired": "National ID number is required",
+      "nationalIdLength": "National ID must be exactly 8 digits",
+      "addressRequired": "Street address is required",
+      "addressMin": "Address must be at least 5 characters",
+      "documentTypeRequired": "Please select a document type",
+      "documentFrontRequired": "Please upload the front side of your ID",
+      "documentBackRequired": "Please upload the back side of your ID",
+      "selfieRequired": "Please upload a selfie with your ID",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalidFormat": "Phone number must start with +970 or +972 followed by 9 digits",
+      "whatsappInvalidFormat": "WhatsApp number must start with +970 or +972 followed by 9 digits",
+      "phoneVerificationRequired": "You must verify your phone number before submitting",
+      "termsRequired": "You must confirm that all information is accurate"
     }
   }
 }

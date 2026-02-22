@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useRouter } from 'nextjs-toploader/app';
+import { useTranslations } from 'next-intl';
 import {
-    verificationRequestClientSchema,
+    createVerificationRequestClientSchema,
     type VerificationRequestClientValues,
 } from '../../../schema';
 import { useVerificationFormClient } from '../types';
@@ -16,9 +17,11 @@ import { BUCKET_NAME } from '../constant';
 export const useVerificationForm = ({ isPhoneVerified, existingPhone }: useVerificationFormClient) => {
     const router = useRouter();
     const { uploadFiles, isUploading, deleteFiles } = useImageUploader();
+    const t = useTranslations('VerificationForm.validation');
+    const schema = createVerificationRequestClientSchema(t);
 
     const methods = useForm<VerificationRequestClientValues>({
-        resolver: zodResolver(verificationRequestClientSchema),
+        resolver: zodResolver(schema),
         defaultValues: {
             id_gender: null,
             phone_verified: isPhoneVerified || undefined,
