@@ -13,41 +13,14 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-import {
-  ArrowLeft,
-  Flag,
-  History,
-  Search,
-  Settings,
-  UserRoundCog,
-} from 'lucide-react';
+import { ArrowLeft, ShieldCheck } from 'lucide-react';
 
 // Menu items.
 const items = [
   {
-    title: 'Search',
-    url: '/dashboard/search',
-    icon: Search,
-  },
-  {
-    title: 'Reports',
-    url: '/dashboard/reports',
-    icon: Flag,
-  },
-  {
-    title: 'History',
-    url: '/dashboard/history',
-    icon: History,
-  },
-  {
-    title: 'Profile',
-    url: '/dashboard/profile',
-    icon: UserRoundCog,
-  },
-  {
-    title: 'Settings',
-    url: '/dashboard/settings',
-    icon: Settings,
+    title: 'Verification Review',
+    url: '/dashboard/verification-review',
+    icon: ShieldCheck,
   },
 ];
 
