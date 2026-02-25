@@ -10,18 +10,31 @@ import {
     VerificationStatus,
     VerificationUserDetail,
 } from './types';
+import { DEFAULT_LIMIT_NUMBER, DEFAULT_PAGE_NUMBER } from '@/constants/pagination';
 
 /**
- * Fetch all pending verification requests for the queue list.
- * Joins with `users` table to get display name + avatar.
+ * Fetch pending verification requests for the queue list.
+ * Supports search by user name and pagination.
  */
-export async function getVerificationQueueQuery(): Promise<
-    VerificationQueueItem[]
-> {
+export async function getVerificationQueueQuery({
+    query = '',
+    page = DEFAULT_PAGE_NUMBER,
+}: {
+    query?: string;
+    page?: number;
+} = {}): Promise<{
+    items: VerificationQueueItem[];
+    totalCount: number;
+    page: number;
+    pageSize: number;
+}> {
     const supabase = await createClient();
     await authHandler();
 
-    const { data, error } = await supabase
+    const from = (page - 1) * DEFAULT_LIMIT_NUMBER;
+    const to = from + DEFAULT_LIMIT_NUMBER - 1;
+
+    let request = supabase
         .from('verification_requests')
         .select(
             `
@@ -35,10 +48,23 @@ export async function getVerificationQueueQuery(): Promise<
         last_name,
         avatar_url
       )
-    `
+    `,
+            { count: 'exact' }
         )
         .eq('verification_status', 'pending')
         .order('submitted_at', { ascending: true });
+
+    // Apply search filter on user name if query is provided
+    if (query.trim()) {
+        request = request.or(
+            `id_full_name.ilike.%${query}%,national_id_number.ilike.%${query}%`
+        );
+    }
+
+    // Apply pagination
+    request = request.range(from, to);
+
+    const { data, error, count } = await request;
 
     if (error) {
         console.error('Error fetching verification queue:', error);
@@ -48,7 +74,7 @@ export async function getVerificationQueueQuery(): Promise<
     }
 
     // Flatten the joined user data
-    return (data || []).map((item) => {
+    const items = (data || []).map((item) => {
         const user = item.users as unknown as {
             first_name: string;
             last_name: string;
@@ -65,6 +91,13 @@ export async function getVerificationQueueQuery(): Promise<
             verification_status: item.verification_status,
         };
     });
+
+    return {
+        items,
+        totalCount: count ?? 0,
+        page,
+        pageSize: DEFAULT_LIMIT_NUMBER,
+    };
 }
 
 /**
