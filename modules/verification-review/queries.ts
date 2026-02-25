@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { authHandler } from '@/utils/auth-handler';
 import CustomError from '@/utils/CustomError';
@@ -211,6 +212,8 @@ export async function updateVerificationStatusQuery({
                 .eq('user_id', request.user_id);
         }
     }
+
+    revalidatePath('/dashboard/verification-review');
 
     return { success: true };
 }
