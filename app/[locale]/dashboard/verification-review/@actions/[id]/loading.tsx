@@ -1,6 +1,6 @@
 export default function ActionsLoading() {
   return (
-    <div className="flex h-full flex-col overflow-y-auto">
+    <div className="flex h-full w-full flex-col overflow-y-auto">
       {/* Header skeleton */}
       <div className="border-b border-gray-200 p-4 dark:border-gray-700">
         <div className="h-6 w-36 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />

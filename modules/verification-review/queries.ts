@@ -163,6 +163,8 @@ export async function updateVerificationStatusQuery({
     const supabase = await createClient();
     const reviewer = await authHandler();
 
+    console.log({ requestId, status, reviewNotes, rejectionReason, checklist })
+
     const { error } = await supabase
         .from('verification_requests')
         .update({
@@ -183,7 +185,8 @@ export async function updateVerificationStatusQuery({
                 selfie_is_live: checklist.selfie_is_live,
             }),
         })
-        .eq('verification_request_id', requestId);
+        .eq('verification_request_id', requestId)
+        .single();
 
     if (error) {
         console.error('Error updating verification status:', error);

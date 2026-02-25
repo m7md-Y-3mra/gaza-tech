@@ -2,6 +2,7 @@
 
 import { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { updateVerificationStatusAction } from '@/modules/verification-review/actions';
 import {
   ChecklistState,
@@ -32,15 +33,27 @@ export default function ActionsIdPage({
     setIsSubmitting(true);
 
     try {
-      await updateVerificationStatusAction({
+      const result = await updateVerificationStatusAction({
         requestId,
         status,
         reviewNotes,
         rejectionReason: status === 'rejected' ? rejectionReason : undefined,
         checklist,
       });
-      router.push('/dashboard/verification-review');
-      router.refresh();
+
+      if (result.success) {
+        toast.success(
+          status === 'approved'
+            ? 'Verification approved successfully'
+            : 'Verification rejected successfully'
+        );
+        router.push('/dashboard/verification-review');
+        router.refresh();
+      } else {
+        toast.error('Failed to update verification status');
+      }
+    } catch {
+      toast.error('An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
     }
@@ -73,7 +86,6 @@ export default function ActionsIdPage({
         isSubmitting={isSubmitting}
         onApprove={() => handleAction('approved')}
         onReject={() => handleAction('rejected')}
-        onSuspicious={() => handleAction('suspicious')}
       />
     </div>
   );
