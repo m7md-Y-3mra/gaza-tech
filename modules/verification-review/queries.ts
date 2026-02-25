@@ -196,20 +196,47 @@ export async function updateVerificationStatusQuery({
         });
     }
 
-    // If approved, update the user's is_verified flag
-    if (status === 'approved') {
-        // First get the user_id from the request
-        const { data: request } = await supabase
-            .from('verification_requests')
-            .select('user_id')
-            .eq('verification_request_id', requestId)
-            .single();
+    // Fetch user details for email notification and role update
+    const { data: request } = await supabase
+        .from('verification_requests')
+        .select('user_id')
+        .eq('verification_request_id', requestId)
+        .single();
 
-        if (request) {
+    if (request) {
+        // If approved, update the user's role
+        if (status === 'approved') {
             await supabase
                 .from('users')
                 .update({ user_role: 'verified_seller' })
                 .eq('user_id', request.user_id);
+        }
+
+        // Fetch user email + name for notification
+        const { data: user } = await supabase
+            .from('users_with_email')
+            .select('email, first_name, last_name')
+            .eq('user_id', request.user_id)
+            .single();
+
+        // Send email notification via edge function (fire-and-forget)
+        if (user?.email) {
+            const userName =
+                `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim() ||
+                'User';
+
+            supabase.functions
+                .invoke('send-verification-email', {
+                    body: {
+                        to: user.email,
+                        userName,
+                        status,
+                        rejectionReason: rejectionReason || undefined,
+                    },
+                })
+                .catch((err) =>
+                    console.error('Failed to send verification email:', err)
+                );
         }
     }
 
