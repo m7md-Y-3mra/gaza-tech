@@ -3,7 +3,7 @@ import DashboardSidebar from '@/modules/dashboard/components/dashboard-sidebar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <DashboardSidebar />
       <main>
         <SidebarTrigger />
