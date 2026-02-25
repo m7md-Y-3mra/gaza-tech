@@ -2,19 +2,19 @@
 
 import { errorHandler } from '@/utils/error-handler';
 import {
-    getVerificationQueueQuery,
-    getVerificationRequestByIdQuery,
-    updateVerificationStatusQuery,
+  getVerificationQueueQuery,
+  getVerificationRequestByIdQuery,
+  updateVerificationStatusQuery,
 } from './queries';
 
 export const getVerificationQueueAction = errorHandler(
-    getVerificationQueueQuery
+  getVerificationQueueQuery
 );
 
 export const getVerificationRequestByIdAction = errorHandler(
-    getVerificationRequestByIdQuery
+  getVerificationRequestByIdQuery
 );
 
 export const updateVerificationStatusAction = errorHandler(
-    updateVerificationStatusQuery
+  updateVerificationStatusQuery
 );
