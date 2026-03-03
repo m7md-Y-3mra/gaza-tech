@@ -1,4 +1,4 @@
 export type ScoreBarProps = {
-    label: string;
-    value: number | null;
+  label: string;
+  value: number | null;
 };

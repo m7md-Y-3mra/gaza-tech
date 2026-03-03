@@ -1,4 +1,4 @@
 export type OcrStatusBadgeProps = {
-    status: string | null;
-    error: string | null;
+  status: string | null;
+  error: string | null;
 };
