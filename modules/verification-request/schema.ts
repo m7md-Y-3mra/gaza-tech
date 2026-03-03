@@ -77,6 +77,9 @@ const createBaseVerificationSchema = (t: TranslationFunction) =>
     submitted_at: z.string().nullable(),
     updated_at: z.string().nullable(),
     verification_status: z.string().nullable(),
+
+    ocr_status: z.string().nullable(),
+    ocr_error: z.string().nullable(),
   }) satisfies ZodType<VerificationRequestRow>;
 
 // ─── Insert schema (fields the client submits) ────────────────────────
