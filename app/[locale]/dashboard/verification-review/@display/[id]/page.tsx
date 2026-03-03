@@ -1,4 +1,5 @@
 import { getVerificationRequestByIdAction } from '@/modules/verification-review/actions';
+import AutomatedChecksResults from '@/modules/verification-review/components/automated-checks-results';
 import DetailItem from '@/modules/verification-review/components/detail-item';
 import DocumentCard from '@/modules/verification-review/components/document-card';
 import { calculateAge } from '@/modules/verification-review/utils/age.utils';
@@ -63,6 +64,9 @@ export default async function DisplayIdPage({
             <DetailItem label="Document Type" value={request.document_type} />
           </div>
         </section>
+
+        {/* Automated Checks Results */}
+        <AutomatedChecksResults request={request} />
 
         {/* Social Links */}
         {(user.facebook_link_url ||

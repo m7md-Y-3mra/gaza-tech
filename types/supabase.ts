@@ -764,6 +764,8 @@ export type Database = {
           name_matches: boolean | null;
           national_id_number: string;
           no_tampering_signs: boolean | null;
+          ocr_error: string | null;
+          ocr_status: string | null;
           phone_otp_attempts: number | null;
           phone_otp_code: string | null;
           phone_otp_expires_at: string | null;
@@ -805,6 +807,8 @@ export type Database = {
           name_matches?: boolean | null;
           national_id_number: string;
           no_tampering_signs?: boolean | null;
+          ocr_error?: string | null;
+          ocr_status?: string | null;
           phone_otp_attempts?: number | null;
           phone_otp_code?: string | null;
           phone_otp_expires_at?: string | null;
@@ -846,6 +850,8 @@ export type Database = {
           name_matches?: boolean | null;
           national_id_number?: string;
           no_tampering_signs?: boolean | null;
+          ocr_error?: string | null;
+          ocr_status?: string | null;
           phone_otp_attempts?: number | null;
           phone_otp_code?: string | null;
           phone_otp_expires_at?: string | null;
