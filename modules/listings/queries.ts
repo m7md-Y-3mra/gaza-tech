@@ -678,3 +678,24 @@ export async function getListingsQuery({
 
   return { data: listings, count: count || 0 };
 }
+
+/**
+ * Delete a listing by ID
+ * Only the owner (seller) can delete their own listing
+ */
+export async function deleteListingQuery(listingId: string): Promise<void> {
+  'use server';
+  const client = await createClient();
+  const user = await authHandler();
+
+  const { error } = await client
+    .from('marketplace_listings')
+    .delete()
+    .eq('listing_id', listingId)
+    .eq('seller_id', user.id);
+
+  if (error) {
+    console.error('Error deleting listing:', error);
+    throw new Error('Failed to delete listing');
+  }
+}
