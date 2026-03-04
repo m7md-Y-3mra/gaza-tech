@@ -2,9 +2,9 @@
 
 import { errorHandler } from '@/utils/error-handler';
 import {
-    getUserById,
-    getUserListingsQuery,
-    getBookmarkedListingsQuery,
+  getUserById,
+  getUserListingsQuery,
+  getBookmarkedListingsQuery,
 } from './queries';
 
 /**
@@ -24,5 +24,5 @@ export const getUserListingsAction = errorHandler(getUserListingsQuery);
  * Server action wrapped with error handler
  */
 export const getBookmarkedListingsAction = errorHandler(
-    getBookmarkedListingsQuery
+  getBookmarkedListingsQuery
 );

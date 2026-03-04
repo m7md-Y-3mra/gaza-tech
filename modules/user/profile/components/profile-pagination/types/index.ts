@@ -1,4 +1,4 @@
 export type ProfilePaginationProps = {
-    totalCount: number;
-    pageSize: number;
+  totalCount: number;
+  pageSize: number;
 };

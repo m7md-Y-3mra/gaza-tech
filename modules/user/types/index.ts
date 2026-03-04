@@ -5,17 +5,17 @@ export type ProfileUser = Database['public']['Tables']['users']['Row'];
 
 // Listing card item for profile page
 export type ProfileListingItem = {
-    listing_id: string;
-    title: string;
-    price: number;
-    currency: string | null;
-    product_condition: string;
-    created_at: string | null;
-    image: string;
-    description: string;
+  listing_id: string;
+  title: string;
+  price: number;
+  currency: string | null;
+  product_condition: string;
+  created_at: string | null;
+  image: string;
+  description: string;
 };
 
 // Bookmarked listing item
 export type BookmarkedListingItem = ProfileListingItem & {
-    bookmarked_at: string | null;
+  bookmarked_at: string | null;
 };

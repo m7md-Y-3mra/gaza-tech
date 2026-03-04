@@ -1,11 +1,11 @@
 import type { BookmarkedListingItem } from '@/modules/user/types';
 
 export type ProfileBookmarkTabProps = {
-    page: number;
+  page: number;
 };
 
 export type ProfileBookmarkTabClientProps = {
-    bookmarkedListings: BookmarkedListingItem[];
-    bookmarkedCount: number;
-    pageSize: number;
+  bookmarkedListings: BookmarkedListingItem[];
+  bookmarkedCount: number;
+  pageSize: number;
 };

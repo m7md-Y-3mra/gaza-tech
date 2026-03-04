@@ -1,4 +1,4 @@
 export interface ProfilePageProps {
-    userId: string;
-    page: number;
+  userId: string;
+  page: number;
 }
