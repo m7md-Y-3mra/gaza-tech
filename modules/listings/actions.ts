@@ -14,6 +14,7 @@ import {
   updateListingQuery,
   getCategoriesWithoutParentQuery,
   getListingsQuery,
+  deleteListingQuery,
 } from './queries';
 
 /**
@@ -116,3 +117,16 @@ export const updateListingAction = errorHandler(
 );
 
 export const getListingsAction = errorHandler(getListingsQuery);
+
+/**
+ * Delete a listing
+ * Server action wrapped with error handler
+ * Revalidates listings cache after deletion
+ */
+export const deleteListingAction = errorHandler(
+  async (listingId: string): Promise<void> => {
+    await deleteListingQuery(listingId);
+
+    revalidatePath('/listings');
+  }
+);
