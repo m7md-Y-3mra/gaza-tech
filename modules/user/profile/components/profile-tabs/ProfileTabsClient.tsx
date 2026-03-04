@@ -1,6 +1,7 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTranslations } from 'next-intl';
 import type { ProfileTabsClientProps } from './types';
 
 const ProfileTabsClient = ({
@@ -8,6 +9,8 @@ const ProfileTabsClient = ({
   listingsContent,
   bookmarkedContent,
 }: ProfileTabsClientProps) => {
+  const t = useTranslations('Profile.Tabs');
+
   return (
     <Tabs
       defaultValue="listings"
@@ -17,16 +20,16 @@ const ProfileTabsClient = ({
         <TabsList className="inline-flex h-16 w-full items-center justify-start rounded-none bg-transparent p-0">
           <TabsTrigger
             value="listings"
-            className="data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-card flex-1 items-center justify-center rounded-tl-xl rounded-bl-none border-b-2 border-transparent px-6 py-4 text-sm font-semibold transition-all data-[state=active]:shadow-none"
+            className="data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-card flex-1 items-center justify-center border-b-2 border-transparent px-6 py-4 text-sm font-semibold transition-all data-[state=active]:shadow-none ltr:rounded-tl-xl ltr:rounded-bl-none rtl:rounded-tr-xl rtl:rounded-br-none"
           >
-            My Listings
+            {t('myListings')}
           </TabsTrigger>
           {isOwner && (
             <TabsTrigger
               value="bookmarked"
-              className="data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-card flex-1 items-center justify-center rounded-tr-xl rounded-br-none border-b-2 border-transparent px-6 py-4 text-sm font-semibold transition-all data-[state=active]:shadow-none"
+              className="data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-card flex-1 items-center justify-center border-b-2 border-transparent px-6 py-4 text-sm font-semibold transition-all data-[state=active]:shadow-none ltr:rounded-tr-xl ltr:rounded-br-none rtl:rounded-tl-xl rtl:rounded-bl-none"
             >
-              Saved Items
+              {t('savedItems')}
             </TabsTrigger>
           )}
         </TabsList>

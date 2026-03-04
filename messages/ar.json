@@ -557,5 +557,46 @@
       "phoneVerificationRequired": "يجب التحقق من رقم هاتفك قبل الإرسال",
       "termsRequired": "يجب تأكيد دقة جميع المعلومات المقدمة"
     }
+  },
+  "Profile": {
+    "Hero": {
+      "noBio": "لا يوجد نبذة تعريفية.",
+      "joined": "انضم {date}",
+      "twitter": "تويتر",
+      "instagram": "إنستغرام",
+      "facebook": "فيسبوك",
+      "website": "الموقع الإلكتروني"
+    },
+    "Tabs": {
+      "myListings": "إعلاناتي",
+      "savedItems": "العناصر المحفوظة"
+    },
+    "ListingsTab": {
+      "noListings": "لا توجد إعلانات بعد",
+      "deleteSuccess": "تم حذف الإعلان بنجاح",
+      "error": {
+        "title": "فشل تحميل الإعلانات",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "BookmarkTab": {
+      "noBookmarks": "لا توجد إعلانات محفوظة بعد",
+      "error": {
+        "title": "فشل تحميل المحفوظات",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "ListingCard": {
+      "editListing": "تعديل الإعلان",
+      "deleteListing": "حذف الإعلان",
+      "deleteDialogTitle": "حذف الإعلان",
+      "deleteDialogDescription": "هل أنت متأكد من حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف"
+    },
+    "Pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
   }
 }

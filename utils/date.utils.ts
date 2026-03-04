@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { enUS, ar } from "date-fns/locale";
 
 /**
  * Format a date as "Member X time ago"
@@ -9,7 +10,8 @@ import { formatDistanceToNow } from 'date-fns';
  * formatMemberSince(null) // "recently"
  */
 export function formatMemberSince(
-  date: string | Date | null | undefined
+  date: string | Date | null | undefined,
+  locale: string = 'en'
 ): string {
   if (!date) {
     return 'recently';
@@ -17,5 +19,6 @@ export function formatMemberSince(
 
   return formatDistanceToNow(new Date(date), {
     addSuffix: true,
+    locale: locale === 'ar' ? ar : enUS
   });
 }

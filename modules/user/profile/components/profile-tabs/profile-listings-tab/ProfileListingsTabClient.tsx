@@ -6,6 +6,7 @@ import ProfileListingCard from '../../profile-listing-card';
 import ProfilePagination from '../../profile-pagination';
 import { PackageSearch } from 'lucide-react';
 import { deleteListingAction } from '@/modules/listings/actions';
+import { useTranslations } from 'next-intl';
 import type { ProfileListingsTabClientProps } from './types';
 import type { ProfileListingItem } from '@/modules/user/types';
 
@@ -15,6 +16,7 @@ const ProfileListingsTabClient = ({
   isOwner,
   pageSize,
 }: ProfileListingsTabClientProps) => {
+  const t = useTranslations('Profile.ListingsTab');
   const [isPending, startTransition] = useTransition();
 
   const [optimisticListings, removeOptimisticListing] = useOptimistic(
@@ -32,7 +34,7 @@ const ProfileListingsTabClient = ({
       if (!result.success) {
         toast.error(result.message);
       } else {
-        toast.success('Listing deleted successfully');
+        toast.success(t('deleteSuccess'));
       }
     });
   };
@@ -41,7 +43,7 @@ const ProfileListingsTabClient = ({
     return (
       <div className="flex flex-col items-center justify-center p-8 py-20 text-center">
         <PackageSearch className="text-muted-foreground mb-4 size-12 opacity-50" />
-        <p className="text-muted-foreground font-medium">No listings yet</p>
+        <p className="text-muted-foreground font-medium">{t('noListings')}</p>
       </div>
     );
   }

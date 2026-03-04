@@ -3,6 +3,7 @@
 import ProfileListingCard from '../../profile-listing-card';
 import ProfilePagination from '../../profile-pagination';
 import { Bookmark } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { ProfileBookmarkTabClientProps } from './types';
 
 const ProfileBookmarkTabClient = ({
@@ -10,11 +11,13 @@ const ProfileBookmarkTabClient = ({
   bookmarkedCount,
   pageSize,
 }: ProfileBookmarkTabClientProps) => {
+  const t = useTranslations('Profile.BookmarkTab');
+
   if (bookmarkedListings.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <Bookmark className="text-muted-foreground mb-4 size-12" />
-        <p className="text-muted-foreground">No bookmarked listings yet</p>
+        <p className="text-muted-foreground">{t('noBookmarks')}</p>
       </div>
     );
   }

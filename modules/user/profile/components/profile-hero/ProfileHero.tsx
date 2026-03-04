@@ -10,15 +10,17 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import type { ProfileHeroProps } from './types';
+import { getTranslations } from 'next-intl/server';
 
-const ProfileHero = ({ user }: ProfileHeroProps) => {
+const ProfileHero = async ({ user }: ProfileHeroProps) => {
+  const t = await getTranslations('Profile.Hero');
   const fullName = `${user.first_name} ${user.last_name}`;
 
   const socialLinks = [
-    { url: user.twitter_link_url, icon: Twitter, label: 'Twitter' },
-    { url: user.instagram_link_url, icon: Instagram, label: 'Instagram' },
-    { url: user.facebook_link_url, icon: Facebook, label: 'Facebook' },
-    { url: user.website_url, icon: Globe, label: 'Website' },
+    { url: user.twitter_link_url, icon: Twitter, label: t('twitter') },
+    { url: user.instagram_link_url, icon: Instagram, label: t('instagram') },
+    { url: user.facebook_link_url, icon: Facebook, label: t('facebook') },
+    { url: user.website_url, icon: Globe, label: t('website') },
   ].filter((link) => link.url);
 
   const joinedDate = user.created_at
@@ -58,19 +60,15 @@ const ProfileHero = ({ user }: ProfileHeroProps) => {
                 <h1 className="text-3xl font-bold lg:text-4xl">{fullName}</h1>
               </div>
               <p className="text-primary-foreground/90 mb-4 max-w-2xl text-base">
-                {user.bio || 'No bio provided.'}
+                {user.bio || t('noBio')}
               </p>
 
               <div className="mb-4 flex flex-wrap items-center gap-3">
-                {/* <div className="flex items-center gap-2 rounded-lg bg-white/20 px-3 py-1.5 backdrop-blur-sm">
-                  <MapPin className="size-4 text-white" />
-                  <span className="text-sm font-medium">Verified User</span>
-                </div> */}
                 {joinedDate && (
                   <div className="flex items-center gap-2 rounded-lg bg-white/20 px-3 py-1.5 backdrop-blur-sm">
                     <Calendar className="size-4 text-white" />
                     <span className="text-sm font-medium">
-                      Joined {joinedDate}
+                      {t('joined', { date: joinedDate })}
                     </span>
                   </div>
                 )}

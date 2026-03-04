@@ -557,5 +557,46 @@
       "phoneVerificationRequired": "You must verify your phone number before submitting",
       "termsRequired": "You must confirm that all information is accurate"
     }
+  },
+  "Profile": {
+    "Hero": {
+      "noBio": "No bio provided.",
+      "joined": "Joined {date}",
+      "twitter": "Twitter",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "website": "Website"
+    },
+    "Tabs": {
+      "myListings": "My Listings",
+      "savedItems": "Saved Items"
+    },
+    "ListingsTab": {
+      "noListings": "No listings yet",
+      "deleteSuccess": "Listing deleted successfully",
+      "error": {
+        "title": "Failed to load listings",
+        "tryAgain": "Try again"
+      }
+    },
+    "BookmarkTab": {
+      "noBookmarks": "No bookmarked listings yet",
+      "error": {
+        "title": "Failed to load bookmarks",
+        "tryAgain": "Try again"
+      }
+    },
+    "ListingCard": {
+      "editListing": "Edit listing",
+      "deleteListing": "Delete listing",
+      "deleteDialogTitle": "Delete listing",
+      "deleteDialogDescription": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "Pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
   }
 }

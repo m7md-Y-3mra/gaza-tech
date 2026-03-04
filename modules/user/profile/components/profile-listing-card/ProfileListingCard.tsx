@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Pencil, Trash2 } from 'lucide-react';
@@ -13,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { useLocale, useTranslations } from 'next-intl';
 import type { ProfileListingCardProps } from './types';
 
 const ProfileListingCard = ({
@@ -20,8 +23,11 @@ const ProfileListingCard = ({
   isOwner,
   onDelete,
 }: ProfileListingCardProps) => {
+  const t = useTranslations('Profile.ListingCard');
+  const locale = useLocale();
+
   const timeAgo = listing.created_at
-    ? formatMemberSince(listing.created_at)
+    ? formatMemberSince(listing.created_at, locale)
     : '';
 
   const price = new Intl.NumberFormat('en-US', {
@@ -67,7 +73,7 @@ const ProfileListingCard = ({
                   <Link
                     href={`/listings/${listing.listing_id}/edit`}
                     className="text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Edit listing"
+                    aria-label={t('editListing')}
                   >
                     <Pencil className="size-4" />
                   </Link>
@@ -75,26 +81,29 @@ const ProfileListingCard = ({
                     <AlertDialogTrigger asChild>
                       <button
                         className="text-muted-foreground hover:text-destructive transition-colors"
-                        aria-label="Delete listing"
+                        aria-label={t('deleteListing')}
                       >
                         <Trash2 className="size-4" />
                       </button>
                     </AlertDialogTrigger>
                     <AlertDialogContent size="sm">
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete listing</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          {t('deleteDialogTitle')}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete &quot;{listing.title}
-                          &quot;? This action cannot be undone.
+                          {t('deleteDialogDescription', {
+                            title: listing.title,
+                          })}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                         <AlertDialogAction
                           variant="destructive"
                           onClick={() => onDelete?.(listing.listing_id)}
                         >
-                          Delete
+                          {t('delete')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
