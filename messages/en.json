@@ -598,5 +598,16 @@
       "previous": "Previous",
       "next": "Next"
     }
+  },
+  "Navbar": {
+    "home": "Home",
+    "listings": "Listings",
+    "createListing": "Create Listing",
+    "verificationRequest": "Verification Request",
+    "login": "Log In",
+    "signUp": "Sign Up",
+    "logOut": "Log Out",
+    "profile": "Profile",
+    "myListings": "My Listings"
   }
 }

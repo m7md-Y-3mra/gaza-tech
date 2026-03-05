@@ -598,5 +598,16 @@
       "previous": "السابق",
       "next": "التالي"
     }
+  },
+  "Navbar": {
+    "home": "الرئيسية",
+    "listings": "الإعلانات",
+    "createListing": "إنشاء إعلان",
+    "verificationRequest": "طلب التحقق",
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "logOut": "تسجيل الخروج",
+    "profile": "الملف الشخصي",
+    "myListings": "إعلاناتي"
   }
 }
