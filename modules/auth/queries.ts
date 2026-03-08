@@ -5,14 +5,14 @@ import { createClient } from '@/lib/supabase/server';
  * Single purpose: Call Supabase signOut
  */
 export async function signOutQuery() {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const { error } = await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
 
-    if (error) {
-        console.error('Error signing out:', error);
-        throw new Error('Failed to sign out');
-    }
+  if (error) {
+    console.error('Error signing out:', error);
+    throw new Error('Failed to sign out');
+  }
 
-    return { success: true };
+  return { success: true };
 }

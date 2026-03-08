@@ -8,10 +8,10 @@
  * Stored in `public.users.user_role` column.
  */
 export const ROLES = [
-    'registered',
-    'verified_seller',
-    'moderator',
-    'admin',
+  'registered',
+  'verified_seller',
+  'moderator',
+  'admin',
 ] as const;
 
 export type UserRole = (typeof ROLES)[number];
@@ -19,8 +19,8 @@ export type UserRole = (typeof ROLES)[number];
 // ─── Route Protection Map ──────────────────────────────────────────────────────
 
 type RouteConfig = {
-    /** Roles allowed to access this route. Use `'*'` to mean "any authenticated user". */
-    allowedRoles: UserRole[] | '*';
+  /** Roles allowed to access this route. Use `'*'` to mean "any authenticated user". */
+  allowedRoles: UserRole[] | '*';
 };
 
 /**
@@ -32,10 +32,10 @@ type RouteConfig = {
  * Routes NOT listed here are public (no auth required).
  */
 const PROTECTED_ROUTES: Record<string, RouteConfig> = {
-    '/dashboard': { allowedRoles: ['admin', 'moderator'] },
-    '/dashboard/*': { allowedRoles: ['admin', 'moderator'] },
-    '/listings/create': { allowedRoles: '*' },
-    '/verification-request': { allowedRoles: '*' },
+  '/dashboard': { allowedRoles: ['admin', 'moderator'] },
+  '/dashboard/*': { allowedRoles: ['admin', 'moderator'] },
+  '/listings/create': { allowedRoles: '*' },
+  '/verification-request': { allowedRoles: '*' },
 };
 
 // ─── Locales (kept in sync with i18n/routing.ts) ───────────────────────────────
@@ -50,13 +50,13 @@ const LOCALES = ['en', 'ar'];
  * `/en/listings/create` → `/listings/create`
  */
 function stripLocale(pathname: string): string {
-    for (const locale of LOCALES) {
-        const prefix = `/${locale}`;
-        if (pathname === prefix || pathname.startsWith(`${prefix}/`)) {
-            return pathname.slice(prefix.length) || '/';
-        }
+  for (const locale of LOCALES) {
+    const prefix = `/${locale}`;
+    if (pathname === prefix || pathname.startsWith(`${prefix}/`)) {
+      return pathname.slice(prefix.length) || '/';
     }
-    return pathname;
+  }
+  return pathname;
 }
 
 /**
@@ -64,22 +64,22 @@ function stripLocale(pathname: string): string {
  * Checks exact match first, then wildcard patterns.
  */
 function getRouteConfig(pathname: string): RouteConfig | null {
-    // 1. Exact match
-    if (PROTECTED_ROUTES[pathname]) {
-        return PROTECTED_ROUTES[pathname];
-    }
+  // 1. Exact match
+  if (PROTECTED_ROUTES[pathname]) {
+    return PROTECTED_ROUTES[pathname];
+  }
 
-    // 2. Wildcard match — check if any `pattern/*` covers this path
-    for (const pattern of Object.keys(PROTECTED_ROUTES)) {
-        if (pattern.endsWith('/*')) {
-            const base = pattern.slice(0, -2); // remove `/*`
-            if (pathname === base || pathname.startsWith(`${base}/`)) {
-                return PROTECTED_ROUTES[pattern];
-            }
-        }
+  // 2. Wildcard match — check if any `pattern/*` covers this path
+  for (const pattern of Object.keys(PROTECTED_ROUTES)) {
+    if (pattern.endsWith('/*')) {
+      const base = pattern.slice(0, -2); // remove `/*`
+      if (pathname === base || pathname.startsWith(`${base}/`)) {
+        return PROTECTED_ROUTES[pattern];
+      }
     }
+  }
 
-    return null;
+  return null;
 }
 
 /**
@@ -88,20 +88,20 @@ function getRouteConfig(pathname: string): RouteConfig | null {
  * or if the user's role is in the list.
  */
 function hasRole(
-    userRole: string | null | undefined,
-    requiredRoles: UserRole[] | '*'
+  userRole: string | null | undefined,
+  requiredRoles: UserRole[] | '*'
 ): boolean {
-    if (requiredRoles === '*') return true;
-    if (!userRole) return false;
-    return requiredRoles.includes(userRole as UserRole);
+  if (requiredRoles === '*') return true;
+  if (!userRole) return false;
+  return requiredRoles.includes(userRole as UserRole);
 }
 
 /**
  * Check whether a given pathname (with or without locale) is protected.
  */
 function isProtectedPath(pathname: string): boolean {
-    const stripped = stripLocale(pathname);
-    return getRouteConfig(stripped) !== null;
+  const stripped = stripLocale(pathname);
+  return getRouteConfig(stripped) !== null;
 }
 
 /**
@@ -109,27 +109,27 @@ function isProtectedPath(pathname: string): boolean {
  * Returns `true` for unprotected routes.
  */
 function canAccessRoute(
-    userRole: string | null | undefined,
-    pathname: string
+  userRole: string | null | undefined,
+  pathname: string
 ): boolean {
-    const stripped = stripLocale(pathname);
-    const config = getRouteConfig(stripped);
+  const stripped = stripLocale(pathname);
+  const config = getRouteConfig(stripped);
 
-    // Unprotected route — allow everyone
-    if (!config) return true;
+  // Unprotected route — allow everyone
+  if (!config) return true;
 
-    return hasRole(userRole, config.allowedRoles);
+  return hasRole(userRole, config.allowedRoles);
 }
 
 // ─── Frozen Singleton Export ───────────────────────────────────────────────────
 
 export const rbacConfig = Object.freeze({
-    ROLES,
-    PROTECTED_ROUTES,
-    LOCALES,
-    stripLocale,
-    getRouteConfig,
-    hasRole,
-    canAccessRoute,
-    isProtectedPath,
+  ROLES,
+  PROTECTED_ROUTES,
+  LOCALES,
+  stripLocale,
+  getRouteConfig,
+  hasRole,
+  canAccessRoute,
+  isProtectedPath,
 });

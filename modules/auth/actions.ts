@@ -7,5 +7,5 @@ import { signOutQuery } from './queries';
  * Calls signOutQuery then redirects to login page
  */
 export async function signOutAction() {
-    await signOutQuery();
+  await signOutQuery();
 }

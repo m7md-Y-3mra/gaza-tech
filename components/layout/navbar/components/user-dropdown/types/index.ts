@@ -1,6 +1,5 @@
-import { NavbarUser } from "../../../types";
+import { NavbarUser } from '../../../types';
 
 export type UserDropdownProps = {
   user: NavbarUser;
 };
-
