@@ -1,0 +1,613 @@
+{
+  "Metadata": {
+    "siteName": "Gaza Tech Market",
+    "home": {
+      "title": "Gaza Tech Market - Buy & Sell Technology Products",
+      "description": "The leading tech marketplace in Gaza. Discover amazing deals, connect with tech enthusiasts, and buy or sell technology products."
+    },
+    "createListing": {
+      "title": "Create New Listing - Gaza Tech Market",
+      "description": "List your tech product for sale on Gaza Tech Market. Reach thousands of potential buyers in Gaza."
+    },
+    "editListing": {
+      "title": "Edit: {title} - Gaza Tech Market",
+      "description": "Update your listing details, images, and pricing on Gaza Tech Market."
+    },
+    "listingDetails": {
+      "notFoundTitle": "Listing Not Found - Gaza Tech Market",
+      "notFoundDescription": "The requested listing could not be found on Gaza Tech Market."
+    },
+    "login": {
+      "title": "Sign In - Gaza Tech Market",
+      "description": "Sign in to your Gaza Tech Market account to buy and sell technology products."
+    },
+    "signup": {
+      "title": "Create Account - Gaza Tech Market",
+      "description": "Join Gaza Tech Market today. Create your free account and start buying or selling tech products."
+    },
+    "verifyEmail": {
+      "title": "Verify Your Email - Gaza Tech Market",
+      "description": "Verify your email address to complete your Gaza Tech Market registration."
+    }
+  },
+  "HomePage": {
+    "title": "Hello world!"
+  },
+  "Auth": {
+    "common": {
+      "or": "OR",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "google": "Google",
+      "facebook": "Facebook",
+      "apple": "Apple"
+    },
+    "trustBadges": {
+      "secureLogin": "Secure Login",
+      "ssl": "256-bit SSL",
+      "privacyProtected": "Privacy Protected"
+    },
+    "social": {
+      "continueWith": "Continue with",
+      "signUpWith": "Sign up with"
+    },
+    "layout": {
+      "brandName": "Gaza Tech Market",
+      "brandTagline": "Technology Marketplace",
+      "verificationCodeSent": "Verification code sent",
+      "stats": {
+        "activeUsers": "Active Users",
+        "productsListed": "Products Listed",
+        "satisfaction": "Satisfaction"
+      },
+      "testimonial": {
+        "quote": "Best tech marketplace in Gaza! I sold my laptop in just 2 days and the process was incredibly smooth.",
+        "author": "Ahmed Hassan",
+        "role": "Verified Seller"
+      },
+      "needHelp": "Need help with verification?",
+      "contactSupport": "Contact Support",
+      "login": {
+        "heading": "Connect, Buy & Sell Technology Products",
+        "description": "Join the leading tech marketplace in Gaza. Discover amazing deals, connect with tech enthusiasts, and grow your business.",
+        "features": {
+          "secureTransactions": {
+            "title": "Secure Transactions",
+            "description": "Buy and sell with confidence using our secure payment system and buyer protection."
+          },
+          "vibrantCommunity": {
+            "title": "Vibrant Community",
+            "description": "Connect with thousands of tech enthusiasts, share knowledge, and discuss trends."
+          },
+          "fastListing": {
+            "title": "Fast & Easy Listing",
+            "description": "List your products in minutes and reach thousands of potential buyers instantly."
+          }
+        }
+      },
+      "signup": {
+        "heading": "Start Your Tech Journey Today",
+        "description": "Create your free account and unlock access to thousands of tech products, exclusive deals, and a thriving community of technology enthusiasts.",
+        "features": {
+          "welcomeBonus": {
+            "title": "Welcome Bonus",
+            "description": "Get 100 points instantly when you create your account to use on your first purchase."
+          },
+          "instantNotifications": {
+            "title": "Instant Notifications",
+            "description": "Be the first to know about new products, price drops, and exclusive member-only deals."
+          },
+          "freeStoreSetup": {
+            "title": "Free Store Setup",
+            "description": "Launch your own tech store in minutes and start selling to our community of buyers."
+          },
+          "support": {
+            "title": "24/7 Support",
+            "description": "Our dedicated support team is always ready to help you with any questions or issues."
+          }
+        }
+      },
+      "verifyEmail": {
+        "heading": "Check Your Inbox",
+        "description": "We've sent a verification code to secure your account. Enter the code to complete your registration.",
+        "features": {
+          "enhancedSecurity": {
+            "title": "Enhanced Security",
+            "description": "Email verification helps protect your account from unauthorized access and ensures secure communication."
+          },
+          "timeLimitedCode": {
+            "title": "Time-Limited Code",
+            "description": "Your verification code is valid for 10 minutes. Request a new code if it expires."
+          }
+        }
+      }
+    },
+    "login": {
+      "title": "Welcome Back!",
+      "subtitle": "Sign in to continue to Gaza Tech Market",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot Password?",
+      "signIn": "Sign In",
+      "signingIn": "Signing In...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up",
+      "english": "English",
+      "arabic": "العربية",
+      "toast": {
+        "success": "Signed in successfully!",
+        "error": "Failed to sign in"
+      },
+      "validation": {
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "Password must be at least 8 characters"
+      }
+    },
+    "signup": {
+      "title": "Create Your Account",
+      "subtitle": "Join Gaza Tech Market in just a few steps",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "First name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Last name",
+      "createPassword": "Create a strong password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "passwordsMatch": "Passwords match",
+      "termsPrefix": "I agree to the",
+      "termsAndConditions": "Terms & Conditions",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "newsletter": "Send me exclusive deals, product updates, and tech news via email",
+      "createAccount": "Create Account",
+      "creatingAccount": "Creating Account...",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "securityTitle": "Your Data is Secure",
+      "securityDescription": "We use industry-standard encryption to protect your personal information. Your data will never be shared with third parties without your consent.",
+      "toast": {
+        "success": "Account created successfully! Please verify your email.",
+        "error": "Failed to create account"
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "firstNameLettersOnly": "First name must contain only letters",
+        "lastNameRequired": "Last name is required",
+        "lastNameLettersOnly": "Last name must contain only letters",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "At least 8 characters",
+        "passwordUppercase": "One uppercase letter required",
+        "passwordNumber": "One number required",
+        "passwordSpecial": "One special character required",
+        "confirmPasswordRequired": "Please confirm your password",
+        "passwordsMismatch": "Passwords do not match",
+        "termsRequired": "You must accept the terms and conditions"
+      }
+    },
+    "verifyEmail": {
+      "backToLogin": "Back to Login",
+      "title": "Verify Your Email",
+      "subtitle": "We've sent a 6-digit verification code to",
+      "checkInbox": "Check your inbox",
+      "checkInboxDescription": "Please enter the code we sent to your email address. The code will expire in 10 minutes.",
+      "verificationCode": "Verification Code",
+      "verifying": "Verifying...",
+      "codeExpired": "Code Expired",
+      "verifyEmail": "Verify Email",
+      "didntReceiveCode": "Didn't receive the code?",
+      "checkSpamOrResend": "Check your spam folder or request a new code",
+      "sending": "Sending...",
+      "resend": "Resend",
+      "resendCode": "Resend Code",
+      "codeResentTitle": "Code Resent Successfully!",
+      "codeResentDescription": "A new verification code has been sent to your email.",
+      "verificationTips": "Verification Tips:",
+      "tip1": "Check your spam or junk folder if you don't see the email in your inbox",
+      "tip2": "Make sure you entered the correct email address during signup",
+      "tip3": "Wait a few minutes - email delivery can sometimes be delayed",
+      "tip4": "Contact support if you continue having issues with verification",
+      "wrongEmail": "Wrong email address?",
+      "changeEmail": "Change Email",
+      "securityNoticeTitle": "Security Notice",
+      "securityNoticeDescription": "Never share your verification code with anyone. Gaza Tech Market will never ask for your code via phone or email.",
+      "toast": {
+        "verifySuccess": "Email verified successfully!",
+        "resendSuccess": "Verification code sent!",
+        "error": "Verification failed"
+      },
+      "validation": {
+        "otpRequired": "Please enter all 6 digits",
+        "otpLength": "OTP must be 6 digits",
+        "otpNumbersOnly": "OTP must contain only numbers"
+      }
+    }
+  },
+  "ListingDetails": {
+    "ProductInfoCard": {
+      "callSeller": "Call Seller"
+    },
+    "SafetyTips": {
+      "title": "Safety Tips",
+      "learnMore": "Learn More",
+      "tips": {
+        "meetPublic": "Meet in a public place",
+        "inspectItem": "Inspect the item before paying",
+        "avoidPrepayment": "Avoid prepayment or deposits",
+        "trustInstincts": "Trust your instincts",
+        "reportSuspicious": "Report suspicious activity"
+      }
+    },
+    "SellerInfo": {
+      "title": "Seller Information",
+      "activeListings": "Active Listings",
+      "viewProfile": "View Profile",
+      "memberSince": "Member {date}",
+      "error": "Unable to load seller information"
+    },
+    "Specifications": {
+      "title": "Technical Specifications"
+    },
+    "LocationInfo": {
+      "title": "Location",
+      "listingInfo": "Listing Information",
+      "postedTime": "Posted {time}"
+    },
+    "ProductDescription": {
+      "title": "Product Description"
+    },
+    "SimilarProducts": {
+      "title": "Similar Products",
+      "viewAll": "View All",
+      "error": {
+        "title": "Failed to load similar products",
+        "tryAgain": "Try again"
+      }
+    },
+    "SellerListings": {
+      "title": "More from this Seller",
+      "viewAll": "View All",
+      "error": {
+        "title": "Failed to load seller listings",
+        "tryAgain": "Try again"
+      }
+    },
+    "BookmarkStatus": {
+      "error": "Failed to load bookmark status"
+    },
+    "a11y": {
+      "productGallery": "Product image gallery",
+      "lightboxDialog": "Image viewer",
+      "shareButton": "Share this listing",
+      "bookmarkSaved": "Remove from saved listings",
+      "bookmarkUnsaved": "Save this listing",
+      "callSeller": "Call seller to inquire about this listing",
+      "previousImage": "Previous image",
+      "nextImage": "Next image",
+      "closeDialog": "Close image viewer",
+      "thumbnailImage": "Thumbnail {index} of {total}",
+      "mainImage": "Main product image"
+    },
+    "errors": {
+      "notFound": {
+        "title": "Listing Not Found",
+        "description": "The listing you're looking for doesn't exist or has been removed.",
+        "goHome": "Go Home",
+        "searchListings": "Search Listings"
+      },
+      "unexpected": {
+        "title": "Something Went Wrong",
+        "description": "An unexpected error occurred while loading this listing. Please try again.",
+        "retry": "Try Again",
+        "goHome": "Go Home"
+      }
+    }
+  },
+  "ListingForm": {
+    "images": {
+      "title": "Product Images",
+      "subtitle": "Upload up to 5 high-quality images. First image will be the cover.",
+      "uploadTitle": "Upload Product Images",
+      "dragDrop": "Drag and drop or click to browse",
+      "chooseFiles": "Choose Files",
+      "supportedFormats": "Supported formats: {formats} (Max {maxSize}MB each)",
+      "cover": "Cover",
+      "setAsCover": "Set as Cover",
+      "imageCount": "{count}/{max} Images",
+      "fileError": "File{index}: {message}",
+      "tipsTitle": "Tips for Great Product Photos",
+      "tip1": "Use natural lighting or well-lit environments",
+      "tip2": "Show product from multiple angles",
+      "tip3": "Include close-ups of important details",
+      "tip4": "Use clean, uncluttered backgrounds",
+      "noImage": "No image uploaded"
+    },
+    "basicInfo": {
+      "title": "Basic Information",
+      "subtitle": "Provide essential details about your product",
+      "titleLabel": "Product Title",
+      "titlePlaceholder": "e.g., Gaming Laptop ASUS ROG Strix G15 - RTX 3060",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Describe your product in detail — condition, features, and why someone should buy it..."
+    },
+    "pricing": {
+      "title": "Pricing",
+      "subtitle": "Set your asking price",
+      "priceLabel": "Price",
+      "pricePlaceholder": "Enter price",
+      "currencyLabel": "Currency",
+      "currencyPlaceholder": "Select currency"
+    },
+    "category": {
+      "label": "Category",
+      "placeholder": "Select a category",
+      "searchPlaceholder": "Search categories...",
+      "noResults": "No categories found",
+      "selected": "Selected"
+    },
+    "condition": {
+      "label": "Condition",
+      "placeholder": "Select condition",
+      "new": "New",
+      "used": "Used",
+      "broken": "Broken",
+      "refurbished": "Refurbished"
+    },
+    "location": {
+      "title": "Location",
+      "subtitle": "Where is this item located?",
+      "label": "Location",
+      "placeholder": "Select location"
+    },
+    "specifications": {
+      "title": " Specifications",
+      "subtitle": "Add product specifications to help buyers",
+      "brand": "Brand",
+      "model": "Model",
+      "processor": "Processor",
+      "ram": "RAM",
+      "storage": "Storage",
+      "graphicsCard": "Graphics Card",
+      "display": "Display",
+      "operatingSystem": "Operating System",
+      "warranty": "Warranty",
+      "battery": "Battery",
+      "brandPlaceholder": "e.g., Apple, Dell, HP",
+      "modelPlaceholder": "e.g., MacBook Pro 16\"",
+      "processorPlaceholder": "e.g., Intel Core i7, M2 Pro",
+      "ramPlaceholder": "e.g., 16GB DDR4",
+      "storagePlaceholder": "e.g., 512GB SSD",
+      "graphicsCardPlaceholder": "e.g., NVIDIA RTX 3060",
+      "displayPlaceholder": "e.g., 15.6\" FHD IPS",
+      "operatingSystemPlaceholder": "e.g., Windows 11, macOS",
+      "warrantyPlaceholder": "e.g., 1 year manufacturer warranty",
+      "batteryPlaceholder": "e.g., 80Wh, 10 hours",
+      "customSpecName": "Specification Name",
+      "customSpecValue": "Value",
+      "addCustomSpec": "Add Custom Specification",
+      "removeSpec": "Remove"
+    },
+    "preview": {
+      "title": "Live Preview",
+      "noTitle": "Product Title",
+      "noDescription": "Product description will appear here...",
+      "noPrice": "Price",
+      "noCategory": "Category",
+      "noLocation": "Location",
+      "conditionLabel": "Condition"
+    },
+    "buttons": {
+      "create": "Create Listing",
+      "update": "Update Listing",
+      "creating": "Creating...",
+      "updating": "Updating..."
+    },
+    "toast": {
+      "createSuccess": "Your listing has been created successfully!",
+      "updateSuccess": "Your listing has been updated successfully!",
+      "createError": "Failed to create listing",
+      "updateError": "Failed to update listing",
+      "unexpectedError": "An unexpected error occurred. Please try again."
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMin": "Title must be at least 10 characters long",
+      "titleMax": "Title cannot exceed 100 characters",
+      "descriptionRequired": "Description is required",
+      "descriptionMin": "Description must be at least 20 characters long",
+      "descriptionMax": "Description cannot exceed 2000 characters",
+      "priceRequired": "Price must be a valid number",
+      "priceMin": "Price cannot be zero or negative",
+      "categoryRequired": "Please select a valid category",
+      "productConditionRequired": "Please select a valid product condition",
+      "locationRequired": "Please select a valid location",
+      "sellerIdRequired": "Seller ID must be valid",
+      "specificationsRequired": "Please fill all specifications",
+      "specLabelRequired": "Specification name is required",
+      "specValueRequired": "Specification value is required",
+      "imageMinSize": "File size must be at least 10KB",
+      "imageMaxSize": "File size must be less than 2MB",
+      "imageInvalidType": "Invalid file type. Only JPG, JPEG, PNG, WEBP and GIF are allowed.",
+      "imagesRequired": "Please upload at least one image",
+      "imagesMax": "You can upload a maximum of 5 images"
+    }
+  },
+  "ListingsHome": {
+    "SearchBar": {
+      "placeholder": "Search for products, brands, or sellers..."
+    },
+    "Toolbar": {
+      "filters": "Filters",
+      "sortByPlaceholder": "Sort by",
+      "createdAt": "Created At",
+      "price": "Price",
+      "desc": "Desc",
+      "asc": "Asc"
+    },
+    "CategoryFilters": {
+      "all": "All",
+      "error": {
+        "title": "Failed to load categories",
+        "tryAgain": "Try Again"
+      }
+    },
+    "FilterModal": {
+      "title": "Filters",
+      "priceRange": "Price Range",
+      "min": "Min",
+      "max": "Max",
+      "currency": "Currency",
+      "condition": "Condition",
+      "location": "Location",
+      "reset": "Reset",
+      "error": "Failed to load filter options. Please refresh the page."
+    },
+    "Content": {
+      "errorTitle": "Something went wrong",
+      "errorDescription": "We couldn't load the listings. Please try again later.",
+      "emptyTitle": "No listings found",
+      "emptyDescription": "Try adjusting your filters or search to find what you're looking for."
+    },
+    "GridWithTitle": {
+      "title": "All Listings",
+      "showingResults": "Showing {count} results"
+    },
+    "LoadMore": {
+      "error": "Failed to load more listings. Please try again later."
+    }
+  },
+  "VerificationForm": {
+    "page": {
+      "title": "Seller Verification",
+      "subtitle": "Complete the steps below to get your seller badge and build trust with buyers."
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "subtitle": "Please provide your accurate personal details",
+      "banner": "We verify all sellers to ensure a safe marketplace. Your information is encrypted and secure.",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "As it appears on your ID",
+      "dateOfBirthLabel": "Date of Birth",
+      "genderLabel": "Gender",
+      "genderPlaceholder": "Select gender",
+      "nationalIdLabel": "National ID Number",
+      "nationalIdPlaceholder": "Enter your 9-digit ID number",
+      "addressLabel": "Street Address",
+      "addressPlaceholder": "Enter your full address"
+    },
+    "documentUpload": {
+      "title": "Document Upload",
+      "subtitle": "Upload clear photos of your identification documents",
+      "banner": "Ensure all text is clearly visible. Accepted formats: JPG, PNG (max 2MB each). Your face and ID must be clearly visible in the selfie.",
+      "documentTypeLabel": "Document Type",
+      "documentTypePlaceholder": "Select document type",
+      "frontLabel": "ID Card — Front Side",
+      "frontDescription": "Upload a clear photo of the front side of your ID",
+      "backLabel": "ID Card — Back Side",
+      "backDescription": "Upload a clear photo of the back side of your ID",
+      "selfieLabel": "Selfie with ID Card",
+      "selfieDescription": "Hold your ID next to your face — both must be clearly visible"
+    },
+    "phoneVerification": {
+      "title": "Phone Verification",
+      "subtitle": "Verify your phone number to complete seller verification",
+      "alreadyVerifiedSubtitle": "Already verified",
+      "verifiedLabel": "Phone Verified",
+      "verifiedDescription": "{phone} — confirmed via OTP",
+      "banner": "Enter your phone number below. A one-time code will be sent via SMS. Once verified, your number is saved to your profile.",
+      "bannerStrong": "Final Step!",
+      "phoneNumberLabel": "Phone Number",
+      "phoneNumberPlaceholder": "+970 59 XXX XXXX",
+      "whatsAppLabel": "WhatsApp Number",
+      "whatsAppPlaceholder": "+970 59 XXX XXXX (optional)",
+      "hint": "Use international format starting with your country code (e.g. +970 for Palestine)."
+    },
+    "terms": {
+      "text": "I confirm that all information and documents provided are accurate and authentic. I understand that providing false information may result in permanent account suspension."
+    },
+    "buttons": {
+      "submit": "Submit Verification Request",
+      "submitting": "Submitting…"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "documentType": {
+      "palestinianId": "Palestinian ID",
+      "passport": "Passport",
+      "drivingLicence": "Palestinian driving licence"
+    },
+    "validation": {
+      "fullNameRequired": "Full name is required",
+      "fullNameMin": "Full name must be at least 3 characters",
+      "fullNameMax": "Full name cannot exceed 100 characters",
+      "dateOfBirthRequired": "Date of birth is required",
+      "nationalIdRequired": "National ID number is required",
+      "nationalIdLength": "National ID must be exactly 8 digits",
+      "addressRequired": "Street address is required",
+      "addressMin": "Address must be at least 5 characters",
+      "documentTypeRequired": "Please select a document type",
+      "documentFrontRequired": "Please upload the front side of your ID",
+      "documentBackRequired": "Please upload the back side of your ID",
+      "selfieRequired": "Please upload a selfie with your ID",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalidFormat": "Phone number must start with +970 or +972 followed by 9 digits",
+      "whatsappInvalidFormat": "WhatsApp number must start with +970 or +972 followed by 9 digits",
+      "phoneVerificationRequired": "You must verify your phone number before submitting",
+      "termsRequired": "You must confirm that all information is accurate"
+    }
+  },
+  "Profile": {
+    "Hero": {
+      "noBio": "No bio provided.",
+      "joined": "Joined {date}",
+      "twitter": "Twitter",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "website": "Website"
+    },
+    "Tabs": {
+      "myListings": "My Listings",
+      "savedItems": "Saved Items"
+    },
+    "ListingsTab": {
+      "noListings": "No listings yet",
+      "deleteSuccess": "Listing deleted successfully",
+      "error": {
+        "title": "Failed to load listings",
+        "tryAgain": "Try again"
+      }
+    },
+    "BookmarkTab": {
+      "noBookmarks": "No bookmarked listings yet",
+      "error": {
+        "title": "Failed to load bookmarks",
+        "tryAgain": "Try again"
+      }
+    },
+    "ListingCard": {
+      "editListing": "Edit listing",
+      "deleteListing": "Delete listing",
+      "deleteDialogTitle": "Delete listing",
+      "deleteDialogDescription": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "Pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "Navbar": {
+    "home": "Home",
+    "listings": "Listings",
+    "createListing": "Create Listing",
+    "verificationRequest": "Verification Request",
+    "login": "Log In",
+    "signUp": "Sign Up",
+    "logOut": "Log Out",
+    "profile": "Profile",
+    "myListings": "My Listings"
+  }
+}

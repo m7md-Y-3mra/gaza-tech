@@ -1,26 +1,496 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin '@tailwindcss/typography';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-auth-gradient-from: var(--auth-gradient-from);
+  --color-auth-gradient-via: var(--auth-gradient-via);
+  --color-auth-gradient-to: var(--auth-gradient-to);
+  --color-circle-track: var(--circle-track);
+  --color-left-panel-gradient-to: var(--left-panel-gradient-to);
+  --color-left-panel-text-muted: var(--left-panel-text-muted);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-background-alt: var(--background-alt);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-active-filter-background: var(--active-filter-background);
+  --color-active-filter-border: var(--active-filter-border);
+  --color-verification-icon: var(--verification-icon);
+  --color-verification-bg: var(--verification-bg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+  /* Base color - all other colors are relative to this */
+  --primary: oklch(0.696 0.17 162.48);
+
+  /* Backgrounds & Surfaces (achromatic - no chroma) */
+  /* --background: oklch(from var(--primary) calc(l + 0.304) 0 0); */
+  --background: oklch(1 0 0);
+  --foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+  --card: oklch(from var(--primary) calc(l + 0.304) 0 0);
+  --card-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+  --popover: oklch(from var(--primary) calc(l + 0.304) 0 0);
+  --popover-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+  --background-alt: oklch(0.985 0.002 247.85);
+
+  /* Primary variants */
+  --primary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --secondary: oklch(
+    from var(--primary) calc(l - 0.1) calc(c - 0.025) calc(h + 0.745)
+  );
+  --secondary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --accent: oklch(
+    from var(--primary) calc(l + 0.069) calc(c - 0.01) calc(h + 0.745)
+  );
+  --accent-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+
+  /* Muted colors */
+  --muted: oklch(from var(--primary) calc(l + 0.274) 0 0);
+  --muted-foreground: oklch(from var(--primary) calc(l - 0.14) 0 0);
+
+  /* Destructive (red/orange hue shift) */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.35 0.18 27);
+
+  /* Success (green - hue ~142) */
+  --success: oklch(0.925 0.04 142);
+  --success-foreground: oklch(0.35 0.12 142);
+
+  /* Info (blue - hue ~240) */
+  --info: oklch(0.95 0.035 240);
+  --info-foreground: oklch(0.35 0.15 240);
+
+  /* Warning (yellow/amber - hue ~85) */
+  --warning: oklch(0.95 0.06 85);
+  --warning-foreground: oklch(0.35 0.12 60);
+
+  /* Auth layout gradient (relative to primary) */
+  --auth-gradient-from: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --auth-gradient-via: oklch(from var(--primary) calc(l + 0.304) 0 0);
+  --auth-gradient-to: oklch(
+    from var(--primary) calc(l + 0.274) calc(c - 0.12) h
+  );
+
+  /* Circle track for SVG (relative to primary) */
+  --circle-track: oklch(from var(--primary) calc(l + 0.224) 0 0);
+
+  /* Left panel gradient end color (relative to primary) */
+  --left-panel-gradient-to: oklch(
+    from var(--primary) calc(l - 0.15) calc(c + 0.02) h
+  );
+  /* Light text on primary gradient */
+  --left-panel-text-muted: oklch(
+    from var(--primary) calc(l + 0.35) calc(c - 0.08) h
+  );
+
+  /* Borders & Inputs */
+  --border: oklch(from var(--primary) calc(l + 0.226) 0 0);
+  --input: oklch(from var(--primary) calc(l + 0.226) 0 0);
+  --ring: var(--primary);
+
+  /* Charts (various hue shifts) */
+  --chart-1: oklch(
+    from var(--primary) calc(l - 0.05) calc(c + 0.052) calc(h - 121.364)
+  );
+  --chart-2: oklch(
+    from var(--primary) calc(l - 0.096) calc(c - 0.052) calc(h + 22.224)
+  );
+  --chart-3: oklch(
+    from var(--primary) calc(l - 0.298) calc(c - 0.1) calc(h + 64.912)
+  );
+  --chart-4: oklch(
+    from var(--primary) calc(l + 0.132) calc(c + 0.019) calc(h - 78.051)
+  );
+  --chart-5: oklch(
+    from var(--primary) calc(l + 0.073) calc(c + 0.018) calc(h - 92.4)
+  );
+
+  /* Sidebar */
+  --sidebar: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --sidebar-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --sidebar-accent: oklch(from var(--primary) calc(l + 0.274) 0 0);
+  --sidebar-accent-foreground: oklch(from var(--primary) calc(l - 0.491) 0 0);
+  --sidebar-border: oklch(from var(--primary) calc(l + 0.226) 0 0);
+  --sidebar-ring: var(--primary);
+
+  /* Active Filter Badge */
+  --active-filter-background: oklch(0.97 0.02 162.48);
+  --active-filter-border: oklch(0.9 0.05 162.48);
+
+  /* Verification Badge */
+  --verification-icon: oklch(0.623 0.214 259.815);
+  --verification-bg: oklch(0.623 0.214 259.815 / 10%);
+}
+
+.dark {
+  /* Backgrounds & Surfaces (achromatic) */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --card: oklch(from var(--primary) calc(l - 0.491) 0 0);
+  --card-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --popover: oklch(from var(--primary) calc(l - 0.491) 0 0);
+  --popover-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --background-alt: oklch(0.17 0 0);
+
+  /* Primary variants (primary itself inherited from :root) */
+  --primary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --secondary: oklch(
+    from var(--primary) calc(l - 0.1) calc(c - 0.025) calc(h + 0.745)
+  );
+  --secondary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --accent: oklch(
+    from var(--primary) calc(l + 0.069) calc(c - 0.01) calc(h + 0.745)
+  );
+  --accent-foreground: oklch(from var(--primary) calc(l - 0.551) 0 0);
+
+  /* Muted colors */
+  --muted: oklch(from var(--primary) calc(l - 0.427) 0 0);
+  --muted-foreground: oklch(from var(--primary) calc(l + 0.012) 0 0);
+
+  /* Destructive (red hue shift - slightly different in dark mode) */
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.9 0.08 22);
+
+  /* Success (green - hue ~142) */
+  --success: oklch(0.15 0.03 142 / 50%);
+  --success-foreground: oklch(0.85 0.08 142);
+
+  /* Info (blue - hue ~240) */
+  --info: oklch(0.15 0.03 240 / 50%);
+  --info-foreground: oklch(0.85 0.1 240);
+
+  /* Warning (yellow/amber - hue ~85) */
+  --warning: oklch(0.15 0.04 85 / 50%);
+  --warning-foreground: oklch(0.85 0.1 85);
+
+  /* Auth layout gradient (relative to primary) */
+  --auth-gradient-from: oklch(from var(--primary) calc(l - 0.486) 0 0);
+  --auth-gradient-via: oklch(from var(--primary) calc(l - 0.566) 0 0);
+  --auth-gradient-to: oklch(from var(--primary) calc(l - 0.486) 0 0);
+
+  /* Circle track for SVG (relative to primary) */
+  --circle-track: oklch(from var(--primary) calc(l - 0.346) 0 0);
+
+  /* Left panel gradient end color (relative to primary) */
+  --left-panel-gradient-to: oklch(
+    from var(--primary) calc(l - 0.25) calc(c + 0.02) h
+  );
+  /* Light text on primary gradient */
+  --left-panel-text-muted: oklch(
+    from var(--primary) calc(l + 0.25) calc(c - 0.08) h
+  );
+
+  /* Borders & Inputs (using alpha for dark mode transparency) */
+  --border: oklch(from var(--primary) calc(l + 0.304) 0 0 / 10%);
+  --input: oklch(from var(--primary) calc(l + 0.304) 0 0 / 15%);
+  --ring: var(--primary);
+
+  /* Charts (various hue shifts for dark mode) */
+  --chart-1: oklch(
+    from var(--primary) calc(l - 0.208) calc(c + 0.073) calc(h + 101.896)
+  );
+  --chart-2: var(--primary);
+  --chart-3: oklch(
+    from var(--primary) calc(l + 0.073) calc(c + 0.018) calc(h - 92.4)
+  );
+  --chart-4: oklch(
+    from var(--primary) calc(l - 0.069) calc(c + 0.095) calc(h + 141.42)
+  );
+  --chart-5: oklch(
+    from var(--primary) calc(l - 0.051) calc(c + 0.076) calc(h - 146.041)
+  );
+
+  /* Sidebar */
+  --sidebar: oklch(from var(--primary) calc(l - 0.491) 0 0);
+  --sidebar-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --sidebar-accent: oklch(from var(--primary) calc(l - 0.427) 0 0);
+  --sidebar-accent-foreground: oklch(from var(--primary) calc(l + 0.289) 0 0);
+  --sidebar-border: oklch(from var(--primary) calc(l + 0.304) 0 0 / 10%);
+  --sidebar-ring: var(--primary);
+
+  /* Active Filter Badge */
+  --active-filter-background: oklch(0.25 0.05 162.48);
+  --active-filter-border: oklch(0.35 0.08 162.48);
+
+  /* Verification Badge */
+  --verification-icon: oklch(0.707 0.165 254.624);
+  --verification-bg: oklch(0.707 0.165 254.624 / 15%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
+  body {
+    @apply bg-background text-foreground;
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @layer utilities {
+    .scrollbar-hide {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar only on touch devices (mobile/tablet) */
+    @media (pointer: coarse) {
+      .scrollbar-hide-touch {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .scrollbar-hide-touch::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  /* ========================================
+   RTL (Right-to-Left) SUPPORT
+   ======================================== */
+
+  /* Base RTL styles */
+  html[dir='rtl'] {
+    unicode-bidi: plaintext;
+  }
+
+  /* Ensure proper text direction for mixed content */
+  html[dir='rtl'] body {
+    text-align: right;
+  }
+
+  /* Fix flex direction for RTL */
+  html[dir='rtl'] .flex-row {
+    flex-direction: row-reverse;
+  }
+
+  /* Keep certain elements LTR (like numbers, code) */
+  html[dir='rtl'] .ltr,
+  html[dir='rtl'] code,
+  html[dir='rtl'] pre,
+  html[dir='rtl'] [dir='ltr'] {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* Flip icons in RTL */
+  html[dir='rtl'] .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Fix spacing for RTL */
+  html[dir='rtl'] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+
+  html[dir='rtl'] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+
+  html[dir='rtl'] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+
+  /* Fix gap direction - Tailwind already handles this with logical properties */
+
+  /* Fixed positioned elements in RTL */
+  html[dir='rtl'] .fixed.right-0 {
+    left: 0;
+  }
+
+  html[dir='rtl'] .fixed.left-0 {
+    right: 0;
+  }
+
+  /* Navbar adjustments for RTL */
+  html[dir='rtl'] nav .fixed {
+    direction: rtl;
+  }
+
+  /* Dropdown menu positioning for RTL */
+  html[dir='rtl'] .absolute.right-0 {
+    right: auto;
+    left: 0;
+  }
+
+  /* Text alignment utilities for RTL */
+  html[dir='rtl'] .text-left {
+    text-align: right;
+  }
+
+  html[dir='rtl'] .text-right {
+    text-align: left;
+  }
+
+  /* Keep start/end alignment semantic */
+  .text-start {
+    text-align: start;
+  }
+
+  .text-end {
+    text-align: end;
+  }
+
+  /* Unicode bidi for specific elements */
+  [style*='unicode-bidi: plaintext'],
+  .bidi-plaintext {
+    unicode-bidi: plaintext;
+  }
+
+  /* Ensure forms work properly in RTL */
+  html[dir='rtl'] input,
+  html[dir='rtl'] textarea,
+  html[dir='rtl'] select {
+    text-align: inherit;
+  }
+
+  /* Email and URL inputs should remain LTR */
+  html[dir='rtl'] input[type='email'],
+  html[dir='rtl'] input[type='url'],
+  html[dir='rtl'] input[type='tel'] {
+    direction: ltr;
+    text-align: left;
+  }
+
+  /* Sidebar positioning for RTL */
+  html[dir='rtl'] aside.fixed.left-0 {
+    left: auto;
+    right: 0;
+  }
+
+  /* Arrow/chevron icons should flip in RTL */
+  html[dir='rtl'] .lucide-arrow-left,
+  html[dir='rtl'] .lucide-arrow-right,
+  html[dir='rtl'] .lucide-chevron-left,
+  html[dir='rtl'] .lucide-chevron-right {
+    transform: scaleX(-1);
+  }
+
+  /* ========================================
+   CONTAINER - Responsive Layout
+   ======================================== */
+
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem; /* 16px - mobile */
+  }
+
+  /* sm: 640px */
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+      padding-inline: 1.5rem; /* 24px */
+    }
+  }
+
+  /* md: 768px */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+      padding-inline: 2rem; /* 32px */
+    }
+  }
+
+  /* lg: 1024px */
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+      padding-inline: 2.5rem; /* 40px */
+    }
+  }
+
+  /* xl: 1280px */
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+      padding-inline: 3rem; /* 48px */
+    }
+  }
+
+  /* 2xl: 1536px */
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+      padding-inline: 4rem; /* 64px */
+    }
+  }
 }

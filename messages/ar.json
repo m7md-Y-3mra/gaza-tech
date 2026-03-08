@@ -1,0 +1,613 @@
+{
+  "Metadata": {
+    "siteName": "غزة تك ماركت",
+    "home": {
+      "title": "غزة تك ماركت - شراء وبيع المنتجات التقنية",
+      "description": "السوق التقني الرائد في غزة. اكتشف عروضاً مذهلة، تواصل مع عشاق التقنية، واشترِ أو بِع المنتجات التقنية."
+    },
+    "createListing": {
+      "title": "إنشاء إعلان جديد - غزة تك ماركت",
+      "description": "اعرض منتجك التقني للبيع على غزة تك ماركت. تواصل مع آلاف المشترين المحتملين في غزة."
+    },
+    "editListing": {
+      "title": "تعديل: {title} - غزة تك ماركت",
+      "description": "حدّث تفاصيل إعلانك، الصور، والسعر على غزة تك ماركت."
+    },
+    "listingDetails": {
+      "notFoundTitle": "الإعلان غير موجود - غزة تك ماركت",
+      "notFoundDescription": "الإعلان الذي تبحث عنه غير موجود على غزة تك ماركت."
+    },
+    "login": {
+      "title": "تسجيل الدخول - غزة تك ماركت",
+      "description": "سجّل دخولك إلى حسابك في غزة تك ماركت لشراء وبيع المنتجات التقنية."
+    },
+    "signup": {
+      "title": "إنشاء حساب - غزة تك ماركت",
+      "description": "انضم إلى غزة تك ماركت اليوم. أنشئ حسابك المجاني وابدأ شراء أو بيع المنتجات التقنية."
+    },
+    "verifyEmail": {
+      "title": "تأكيد البريد الإلكتروني - غزة تك ماركت",
+      "description": "أكّد بريدك الإلكتروني لإكمال تسجيلك في غزة تك ماركت."
+    }
+  },
+  "HomePage": {
+    "title": "مرحبا بالعالم!"
+  },
+  "Auth": {
+    "common": {
+      "or": "أو",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "google": "Google",
+      "facebook": "Facebook",
+      "apple": "Apple"
+    },
+    "trustBadges": {
+      "secureLogin": "تسجيل دخول آمن",
+      "ssl": "تشفير SSL 256-bit",
+      "privacyProtected": "خصوصية محمية"
+    },
+    "social": {
+      "continueWith": "المتابعة عبر",
+      "signUpWith": "التسجيل عبر"
+    },
+    "layout": {
+      "brandName": "غزة تك ماركت",
+      "brandTagline": "سوق التكنولوجيا",
+      "verificationCodeSent": "تم إرسال رمز التحقق",
+      "stats": {
+        "activeUsers": "مستخدم نشط",
+        "productsListed": "منتج معروض",
+        "satisfaction": "رضا العملاء"
+      },
+      "testimonial": {
+        "quote": "أفضل سوق تقني في غزة! بعت لابتوبي خلال يومين فقط وكانت العملية سلسة للغاية.",
+        "author": "أحمد حسن",
+        "role": "بائع موثق"
+      },
+      "needHelp": "تحتاج مساعدة في التحقق؟",
+      "contactSupport": "تواصل مع الدعم",
+      "login": {
+        "heading": "تواصل، اشترِ وبِع منتجات التكنولوجيا",
+        "description": "انضم إلى السوق التقني الرائد في غزة. اكتشف عروضاً مذهلة، تواصل مع عشاق التقنية، ونمِّ أعمالك.",
+        "features": {
+          "secureTransactions": {
+            "title": "معاملات آمنة",
+            "description": "اشترِ وبِع بثقة باستخدام نظام الدفع الآمن وحماية المشتري."
+          },
+          "vibrantCommunity": {
+            "title": "مجتمع نابض بالحياة",
+            "description": "تواصل مع آلاف عشاق التقنية، شارك المعرفة، وناقش الاتجاهات."
+          },
+          "fastListing": {
+            "title": "إدراج سريع وسهل",
+            "description": "اعرض منتجاتك في دقائق وتواصل مع آلاف المشترين المحتملين فوراً."
+          }
+        }
+      },
+      "signup": {
+        "heading": "ابدأ رحلتك التقنية اليوم",
+        "description": "أنشئ حسابك المجاني واحصل على وصول لآلاف المنتجات التقنية، العروض الحصرية، ومجتمع مزدهر من عشاق التكنولوجيا.",
+        "features": {
+          "welcomeBonus": {
+            "title": "مكافأة ترحيبية",
+            "description": "احصل على 100 نقطة فوراً عند إنشاء حسابك لاستخدامها في أول عملية شراء."
+          },
+          "instantNotifications": {
+            "title": "إشعارات فورية",
+            "description": "كن أول من يعرف عن المنتجات الجديدة، تخفيضات الأسعار، والعروض الحصرية للأعضاء."
+          },
+          "freeStoreSetup": {
+            "title": "إنشاء متجر مجاني",
+            "description": "أطلق متجرك التقني في دقائق وابدأ البيع لمجتمعنا من المشترين."
+          },
+          "support": {
+            "title": "دعم على مدار الساعة",
+            "description": "فريق الدعم المتخصص لدينا جاهز دائماً لمساعدتك في أي أسئلة أو مشاكل."
+          }
+        }
+      },
+      "verifyEmail": {
+        "heading": "تحقق من صندوق الوارد",
+        "description": "أرسلنا رمز تحقق لتأمين حسابك. أدخل الرمز لإكمال تسجيلك.",
+        "features": {
+          "enhancedSecurity": {
+            "title": "أمان معزز",
+            "description": "التحقق من البريد الإلكتروني يساعد في حماية حسابك من الوصول غير المصرح به ويضمن التواصل الآمن."
+          },
+          "timeLimitedCode": {
+            "title": "رمز محدود الوقت",
+            "description": "رمز التحقق صالح لمدة 10 دقائق. اطلب رمزاً جديداً إذا انتهت صلاحيته."
+          }
+        }
+      }
+    },
+    "login": {
+      "title": "مرحباً بعودتك!",
+      "subtitle": "سجّل دخولك للمتابعة إلى غزة تك ماركت",
+      "rememberMe": "تذكرني",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "إنشاء حساب",
+      "english": "English",
+      "arabic": "العربية",
+      "toast": {
+        "success": "تم تسجيل الدخول بنجاح!",
+        "error": "فشل تسجيل الدخول"
+      },
+      "validation": {
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "passwordMin": "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
+      }
+    },
+    "signup": {
+      "title": "إنشاء حسابك",
+      "subtitle": "انضم إلى غزة تك ماركت في خطوات بسيطة",
+      "firstName": "الاسم الأول",
+      "firstNamePlaceholder": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "lastNamePlaceholder": "اسم العائلة",
+      "createPassword": "أنشئ كلمة مرور قوية",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "أكد كلمة المرور",
+      "passwordsMatch": "كلمات المرور متطابقة",
+      "termsPrefix": "أوافق على",
+      "termsAndConditions": "الشروط والأحكام",
+      "and": "و",
+      "privacyPolicy": "سياسة الخصوصية",
+      "newsletter": "أرسل لي العروض الحصرية وتحديثات المنتجات وأخبار التقنية عبر البريد الإلكتروني",
+      "createAccount": "إنشاء حساب",
+      "creatingAccount": "جارٍ إنشاء الحساب...",
+      "alreadyHaveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول",
+      "securityTitle": "بياناتك آمنة",
+      "securityDescription": "نستخدم تشفيراً متوافقاً مع المعايير الصناعية لحماية معلوماتك الشخصية. لن تتم مشاركة بياناتك مع أطراف ثالثة دون موافقتك.",
+      "toast": {
+        "success": "تم إنشاء الحساب بنجاح! يرجى تأكيد بريدك الإلكتروني.",
+        "error": "فشل إنشاء الحساب"
+      },
+      "validation": {
+        "firstNameRequired": "الاسم الأول مطلوب",
+        "firstNameLettersOnly": "الاسم الأول يجب أن يحتوي على حروف فقط",
+        "lastNameRequired": "اسم العائلة مطلوب",
+        "lastNameLettersOnly": "اسم العائلة يجب أن يحتوي على حروف فقط",
+        "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+        "passwordMin": "8 أحرف على الأقل",
+        "passwordUppercase": "حرف كبير واحد مطلوب",
+        "passwordNumber": "رقم واحد مطلوب",
+        "passwordSpecial": "رمز خاص واحد مطلوب",
+        "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+        "passwordsMismatch": "كلمات المرور غير متطابقة",
+        "termsRequired": "يجب الموافقة على الشروط والأحكام"
+      }
+    },
+    "verifyEmail": {
+      "backToLogin": "العودة لتسجيل الدخول",
+      "title": "تأكيد بريدك الإلكتروني",
+      "subtitle": "لقد أرسلنا رمز تحقق مكون من 6 أرقام إلى",
+      "checkInbox": "تحقق من صندوق الوارد",
+      "checkInboxDescription": "يرجى إدخال الرمز الذي أرسلناه إلى بريدك الإلكتروني. ستنتهي صلاحية الرمز خلال 10 دقائق.",
+      "verificationCode": "رمز التحقق",
+      "verifying": "جارٍ التحقق...",
+      "codeExpired": "انتهت صلاحية الرمز",
+      "verifyEmail": "تأكيد البريد الإلكتروني",
+      "didntReceiveCode": "لم تستلم الرمز؟",
+      "checkSpamOrResend": "تحقق من مجلد البريد العشوائي أو اطلب رمزاً جديداً",
+      "sending": "جارٍ الإرسال...",
+      "resend": "إعادة إرسال",
+      "resendCode": "إعادة إرسال الرمز",
+      "codeResentTitle": "تم إعادة إرسال الرمز بنجاح!",
+      "codeResentDescription": "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.",
+      "verificationTips": "نصائح التحقق:",
+      "tip1": "تحقق من مجلد البريد العشوائي إذا لم تجد البريد في صندوق الوارد",
+      "tip2": "تأكد من إدخال البريد الإلكتروني الصحيح عند التسجيل",
+      "tip3": "انتظر بضع دقائق - قد يتأخر تسليم البريد أحياناً",
+      "tip4": "تواصل مع الدعم إذا استمرت مشاكل التحقق",
+      "wrongEmail": "بريد إلكتروني خاطئ؟",
+      "changeEmail": "تغيير البريد",
+      "securityNoticeTitle": "تنبيه أمني",
+      "securityNoticeDescription": "لا تشارك رمز التحقق مع أي شخص. غزة تك ماركت لن تطلب منك الرمز عبر الهاتف أو البريد الإلكتروني.",
+      "toast": {
+        "verifySuccess": "تم تأكيد البريد الإلكتروني بنجاح!",
+        "resendSuccess": "تم إرسال رمز التحقق!",
+        "error": "فشل التحقق"
+      },
+      "validation": {
+        "otpRequired": "يرجى إدخال جميع الأرقام الستة",
+        "otpLength": "الرمز يجب أن يكون 6 أرقام",
+        "otpNumbersOnly": "الرمز يجب أن يحتوي على أرقام فقط"
+      }
+    }
+  },
+  "ListingDetails": {
+    "ProductInfoCard": {
+      "callSeller": "اتصل بالبائع"
+    },
+    "SafetyTips": {
+      "title": "نصائح للأمان",
+      "learnMore": "اعرف المزيد",
+      "tips": {
+        "meetPublic": "قابله في مكان عام",
+        "inspectItem": "افحص المنتج قبل الدفع",
+        "avoidPrepayment": "تجنب الدفع المسبق أو العربون",
+        "trustInstincts": "ثق بحدسك",
+        "reportSuspicious": "أبلغ عن أي نشاط مشبوه"
+      }
+    },
+    "SellerInfo": {
+      "title": "معلومات البائع",
+      "activeListings": "إعلانات نشطة",
+      "viewProfile": "عرض الملف الشخصي",
+      "memberSince": "عضو منذ {date}",
+      "error": "تعذر تحميل معلومات البائع"
+    },
+    "Specifications": {
+      "title": "المواصفات الفنية"
+    },
+    "LocationInfo": {
+      "title": "الموقع",
+      "listingInfo": "معلومات الإعلان",
+      "postedTime": "نشر {time}"
+    },
+    "ProductDescription": {
+      "title": "وصف المنتج"
+    },
+    "SimilarProducts": {
+      "title": "منتجات مشابهة",
+      "viewAll": "عرض الكل",
+      "error": {
+        "title": "فشل تحميل المنتجات المشابهة",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "SellerListings": {
+      "title": "المزيد من هذا البائع",
+      "viewAll": "عرض الكل",
+      "error": {
+        "title": "فشل تحميل قوائم البائع",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "BookmarkStatus": {
+      "error": "فشل تحميل حالة الإشارة المرجعية"
+    },
+    "a11y": {
+      "productGallery": "معرض صور المنتج",
+      "lightboxDialog": "عارض الصور",
+      "shareButton": "مشاركة هذا الإعلان",
+      "bookmarkSaved": "إزالة من الإعلانات المحفوظة",
+      "bookmarkUnsaved": "حفظ هذا الإعلان",
+      "callSeller": "اتصل بالبائع للاستفسار عن هذا الإعلان",
+      "previousImage": "الصورة السابقة",
+      "nextImage": "الصورة التالية",
+      "closeDialog": "إغلاق عارض الصور",
+      "thumbnailImage": "الصورة المصغرة {index} من {total}",
+      "mainImage": "الصورة الرئيسية للمنتج"
+    },
+    "errors": {
+      "notFound": {
+        "title": "الإعلان غير موجود",
+        "description": "الإعلان الذي تبحث عنه غير موجود أو تم حذفه.",
+        "goHome": "الصفحة الرئيسية",
+        "searchListings": "البحث في الإعلانات"
+      },
+      "unexpected": {
+        "title": "حدث خطأ ما",
+        "description": "حدث خطأ غير متوقع أثناء تحميل هذا الإعلان. يرجى المحاولة مرة أخرى.",
+        "retry": "حاول مرة أخرى",
+        "goHome": "الصفحة الرئيسية"
+      }
+    }
+  },
+  "ListingForm": {
+    "images": {
+      "title": "صور المنتج",
+      "subtitle": "ارفع حتى 5 صور عالية الجودة. الصورة الأولى ستكون الغلاف.",
+      "uploadTitle": "ارفع صور المنتج",
+      "dragDrop": "اسحب وأفلت أو اضغط للتصفح",
+      "chooseFiles": "اختر ملفات",
+      "supportedFormats": "الصيغ المدعومة: {formats} (حد أقصى {maxSize} ميجابايت لكل صورة)",
+      "cover": "الغلاف",
+      "setAsCover": "تعيين كغلاف",
+      "imageCount": "{count}/{max} صور",
+      "fileError": "ملف{index}: {message}",
+      "tipsTitle": "نصائح لصور منتج رائعة",
+      "tip1": "استخدم الإضاءة الطبيعية أو البيئات المضاءة جيداً",
+      "tip2": "أظهر المنتج من زوايا متعددة",
+      "tip3": "أضف لقطات قريبة للتفاصيل المهمة",
+      "tip4": "استخدم خلفيات نظيفة وغير مزدحمة",
+      "noImage": "لم يتم رفع صورة"
+    },
+    "basicInfo": {
+      "title": "المعلومات الأساسية",
+      "subtitle": "أضف التفاصيل الأساسية عن منتجك",
+      "titleLabel": "عنوان المنتج",
+      "titlePlaceholder": "مثال: لابتوب ألعاب ASUS ROG Strix G15 - RTX 3060",
+      "descriptionLabel": "الوصف",
+      "descriptionPlaceholder": "صف منتجك بالتفصيل — الحالة، المميزات، ولماذا يجب على شخص شرائه..."
+    },
+    "pricing": {
+      "title": "التسعير",
+      "subtitle": "حدد السعر المطلوب",
+      "priceLabel": "السعر",
+      "pricePlaceholder": "أدخل السعر",
+      "currencyLabel": "العملة",
+      "currencyPlaceholder": "اختر العملة"
+    },
+    "category": {
+      "label": "الفئة",
+      "placeholder": "اختر فئة",
+      "searchPlaceholder": "ابحث عن فئة...",
+      "noResults": "لم يتم العثور على فئات",
+      "selected": "مختارة"
+    },
+    "condition": {
+      "label": "الحالة",
+      "placeholder": "اختر الحالة",
+      "new": "جديد",
+      "used": "مستخدم",
+      "broken": "مكسور",
+      "refurbished": "مجدد"
+    },
+    "location": {
+      "title": "الموقع",
+      "subtitle": "أين يوجد هذا المنتج؟",
+      "label": "الموقع",
+      "placeholder": "اختر الموقع"
+    },
+    "specifications": {
+      "title": "المواصفات التقنية",
+      "subtitle": "أضف مواصفات المنتج لمساعدة المشترين",
+      "brand": "العلامة التجارية",
+      "model": "الموديل",
+      "processor": "المعالج",
+      "ram": "الذاكرة العشوائية",
+      "storage": "التخزين",
+      "graphics_card": "كرت الشاشة",
+      "display": "الشاشة",
+      "operating_system": "نظام التشغيل",
+      "warranty": "الضمان",
+      "battery": "البطارية",
+      "brandPlaceholder": "مثال: Apple، Dell، HP",
+      "modelPlaceholder": "مثال: MacBook Pro 16\"",
+      "processorPlaceholder": "مثال: Intel Core i7، M2 Pro",
+      "ramPlaceholder": "مثال: 16GB DDR4",
+      "storagePlaceholder": "مثال: 512GB SSD",
+      "graphics_cardPlaceholder": "مثال: NVIDIA RTX 3060",
+      "displayPlaceholder": "مثال: 15.6\" FHD IPS",
+      "operating_systemPlaceholder": "مثال: Windows 11، macOS",
+      "warrantyPlaceholder": "مثال: ضمان سنة من الشركة المصنعة",
+      "batteryPlaceholder": "مثال: 80Wh، 10 ساعات",
+      "customSpecName": "اسم المواصفة",
+      "customSpecValue": "القيمة",
+      "addCustomSpec": "إضافة مواصفة مخصصة",
+      "removeSpec": "حذف"
+    },
+    "preview": {
+      "title": "معاينة مباشرة",
+      "noTitle": "عنوان المنتج",
+      "noDescription": "وصف المنتج سيظهر هنا...",
+      "noPrice": "السعر",
+      "noCategory": "الفئة",
+      "noLocation": "الموقع",
+      "conditionLabel": "الحالة"
+    },
+    "buttons": {
+      "create": "إنشاء إعلان",
+      "update": "تحديث الإعلان",
+      "creating": "جاري الإنشاء...",
+      "updating": "جاري التحديث..."
+    },
+    "toast": {
+      "createSuccess": "تم إنشاء إعلانك بنجاح!",
+      "updateSuccess": "تم تحديث إعلانك بنجاح!",
+      "createError": "فشل في إنشاء الإعلان",
+      "updateError": "فشل في تحديث الإعلان",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMin": "يجب أن يكون العنوان 10 أحرف على الأقل",
+      "titleMax": "لا يمكن أن يتجاوز العنوان 100 حرف",
+      "descriptionRequired": "الوصف مطلوب",
+      "descriptionMin": "يجب أن يكون الوصف 20 حرفاً على الأقل",
+      "descriptionMax": "لا يمكن أن يتجاوز الوصف 2000 حرف",
+      "priceRequired": "يجب أن يكون السعر رقماً صحيحاً",
+      "priceMin": "لا يمكن أن يكون السعر صفراً أو سالباً",
+      "categoryRequired": "يرجى اختيار فئة صحيحة",
+      "productConditionRequired": "يرجى اختيار حالة المنتج",
+      "locationRequired": "يرجى اختيار موقع صحيح",
+      "sellerIdRequired": "معرف البائع غير صحيح",
+      "specificationsRequired": "يرجى ملء جميع المواصفات",
+      "specLabelRequired": "اسم المواصفة مطلوب",
+      "specValueRequired": "قيمة المواصفة مطلوبة",
+      "imageMinSize": "يجب أن يكون حجم الملف 10 كيلوبايت على الأقل",
+      "imageMaxSize": "يجب أن يكون حجم الملف أقل من 2 ميجابايت",
+      "imageInvalidType": "نوع الملف غير صالح. فقط JPG، JPEG، PNG، WEBP و GIF مسموح بها.",
+      "imagesRequired": "يرجى رفع صورة واحدة على الأقل",
+      "imagesMax": "يمكنك رفع 5 صور كحد أقصى"
+    }
+  },
+  "ListingsHome": {
+    "SearchBar": {
+      "placeholder": "ابحث عن منتجات، علامات تجارية، أو بائعين..."
+    },
+    "Toolbar": {
+      "filters": "التصفية",
+      "sortByPlaceholder": "ترتيب حسب",
+      "createdAt": "تاريخ الإنشاء",
+      "price": "السعر",
+      "desc": "تنازلي",
+      "asc": "تصاعدي"
+    },
+    "CategoryFilters": {
+      "all": "الكل",
+      "error": {
+        "title": "فشل تحميل الفئات",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "FilterModal": {
+      "title": "التصفية",
+      "priceRange": "نطاق السعر",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "currency": "العملة",
+      "condition": "الحالة",
+      "location": "الموقع",
+      "reset": "إعادة تعيين",
+      "error": "فشل تحميل خيارات التصفية. يرجى تحديث الصفحة."
+    },
+    "Content": {
+      "errorTitle": "حدث خطأ ما",
+      "errorDescription": "لم نتمكن من تحميل الإعلانات. يرجى المحاولة مرة أخرى لاحقاً.",
+      "emptyTitle": "لم يتم العثور على إعلانات",
+      "emptyDescription": "حاول تعديل الفلاتر أو البحث للعثور على ما تبحث عنه."
+    },
+    "GridWithTitle": {
+      "title": "جميع الإعلانات",
+      "showingResults": "عرض {count} نتيجة"
+    },
+    "LoadMore": {
+      "error": "فشل تحميل المزيد من الإعلانات. يرجى المحاولة مرة أخرى لاحقاً."
+    }
+  },
+  "VerificationForm": {
+    "page": {
+      "title": "التحقق من هوية البائع",
+      "subtitle": "أكمل الخطوات التالية للحصول على شارة البائع وبناء الثقة مع المشترين."
+    },
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "subtitle": "يرجى تقديم بياناتك الشخصية الدقيقة",
+      "banner": "نتحقق من جميع البائعين لضمان سوق آمن. معلوماتك مشفرة وآمنة.",
+      "fullNameLabel": "الاسم الكامل",
+      "fullNamePlaceholder": "كما يظهر في بطاقة الهوية",
+      "dateOfBirthLabel": "تاريخ الميلاد",
+      "genderLabel": "الجنس",
+      "genderPlaceholder": "اختر الجنس",
+      "nationalIdLabel": "رقم الهوية الوطنية",
+      "nationalIdPlaceholder": "أدخل رقم الهوية المكون من 9 أرقام",
+      "addressLabel": "العنوان",
+      "addressPlaceholder": "أدخل عنوانك الكامل"
+    },
+    "documentUpload": {
+      "title": "رفع الوثائق",
+      "subtitle": "ارفع صوراً واضحة لوثائق هويتك",
+      "banner": "تأكد من وضوح جميع النصوص. الصيغ المقبولة: JPG، PNG (حد أقصى 2 ميجابايت لكل صورة). يجب أن يكون وجهك وهويتك واضحَين في صورة السيلفي.",
+      "documentTypeLabel": "نوع الوثيقة",
+      "documentTypePlaceholder": "اختر نوع الوثيقة",
+      "frontLabel": "بطاقة الهوية — الوجه الأمامي",
+      "frontDescription": "ارفع صورة واضحة للوجه الأمامي من بطاقة هويتك",
+      "backLabel": "بطاقة الهوية — الوجه الخلفي",
+      "backDescription": "ارفع صورة واضحة للوجه الخلفي من بطاقة هويتك",
+      "selfieLabel": "سيلفي مع بطاقة الهوية",
+      "selfieDescription": "أمسك بطاقة هويتك بجانب وجهك — يجب أن يكون كلاهما مرئيَّين بوضوح"
+    },
+    "phoneVerification": {
+      "title": "التحقق من رقم الهاتف",
+      "subtitle": "تحقق من رقم هاتفك لإتمام التحقق من هوية البائع",
+      "alreadyVerifiedSubtitle": "تم التحقق مسبقاً",
+      "verifiedLabel": "تم التحقق من الهاتف",
+      "verifiedDescription": "{phone} — تم التأكيد عبر رمز OTP",
+      "banner": "أدخل رقم هاتفك أدناه. سيتم إرسال رمز لمرة واحدة عبر الرسائل النصية. بعد التحقق، سيتم حفظ رقمك في ملفك الشخصي.",
+      "bannerStrong": "الخطوة الأخيرة!",
+      "phoneNumberLabel": "رقم الهاتف",
+      "phoneNumberPlaceholder": "+970 59 XXX XXXX",
+      "whatsAppLabel": "رقم واتساب",
+      "whatsAppPlaceholder": "+970 59 XXX XXXX (اختياري)",
+      "hint": "استخدم الصيغة الدولية التي تبدأ برمز البلد (مثال: +970 لفلسطين)."
+    },
+    "terms": {
+      "text": "أؤكد أن جميع المعلومات والوثائق المقدمة دقيقة وأصلية. أفهم أن تقديم معلومات كاذبة قد يؤدي إلى تعليق الحساب بشكل دائم."
+    },
+    "buttons": {
+      "submit": "إرسال طلب التحقق",
+      "submitting": "جاري الإرسال…"
+    },
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى"
+    },
+    "documentType": {
+      "palestinianId": "هوية فلسطينية",
+      "passport": "جواز سفر",
+      "drivingLicence": "رخصة القيادة الفلسطينية"
+    },
+    "validation": {
+      "fullNameRequired": "الاسم الكامل مطلوب",
+      "fullNameMin": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
+      "fullNameMax": "لا يمكن أن يتجاوز الاسم الكامل 100 حرف",
+      "dateOfBirthRequired": "تاريخ الميلاد مطلوب",
+      "nationalIdRequired": "رقم الهوية الوطنية مطلوب",
+      "nationalIdLength": "يجب أن يكون رقم الهوية مكوناً من 8 أرقام بالضبط",
+      "addressRequired": "العنوان مطلوب",
+      "addressMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
+      "documentTypeRequired": "يرجى اختيار نوع الوثيقة",
+      "documentFrontRequired": "يرجى رفع الوجه الأمامي من بطاقة الهوية",
+      "documentBackRequired": "يرجى رفع الوجه الخلفي من بطاقة الهوية",
+      "selfieRequired": "يرجى رفع صورة سيلفي مع بطاقة الهوية",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalidFormat": "يجب أن يبدأ رقم الهاتف بـ +970 أو +972 متبوعاً بـ 9 أرقام",
+      "whatsappInvalidFormat": "يجب أن يبدأ رقم واتساب بـ +970 أو +972 متبوعاً بـ 9 أرقام",
+      "phoneVerificationRequired": "يجب التحقق من رقم هاتفك قبل الإرسال",
+      "termsRequired": "يجب تأكيد دقة جميع المعلومات المقدمة"
+    }
+  },
+  "Profile": {
+    "Hero": {
+      "noBio": "لا يوجد نبذة تعريفية.",
+      "joined": "انضم {date}",
+      "twitter": "تويتر",
+      "instagram": "إنستغرام",
+      "facebook": "فيسبوك",
+      "website": "الموقع الإلكتروني"
+    },
+    "Tabs": {
+      "myListings": "إعلاناتي",
+      "savedItems": "العناصر المحفوظة"
+    },
+    "ListingsTab": {
+      "noListings": "لا توجد إعلانات بعد",
+      "deleteSuccess": "تم حذف الإعلان بنجاح",
+      "error": {
+        "title": "فشل تحميل الإعلانات",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "BookmarkTab": {
+      "noBookmarks": "لا توجد إعلانات محفوظة بعد",
+      "error": {
+        "title": "فشل تحميل المحفوظات",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "ListingCard": {
+      "editListing": "تعديل الإعلان",
+      "deleteListing": "حذف الإعلان",
+      "deleteDialogTitle": "حذف الإعلان",
+      "deleteDialogDescription": "هل أنت متأكد من حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف"
+    },
+    "Pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  },
+  "Navbar": {
+    "home": "الرئيسية",
+    "listings": "الإعلانات",
+    "createListing": "إنشاء إعلان",
+    "verificationRequest": "طلب التحقق",
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "logOut": "تسجيل الخروج",
+    "profile": "الملف الشخصي",
+    "myListings": "إعلاناتي"
+  }
+}
