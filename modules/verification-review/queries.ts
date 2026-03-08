@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
-import { authHandler } from '@/utils/auth-handler';
+import { requireRole } from '@/utils/rbac-handler';
 import CustomError from '@/utils/CustomError';
 import {
   ChecklistState,
@@ -33,7 +33,7 @@ export async function getVerificationQueueQuery({
   pageSize: number;
 }> {
   const supabase = await createClient();
-  await authHandler();
+  await requireRole(['admin', 'moderator']);
 
   const from = (page - 1) * DEFAULT_LIMIT_NUMBER;
   const to = from + DEFAULT_LIMIT_NUMBER - 1;
@@ -114,7 +114,7 @@ export async function getVerificationRequestByIdQuery(
   user: VerificationUserDetail;
 }> {
   const supabase = await createClient();
-  await authHandler();
+  await requireRole(['admin', 'moderator']);
 
   // Fetch the verification request
   const { data: request, error: requestError } = await supabase
@@ -164,7 +164,7 @@ export async function updateVerificationStatusQuery({
   checklist?: ChecklistState;
 }) {
   const supabase = await createClient();
-  const reviewer = await authHandler();
+  const { user: reviewer } = await requireRole(['admin', 'moderator']);
 
   console.log({ requestId, status, reviewNotes, rejectionReason, checklist });
 

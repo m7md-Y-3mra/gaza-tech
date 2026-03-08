@@ -1,8 +1,16 @@
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@/config/env.config';
 import { createServerClient } from '@supabase/ssr';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
 
-export async function updateSession(request: NextRequest) {
+type UpdateSessionResult = {
+  supabaseResponse: NextResponse;
+  supabase: SupabaseClient;
+};
+
+export async function updateSession(
+  request: NextRequest
+): Promise<UpdateSessionResult> {
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -29,5 +37,5 @@ export async function updateSession(request: NextRequest) {
   // refreshing the auth token
   await supabase.auth.getUser();
 
-  return supabaseResponse;
+  return { supabaseResponse, supabase };
 }
