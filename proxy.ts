@@ -1,15 +1,54 @@
-import { type NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from './lib/supabase/proxy';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
+import { rbacConfig } from './config/rbac';
 
 const intlMiddleware = createMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
-  // Update user's auth session first
-  const supabaseResponse = await updateSession(request);
+  const { pathname } = request.nextUrl;
 
-  // Run intl middleware
+  // ─── 1. Update Supabase auth session ─────────────────────────────────
+  const { supabaseResponse, supabase } = await updateSession(request);
+
+  // ─── 2. RBAC Route Protection ────────────────────────────────────────
+  if (rbacConfig.isProtectedPath(pathname)) {
+    const strippedPath = rbacConfig.stripLocale(pathname);
+
+    // Detect locale from the URL for redirect targets
+    const locale =
+      rbacConfig.LOCALES.find(
+        (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
+      ) || routing.defaultLocale;
+
+    // Check authentication
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      const loginUrl = new URL(`/${locale}/login`, request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Fetch user role from the public users table
+    const { data: profile } = await supabase
+      .from('users')
+      .select('user_role')
+      .eq('user_id', user.id)
+      .single();
+
+    const userRole = profile?.user_role ?? null;
+
+    // Check role-based access
+    if (!rbacConfig.canAccessRoute(userRole, strippedPath)) {
+      const homeUrl = new URL(`/${locale}`, request.url);
+      return NextResponse.redirect(homeUrl);
+    }
+  }
+
+  // ─── 3. Run intl middleware ──────────────────────────────────────────
   const intlResponse = intlMiddleware(request);
 
   // Copy Supabase auth cookies to the intl response

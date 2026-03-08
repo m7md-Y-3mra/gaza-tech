@@ -15,11 +15,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { signOutAction } from '@/modules/auth/actions';
-import { NAV_LINKS } from '../../constants';
 import { useRouter } from 'nextjs-toploader/app';
 import { MobileMenuProps } from './types';
 
-const MobileMenu = ({ user }: MobileMenuProps) => {
+const MobileMenu = ({ user, navLinks }: MobileMenuProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations('Navbar');
   const router = useRouter();
@@ -74,7 +73,7 @@ const MobileMenu = ({ user }: MobileMenuProps) => {
 
         {/* Navigation links */}
         <nav className="flex flex-col gap-1 px-3 py-3">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <SheetClose asChild key={link.href}>
               <Link
                 href={link.href}

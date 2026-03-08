@@ -3,10 +3,12 @@ import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { getCurrentUser } from '@/modules/user/queries';
 import { getUserById } from '@/modules/user/queries';
+import { rbacConfig } from '@/config/rbac';
 import { NAV_LINKS } from './constants';
 import UserDropdown from './components/user-dropdown';
 import MobileMenu from './components/mobile-menu';
 import type { NavbarUser } from './types';
+import type { UserRole } from '@/config/rbac';
 
 export async function Navbar() {
   const t = await getTranslations('Navbar');
@@ -22,8 +24,15 @@ export async function Navbar() {
       firstName: profile?.first_name ?? null,
       lastName: profile?.last_name ?? null,
       avatarUrl: profile?.avatar_url ?? null,
+      userRole: (profile?.user_role as UserRole) ?? null,
     };
   }
+
+  // Filter nav links based on user role
+  const visibleLinks = NAV_LINKS.filter((link) => {
+    if (!link.allowedRoles) return true;
+    return rbacConfig.hasRole(navbarUser?.userRole ?? null, link.allowedRoles);
+  });
 
   return (
     <header className="bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-md">
@@ -38,7 +47,7 @@ export async function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((link) => (
+          {visibleLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -66,7 +75,7 @@ export async function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <MobileMenu user={navbarUser} />
+        <MobileMenu user={navbarUser} navLinks={visibleLinks} />
       </div>
     </header>
   );

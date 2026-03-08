@@ -1,6 +1,6 @@
 'use client';
 
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, LayoutDashboard } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,6 +16,7 @@ import {
 import { signOutAction } from '@/modules/auth/actions';
 import { useRouter } from 'nextjs-toploader/app';
 import { UserDropdownProps } from './types';
+import { rbacConfig } from '@/config/rbac';
 
 const UserDropdown = ({ user }: UserDropdownProps) => {
   const t = useTranslations('Navbar');
@@ -27,6 +28,11 @@ const UserDropdown = ({ user }: UserDropdownProps) => {
 
   const displayName =
     [user.firstName, user.lastName].filter(Boolean).join(' ') || user.id;
+
+  const isAdminOrModerator = rbacConfig.hasRole(user.userRole, [
+    'admin',
+    'moderator',
+  ]);
 
   return (
     <DropdownMenu>
@@ -58,6 +64,15 @@ const UserDropdown = ({ user }: UserDropdownProps) => {
               {t('profile')}
             </Link>
           </DropdownMenuItem>
+
+          {isAdminOrModerator && (
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard" className="cursor-pointer">
+                <LayoutDashboard />
+                {t('dashboard')}
+              </Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
