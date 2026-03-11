@@ -73,4 +73,3 @@ export type Specification =
 
 export type Listing =
   Database['public']['Tables']['marketplace_listings']['Row'];
-

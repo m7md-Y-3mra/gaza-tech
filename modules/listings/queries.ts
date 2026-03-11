@@ -701,7 +701,18 @@ export async function deleteListingQuery(listingId: string): Promise<void> {
 }
 
 // ─── Hybrid AI Search ──────────────────────────────────────────────────────────
-type HybridSearchRow = Pick<Listing, 'listing_id' | 'title' | 'description' | 'price' | 'currency' | 'product_condition' | 'content_status' | 'created_at' | 'ai_metadata'> & {
+type HybridSearchRow = Pick<
+  Listing,
+  | 'listing_id'
+  | 'title'
+  | 'description'
+  | 'price'
+  | 'currency'
+  | 'product_condition'
+  | 'content_status'
+  | 'created_at'
+  | 'ai_metadata'
+> & {
   listing_images: Pick<ListingImageRow, 'image_url' | 'is_thumbnail'>[];
   locations: Pick<LocationRow, 'location_id' | 'name' | 'name_ar'>[];
   seller: Pick<User, 'first_name' | 'last_name' | 'is_verified'>;
@@ -735,10 +746,13 @@ export async function hybridSearchListingsQuery(
   return ((data ?? []) as HybridSearchRow[]).map((row) => {
     // Thumbnail image or first image
     const thumbnail = row.listing_images?.find((img) => img.is_thumbnail);
-    const image = thumbnail?.image_url ?? row.listing_images?.[0]?.image_url ?? '';
+    const image =
+      thumbnail?.image_url ?? row.listing_images?.[0]?.image_url ?? '';
 
     // First location entry
-    const locationEntry = Array.isArray(row.locations) ? row.locations[0] : null;
+    const locationEntry = Array.isArray(row.locations)
+      ? row.locations[0]
+      : null;
     const location = locationEntry?.name ?? '';
 
     // Seller details

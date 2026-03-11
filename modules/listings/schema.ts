@@ -130,8 +130,8 @@ export const createCreateListingClientSchema = (t: TranslationFunction) =>
         .array(createListingImageSchema(t))
         .min(1, { message: t('imagesRequired') }),
     }) satisfies ZodType<
-      InsertListingsWithoutSellerId & { images: CreateImageFile[] }
-    >;
+    InsertListingsWithoutSellerId & { images: CreateImageFile[] }
+  >;
 
 export const createUpdateListingClientSchema = (t: TranslationFunction) =>
   createCreateListingClientSchema(t)
