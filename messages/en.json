@@ -351,7 +351,11 @@
       "new": "New",
       "used": "Used",
       "broken": "Broken",
-      "refurbished": "Refurbished"
+      "refurbished": "Refurbished",
+      "brand_new": "Brand New",
+      "used_good": "Used Good",
+      "used_excellent": "Used Excellent",
+      "for_parts": "For Parts"
     },
     "location": {
       "title": "Location",
