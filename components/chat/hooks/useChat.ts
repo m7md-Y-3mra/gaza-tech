@@ -1,7 +1,9 @@
 import { ListingCardItem } from "@/modules/listings/queries";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export const useChat = () => {
+    const t = useTranslations('Chat');
     const [open, setOpen] = useState(false);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -12,7 +14,7 @@ export const useChat = () => {
     >([
         {
             role: 'ai',
-            text: 'Hi! I am the AI Assistant. I can help you find products by comparing their specifications, prices, and use-cases. What are you looking for?',
+            text: t('welcomeMessage'),
         },
     ]);
 
@@ -47,7 +49,7 @@ export const useChat = () => {
             if (data.error) {
                 setMessages((prev) => [
                     ...prev,
-                    { role: 'ai', text: `Error: ${data.error}` },
+                    { role: 'ai', text: `${t('errorPrefix')}${data.error}` },
                 ]);
             } else {
                 setMessages((prev) => [
@@ -58,7 +60,7 @@ export const useChat = () => {
         } catch {
             setMessages((prev) => [
                 ...prev,
-                { role: 'ai', text: 'An unexpected error occurred.' },
+                { role: 'ai', text: t('unexpectedError') },
             ]);
         } finally {
             setLoading(false);

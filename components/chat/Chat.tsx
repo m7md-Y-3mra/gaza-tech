@@ -14,9 +14,13 @@ import { Input } from '@/components/ui/input';
 import { Send, Bot, MessageCircle } from 'lucide-react';
 import ListingCard from '@/modules/listings/home/components/listing-card/ListingCard';
 import type { ListingCardItem } from '@/modules/listings/queries';
+import { useLocale, useTranslations } from 'next-intl';
 import { useChat } from './hooks/useChat';
 
 const Chat = () => {
+  const t = useTranslations('Chat');
+  const locale = useLocale();
+  const isRTL = locale === 'ar';
   const {
     open,
     input,
@@ -34,23 +38,26 @@ const Chat = () => {
       <SheetTrigger asChild>
         <Button
           size="icon"
-          className="fixed right-6 bottom-6 z-50 h-14 w-14 rounded-full shadow-lg"
+          className={`fixed bottom-6 z-50 h-14 w-14 rounded-full shadow-lg ${isRTL ? 'left-6' : 'right-6'}`}
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="flex h-full w-full flex-col overflow-hidden p-0 sm:max-w-md xl:max-w-lg">
+      <SheetContent
+        side={'right'}
+        className="flex h-full w-full flex-col overflow-hidden p-0 sm:max-w-md xl:max-w-lg"
+      >
         {/* Header */}
         <SheetHeader className="shrink-0 border-b px-6 py-4">
           <SheetTitle className="flex items-center gap-2.5 text-base">
             <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
               <Bot className="text-primary h-4 w-4" />
             </div>
-            AI Assistant
+            {t('title')}
           </SheetTitle>
           <SheetDescription className="text-xs">
-            Search marketplace listings using natural language.
+            {t('description')}
           </SheetDescription>
         </SheetHeader>
 
@@ -124,7 +131,7 @@ const Chat = () => {
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="E.g. Gaming laptops under 1000 ILS..."
+              placeholder={t('inputPlaceholder')}
               disabled={loading}
               className="h-10 flex-1 rounded-full px-4 text-sm"
             />

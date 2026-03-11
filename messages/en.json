@@ -613,5 +613,13 @@
     "logOut": "Log Out",
     "profile": "Profile",
     "myListings": "My Listings"
+  },
+  "Chat": {
+    "title": "AI Assistant",
+    "description": "Search marketplace listings using natural language.",
+    "welcomeMessage": "Hi! I am the AI Assistant. I can help you find products by comparing their specifications, prices, and use-cases. What are you looking for?",
+    "inputPlaceholder": "E.g. Gaming laptops under 1000 ILS...",
+    "unexpectedError": "An unexpected error occurred.",
+    "errorPrefix": "Error: "
   }
 }
