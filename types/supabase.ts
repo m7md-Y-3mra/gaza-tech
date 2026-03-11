@@ -16,6 +16,45 @@ export type Database = {
   };
   public: {
     Tables: {
+      blacklisted_ids: {
+        Row: {
+          added_by: string | null;
+          created_at: string | null;
+          id: string;
+          national_id_number: string;
+          reason: string | null;
+        };
+        Insert: {
+          added_by?: string | null;
+          created_at?: string | null;
+          id?: string;
+          national_id_number: string;
+          reason?: string | null;
+        };
+        Update: {
+          added_by?: string | null;
+          created_at?: string | null;
+          id?: string;
+          national_id_number?: string;
+          reason?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'blacklisted_ids_added_by_fkey';
+            columns: ['added_by'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          },
+          {
+            foreignKeyName: 'blacklisted_ids_added_by_fkey';
+            columns: ['added_by'];
+            isOneToOne: false;
+            referencedRelation: 'users_with_email';
+            referencedColumns: ['user_id'];
+          },
+        ];
+      };
       bookmarked_listings: {
         Row: {
           created_at: string | null;
@@ -428,11 +467,14 @@ export type Database = {
       };
       marketplace_listings: {
         Row: {
+          ai_metadata: Json | null;
           category_id: string;
           content_status: string | null;
           created_at: string | null;
           currency: string | null;
           description: string;
+          embedding: string | null;
+          enrichment_status: string | null;
           listing_id: string;
           location_id: string;
           price: number;
@@ -443,32 +485,38 @@ export type Database = {
           updated_at: string | null;
         };
         Insert: {
+          ai_metadata?: Json | null;
           category_id: string;
           content_status?: string | null;
           created_at?: string | null;
           currency?: string | null;
           description: string;
+          embedding?: string | null;
+          enrichment_status?: string | null;
           listing_id?: string;
           location_id: string;
           price: number;
           product_condition: string;
           seller_id: string;
-          specifications?: Json | null;
+          specifications?: Specification[] | null;
           title: string;
           updated_at?: string | null;
         };
         Update: {
+          ai_metadata?: Json | null;
           category_id?: string;
           content_status?: string | null;
           created_at?: string | null;
           currency?: string | null;
           description?: string;
+          embedding?: string | null;
+          enrichment_status?: string | null;
           listing_id?: string;
           location_id?: string;
           price?: number;
           product_condition?: string;
           seller_id?: string;
-          specifications?: Json | null;
+          specifications?: Specification[] | null;
           title?: string;
           updated_at?: string | null;
         };
@@ -930,6 +978,27 @@ export type Database = {
       };
     };
     Functions: {
+      get_grouped_categories: { Args: never; Returns: Json };
+      hybrid_search_listings: {
+        Args: {
+          match_limit?: number;
+          max_price?: number;
+          query_embedding: string;
+        };
+        Returns: {
+          ai_metadata: Json;
+          currency: string;
+          description: string;
+          listing_id: string;
+          price: number;
+          similarity: number;
+          title: string;
+        }[];
+      };
+      is_admin: { Args: never; Returns: boolean };
+      is_moderator_or_admin: { Args: never; Returns: boolean };
+      is_verified_seller: { Args: never; Returns: boolean };
+      retry_failed_enrichments: { Args: never; Returns: undefined };
       validate_listing_specs: { Args: { specs: Json }; Returns: boolean };
     };
     Enums: {

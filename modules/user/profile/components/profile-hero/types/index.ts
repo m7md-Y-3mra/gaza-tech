@@ -1,5 +1,5 @@
-import type { ProfileUser } from '@/modules/user/types';
+import type { User } from '@/modules/user/types';
 
 export type ProfileHeroProps = {
-  user: ProfileUser;
+  user: User;
 };

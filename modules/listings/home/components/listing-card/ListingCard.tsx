@@ -1,10 +1,12 @@
 'use client';
 import Image from 'next/image';
-import { Bookmark, MapPin, User } from 'lucide-react';
+import { MapPin, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { VerificationBadge } from '@/components/verification-badge';
 import { ListingCardProps } from './types';
 import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+import { isNew } from '@/modules/listings/utils/is-new';
 
 const ListingCard = ({ listing }: ListingCardProps) => {
   const {
@@ -18,6 +20,12 @@ const ListingCard = ({ listing }: ListingCardProps) => {
     isVerified,
     product_condition,
   } = listing;
+
+  const tForm = useTranslations('ListingForm');
+  const conditionLabel = product_condition
+    ? tForm(`condition.${product_condition}`)
+    : null;
+
   return (
     <Link
       href={`/listings/${listing_id}`}
@@ -35,12 +43,14 @@ const ListingCard = ({ listing }: ListingCardProps) => {
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
-          <Badge
-            variant={product_condition === 'New' ? 'default' : 'secondary'}
-            className="backdrop-blur-md"
-          >
-            {product_condition}
-          </Badge>
+          {conditionLabel && (
+            <Badge
+              variant={isNew(product_condition) ? 'default' : 'secondary'}
+              className="backdrop-blur-md"
+            >
+              {conditionLabel}
+            </Badge>
+          )}
         </div>
 
         {/* Action Buttons */}
