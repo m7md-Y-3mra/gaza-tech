@@ -1,14 +1,13 @@
 import { Database } from '@/types/supabase';
 
 export const ProductCondition = {
-  new: 'New',
-  used: 'Used',
-  broken: 'Broken',
-  refurbished: 'Refurbished',
+  brand_new: 'Brand New',
+  used_good: 'Used Good',
+  for_parts: 'For Parts',
+  used_excellent: 'Used Excellent',
 } as const;
 
-export type ProductConditionType =
-  (typeof ProductCondition)[keyof typeof ProductCondition];
+export type ProductConditionType = keyof typeof ProductCondition;
 
 export const Currency = {
   ILS: 'ILS',
@@ -71,3 +70,7 @@ export type CustomSpecificationType = {
 export type Specification =
   | PredefinedSpecificationType
   | CustomSpecificationType;
+
+export type Listing =
+  Database['public']['Tables']['marketplace_listings']['Row'];
+
