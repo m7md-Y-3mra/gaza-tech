@@ -724,18 +724,39 @@ type HybridSearchRow = Pick<
  * Returns results shaped as ListingCardItem so they can be passed directly
  * to <ListingCard /> without any further transformation.
  */
-export async function hybridSearchListingsQuery(
-  queryEmbedding: number[],
-  maxPrice: number = 999999,
-  limit: number = 5
-): Promise<ListingCardItem[]> {
+export async function hybridSearchListingsQuery(params: {
+  query_embedding: number[];
+  max_price?: number;
+  min_ram_gb?: number | null;
+  requires_gaming?: boolean | null;
+  preferred_use_case?: string | null;
+  expected_audience?: string | null;
+  match_limit?: number;
+}): Promise<ListingCardItem[]> {
   'use server';
   const client = await createClient();
 
+  const test = {
+    query_embedding: `[${params.query_embedding.join(',')}]`,
+    max_price: params.max_price ?? 999999,
+    min_ram_gb: params.min_ram_gb ?? null,
+    requires_gaming: params.requires_gaming ?? null,
+    // preferred_use_case: params.preferred_use_case ?? null,
+    // expected_audience: params.expected_audience ?? null,
+    match_limit: params.match_limit ?? 5,
+
+  };
+  console.log(test)
+
+  // Call the updated RPC function with all the metadata parameters
   const { data, error } = await client.rpc('hybrid_search_listings', {
-    query_embedding: `[${queryEmbedding.join(',')}]`,
-    max_price: maxPrice,
-    match_limit: limit,
+    query_embedding: `[${params.query_embedding.join(',')}]`,
+    max_price: params.max_price ?? 999999,
+    min_ram_gb: params.min_ram_gb ?? null,
+    requires_gaming: params.requires_gaming ?? null,
+    // preferred_use_case: params.preferred_use_case ?? null,
+    // expected_audience: params.expected_audience ?? null,
+    match_limit: params.match_limit ?? 5,
   });
 
   if (error) {
@@ -743,6 +764,7 @@ export async function hybridSearchListingsQuery(
     throw new Error('Hybrid search failed');
   }
 
+  // The mapping logic remains exactly the same so it fits your UI perfectly
   return ((data ?? []) as HybridSearchRow[]).map((row) => {
     // Thumbnail image or first image
     const thumbnail = row.listing_images?.find((img) => img.is_thumbnail);
