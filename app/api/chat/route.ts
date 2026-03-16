@@ -29,15 +29,18 @@ export async function POST(req: NextRequest) {
       properties: {
         max_budget: {
           type: Type.NUMBER,
-          description: 'The maximum budget the user is looking for. Null if not specified.',
+          description:
+            'The maximum budget the user is looking for. Null if not specified.',
         },
         min_ram_gb: {
           type: Type.NUMBER,
-          description: 'The minimum amount of RAM in GB requested (e.g., 8, 16, 32). Null if not specified.',
+          description:
+            'The minimum amount of RAM in GB requested (e.g., 8, 16, 32). Null if not specified.',
         },
         requires_gaming: {
           type: Type.BOOLEAN,
-          description: 'Set to true ONLY if the user explicitly asks for a gaming laptop. Null otherwise.',
+          description:
+            'Set to true ONLY if the user explicitly asks for a gaming laptop. Null otherwise.',
         },
         // preferred_use_case: {
         //   type: Type.STRING,
@@ -69,7 +72,8 @@ export async function POST(req: NextRequest) {
       const parsed = JSON.parse(extractFiltersResponse.text || '{}');
       if (typeof parsed.max_budget === 'number') max_budget = parsed.max_budget;
       if (typeof parsed.min_ram_gb === 'number') min_ram_gb = parsed.min_ram_gb;
-      if (typeof parsed.requires_gaming === 'boolean') requires_gaming = parsed.requires_gaming;
+      if (typeof parsed.requires_gaming === 'boolean')
+        requires_gaming = parsed.requires_gaming;
       // if (typeof parsed.preferred_use_case === 'string') preferred_use_case = parsed.preferred_use_case;
       // if (typeof parsed.expected_audience === 'string') expected_audience = parsed.expected_audience;
     } catch (e) {
@@ -112,22 +116,21 @@ export async function POST(req: NextRequest) {
       requires_gaming,
       // preferred_use_case,
       // expected_audience,
-      match_limit: 5
+      match_limit: 5,
     });
-
 
     // ── 4. Build context string for the LLM ─────────────────────────────────
     // We MUST include the listing_id in the context so the AI knows how to identify them
     const contextStr =
       listings.length > 0
         ? JSON.stringify(
-          listings.map((l) => ({
-            listing_id: l.listing_id, // Added ID
-            title: l.title,
-            price: l.price,
-            currency: l.currency ?? 'ILS',
-          }))
-        )
+            listings.map((l) => ({
+              listing_id: l.listing_id, // Added ID
+              title: l.title,
+              price: l.price,
+              currency: l.currency ?? 'ILS',
+            }))
+          )
         : 'No suitable listings found.';
 
     const prompt = `User's message: "${message}"\n\nDatabase search results:\n${contextStr}\n\nRespond conversationally to the user based on the results. If results are found, mention them briefly. If some of the database results do not accurately match the user's intent, IGNORE them completely.`;
@@ -139,14 +142,15 @@ export async function POST(req: NextRequest) {
       properties: {
         reply: {
           type: Type.STRING,
-          description: "Your conversational text response to the user."
+          description: 'Your conversational text response to the user.',
         },
         relevant_listing_ids: {
           type: Type.ARRAY,
           items: { type: Type.STRING },
-          description: "An array of listing_ids from the database results that ACTUALLY match the user's request. Exclude bad matches."
-        }
-      }
+          description:
+            "An array of listing_ids from the database results that ACTUALLY match the user's request. Exclude bad matches.",
+        },
+      },
     };
 
     const chatReplyResponse = await ai.models.generateContent({
@@ -155,7 +159,7 @@ export async function POST(req: NextRequest) {
       config: {
         responseMimeType: 'application/json',
         responseSchema: finalResponseSchema,
-      }
+      },
     });
 
     let reply = 'Here is what I found.';
@@ -169,7 +173,10 @@ export async function POST(req: NextRequest) {
       }
 
       // Intercept and filter the UI data based on the AI's strict decision!
-      if (parsedReply.relevant_listing_ids && Array.isArray(parsedReply.relevant_listing_ids)) {
+      if (
+        parsedReply.relevant_listing_ids &&
+        Array.isArray(parsedReply.relevant_listing_ids)
+      ) {
         finalListings = listings.filter((l) =>
           parsedReply.relevant_listing_ids.includes(l.listing_id)
         );

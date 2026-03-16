@@ -744,9 +744,8 @@ export async function hybridSearchListingsQuery(params: {
     // preferred_use_case: params.preferred_use_case ?? null,
     // expected_audience: params.expected_audience ?? null,
     match_limit: params.match_limit ?? 5,
-
   };
-  console.log(test)
+  console.log(test);
 
   // Call the updated RPC function with all the metadata parameters
   const { data, error } = await client.rpc('hybrid_search_listings', {
