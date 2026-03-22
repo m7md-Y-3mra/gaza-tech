@@ -39,7 +39,8 @@ export async function POST(req: NextRequest) {
         },
         requires_gaming: {
           type: Type.STRING,
-          description: "Output 'true' if the user explicitly asks for a gaming laptop. Output 'false' if they explicitly say 'NOT for gaming'. Output 'unspecified' if gaming is not mentioned at all."
+          description:
+            "Output 'true' if the user explicitly asks for a gaming laptop. Output 'false' if they explicitly say 'NOT for gaming'. Output 'unspecified' if gaming is not mentioned at all.",
         },
         target_location: {
           type: Type.STRING,
@@ -83,10 +84,12 @@ export async function POST(req: NextRequest) {
       const parsed = JSON.parse(extractFiltersResponse.text || '{}');
       if (typeof parsed.max_budget === 'number') max_budget = parsed.max_budget;
       if (typeof parsed.min_ram_gb === 'number') min_ram_gb = parsed.min_ram_gb;
-      if (parsed.requires_gaming === "true") requires_gaming = true;
-      if (parsed.requires_gaming === "false") requires_gaming = false;
-      if (typeof parsed.target_location === 'string') target_location = parsed.target_location;
-      if (typeof parsed.target_seller === 'string') target_seller = parsed.target_seller;
+      if (parsed.requires_gaming === 'true') requires_gaming = true;
+      if (parsed.requires_gaming === 'false') requires_gaming = false;
+      if (typeof parsed.target_location === 'string')
+        target_location = parsed.target_location;
+      if (typeof parsed.target_seller === 'string')
+        target_seller = parsed.target_seller;
       // if (typeof parsed.preferred_use_case === 'string') preferred_use_case = parsed.preferred_use_case;
       // if (typeof parsed.expected_audience === 'string') expected_audience = parsed.expected_audience;
     } catch (e) {
@@ -101,8 +104,10 @@ export async function POST(req: NextRequest) {
     if (min_ram_gb !== null && min_ram_gb <= 0) min_ram_gb = null;
 
     // 3. Fix literal string "null" or empty strings
-    if (!target_location || target_location.toLowerCase() === 'null') target_location = null;
-    if (!target_seller || target_seller.toLowerCase() === 'null') target_seller = null;
+    if (!target_location || target_location.toLowerCase() === 'null')
+      target_location = null;
+    if (!target_seller || target_seller.toLowerCase() === 'null')
+      target_seller = null;
     // target_location = null;
     // target_seller = null;
     // if (preferred_use_case === "null" || preferred_use_case === "" || preferred_use_case === "Null" || preferred_use_case === "NULL") preferred_use_case = null;
@@ -139,23 +144,23 @@ export async function POST(req: NextRequest) {
       match_limit: 5,
     });
 
-    console.log(listings)
+    console.log(listings);
 
     // ── 4. Build context string for the LLM ─────────────────────────────────
     // We MUST include the listing_id in the context so the AI knows how to identify them
     const contextStr =
       listings.length > 0
         ? JSON.stringify(
-          listings.map((l) => ({
-            listing_id: l.listing_id,
-            title: l.title,
-            price: l.price,
-            specifications: l.specifications, // NEW: AI can now see processors, RAM, etc.
-            location: l.location,       // NEW: AI can now see where the item is!
-            seller: l.sellerName,
-            currency: l.currency ?? 'ILS',
-          }))
-        )
+            listings.map((l) => ({
+              listing_id: l.listing_id,
+              title: l.title,
+              price: l.price,
+              specifications: l.specifications, // NEW: AI can now see processors, RAM, etc.
+              location: l.location, // NEW: AI can now see where the item is!
+              seller: l.sellerName,
+              currency: l.currency ?? 'ILS',
+            }))
+          )
         : 'No suitable listings found.';
 
     const prompt = `User's message: "${message}"\n\nDatabase search results:\n${contextStr}\n\nRespond conversationally to the user based on the results. If some results do not accurately match the user's intent, IGNORE them completely. CRITICAL: If you mention or recommend an item in your text reply, you MUST include its exact listing_id in the relevant_listing_ids array.`;
@@ -209,7 +214,10 @@ export async function POST(req: NextRequest) {
         // Safety Fallback: Only apply the filter if it found matches,
         // OR if the AI explicitly returned an empty array (meaning no matches).
         // This prevents the UI from going blank if the AI recommends an item but forgets the ID.
-        if (filtered.length > 0 || parsedReply.relevant_listing_ids.length === 0) {
+        if (
+          filtered.length > 0 ||
+          parsedReply.relevant_listing_ids.length === 0
+        ) {
           finalListings = filtered;
         }
       }
