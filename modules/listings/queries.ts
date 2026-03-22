@@ -28,6 +28,8 @@ export type ListingCardItem = SimilarListingRes & {
   location: string;
   sellerName: string;
   isVerified: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  specifications?: any;
 };
 
 export type PriceRange = {
@@ -706,6 +708,7 @@ type HybridSearchRow = Pick<
   | 'listing_id'
   | 'title'
   | 'description'
+  | 'specifications'
   | 'price'
   | 'currency'
   | 'product_condition'
@@ -729,6 +732,8 @@ export async function hybridSearchListingsQuery(params: {
   max_price?: number;
   min_ram_gb?: number | null;
   requires_gaming?: boolean | null;
+  target_location?: string | null;
+  target_seller?: string | null;
   preferred_use_case?: string | null;
   expected_audience?: string | null;
   match_limit?: number;
@@ -741,6 +746,8 @@ export async function hybridSearchListingsQuery(params: {
     max_price: params.max_price ?? 999999,
     min_ram_gb: params.min_ram_gb ?? null,
     requires_gaming: params.requires_gaming ?? null,
+    target_location: params.target_location ?? null,
+    target_seller: params.target_seller ?? null,
     // preferred_use_case: params.preferred_use_case ?? null,
     // expected_audience: params.expected_audience ?? null,
     match_limit: params.match_limit ?? 5,
@@ -753,6 +760,8 @@ export async function hybridSearchListingsQuery(params: {
     max_price: params.max_price ?? 999999,
     min_ram_gb: params.min_ram_gb ?? null,
     requires_gaming: params.requires_gaming ?? null,
+    target_location: params.target_location ?? null,
+    target_seller: params.target_seller ?? null,
     // preferred_use_case: params.preferred_use_case ?? null,
     // expected_audience: params.expected_audience ?? null,
     match_limit: params.match_limit ?? 5,
@@ -790,6 +799,7 @@ export async function hybridSearchListingsQuery(params: {
       product_condition: row.product_condition,
       content_status: row.content_status,
       created_at: row.created_at,
+      specifications: row.specifications ?? {},
       listing_images: row.listing_images ?? [],
       locations: Array.isArray(row.locations) ? row.locations : [],
       image,
