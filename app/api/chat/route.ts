@@ -38,9 +38,19 @@ export async function POST(req: NextRequest) {
             'The minimum amount of RAM in GB requested (e.g., 8, 16, 32). Null if not specified.',
         },
         requires_gaming: {
-          type: Type.BOOLEAN,
+          type: Type.STRING,
           description:
-            'Set to true ONLY if the user explicitly asks for a gaming laptop. Null otherwise.',
+            "Output 'true' if the user explicitly asks for a gaming laptop. Output 'false' if they explicitly say 'NOT for gaming'. Output 'unspecified' if gaming is not mentioned at all.",
+        },
+        target_location: {
+          type: Type.STRING,
+          description:
+            'The city or region name the user wants to search in (e.g. "Tel Aviv", "Gaza"). Null if not mentioned.',
+        },
+        target_seller: {
+          type: Type.STRING,
+          description:
+            'The seller name the user is looking for (e.g. "John", "Ahmed"). Null if not mentioned.',
         },
         // preferred_use_case: {
         //   type: Type.STRING,
@@ -65,6 +75,8 @@ export async function POST(req: NextRequest) {
     let max_budget = 999999;
     let min_ram_gb = null;
     let requires_gaming = null;
+    let target_location: string | null = null;
+    let target_seller: string | null = null;
     // let preferred_use_case = null;
     // let expected_audience = null;
 
@@ -72,8 +84,12 @@ export async function POST(req: NextRequest) {
       const parsed = JSON.parse(extractFiltersResponse.text || '{}');
       if (typeof parsed.max_budget === 'number') max_budget = parsed.max_budget;
       if (typeof parsed.min_ram_gb === 'number') min_ram_gb = parsed.min_ram_gb;
-      if (typeof parsed.requires_gaming === 'boolean')
-        requires_gaming = parsed.requires_gaming;
+      if (parsed.requires_gaming === 'true') requires_gaming = true;
+      if (parsed.requires_gaming === 'false') requires_gaming = false;
+      if (typeof parsed.target_location === 'string')
+        target_location = parsed.target_location;
+      if (typeof parsed.target_seller === 'string')
+        target_seller = parsed.target_seller;
       // if (typeof parsed.preferred_use_case === 'string') preferred_use_case = parsed.preferred_use_case;
       // if (typeof parsed.expected_audience === 'string') expected_audience = parsed.expected_audience;
     } catch (e) {
@@ -88,8 +104,15 @@ export async function POST(req: NextRequest) {
     if (min_ram_gb !== null && min_ram_gb <= 0) min_ram_gb = null;
 
     // 3. Fix literal string "null" or empty strings
+    if (!target_location || target_location.toLowerCase() === 'null')
+      target_location = null;
+    if (!target_seller || target_seller.toLowerCase() === 'null')
+      target_seller = null;
+    // target_location = null;
+    // target_seller = null;
     // if (preferred_use_case === "null" || preferred_use_case === "" || preferred_use_case === "Null" || preferred_use_case === "NULL") preferred_use_case = null;
     // if (expected_audience === "null" || expected_audience === "" || expected_audience === "Null" || expected_audience === "NULL") expected_audience = null;
+    // requires_gaming = true;
     // ----------------------------------
 
     // ── 2. Generate query vector ─────────────────────────────────────────────
@@ -114,10 +137,14 @@ export async function POST(req: NextRequest) {
       max_price: max_budget,
       min_ram_gb,
       requires_gaming,
+      target_location,
+      target_seller,
       // preferred_use_case,
       // expected_audience,
       match_limit: 5,
     });
+
+    console.log(listings);
 
     // ── 4. Build context string for the LLM ─────────────────────────────────
     // We MUST include the listing_id in the context so the AI knows how to identify them
@@ -125,15 +152,18 @@ export async function POST(req: NextRequest) {
       listings.length > 0
         ? JSON.stringify(
             listings.map((l) => ({
-              listing_id: l.listing_id, // Added ID
+              listing_id: l.listing_id,
               title: l.title,
               price: l.price,
+              specifications: l.specifications, // NEW: AI can now see processors, RAM, etc.
+              location: l.location, // NEW: AI can now see where the item is!
+              seller: l.sellerName,
               currency: l.currency ?? 'ILS',
             }))
           )
         : 'No suitable listings found.';
 
-    const prompt = `User's message: "${message}"\n\nDatabase search results:\n${contextStr}\n\nRespond conversationally to the user based on the results. If results are found, mention them briefly. If some of the database results do not accurately match the user's intent, IGNORE them completely.`;
+    const prompt = `User's message: "${message}"\n\nDatabase search results:\n${contextStr}\n\nRespond conversationally to the user based on the results. If some results do not accurately match the user's intent, IGNORE them completely. CRITICAL: If you mention or recommend an item in your text reply, you MUST include its exact listing_id in the relevant_listing_ids array.`;
 
     // ── 5. Generate conversational reply AND filter the UI ──────────────────
     // Force the AI to output exactly which IDs it wants to display
@@ -177,9 +207,19 @@ export async function POST(req: NextRequest) {
         parsedReply.relevant_listing_ids &&
         Array.isArray(parsedReply.relevant_listing_ids)
       ) {
-        finalListings = listings.filter((l) =>
+        const filtered = listings.filter((l) =>
           parsedReply.relevant_listing_ids.includes(l.listing_id)
         );
+
+        // Safety Fallback: Only apply the filter if it found matches,
+        // OR if the AI explicitly returned an empty array (meaning no matches).
+        // This prevents the UI from going blank if the AI recommends an item but forgets the ID.
+        if (
+          filtered.length > 0 ||
+          parsedReply.relevant_listing_ids.length === 0
+        ) {
+          finalListings = filtered;
+        }
       }
     } catch (e) {
       console.error('Failed to parse final AI JSON response', e);
