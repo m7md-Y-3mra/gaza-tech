@@ -30,6 +30,7 @@ export type ListingCardItem = SimilarListingRes & {
   isVerified: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   specifications?: any;
+  category?: string;
 };
 
 export type PriceRange = {
@@ -719,6 +720,7 @@ type HybridSearchRow = Pick<
   listing_images: Pick<ListingImageRow, 'image_url' | 'is_thumbnail'>[];
   locations: Pick<LocationRow, 'location_id' | 'name' | 'name_ar'>[];
   seller: Pick<User, 'first_name' | 'last_name' | 'is_verified'>;
+  category_name: string;
   similarity: number;
 };
 
@@ -734,6 +736,8 @@ export async function hybridSearchListingsQuery(params: {
   requires_gaming?: boolean | null;
   target_location?: string | null;
   target_seller?: string | null;
+  target_category?: string | null;
+  target_condition?: string | null;
   preferred_use_case?: string | null;
   expected_audience?: string | null;
   match_limit?: number;
@@ -748,8 +752,8 @@ export async function hybridSearchListingsQuery(params: {
     requires_gaming: params.requires_gaming ?? null,
     target_location: params.target_location ?? null,
     target_seller: params.target_seller ?? null,
-    // preferred_use_case: params.preferred_use_case ?? null,
-    // expected_audience: params.expected_audience ?? null,
+    target_category: params.target_category ?? null,
+    target_condition: params.target_condition ?? null,
     match_limit: params.match_limit ?? 5,
   };
   console.log(test);
@@ -762,8 +766,8 @@ export async function hybridSearchListingsQuery(params: {
     requires_gaming: params.requires_gaming ?? null,
     target_location: params.target_location ?? null,
     target_seller: params.target_seller ?? null,
-    // preferred_use_case: params.preferred_use_case ?? null,
-    // expected_audience: params.expected_audience ?? null,
+    target_category: params.target_category ?? null,
+    target_condition: params.target_condition ?? null,
     match_limit: params.match_limit ?? 5,
   });
 
@@ -806,6 +810,7 @@ export async function hybridSearchListingsQuery(params: {
       location,
       sellerName,
       isVerified,
+      category: row.category_name ?? '',
     };
   });
 }
