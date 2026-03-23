@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenAI, Type } from '@google/genai';
 import { hybridSearchListingsQuery } from '@/modules/listings/queries';
+import { categories, ProductCondition } from '@/modules/listings/types';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,7 +14,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const geminiApiKey = process.env.GEMINI_API_KEY;
+    const geminiApiKey = process.env.GEMINI_API_KEY2;
+    console.log(geminiApiKey);
     if (!geminiApiKey) {
       return NextResponse.json(
         { error: 'GEMINI_API_KEY is not configured.' },
@@ -45,21 +47,38 @@ export async function POST(req: NextRequest) {
         target_location: {
           type: Type.STRING,
           description:
-            'The city or region name the user wants to search in (e.g. "Tel Aviv", "Gaza"). Null if not mentioned.',
+            'The city or region name the user wants to search in. Output any if none match or not specified.',
+          enum: [
+            "Gaza City",
+            "Khan Yunis",
+            "Deir Al Balah",
+            "Nuseirat Camp",
+            "Bureij Camp",
+            "Zawaida Camp",
+            "Maghazi Camp",
+            "Jabalia",
+            "Beit Lahia",
+            "Rafah",
+            "Beit Hanoun",
+            "Beach Camp",
+            "any"
+          ]
         },
         target_seller: {
           type: Type.STRING,
           description:
-            'The seller name the user is looking for (e.g. "John", "Ahmed"). Null if not mentioned.',
+            'The seller name the user is looking for. Null if not mentioned.',
         },
-        // preferred_use_case: {
-        //   type: Type.STRING,
-        //   description: "A single primary use case the user mentioned, such as 'business', 'programming', or 'student'. Null if not specified.",
-        // },
-        // expected_audience: {
-        //   type: Type.STRING,
-        //   description: "The specific type of user this is for, such as 'business professionals' or 'designers'. Null if not specified.",
-        // }
+        target_category: {
+          type: Type.STRING,
+          description: "The product category. Output 'any' if none match or not specified.",
+          enum: ["any", ...categories],
+        },
+        target_condition: {
+          type: Type.STRING,
+          description: "The item condition. Output 'any' if the user doesn't specify.",
+          enum: ["any", ...Object.keys(ProductCondition)],
+        },
       },
     };
 
@@ -77,8 +96,8 @@ export async function POST(req: NextRequest) {
     let requires_gaming = null;
     let target_location: string | null = null;
     let target_seller: string | null = null;
-    // let preferred_use_case = null;
-    // let expected_audience = null;
+    let target_category: string | null = null;
+    let target_condition: string | null = null;
 
     try {
       const parsed = JSON.parse(extractFiltersResponse.text || '{}');
@@ -90,8 +109,10 @@ export async function POST(req: NextRequest) {
         target_location = parsed.target_location;
       if (typeof parsed.target_seller === 'string')
         target_seller = parsed.target_seller;
-      // if (typeof parsed.preferred_use_case === 'string') preferred_use_case = parsed.preferred_use_case;
-      // if (typeof parsed.expected_audience === 'string') expected_audience = parsed.expected_audience;
+      if (typeof parsed.target_category === 'string' && parsed.target_category !== 'null' && parsed.target_category !== '')
+        target_category = parsed.target_category;
+      if (typeof parsed.target_condition === 'string' && parsed.target_condition !== 'null' && parsed.target_condition !== '')
+        target_condition = parsed.target_condition;
     } catch (e) {
       console.error('Failed to parse filter JSON', e);
     }
@@ -104,15 +125,10 @@ export async function POST(req: NextRequest) {
     if (min_ram_gb !== null && min_ram_gb <= 0) min_ram_gb = null;
 
     // 3. Fix literal string "null" or empty strings
-    if (!target_location || target_location.toLowerCase() === 'null')
-      target_location = null;
-    if (!target_seller || target_seller.toLowerCase() === 'null')
-      target_seller = null;
-    // target_location = null;
-    // target_seller = null;
-    // if (preferred_use_case === "null" || preferred_use_case === "" || preferred_use_case === "Null" || preferred_use_case === "NULL") preferred_use_case = null;
-    // if (expected_audience === "null" || expected_audience === "" || expected_audience === "Null" || expected_audience === "NULL") expected_audience = null;
-    // requires_gaming = true;
+    if (!target_location || target_location.toLowerCase() === 'null' || target_location.toLowerCase() === 'any') target_location = null;
+    if (!target_seller || target_seller.toLowerCase() === 'null' || target_seller.toLowerCase() === 'any') target_seller = null;
+    if (!target_category || target_category.toLowerCase() === 'null' || target_category.toLowerCase() === 'any') target_category = null;
+    if (!target_condition || target_condition.toLowerCase() === 'null' || target_condition.toLowerCase() === 'any') target_condition = null;
     // ----------------------------------
 
     // ── 2. Generate query vector ─────────────────────────────────────────────
@@ -139,8 +155,8 @@ export async function POST(req: NextRequest) {
       requires_gaming,
       target_location,
       target_seller,
-      // preferred_use_case,
-      // expected_audience,
+      target_category,
+      target_condition,
       match_limit: 5,
     });
 
@@ -151,16 +167,18 @@ export async function POST(req: NextRequest) {
     const contextStr =
       listings.length > 0
         ? JSON.stringify(
-            listings.map((l) => ({
-              listing_id: l.listing_id,
-              title: l.title,
-              price: l.price,
-              specifications: l.specifications, // NEW: AI can now see processors, RAM, etc.
-              location: l.location, // NEW: AI can now see where the item is!
-              seller: l.sellerName,
-              currency: l.currency ?? 'ILS',
-            }))
-          )
+          listings.map((l) => ({
+            listing_id: l.listing_id,
+            title: l.title,
+            price: l.price,
+            specifications: l.specifications,
+            condition: l.product_condition, // AI can see the condition!
+            category: l.category,           // AI can see the category!
+            location: l.location,
+            seller: l.sellerName,
+            currency: l.currency ?? 'ILS',
+          }))
+        )
         : 'No suitable listings found.';
 
     const prompt = `User's message: "${message}"\n\nDatabase search results:\n${contextStr}\n\nRespond conversationally to the user based on the results. If some results do not accurately match the user's intent, IGNORE them completely. CRITICAL: If you mention or recommend an item in your text reply, you MUST include its exact listing_id in the relevant_listing_ids array.`;
