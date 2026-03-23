@@ -19,6 +19,6 @@ export const categoryIconMap: Record<CategoryType, React.ElementType> = {
   'Headphones & Speakers': Headphones,
   'Chargers & Cables': Zap,
   'Monitors & Screens': Monitor,
-  'Cameras': Camera,
+  Cameras: Camera,
   'Phone Accessories': Keyboard,
 };

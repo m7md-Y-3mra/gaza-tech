@@ -75,16 +75,16 @@ export type Listing =
   Database['public']['Tables']['marketplace_listings']['Row'];
 
 export const categories = [
-  "Laptops & Computers",
-  "Mobile Phones",
-  "Computer Parts",
-  "Routers & Networking",
-  "Keyboards & Mice",
-  "Headphones & Speakers",
-  "Chargers & Cables",
-  "Monitors & Screens",
-  "Cameras",
-  "Phone Accessories",
+  'Laptops & Computers',
+  'Mobile Phones',
+  'Computer Parts',
+  'Routers & Networking',
+  'Keyboards & Mice',
+  'Headphones & Speakers',
+  'Chargers & Cables',
+  'Monitors & Screens',
+  'Cameras',
+  'Phone Accessories',
 ] as const;
 
 export type CategoryType = (typeof categories)[number];

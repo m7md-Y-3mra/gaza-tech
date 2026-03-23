@@ -49,20 +49,20 @@ export async function POST(req: NextRequest) {
           description:
             'The city or region name the user wants to search in. Output any if none match or not specified.',
           enum: [
-            "Gaza City",
-            "Khan Yunis",
-            "Deir Al Balah",
-            "Nuseirat Camp",
-            "Bureij Camp",
-            "Zawaida Camp",
-            "Maghazi Camp",
-            "Jabalia",
-            "Beit Lahia",
-            "Rafah",
-            "Beit Hanoun",
-            "Beach Camp",
-            "any"
-          ]
+            'Gaza City',
+            'Khan Yunis',
+            'Deir Al Balah',
+            'Nuseirat Camp',
+            'Bureij Camp',
+            'Zawaida Camp',
+            'Maghazi Camp',
+            'Jabalia',
+            'Beit Lahia',
+            'Rafah',
+            'Beit Hanoun',
+            'Beach Camp',
+            'any',
+          ],
         },
         target_seller: {
           type: Type.STRING,
@@ -71,13 +71,15 @@ export async function POST(req: NextRequest) {
         },
         target_category: {
           type: Type.STRING,
-          description: "The product category. Output 'any' if none match or not specified.",
-          enum: ["any", ...categories],
+          description:
+            "The product category. Output 'any' if none match or not specified.",
+          enum: ['any', ...categories],
         },
         target_condition: {
           type: Type.STRING,
-          description: "The item condition. Output 'any' if the user doesn't specify.",
-          enum: ["any", ...Object.keys(ProductCondition)],
+          description:
+            "The item condition. Output 'any' if the user doesn't specify.",
+          enum: ['any', ...Object.keys(ProductCondition)],
         },
       },
     };
@@ -109,9 +111,17 @@ export async function POST(req: NextRequest) {
         target_location = parsed.target_location;
       if (typeof parsed.target_seller === 'string')
         target_seller = parsed.target_seller;
-      if (typeof parsed.target_category === 'string' && parsed.target_category !== 'null' && parsed.target_category !== '')
+      if (
+        typeof parsed.target_category === 'string' &&
+        parsed.target_category !== 'null' &&
+        parsed.target_category !== ''
+      )
         target_category = parsed.target_category;
-      if (typeof parsed.target_condition === 'string' && parsed.target_condition !== 'null' && parsed.target_condition !== '')
+      if (
+        typeof parsed.target_condition === 'string' &&
+        parsed.target_condition !== 'null' &&
+        parsed.target_condition !== ''
+      )
         target_condition = parsed.target_condition;
     } catch (e) {
       console.error('Failed to parse filter JSON', e);
@@ -125,10 +135,30 @@ export async function POST(req: NextRequest) {
     if (min_ram_gb !== null && min_ram_gb <= 0) min_ram_gb = null;
 
     // 3. Fix literal string "null" or empty strings
-    if (!target_location || target_location.toLowerCase() === 'null' || target_location.toLowerCase() === 'any') target_location = null;
-    if (!target_seller || target_seller.toLowerCase() === 'null' || target_seller.toLowerCase() === 'any') target_seller = null;
-    if (!target_category || target_category.toLowerCase() === 'null' || target_category.toLowerCase() === 'any') target_category = null;
-    if (!target_condition || target_condition.toLowerCase() === 'null' || target_condition.toLowerCase() === 'any') target_condition = null;
+    if (
+      !target_location ||
+      target_location.toLowerCase() === 'null' ||
+      target_location.toLowerCase() === 'any'
+    )
+      target_location = null;
+    if (
+      !target_seller ||
+      target_seller.toLowerCase() === 'null' ||
+      target_seller.toLowerCase() === 'any'
+    )
+      target_seller = null;
+    if (
+      !target_category ||
+      target_category.toLowerCase() === 'null' ||
+      target_category.toLowerCase() === 'any'
+    )
+      target_category = null;
+    if (
+      !target_condition ||
+      target_condition.toLowerCase() === 'null' ||
+      target_condition.toLowerCase() === 'any'
+    )
+      target_condition = null;
     // ----------------------------------
 
     // ── 2. Generate query vector ─────────────────────────────────────────────
@@ -167,18 +197,18 @@ export async function POST(req: NextRequest) {
     const contextStr =
       listings.length > 0
         ? JSON.stringify(
-          listings.map((l) => ({
-            listing_id: l.listing_id,
-            title: l.title,
-            price: l.price,
-            specifications: l.specifications,
-            condition: l.product_condition, // AI can see the condition!
-            category: l.category,           // AI can see the category!
-            location: l.location,
-            seller: l.sellerName,
-            currency: l.currency ?? 'ILS',
-          }))
-        )
+            listings.map((l) => ({
+              listing_id: l.listing_id,
+              title: l.title,
+              price: l.price,
+              specifications: l.specifications,
+              condition: l.product_condition, // AI can see the condition!
+              category: l.category, // AI can see the category!
+              location: l.location,
+              seller: l.sellerName,
+              currency: l.currency ?? 'ILS',
+            }))
+          )
         : 'No suitable listings found.';
 
     const prompt = `User's message: "${message}"\n\nDatabase search results:\n${contextStr}\n\nRespond conversationally to the user based on the results. If some results do not accurately match the user's intent, IGNORE them completely. CRITICAL: If you mention or recommend an item in your text reply, you MUST include its exact listing_id in the relevant_listing_ids array.`;
