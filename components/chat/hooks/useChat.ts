@@ -1,9 +1,11 @@
 import { ListingCardItem } from '@/modules/listings/queries';
-import { useEffect, useRef, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 export const useChat = () => {
   const t = useTranslations('Chat');
+  const supabase = useMemo(() => createClient(), []);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,15 +40,16 @@ export const useChat = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage }),
+      const { data, error } = await supabase.functions.invoke('chat-search', {
+        body: { message: userMessage },
       });
 
-      const data = await res.json();
-
-      if (data.error) {
+      if (error) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'ai', text: `${t('errorPrefix')}${error.message}` },
+        ]);
+      } else if (data?.error) {
         setMessages((prev) => [
           ...prev,
           { role: 'ai', text: `${t('errorPrefix')}${data.error}` },
