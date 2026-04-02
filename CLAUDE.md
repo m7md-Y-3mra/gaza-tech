@@ -299,6 +299,8 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 ## Active Technologies
 - TypeScript, Next.js 16, React 19 + react-hook-form `^7.69.0`, zod `^4.2.1`, `@supabase/supabase-js` `^2.86.0`, browser-image-compression `^2.0.2`, next-intl `^4.7.0`, Tailwind CSS `^4`, shadcn/ui (radix), lucide-react (001-reusable-file-upload)
 - Supabase Storage (buckets: `marketplace-image` for listings, `community-attachments` for community) (001-reusable-file-upload)
+- TypeScript, Next.js 16, React 19 + zod ^4.2.1, react-hook-form ^7.69.0, @hookform/resolvers/zod, next-intl ^4.7.0, @supabase/supabase-js ^2.86.0 (002-community-post-schema)
+- Supabase PostgreSQL (tables: `community_posts`, `community_posts_attachments`); Supabase Storage bucket: `community-attachments` (002-community-post-schema)
 
 ## Recent Changes
 - 001-reusable-file-upload: Added TypeScript, Next.js 16, React 19 + react-hook-form `^7.69.0`, zod `^4.2.1`, `@supabase/supabase-js` `^2.86.0`, browser-image-compression `^2.0.2`, next-intl `^4.7.0`, Tailwind CSS `^4`, shadcn/ui (radix), lucide-react
