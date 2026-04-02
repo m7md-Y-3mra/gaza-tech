@@ -64,7 +64,7 @@
 ### Implementation for User Story 3
 
 - [x] T008 [US3] Implement `getCommunityPostDetailsQuery(postId)` in `modules/community/queries.ts` — use Supabase relational query: `client.from('community_posts').select('*, community_posts_attachments(*)').eq('post_id', postId).single()`. Return the post with nested attachments array, or `null` if not found. Follow `getListingDetailsQuery` pattern in `modules/listings/queries.ts:68-119`.
-- [ ] T009 [US3] Implement `getCommunityPostDetailsAction` in `modules/community/actions.ts` — wrap `getCommunityPostDetailsQuery` with `errorHandler()`. No revalidation needed for read operations. Follow `getListingDetailsAction` pattern in `modules/listings/actions.ts:24`.
+- [x] T009 [US3] Implement `getCommunityPostDetailsAction` in `modules/community/actions.ts` — wrap `getCommunityPostDetailsQuery` with `errorHandler()`. No revalidation needed for read operations. Follow `getListingDetailsAction` pattern in `modules/listings/actions.ts:24`.
 
 **Checkpoint**: Details action returns full post data with attachments array. `npm run check` passes.
 
@@ -74,8 +74,8 @@
 
 **Purpose**: Final validation and code quality
 
-- [ ] T010 Run `npm run check` (format + lint + type-check) and fix any issues across all new files in `modules/community/`
-- [ ] T011 Review all exports from `modules/community/actions.ts` and verify each action follows the `{ success, data?, message?, errors? }` response format via `errorHandler()` wrapper
+- [x] T010 Run `npm run check` (format + lint + type-check) and fix any issues across all new files in `modules/community/`
+- [x] T011 Review all exports from `modules/community/actions.ts` and verify each action follows the `{ success, data?, message?, errors? }` response format via `errorHandler()` wrapper
 
 ---
 
