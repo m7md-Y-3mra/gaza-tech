@@ -19,7 +19,7 @@
 
 **Purpose**: Create directory structure for the shared file upload component.
 
-- [ ] T001 Create the shared file-upload component directory structure by running: `mkdir -p components/file-upload/types components/file-upload/hooks components/file-upload/reducers`
+- [X] T001 Create the shared file-upload component directory structure by running: `mkdir -p components/file-upload/types components/file-upload/hooks components/file-upload/reducers`
 
 ---
 
@@ -31,7 +31,7 @@
 
 ### T002 — Shared Types
 
-- [ ] T002 [P] Create shared file upload types in `components/file-upload/types/index.ts`
+- [X] T002 [P] Create shared file upload types in `components/file-upload/types/index.ts`
 
 **What to create**: A new file at `components/file-upload/types/index.ts` with these exact types.
 
@@ -122,7 +122,7 @@ export type UseFileUploadProps = UseFileUploadCreate | UseFileUploadUpdate;
 
 ### T003 — Shared Reducer
 
-- [ ] T003 Create shared file reducer in `components/file-upload/reducers/fileReducer.ts`
+- [X] T003 Create shared file reducer in `components/file-upload/reducers/fileReducer.ts`
 
 **What to create**: Copy `modules/listings/components/listing-form/components/image-upload/reducers/imageReducer.ts` and rename all types/actions from `Image*` to `File*`.
 
@@ -246,7 +246,7 @@ export const fileReducer = (
 
 ### T004 — Reducer Barrel Export
 
-- [ ] T004 Create reducer barrel export in `components/file-upload/reducers/index.ts`
+- [X] T004 Create reducer barrel export in `components/file-upload/reducers/index.ts`
 
 **What to create**: A simple re-export file. Reference: `modules/listings/components/listing-form/components/image-upload/reducers/index.ts`.
 
@@ -258,7 +258,7 @@ export type { FileUploadState, FileUploadAction } from './fileReducer';
 
 ### T005 — Shared Uploader Hook
 
-- [ ] T005 Create shared file uploader hook in `components/file-upload/hooks/useFileUploader.ts`
+- [X] T005 Create shared file uploader hook in `components/file-upload/hooks/useFileUploader.ts`
 
 **What to create**: Copy `modules/listings/components/listing-form/components/image-upload/hooks/useImageUploader.ts` (125 lines) and make these changes:
 
@@ -410,7 +410,7 @@ export const useFileUploader = ({
 
 ### T006 — Shared File Upload State Hook
 
-- [ ] T006 Create shared file upload state hook in `components/file-upload/hooks/useFileUpload.ts`
+- [X] T006 Create shared file upload state hook in `components/file-upload/hooks/useFileUpload.ts`
 
 **What to create**: Copy `modules/listings/components/listing-form/components/image-upload/hooks/useImageUpload.ts` (89 lines) and generalize it.
 
@@ -581,7 +581,7 @@ export const useFileUpload = (
 
 ### T007 — i18n Keys
 
-- [ ] T007 [P] Add shared FileUpload i18n keys to `messages/en.json` and `messages/ar.json`
+- [X] T007 [P] Add shared FileUpload i18n keys to `messages/en.json` and `messages/ar.json`
 
 **What to do**: Add a new top-level key `"FileUpload"` to both translation files. Place it after any existing top-level key (before the closing `}`).
 
@@ -637,7 +637,7 @@ export const useFileUpload = (
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Create shared FileUpload.tsx component (image-grid mode) in `components/file-upload/FileUpload.tsx`
+- [X] T008 [US1] Create shared FileUpload.tsx component (image-grid mode) in `components/file-upload/FileUpload.tsx`
 
 **What to create**: A new client component that renders based on `config.displayMode`. For this task, implement ONLY the `image-grid` mode. The `file-list` mode will be added in Phase 4 (US2).
 
@@ -900,7 +900,7 @@ export const FileUpload: React.FC<FileUploadProps> = (props) => {
 
 **Note on `disabled` prop**: The `disabled?: boolean` property is already defined on `UseFileUploadBase` in T002's type definition.
 
-- [ ] T009 [US1] Create barrel export in `components/file-upload/index.ts`
+- [X] T009 [US1] Create barrel export in `components/file-upload/index.ts`
 
 **What to create**: A barrel export file that exposes the public API.
 
@@ -919,7 +919,7 @@ export type {
 } from './types';
 ```
 
-- [ ] T010 [US1] Refactor listings ImageUpload.tsx to be a thin wrapper around the shared FileUpload in `modules/listings/components/listing-form/components/image-upload/ImageUpload.tsx`
+- [X] T010 [US1] Refactor listings ImageUpload.tsx to be a thin wrapper around the shared FileUpload in `modules/listings/components/listing-form/components/image-upload/ImageUpload.tsx`
 
 **What to do**: Replace the entire content of `ImageUpload.tsx` (currently 233 lines) with a thin wrapper that imports `FileUpload` from the shared component and passes listing-specific configuration.
 
@@ -996,7 +996,7 @@ const ImageUpload = dynamic(
 ```
 If the component is already below the fold or inside a lazy-rendered tab, this is optional. Verify via T018 Lighthouse audit.
 
-- [ ] T011 [US1] Verify listings image-upload types compatibility (no changes needed) in `modules/listings/components/listing-form/components/image-upload/types/index.ts`
+- [X] T011 [US1] Verify listings image-upload types compatibility (no changes needed) in `modules/listings/components/listing-form/components/image-upload/types/index.ts`
 
 **What to do**: The types file currently defines listing-specific types. Keep the types that `ListingFormClient.tsx` and `useListingForm.ts` depend on, but base them on shared types where possible. The existing types must remain compatible so nothing else breaks.
 
@@ -1004,7 +1004,7 @@ If the component is already below the fold or inside a lazy-rendered tab, this i
 
 **Note**: The stray text ` FileUploadItemBase` on line 30 of the original file is a bug in the existing code. You may remove it if you touch this file.
 
-- [ ] T012 [US1] Update listings image-upload exports in `modules/listings/components/listing-form/components/image-upload/index.ts`
+- [X] T012 [US1] Update listings image-upload exports in `modules/listings/components/listing-form/components/image-upload/index.ts`
 
 **What to do**: Keep exports the same — no changes needed. The `ImageUpload` default export still comes from `./ImageUpload` (which is now the thin wrapper). The type exports remain the same.
 
@@ -1019,7 +1019,7 @@ export type {
 
 **No changes needed for this file.** Mark as done.
 
-- [ ] T013 [US1] Update useListingForm.ts to import useFileUploader from shared component in `modules/listings/components/listing-form/hooks/useListingForm.ts`
+- [X] T013 [US1] Update useListingForm.ts to import useFileUploader from shared component in `modules/listings/components/listing-form/hooks/useListingForm.ts`
 
 **What to do**: Change the import of `useImageUploader` to use the shared `useFileUploader` hook instead.
 
@@ -1103,7 +1103,7 @@ uploadResults = rawUploadResults.map((result, i) => ({
 
 ### Implementation for User Story 2
 
-- [ ] T014 [US2] Implement file-list display mode in `components/file-upload/FileUpload.tsx`
+- [X] T014 [US2] Implement file-list display mode in `components/file-upload/FileUpload.tsx`
 
 **What to do**: Replace the placeholder `<div>File list mode — coming in T014</div>` (added in T008) with the actual file-list UI.
 
@@ -1274,7 +1274,7 @@ function formatFileSize(bytes: number): string {
 
 ### Implementation for User Story 3
 
-- [ ] T015 [US3] Verify barrel exports are complete and types are properly exported from `components/file-upload/index.ts`
+- [X] T015 [US3] Verify barrel exports are complete and types are properly exported from `components/file-upload/index.ts`
 
 **What to do**: Read `components/file-upload/index.ts` (created in T009) and verify it exports:
 1. `FileUpload` — the component
@@ -1291,7 +1291,7 @@ function formatFileSize(bytes: number): string {
 
 **Purpose**: Accessibility, code quality, and final verification.
 
-- [ ] T016 [P] Add aria-label attributes to all interactive elements in `components/file-upload/FileUpload.tsx`
+- [X] T016 [P] Add aria-label attributes to all interactive elements in `components/file-upload/FileUpload.tsx`
 
 **What to do**: Ensure all buttons and interactive elements have `aria-label` attributes for screen readers. Verify:
 1. The file input has `aria-label={t('uploadTitle')}` (already done in T008)
@@ -1313,7 +1313,7 @@ Add any missing attributes. Example for empty slots:
 >
 ```
 
-- [ ] T017 [P] Run code quality checks: `npm run check` (runs format + lint + type-check)
+- [X] T017 [P] Run code quality checks: `npm run check` (runs format + lint + type-check)
 
 **What to do**: Run `npm run check` from the project root. Fix any errors:
 1. If formatting errors: run `npm run format`
