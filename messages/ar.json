@@ -621,5 +621,34 @@
     "inputPlaceholder": "مثال: لابتوب ألعاب بسعر أقل من 1000 شيكل...",
     "unexpectedError": "حدث خطأ غير متوقع.",
     "errorPrefix": "خطأ: "
+  },
+  "CommunityForm": {
+    "validation": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
+      "titleMax": "لا يمكن أن يتجاوز العنوان 100 حرف",
+      "contentRequired": "المحتوى مطلوب",
+      "contentMin": "يجب أن يكون المحتوى 10 أحرف على الأقل",
+      "contentMax": "لا يمكن أن يتجاوز المحتوى 5000 حرف",
+      "categoryRequired": "يرجى اختيار فئة صالحة",
+      "attachmentMaxSize": "يجب أن يكون حجم الملف أقل من 5 ميجابايت",
+      "attachmentInvalidType": "نوع ملف غير صالح. يُسمح فقط بـ JPG وPNG وGIF وWEBP وPDF.",
+      "attachmentsMaxCount": "يمكنك إرفاق 5 ملفات كحد أقصى"
+    }
+  },
+  "FileUpload": {
+    "uploadTitle": "رفع الملفات",
+    "dragDrop": "اسحب وأفلت أو اضغط للتصفح",
+    "chooseFiles": "اختر ملفات",
+    "supportedFormats": "الصيغ المدعومة: {formats} (حد أقصى {maxSize} ميجابايت لكل ملف)",
+    "fileCount": "{count}/{max} ملفات",
+    "cover": "الغلاف",
+    "setAsCover": "تعيين كغلاف",
+    "removeFile": "إزالة الملف",
+    "invalidFileType": "\"{name}\": نوع ملف غير صالح",
+    "fileTooLarge": "\"{name}\": حجم الملف يجب أن يكون أقل من {maxSize} ميجابايت",
+    "fileTooSmall": "\"{name}\": حجم الملف يجب أن يكون على الأقل {minSize} كيلوبايت",
+    "fileError": "ملف {index}: {message}",
+    "maxFilesReached": "الحد الأقصى {max} ملفات مسموح"
   }
 }

@@ -621,5 +621,34 @@
     "inputPlaceholder": "E.g. Gaming laptops under 1000 ILS...",
     "unexpectedError": "An unexpected error occurred.",
     "errorPrefix": "Error: "
+  },
+  "CommunityForm": {
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMin": "Title must be at least 5 characters long",
+      "titleMax": "Title cannot exceed 100 characters",
+      "contentRequired": "Content is required",
+      "contentMin": "Content must be at least 10 characters long",
+      "contentMax": "Content cannot exceed 5000 characters",
+      "categoryRequired": "Please select a valid category",
+      "attachmentMaxSize": "File size must be less than 5MB",
+      "attachmentInvalidType": "Invalid file type. Only JPG, PNG, GIF, WEBP and PDF are allowed.",
+      "attachmentsMaxCount": "You can attach a maximum of 5 files"
+    }
+  },
+  "FileUpload": {
+    "uploadTitle": "Upload Files",
+    "dragDrop": "Drag and drop or click to browse",
+    "chooseFiles": "Choose Files",
+    "supportedFormats": "Supported formats: {formats} (Max {maxSize}MB each)",
+    "fileCount": "{count}/{max} Files",
+    "cover": "Cover",
+    "setAsCover": "Set as Cover",
+    "removeFile": "Remove file",
+    "invalidFileType": "\"{name}\": Invalid file type",
+    "fileTooLarge": "\"{name}\": File size must be less than {maxSize}MB",
+    "fileTooSmall": "\"{name}\": File size must be at least {minSize}KB",
+    "fileError": "File {index}: {message}",
+    "maxFilesReached": "Maximum {max} files allowed"
   }
 }
