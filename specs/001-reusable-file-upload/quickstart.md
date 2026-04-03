@@ -17,12 +17,18 @@ import { FileUpload } from '@/components/file-upload';
     maxFiles: 5,
     maxSizeBytes: 2 * 1024 * 1024,
     minSizeBytes: 10_000,
-    acceptedTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/avif'],
+    acceptedTypes: [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'image/avif',
+    ],
     enableCompression: true,
     displayMode: 'image-grid',
   }}
   disabled={isSubmitting}
-/>
+/>;
 ```
 
 ## Usage — File List Mode (Community Posts)
@@ -38,12 +44,18 @@ import { FileUpload } from '@/components/file-upload';
     pathPrefix: 'posts/',
     maxFiles: 5,
     maxSizeBytes: 5 * 1024 * 1024,
-    acceptedTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'application/pdf'],
+    acceptedTypes: [
+      'image/png',
+      'image/jpeg',
+      'image/jpg',
+      'image/webp',
+      'application/pdf',
+    ],
     enableCompression: false,
     displayMode: 'file-list',
   }}
   disabled={isSubmitting}
-/>
+/>;
 ```
 
 ## Usage — Update Mode (Pre-populated)
@@ -64,7 +76,7 @@ const initialFiles: FileUploadItem[] = existingUrls.map((url, i) => ({
   initialFiles={initialFiles}
   config={communityConfig}
   disabled={isSubmitting}
-/>
+/>;
 ```
 
 ## Using the Uploader Hook (in form submit)
@@ -80,10 +92,8 @@ const { uploadFiles, deleteFiles, cleanup, isUploading } = useFileUploader({
 
 const onSubmit = async (data) => {
   try {
-    const newFiles = data.attachments.filter(f => !f.isExisting);
-    const results = await uploadFiles(
-      newFiles.map(f => ({ file: f.file }))
-    );
+    const newFiles = data.attachments.filter((f) => !f.isExisting);
+    const results = await uploadFiles(newFiles.map((f) => ({ file: f.file })));
     // results: Array<{ path: string; url: string }>
     await createPostAction({ ...data, attachments: results });
   } catch (error) {

@@ -18,6 +18,7 @@ Create server-side Zod schemas that validate the payload after client-side file 
 **Pattern reference**: `modules/listings/schema.ts` lines 163-191 (`createListingServerSchema`, `updateListingServerSchema`)
 
 Key decisions:
+
 - Create schema: requires `title`, `content`, `post_category`, optional `attachments` as `Array<{ url: string }>`
 - Update schema: same fields but all partial, attachments include `isExisting` boolean flag
 - No `author_id` in schema — injected from `authHandler()` in queries
@@ -46,21 +47,22 @@ Wrap each query with `errorHandler()`:
 
 ## Key Files to Reference
 
-| File | Why |
-|------|-----|
-| `modules/listings/queries.ts` | Query patterns, auth, rollback |
-| `modules/listings/actions.ts` | errorHandler wrapping, revalidation |
-| `modules/listings/schema.ts` | Server schema pattern |
-| `modules/community/schema.ts` | Client schemas (Phase 2) |
-| `modules/community/types/index.ts` | Types (Phase 2) |
-| `utils/error-handler.ts` | errorHandler implementation |
-| `utils/auth-handler.ts` | authHandler implementation |
-| `lib/zod-error.ts` | zodValidation utility |
-| `constants/community-file.ts` | POST_CATEGORIES, file constants |
+| File                               | Why                                 |
+| ---------------------------------- | ----------------------------------- |
+| `modules/listings/queries.ts`      | Query patterns, auth, rollback      |
+| `modules/listings/actions.ts`      | errorHandler wrapping, revalidation |
+| `modules/listings/schema.ts`       | Server schema pattern               |
+| `modules/community/schema.ts`      | Client schemas (Phase 2)            |
+| `modules/community/types/index.ts` | Types (Phase 2)                     |
+| `utils/error-handler.ts`           | errorHandler implementation         |
+| `utils/auth-handler.ts`            | authHandler implementation          |
+| `lib/zod-error.ts`                 | zodValidation utility               |
+| `constants/community-file.ts`      | POST_CATEGORIES, file constants     |
 
 ## Verification
 
 After each stage, run:
+
 ```bash
 npm run check  # format + lint + type-check
 ```

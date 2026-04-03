@@ -33,18 +33,27 @@ messages/ar.json              # Add CommunityForm.validation keys (Arabic)
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createCreateCommunityPostClientSchema, createUpdateCommunityPostClientSchema } from '@/modules/community/schema';
+import {
+  createCreateCommunityPostClientSchema,
+  createUpdateCommunityPostClientSchema,
+} from '@/modules/community/schema';
 import type { CreateCommunityPostFormData } from '@/modules/community/types';
 
 const tValidation = useTranslations('CommunityForm.validation');
 
-const schema = mode === 'create'
-  ? createCreateCommunityPostClientSchema(tValidation)
-  : createUpdateCommunityPostClientSchema(tValidation);
+const schema =
+  mode === 'create'
+    ? createCreateCommunityPostClientSchema(tValidation)
+    : createUpdateCommunityPostClientSchema(tValidation);
 
 const form = useForm<CreateCommunityPostFormData>({
   resolver: zodResolver(schema),
-  defaultValues: { title: '', content: '', post_category: 'questions', attachments: [] },
+  defaultValues: {
+    title: '',
+    content: '',
+    post_category: 'questions',
+    attachments: [],
+  },
   mode: 'onBlur',
 });
 ```

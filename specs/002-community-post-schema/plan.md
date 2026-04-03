@@ -21,28 +21,28 @@ Define Zod validation schemas and TypeScript types for community post create/upd
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Module-First Architecture | ✅ PASS | New module at `modules/community/` with `types/` and `schema.ts` |
-| II. Server-First Rendering | ✅ PASS | Schemas are isomorphic (no client/server concern); types are pure TS |
+| Principle                           | Status  | Notes                                                                                   |
+| ----------------------------------- | ------- | --------------------------------------------------------------------------------------- |
+| I. Module-First Architecture        | ✅ PASS | New module at `modules/community/` with `types/` and `schema.ts`                        |
+| II. Server-First Rendering          | ✅ PASS | Schemas are isomorphic (no client/server concern); types are pure TS                    |
 | III. Incremental Staged Development | ✅ PASS | Implementation will be staged: types → constants → create schema → update schema → i18n |
-| IV. Performance Standards | ✅ PASS | No UI components; no performance impact |
-| V. Accessibility (WCAG AA) | ✅ PASS | No UI components in this feature |
-| VI. Consistent Error Handling | ✅ PASS | Schema factories produce translated validation messages; follows errorHandler pattern |
+| IV. Performance Standards           | ✅ PASS | No UI components; no performance impact                                                 |
+| V. Accessibility (WCAG AA)          | ✅ PASS | No UI components in this feature                                                        |
+| VI. Consistent Error Handling       | ✅ PASS | Schema factories produce translated validation messages; follows errorHandler pattern   |
 
 **Gate Result**: ALL PASS — proceed to Phase 0.
 
 ### Post-Phase 1 Re-check
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Module-First Architecture | ✅ PASS | Types in `modules/community/types/`, schema in `modules/community/schema.ts`, constants in `constants/` |
-| II. Server-First Rendering | ✅ PASS | No components created |
-| III. Incremental Staged Development | ✅ PASS | 4 discrete stages planned |
-| IV–V. Performance/Accessibility | ✅ N/A | Schema-only feature |
-| VI. Consistent Error Handling | ✅ PASS | TranslationFunction pattern + zodResolver integration |
+| Principle                           | Status  | Notes                                                                                                   |
+| ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| I. Module-First Architecture        | ✅ PASS | Types in `modules/community/types/`, schema in `modules/community/schema.ts`, constants in `constants/` |
+| II. Server-First Rendering          | ✅ PASS | No components created                                                                                   |
+| III. Incremental Staged Development | ✅ PASS | 4 discrete stages planned                                                                               |
+| IV–V. Performance/Accessibility     | ✅ N/A  | Schema-only feature                                                                                     |
+| VI. Consistent Error Handling       | ✅ PASS | TranslationFunction pattern + zodResolver integration                                                   |
 
 **Gate Result**: ALL PASS — proceed to implementation.
 

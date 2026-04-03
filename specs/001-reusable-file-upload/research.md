@@ -7,6 +7,7 @@
 **Decision**: Use `z.file()` with `.min()`, `.max()`, `.mime()` chain — the existing pattern.
 
 **Rationale**: `z.file()` is new in zod v4 (did not exist in v3). The installed version (`^4.2.1`) supports:
+
 - `z.file().min(bytes, msg)` — minimum file size
 - `z.file().max(bytes, msg)` — maximum file size
 - `z.file().mime(types, msg)` — MIME type restriction
@@ -20,6 +21,7 @@ The `MimeTypes` type accepts standard MIME strings plus `(string & {})` for cust
 **Decision**: Use `supabase.storage.from(bucket).upload(path, file, options)` — the existing pattern, parameterized for bucket/path.
 
 **Rationale**: Confirmed with `@supabase/storage-js@2.99.1`:
+
 - `upload()` returns `{ data: { id, path, fullPath }, error: null } | { data: null, error: StorageError }`
 - `getPublicUrl()` is **synchronous** — returns `{ data: { publicUrl } }`, no error field, constructs URL client-side
 - `FileOptions`: `{ cacheControl?, contentType?, upsert?, metadata?, headers? }`
@@ -32,6 +34,7 @@ The `MimeTypes` type accepts standard MIME strings plus `(string & {})` for cust
 **Decision**: Continue using `browser-image-compression@2.0.2` with existing options. Add file-type guard before calling.
 
 **Rationale**:
+
 - Returns `File` (extends `Blob`) — compatible with Supabase upload
 - Options used: `maxSizeMB: 1`, `maxWidthOrHeight: 1920`, `fileType: 'image/webp'`, `useWebWorker: true`
 - **Does NOT validate file type** — passing a non-image file will cause a generic image-loading error
@@ -45,22 +48,23 @@ The `MimeTypes` type accepts standard MIME strings plus `(string & {})` for cust
 
 **Key findings from codebase exploration**:
 
-| Aspect | Current (Listings) | Shared (Target) |
-|--------|-------------------|-----------------|
-| Bucket | `marketplace-image` (hardcoded) | Configurable via `bucketName` param |
-| Path prefix | `listings/` (hardcoded) | Configurable via `pathPrefix` param |
-| Compression | Always on, WebP output | Configurable via `enableCompression` flag |
-| Max files | 5 (from constant) | Configurable via `maxFiles` param |
-| Max size | 2MB (from constant) | Configurable via `maxSizeBytes` param |
-| Accepted types | Images only | Configurable via `acceptedTypes` param |
-| Display | Image grid only | Configurable: `image-grid` or `file-list` |
-| Thumbnail | Always enabled | Enabled only in `image-grid` mode |
-| Reorder | Always enabled | Enabled only in `image-grid` mode |
-| Upload timing | On form submit (deferred) | Same — on form submit |
-| Batch failure | Atomic rollback (cleanup uploaded) | Same |
-| Progress | Binary `isUploading` flag | Same (per clarification) |
+| Aspect         | Current (Listings)                 | Shared (Target)                           |
+| -------------- | ---------------------------------- | ----------------------------------------- |
+| Bucket         | `marketplace-image` (hardcoded)    | Configurable via `bucketName` param       |
+| Path prefix    | `listings/` (hardcoded)            | Configurable via `pathPrefix` param       |
+| Compression    | Always on, WebP output             | Configurable via `enableCompression` flag |
+| Max files      | 5 (from constant)                  | Configurable via `maxFiles` param         |
+| Max size       | 2MB (from constant)                | Configurable via `maxSizeBytes` param     |
+| Accepted types | Images only                        | Configurable via `acceptedTypes` param    |
+| Display        | Image grid only                    | Configurable: `image-grid` or `file-list` |
+| Thumbnail      | Always enabled                     | Enabled only in `image-grid` mode         |
+| Reorder        | Always enabled                     | Enabled only in `image-grid` mode         |
+| Upload timing  | On form submit (deferred)          | Same — on form submit                     |
+| Batch failure  | Atomic rollback (cleanup uploaded) | Same                                      |
+| Progress       | Binary `isUploading` flag          | Same (per clarification)                  |
 
 **Current architecture** (6 files):
+
 - `ImageUpload.tsx` — UI with 5-column image grid, drop zone, count badge
 - `hooks/useImageUpload.ts` — state management (add, remove, thumbnail, reorder, drag)
 - `hooks/useImageUploader.ts` — Supabase upload/delete, compression, cleanup

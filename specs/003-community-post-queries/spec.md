@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Read @CHAT.md and create a specification for the Phase 3 community-post-queries ONLY"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Create a Community Post (Priority: P1)
 
@@ -65,7 +65,7 @@ An authenticated user navigates to the edit page for a community post they autho
 - What happens when the database is temporarily unavailable during a create or update operation?
 - How does the system handle a post update that changes zero fields (no-op update)? → **Resolved**: The update query returns early with a success response and makes no DB call when no content fields and no attachments are provided.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -86,7 +86,7 @@ An authenticated user navigates to the edit page for a community post they autho
 - **Community Post**: The primary content unit — contains title, content, category, publication status, and timestamps. Linked to an author (user) via `author_id`.
 - **Community Post Attachment**: A file reference associated with a post — contains the storage URL of the uploaded file. Linked to a post via `post_id`. Multiple attachments per post (up to 5).
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

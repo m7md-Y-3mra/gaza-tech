@@ -19,7 +19,7 @@
 
 **Purpose**: Create directory structure for the shared file upload component.
 
-- [X] T001 Create the shared file-upload component directory structure by running: `mkdir -p components/file-upload/types components/file-upload/hooks components/file-upload/reducers`
+- [x] T001 Create the shared file-upload component directory structure by running: `mkdir -p components/file-upload/types components/file-upload/hooks components/file-upload/reducers`
 
 ---
 
@@ -31,7 +31,7 @@
 
 ### T002 — Shared Types
 
-- [X] T002 [P] Create shared file upload types in `components/file-upload/types/index.ts`
+- [x] T002 [P] Create shared file upload types in `components/file-upload/types/index.ts`
 
 **What to create**: A new file at `components/file-upload/types/index.ts` with these exact types.
 
@@ -115,6 +115,7 @@ export type UseFileUploadProps = UseFileUploadCreate | UseFileUploadUpdate;
 ```
 
 **Key differences from listings types**:
+
 - `isThumbnail` is on the base type (always present, defaults to `false` in file-list mode)
 - `FileUploadConfig` replaces hardcoded constants
 - `FileUploadResult` does NOT include `isThumbnail` (consumer adds it if needed)
@@ -122,13 +123,14 @@ export type UseFileUploadProps = UseFileUploadCreate | UseFileUploadUpdate;
 
 ### T003 — Shared Reducer
 
-- [X] T003 Create shared file reducer in `components/file-upload/reducers/fileReducer.ts`
+- [x] T003 Create shared file reducer in `components/file-upload/reducers/fileReducer.ts`
 
 **What to create**: Copy `modules/listings/components/listing-form/components/image-upload/reducers/imageReducer.ts` and rename all types/actions from `Image*` to `File*`.
 
 **Reference**: Read `modules/listings/components/listing-form/components/image-upload/reducers/imageReducer.ts` (107 lines). The new file is nearly identical but uses the shared types.
 
 **Exact changes from the original**:
+
 1. Change import: `import type { FileUploadItem, FileUploadDisplayMode } from '../types';` (instead of `ImageFileUploadImage`)
 2. Rename `ImageState` → `FileUploadState` with `files` instead of `images`
 3. Rename actions: `ADD_IMAGES` → `ADD_FILES`, `REMOVE_IMAGE` → `REMOVE_FILE`, `REORDER_IMAGES` → `REORDER_FILES` (keep `SET_THUMBNAIL` the same)
@@ -153,7 +155,11 @@ export type FileUploadState = {
 // ─── Actions ─────────────────────────────────────────────────────────
 type AddFilesAction = {
   type: 'ADD_FILES';
-  payload: { files: File[]; remainingSlots: number; displayMode: FileUploadDisplayMode };
+  payload: {
+    files: File[];
+    remainingSlots: number;
+    displayMode: FileUploadDisplayMode;
+  };
 };
 
 type RemoveFileAction = {
@@ -246,7 +252,7 @@ export const fileReducer = (
 
 ### T004 — Reducer Barrel Export
 
-- [X] T004 Create reducer barrel export in `components/file-upload/reducers/index.ts`
+- [x] T004 Create reducer barrel export in `components/file-upload/reducers/index.ts`
 
 **What to create**: A simple re-export file. Reference: `modules/listings/components/listing-form/components/image-upload/reducers/index.ts`.
 
@@ -258,11 +264,12 @@ export type { FileUploadState, FileUploadAction } from './fileReducer';
 
 ### T005 — Shared Uploader Hook
 
-- [X] T005 Create shared file uploader hook in `components/file-upload/hooks/useFileUploader.ts`
+- [x] T005 Create shared file uploader hook in `components/file-upload/hooks/useFileUploader.ts`
 
 **What to create**: Copy `modules/listings/components/listing-form/components/image-upload/hooks/useImageUploader.ts` (125 lines) and make these changes:
 
 **Exact changes from the original**:
+
 1. Replace `import { LISTING_BUCKET_NAME } from '@/constants/listings'` → remove (bucket comes from params)
 2. Replace `import type { ImageUploadResult } from '@/modules/listings/types'` → `import type { FileUploadResult } from '../types'`
 3. Hook now accepts params: `({ bucketName, pathPrefix, enableCompression }: { bucketName: string; pathPrefix: string; enableCompression: boolean })`
@@ -298,9 +305,7 @@ export const useFileUploader = ({
   const [uploadedFiles, setUploadedFiles] = useState<FileUploadResult[]>([]);
 
   const uploadFiles = useCallback(
-    async (
-      files: Array<{ file: File }>
-    ): Promise<FileUploadResult[]> => {
+    async (files: Array<{ file: File }>): Promise<FileUploadResult[]> => {
       setIsUploading(true);
       setUploadError(null);
 
@@ -384,9 +389,7 @@ export const useFileUploader = ({
       }
 
       // Only remove the deleted paths from tracked state (not all)
-      setUploadedFiles((prev) =>
-        prev.filter((f) => !paths.includes(f.path))
-      );
+      setUploadedFiles((prev) => prev.filter((f) => !paths.includes(f.path)));
     },
     [bucketName]
   );
@@ -410,11 +413,12 @@ export const useFileUploader = ({
 
 ### T006 — Shared File Upload State Hook
 
-- [X] T006 Create shared file upload state hook in `components/file-upload/hooks/useFileUpload.ts`
+- [x] T006 Create shared file upload state hook in `components/file-upload/hooks/useFileUpload.ts`
 
 **What to create**: Copy `modules/listings/components/listing-form/components/image-upload/hooks/useImageUpload.ts` (89 lines) and generalize it.
 
 **Exact changes from the original**:
+
 1. Replace imports: use `UseFileUploadProps` from `../types`, `fileReducer` from `../reducers`, remove `imageFileSchema` and `MAX_IMAGES_NUMBER`
 2. Hook accepts `UseFileUploadProps` which includes `config: FileUploadConfig`
 3. Replace `MAX_IMAGES_NUMBER` → `config.maxFiles`
@@ -434,7 +438,9 @@ import type { UseFileUploadProps } from '../types';
 import { fileReducer } from '../reducers';
 
 export const useFileUpload = (
-  props: UseFileUploadProps & { t: (key: string, values?: Record<string, string>) => string }
+  props: UseFileUploadProps & {
+    t: (key: string, values?: Record<string, string>) => string;
+  }
 ) => {
   const { mode, name, config, t } = props;
   const initialFiles = mode === 'update' ? props.initialFiles : [];
@@ -498,7 +504,11 @@ export const useFileUpload = (
         clearErrors(name);
         dispatch({
           type: 'ADD_FILES',
-          payload: { files: validFiles, remainingSlots, displayMode: config.displayMode },
+          payload: {
+            files: validFiles,
+            remainingSlots,
+            displayMode: config.displayMode,
+          },
         });
       }
     },
@@ -517,15 +527,12 @@ export const useFileUpload = (
     dispatch({ type: 'SET_THUMBNAIL', payload: { id } });
   }, []);
 
-  const reorderFiles = useCallback(
-    (startIndex: number, endIndex: number) => {
-      dispatch({
-        type: 'REORDER_FILES',
-        payload: { startIndex, endIndex },
-      });
-    },
-    []
-  );
+  const reorderFiles = useCallback((startIndex: number, endIndex: number) => {
+    dispatch({
+      type: 'REORDER_FILES',
+      payload: { startIndex, endIndex },
+    });
+  }, []);
 
   const openFilePicker = useCallback(() => {
     fileInputRef.current?.click();
@@ -576,18 +583,20 @@ export const useFileUpload = (
 ```
 
 **Important notes**:
+
 - The `disabled` prop is accessed as `props.disabled` — `UseFileUploadBase` includes `disabled?: boolean` (defined in T002).
 - The inline validation replaces the zod `imageFileSchema`. This is intentional — the shared component validates using the config object, not a hardcoded schema. The listing-specific zod schema (`schemas/image-file.ts`) is still used by the listing form's react-hook-form validation, not by the upload component.
 
 ### T007 — i18n Keys
 
-- [X] T007 [P] Add shared FileUpload i18n keys to `messages/en.json` and `messages/ar.json`
+- [x] T007 [P] Add shared FileUpload i18n keys to `messages/en.json` and `messages/ar.json`
 
 **What to do**: Add a new top-level key `"FileUpload"` to both translation files. Place it after any existing top-level key (before the closing `}`).
 
 **Do NOT modify or remove the existing `"ListingForm.images"` keys** — those will still be used by the listings-specific wrapper.
 
 **Add to `messages/en.json`**:
+
 ```json
 "FileUpload": {
   "uploadTitle": "Upload Files",
@@ -607,6 +616,7 @@ export const useFileUpload = (
 ```
 
 **Add to `messages/ar.json`**:
+
 ```json
 "FileUpload": {
   "uploadTitle": "رفع الملفات",
@@ -637,13 +647,14 @@ export const useFileUpload = (
 
 ### Implementation for User Story 1
 
-- [X] T008 [US1] Create shared FileUpload.tsx component (image-grid mode) in `components/file-upload/FileUpload.tsx`
+- [x] T008 [US1] Create shared FileUpload.tsx component (image-grid mode) in `components/file-upload/FileUpload.tsx`
 
 **What to create**: A new client component that renders based on `config.displayMode`. For this task, implement ONLY the `image-grid` mode. The `file-list` mode will be added in Phase 4 (US2).
 
 **Reference**: Copy the UI structure from `modules/listings/components/listing-form/components/image-upload/ImageUpload.tsx` (233 lines).
 
 **Key differences from the original**:
+
 1. Add `'use client';` at the top
 2. Import types from `./types` (not listings types)
 3. Import `useFileUpload` from `./hooks/useFileUpload` (not `useImageUpload`)
@@ -900,7 +911,7 @@ export const FileUpload: React.FC<FileUploadProps> = (props) => {
 
 **Note on `disabled` prop**: The `disabled?: boolean` property is already defined on `UseFileUploadBase` in T002's type definition.
 
-- [X] T009 [US1] Create barrel export in `components/file-upload/index.ts`
+- [x] T009 [US1] Create barrel export in `components/file-upload/index.ts`
 
 **What to create**: A barrel export file that exposes the public API.
 
@@ -919,7 +930,7 @@ export type {
 } from './types';
 ```
 
-- [X] T010 [US1] Refactor listings ImageUpload.tsx to be a thin wrapper around the shared FileUpload in `modules/listings/components/listing-form/components/image-upload/ImageUpload.tsx`
+- [x] T010 [US1] Refactor listings ImageUpload.tsx to be a thin wrapper around the shared FileUpload in `modules/listings/components/listing-form/components/image-upload/ImageUpload.tsx`
 
 **What to do**: Replace the entire content of `ImageUpload.tsx` (currently 233 lines) with a thin wrapper that imports `FileUpload` from the shared component and passes listing-specific configuration.
 
@@ -988,15 +999,17 @@ export default ImageUpload;
 ```
 
 **Performance note**: The consuming page (e.g., `ListingFormClient.tsx`) should import the wrapper via `next/dynamic` with `{ ssr: false }` to avoid loading the file upload component on initial page render:
+
 ```typescript
 const ImageUpload = dynamic(
   () => import('../components/image-upload').then((mod) => mod.default),
   { ssr: false }
 );
 ```
+
 If the component is already below the fold or inside a lazy-rendered tab, this is optional. Verify via T018 Lighthouse audit.
 
-- [X] T011 [US1] Verify listings image-upload types compatibility (no changes needed) in `modules/listings/components/listing-form/components/image-upload/types/index.ts`
+- [x] T011 [US1] Verify listings image-upload types compatibility (no changes needed) in `modules/listings/components/listing-form/components/image-upload/types/index.ts`
 
 **What to do**: The types file currently defines listing-specific types. Keep the types that `ListingFormClient.tsx` and `useListingForm.ts` depend on, but base them on shared types where possible. The existing types must remain compatible so nothing else breaks.
 
@@ -1004,11 +1017,12 @@ If the component is already below the fold or inside a lazy-rendered tab, this i
 
 **Note**: The stray text ` FileUploadItemBase` on line 30 of the original file is a bug in the existing code. You may remove it if you touch this file.
 
-- [X] T012 [US1] Update listings image-upload exports in `modules/listings/components/listing-form/components/image-upload/index.ts`
+- [x] T012 [US1] Update listings image-upload exports in `modules/listings/components/listing-form/components/image-upload/index.ts`
 
 **What to do**: Keep exports the same — no changes needed. The `ImageUpload` default export still comes from `./ImageUpload` (which is now the thin wrapper). The type exports remain the same.
 
 The current file is:
+
 ```typescript
 export { default } from './ImageUpload';
 export type {
@@ -1019,11 +1033,12 @@ export type {
 
 **No changes needed for this file.** Mark as done.
 
-- [X] T013 [US1] Update useListingForm.ts to import useFileUploader from shared component in `modules/listings/components/listing-form/hooks/useListingForm.ts`
+- [x] T013 [US1] Update useListingForm.ts to import useFileUploader from shared component in `modules/listings/components/listing-form/hooks/useListingForm.ts`
 
 **What to do**: Change the import of `useImageUploader` to use the shared `useFileUploader` hook instead.
 
 **Change line 22**:
+
 ```typescript
 // BEFORE:
 import { useImageUploader } from '../components/image-upload/hooks/useImageUploader';
@@ -1033,21 +1048,22 @@ import { useFileUploader } from '@/components/file-upload';
 ```
 
 **Change lines 44-45** (the hook call):
+
 ```typescript
 // BEFORE:
 const { uploadImages, deleteImages, isUploading, uploadError } =
   useImageUploader();
 
 // AFTER:
-const { uploadFiles, deleteFiles, isUploading, uploadError } =
-  useFileUploader({
-    bucketName: 'marketplace-image',
-    pathPrefix: 'listings/',
-    enableCompression: true,
-  });
+const { uploadFiles, deleteFiles, isUploading, uploadError } = useFileUploader({
+  bucketName: 'marketplace-image',
+  pathPrefix: 'listings/',
+  enableCompression: true,
+});
 ```
 
 **Change all usages in the onSubmit function**:
+
 1. Replace `uploadImages(images)` → `uploadFiles(images.map(img => ({ file: img.file })))` — but note that `uploadFiles` returns `FileUploadResult` without `isThumbnail`. You need to map the thumbnail info back:
 
 ```typescript
@@ -1056,9 +1072,7 @@ const { uploadFiles, deleteFiles, isUploading, uploadError } =
 const uploadResults = await uploadImages(images);
 
 // AFTER:
-const rawResults = await uploadFiles(
-  images.map((img) => ({ file: img.file }))
-);
+const rawResults = await uploadFiles(images.map((img) => ({ file: img.file })));
 // Map isThumbnail back from form data
 const uploadResults = rawResults.map((result, i) => ({
   ...result,
@@ -1069,6 +1083,7 @@ const uploadResults = rawResults.map((result, i) => ({
 2. Replace `deleteImages(...)` → `deleteFiles(...)` everywhere (3 occurrences: lines 88, 133, 188).
 
 3. In UPDATE mode (around line 146-148):
+
 ```typescript
 // BEFORE:
 uploadResults = await uploadImages(newImages);
@@ -1086,6 +1101,7 @@ uploadResults = rawUploadResults.map((result, i) => ({
 **This is the most complex task.** Take care to update ALL references to `uploadImages` → `uploadFiles` and `deleteImages` → `deleteFiles`.
 
 **Checkpoint**: At this point, the listings image upload should work identically. Test by:
+
 1. Going to the create listing form
 2. Dragging and dropping images — they should appear in the grid
 3. Setting a thumbnail — the cover badge should move
@@ -1103,7 +1119,7 @@ uploadResults = rawUploadResults.map((result, i) => ({
 
 ### Implementation for User Story 2
 
-- [X] T014 [US2] Implement file-list display mode in `components/file-upload/FileUpload.tsx`
+- [x] T014 [US2] Implement file-list display mode in `components/file-upload/FileUpload.tsx`
 
 **What to do**: Replace the placeholder `<div>File list mode — coming in T014</div>` (added in T008) with the actual file-list UI.
 
@@ -1157,9 +1173,12 @@ if (config.displayMode === 'file-list') {
       {files.length > 0 && (
         <ul className="mb-4 space-y-2">
           {files.map((file) => {
-            const isImage = !file.isExisting && 'file' in file
-              ? file.file.type.startsWith('image/')
-              : file.preview.match(/\.(jpg|jpeg|png|webp|avif|gif)(\?|$)/i) !== null;
+            const isImage =
+              !file.isExisting && 'file' in file
+                ? file.file.type.startsWith('image/')
+                : file.preview.match(
+                    /\.(jpg|jpeg|png|webp|avif|gif)(\?|$)/i
+                  ) !== null;
 
             return (
               <li
@@ -1167,19 +1186,24 @@ if (config.displayMode === 'file-list') {
                 className="bg-muted/30 flex items-center gap-3 rounded-lg border p-3"
               >
                 {/* Preview: image thumbnail or file icon */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted">
+                <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg">
                   {isImage ? (
                     <>
                       <Image
                         src={file.preview}
-                        alt={!file.isExisting && 'file' in file ? file.file.name : 'Uploaded file'}
+                        alt={
+                          !file.isExisting && 'file' in file
+                            ? file.file.name
+                            : 'Uploaded file'
+                        }
                         width={48}
                         height={48}
                         className="h-full w-full object-cover"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                           const fallback = e.currentTarget.nextElementSibling;
-                          if (fallback) (fallback as HTMLElement).style.display = 'flex';
+                          if (fallback)
+                            (fallback as HTMLElement).style.display = 'flex';
                         }}
                       />
                       <div className="hidden h-full w-full items-center justify-center">
@@ -1196,7 +1220,7 @@ if (config.displayMode === 'file-list') {
                   <p className="text-foreground truncate text-sm font-medium">
                     {!file.isExisting && 'file' in file
                       ? file.file.name
-                      : file.preview.split('/').pop() ?? 'File'}
+                      : (file.preview.split('/').pop() ?? 'File')}
                   </p>
                   {!file.isExisting && 'file' in file && (
                     <p className="text-muted-foreground text-xs">
@@ -1246,12 +1270,15 @@ if (config.displayMode === 'file-list') {
 ```
 
 **Also add this import at the top of the file** (alongside existing lucide imports — `ImageOff` is already imported from T008):
+
 ```typescript
 import { FileText as FileTextIcon } from 'lucide-react';
 ```
+
 Note: `ImageOff` is already imported in T008's lucide import line. If not, add it there.
 
 **Also add this helper function** before the component (or at the bottom of the file, outside the component):
+
 ```typescript
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -1261,6 +1288,7 @@ function formatFileSize(bytes: number): string {
 ```
 
 **Checkpoint**: At this point, both display modes should work. The shared component supports:
+
 - `image-grid` mode with thumbnails, reorder, image previews (used by listings)
 - `file-list` mode with inline image previews, file-type icons, file info (used by community)
 
@@ -1274,9 +1302,10 @@ function formatFileSize(bytes: number): string {
 
 ### Implementation for User Story 3
 
-- [X] T015 [US3] Verify barrel exports are complete and types are properly exported from `components/file-upload/index.ts`
+- [x] T015 [US3] Verify barrel exports are complete and types are properly exported from `components/file-upload/index.ts`
 
 **What to do**: Read `components/file-upload/index.ts` (created in T009) and verify it exports:
+
 1. `FileUpload` — the component
 2. `useFileUploader` — the upload hook (for custom submit handlers)
 3. All types: `FileUploadItem`, `NewFileUploadItem`, `ExistingFileUploadItem`, `FileUploadConfig`, `FileUploadDisplayMode`, `FileUploadResult`, `FileUploadProps`
@@ -1291,9 +1320,10 @@ function formatFileSize(bytes: number): string {
 
 **Purpose**: Accessibility, code quality, and final verification.
 
-- [X] T016 [P] Add aria-label attributes to all interactive elements in `components/file-upload/FileUpload.tsx`
+- [x] T016 [P] Add aria-label attributes to all interactive elements in `components/file-upload/FileUpload.tsx`
 
 **What to do**: Ensure all buttons and interactive elements have `aria-label` attributes for screen readers. Verify:
+
 1. The file input has `aria-label={t('uploadTitle')}` (already done in T008)
 2. The delete button has `aria-label={t('removeFile')}` (already done in T008)
 3. The "Choose Files" button is wrapped in a proper `<label>` or has `aria-label`
@@ -1301,6 +1331,7 @@ function formatFileSize(bytes: number): string {
 5. The drag zone has `role="region"` with an appropriate label
 
 Add any missing attributes. Example for empty slots:
+
 ```tsx
 <div
   key={`empty-${index}`}
@@ -1313,14 +1344,16 @@ Add any missing attributes. Example for empty slots:
 >
 ```
 
-- [X] T017 [P] Run code quality checks: `npm run check` (runs format + lint + type-check)
+- [x] T017 [P] Run code quality checks: `npm run check` (runs format + lint + type-check)
 
 **What to do**: Run `npm run check` from the project root. Fix any errors:
+
 1. If formatting errors: run `npm run format`
 2. If lint errors: run `npm run lint -- --fix`
 3. If type errors: fix the TypeScript errors in the relevant files
 
 Common type errors to watch for:
+
 - The `disabled` prop on `UseFileUploadProps` — make sure it was added to the type in T002
 - The `FileUploadItem` type mapping in T010 — ensure the spread operator works with the discriminated union
 - The `useFileUploader` return type in T013 — ensure `uploadFiles`/`deleteFiles` names match
@@ -1328,6 +1361,7 @@ Common type errors to watch for:
 - [ ] T018 Manually verify listings upload still works identically after all changes
 
 **What to do**: Start the dev server (`npm run dev`) and test:
+
 1. Navigate to the create listing page
 2. Drag and drop 2-3 images into the upload area → they should appear in the grid
 3. Click the thumbnail button on the second image → it should become the cover
@@ -1392,6 +1426,7 @@ Phase 6 (Polish):
 ### Parallel Opportunities
 
 **Within Phase 2** (all create separate files):
+
 ```
 T002 (types)  ─── can start immediately
 T003 (reducer) ── depends on T002 (imports types)
@@ -1402,6 +1437,7 @@ T007 (i18n)   ─── can start immediately, parallel with T002
 ```
 
 **Within Phase 6** (different files):
+
 ```
 T016 (a11y) and T017 (lint) can run in parallel
 ```

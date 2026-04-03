@@ -18,8 +18,8 @@
 
 **Purpose**: Create module directory structure and shared constants
 
-- [X] T001 Create community module directory structure at `modules/community/types/` and `modules/community/`
-- [X] T002 [P] Create community file upload constants (MAX_COMMUNITY_UPLOAD_SIZE=5MB, MAX_COMMUNITY_ATTACHMENTS=5, ACCEPTED_COMMUNITY_FILE_TYPES) in `constants/community-file.ts`
+- [x] T001 Create community module directory structure at `modules/community/types/` and `modules/community/`
+- [x] T002 [P] Create community file upload constants (MAX_COMMUNITY_UPLOAD_SIZE=5MB, MAX_COMMUNITY_ATTACHMENTS=5, ACCEPTED_COMMUNITY_FILE_TYPES) in `constants/community-file.ts`
 
 ---
 
@@ -29,9 +29,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [X] T003 Export database-derived types (CommunityPost, InsertCommunityPost, UpdateCommunityPost, CommunityPostAttachment, InsertCommunityPostAttachment, UpdateCommunityPostAttachment) from Supabase-generated types in `modules/community/types/index.ts`
-- [X] T004 Export PostCategory enum type (`questions | tips | news | troubleshooting`) and POST_CATEGORIES constant object in `modules/community/types/index.ts`
-- [X] T005 Export FormMode type (`'create' | 'update'`) in `modules/community/types/index.ts`
+- [x] T003 Export database-derived types (CommunityPost, InsertCommunityPost, UpdateCommunityPost, CommunityPostAttachment, InsertCommunityPostAttachment, UpdateCommunityPostAttachment) from Supabase-generated types in `modules/community/types/index.ts`
+- [x] T004 Export PostCategory enum type (`questions | tips | news | troubleshooting`) and POST_CATEGORIES constant object in `modules/community/types/index.ts`
+- [x] T005 Export FormMode type (`'create' | 'update'`) in `modules/community/types/index.ts`
 
 **Checkpoint**: Foundation ready — types and constants available for schema factories
 
@@ -45,12 +45,12 @@
 
 ### Implementation for User Story 1
 
-- [X] T006 [US1] Add English translation keys under `CommunityForm.validation` namespace (titleRequired, titleMin, titleMax, contentRequired, contentMin, contentMax, categoryRequired, attachmentMaxSize, attachmentInvalidType, attachmentsMaxCount) in `messages/en.json`
-- [X] T007 [P] [US1] Add Arabic translation keys under `CommunityForm.validation` namespace (same keys as English) in `messages/ar.json`
-- [X] T008 [US1] Implement `createCommunityFileSchema(t)` factory (z.file(), max 5MB, MIME from community-file constants) in `modules/community/schema.ts`
-- [X] T009 [US1] Implement `createCreateCommunityPostClientSchema(t)` factory (title: min 5/max 100, content: min 10/max 5000, post_category: enum with default `questions`, attachments: optional array max 5 of file schema) in `modules/community/schema.ts`
-- [X] T010 [US1] Export static `createCommunityPostClientSchema` (with identity translation function) for type inference in `modules/community/schema.ts`
-- [X] T011 [US1] Export inferred `CreateCommunityPostFormData` type from create schema in `modules/community/types/index.ts`
+- [x] T006 [US1] Add English translation keys under `CommunityForm.validation` namespace (titleRequired, titleMin, titleMax, contentRequired, contentMin, contentMax, categoryRequired, attachmentMaxSize, attachmentInvalidType, attachmentsMaxCount) in `messages/en.json`
+- [x] T007 [P] [US1] Add Arabic translation keys under `CommunityForm.validation` namespace (same keys as English) in `messages/ar.json`
+- [x] T008 [US1] Implement `createCommunityFileSchema(t)` factory (z.file(), max 5MB, MIME from community-file constants) in `modules/community/schema.ts`
+- [x] T009 [US1] Implement `createCreateCommunityPostClientSchema(t)` factory (title: min 5/max 100, content: min 10/max 5000, post_category: enum with default `questions`, attachments: optional array max 5 of file schema) in `modules/community/schema.ts`
+- [x] T010 [US1] Export static `createCommunityPostClientSchema` (with identity translation function) for type inference in `modules/community/schema.ts`
+- [x] T011 [US1] Export inferred `CreateCommunityPostFormData` type from create schema in `modules/community/types/index.ts`
 
 **Checkpoint**: Create schema fully functional — can validate new post form submissions with translated errors
 
@@ -64,9 +64,9 @@
 
 ### Implementation for User Story 2
 
-- [X] T012 [US2] Implement `createUpdateCommunityPostClientSchema(t)` factory (same fields as create schema but replaces attachments with `z.array(z.union([fileSchema, z.string().url()])).max(5).optional()`) in `modules/community/schema.ts`
-- [X] T013 [US2] Export static `updateCommunityPostClientSchema` (with identity translation function) for type inference in `modules/community/schema.ts`
-- [X] T014 [US2] Export inferred `UpdateCommunityPostFormData` type from update schema in `modules/community/types/index.ts`
+- [x] T012 [US2] Implement `createUpdateCommunityPostClientSchema(t)` factory (same fields as create schema but replaces attachments with `z.array(z.union([fileSchema, z.string().url()])).max(5).optional()`) in `modules/community/schema.ts`
+- [x] T013 [US2] Export static `updateCommunityPostClientSchema` (with identity translation function) for type inference in `modules/community/schema.ts`
+- [x] T014 [US2] Export inferred `UpdateCommunityPostFormData` type from update schema in `modules/community/types/index.ts`
 
 **Checkpoint**: Both create and update schemas functional — forms can validate for both modes
 
@@ -80,8 +80,8 @@
 
 ### Implementation for User Story 3
 
-- [X] T015 [US3] Review and verify all translation keys in `messages/en.json` and `messages/ar.json` match every `t('...')` call in schema factories in `modules/community/schema.ts`
-- [X] T016 [US3] Run `npm run type-check` to verify all schema exports, type exports, and translation key usage compile without errors
+- [x] T015 [US3] Review and verify all translation keys in `messages/en.json` and `messages/ar.json` match every `t('...')` call in schema factories in `modules/community/schema.ts`
+- [x] T016 [US3] Run `npm run type-check` to verify all schema exports, type exports, and translation key usage compile without errors
 
 **Checkpoint**: All three user stories independently functional — schemas produce translated errors in both locales
 
@@ -91,8 +91,8 @@
 
 **Purpose**: Final validation and cleanup
 
-- [X] T017 Run `npm run check` (format, lint, type-check) to verify all new files pass project quality gates
-- [X] T018 Run quickstart.md validation — verify the usage example from `specs/002-community-post-schema/quickstart.md` compiles and works with the implemented schemas
+- [x] T017 Run `npm run check` (format, lint, type-check) to verify all new files pass project quality gates
+- [x] T018 Run quickstart.md validation — verify the usage example from `specs/002-community-post-schema/quickstart.md` compiles and works with the implemented schemas
 
 ---
 

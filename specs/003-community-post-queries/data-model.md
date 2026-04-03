@@ -7,26 +7,26 @@
 
 ### community_posts (existing table)
 
-| Field | Type | Constraints | Notes |
-|-------|------|-------------|-------|
-| `post_id` | uuid | PK, auto-generated | |
-| `author_id` | uuid | FK → users.user_id, NOT NULL | Set from authenticated user |
-| `title` | text | NOT NULL, min 5, max 100 | Validated by server schema |
-| `content` | text | NOT NULL, min 10, max 5000 | Validated by server schema |
-| `post_category` | text | CHECK: questions, tips, news, troubleshooting; default 'questions' | Validated by server schema enum |
-| `content_status` | text | CHECK: draft, published, removed; default 'draft' | Set to 'published' on create |
-| `published_at` | timestamptz | nullable | Set to `now()` on create |
-| `created_at` | timestamptz | auto | |
-| `updated_at` | timestamptz | auto | |
+| Field            | Type        | Constraints                                                        | Notes                           |
+| ---------------- | ----------- | ------------------------------------------------------------------ | ------------------------------- |
+| `post_id`        | uuid        | PK, auto-generated                                                 |                                 |
+| `author_id`      | uuid        | FK → users.user_id, NOT NULL                                       | Set from authenticated user     |
+| `title`          | text        | NOT NULL, min 5, max 100                                           | Validated by server schema      |
+| `content`        | text        | NOT NULL, min 10, max 5000                                         | Validated by server schema      |
+| `post_category`  | text        | CHECK: questions, tips, news, troubleshooting; default 'questions' | Validated by server schema enum |
+| `content_status` | text        | CHECK: draft, published, removed; default 'draft'                  | Set to 'published' on create    |
+| `published_at`   | timestamptz | nullable                                                           | Set to `now()` on create        |
+| `created_at`     | timestamptz | auto                                                               |                                 |
+| `updated_at`     | timestamptz | auto                                                               |                                 |
 
 ### community_posts_attachments (existing table)
 
-| Field | Type | Constraints | Notes |
-|-------|------|-------------|-------|
-| `attachment_id` | uuid | PK, auto-generated | |
-| `post_id` | uuid | FK → community_posts.post_id, NOT NULL | |
-| `file_url` | text | NOT NULL | URL from Supabase Storage |
-| `created_at` | timestamptz | auto | |
+| Field           | Type        | Constraints                            | Notes                     |
+| --------------- | ----------- | -------------------------------------- | ------------------------- |
+| `attachment_id` | uuid        | PK, auto-generated                     |                           |
+| `post_id`       | uuid        | FK → community_posts.post_id, NOT NULL |                           |
+| `file_url`      | text        | NOT NULL                               | URL from Supabase Storage |
+| `created_at`    | timestamptz | auto                                   |                           |
 
 ## Relationships
 
@@ -65,10 +65,10 @@ Fields returned: `post_id`, `author_id`, `title`, `content`, `post_category`, `c
 
 ## State Transitions
 
-| From | To | Trigger | Notes |
-|------|----|---------|-------|
-| (none) | published | Create action | `content_status = 'published'`, `published_at = now()` |
-| published | published | Update action | Only content fields change; status stays published |
+| From      | To        | Trigger       | Notes                                                  |
+| --------- | --------- | ------------- | ------------------------------------------------------ |
+| (none)    | published | Create action | `content_status = 'published'`, `published_at = now()` |
+| published | published | Update action | Only content fields change; status stays published     |
 
 Note: `draft` and `removed` states exist in the DB schema but are out of scope for this phase (no draft saving, no soft-delete).
 

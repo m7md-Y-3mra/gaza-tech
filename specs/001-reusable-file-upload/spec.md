@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "Extract a reusable file upload component from the listings image upload so both Listings and Community Post modules can share it"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Listings Image Upload Continues Working (Priority: P1)
 
@@ -72,7 +72,7 @@ A developer building a future module (e.g., marketplace reviews, support tickets
 - Q: Should the shared component support per-file upload progress indication? → A: No. Binary loading state only (spinner/disabled), matching current behavior. Progress can be added later if needed.
 - Q: How should cleanup work if the user closes the browser mid-upload? → A: No client-side cleanup for tab close. Rely on server-side orphan cleanup (TTL/cron). `beforeunload` is unreliable for async operations.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -95,7 +95,7 @@ A developer building a future module (e.g., marketplace reviews, support tickets
 - **File Upload Configuration**: Defines the behavior of a specific upload instance. Includes bucket name, path prefix, max files, max size, accepted types, compression flag, and display mode.
 - **Upload Result**: Represents a successfully uploaded file. Contains the storage path and the public URL.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

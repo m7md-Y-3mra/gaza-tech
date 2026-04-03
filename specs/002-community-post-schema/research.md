@@ -10,6 +10,7 @@
 **Rationale**: The project already has this pattern established in `modules/listings/schema.ts`. Consistency reduces cognitive load and ensures the same form integration works (react-hook-form + zodResolver).
 
 **Alternatives considered**:
+
 - Static schemas with separate i18n layer → rejected (breaks existing `useTranslations` integration pattern)
 - Schema-per-locale files → rejected (duplication, harder maintenance)
 
@@ -20,6 +21,7 @@
 **Rationale**: The project already uses Zod 4 features like `z.file()` and `.mime()` in the listings schema. No migration needed.
 
 **Alternatives considered**:
+
 - Zod 3.x API → not applicable, project already on Zod 4
 
 ## R-003: Database Table Structure
@@ -29,6 +31,7 @@
 **Rationale**: Tables already defined in Supabase with proper relationships (post→author via `author_id`, attachment→post via `post_id`).
 
 **Key fields**:
+
 - `community_posts`: post_id, author_id, title, content, post_category, content_status, published_at, created_at, updated_at
 - `community_posts_attachments`: attachment_id, post_id, file_url, created_at
 
@@ -39,6 +42,7 @@
 **Rationale**: Community posts allow PDFs and have a higher size limit (5MB vs 2MB). Reusing `constants/image-file.ts` would require modifying shared constants that listings depend on.
 
 **Alternatives considered**:
+
 - Extend existing image-file constants → rejected (different MIME types and size limits)
 - Parameterized shared constant function → rejected (over-engineering for two use cases)
 

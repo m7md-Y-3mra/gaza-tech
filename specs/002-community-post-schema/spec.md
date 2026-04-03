@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "Zod schemas and TypeScript types for community post create/update forms, including validation for title, content, category, and attachments"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Create a New Community Post (Priority: P1)
 
@@ -65,7 +65,7 @@ Users interacting with the form in Arabic or English see validation error messag
 - What happens when the category field is missing or contains an invalid value? (validation rejects it)
 - How does the update schema handle a mix of existing URL strings and new File objects in the attachments array?
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -87,7 +87,7 @@ Users interacting with the form in Arabic or English see validation error messag
 - **Community Post Attachment**: Represents a file attached to a community post, identified by a URL. Related to exactly one community post.
 - **Post Category**: A constrained set of values (questions, tips, news, troubleshooting) classifying the post topic.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

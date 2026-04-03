@@ -21,17 +21,17 @@ Implement Supabase query functions and server actions for community post CRUD op
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Gate | Status | Notes |
-|------|--------|-------|
-| **I. Module-First Architecture** | PASS | All code lives in `modules/community/` with proper separation: `queries.ts`, `actions.ts`, `server-schema.ts` |
-| **II. Server-First Rendering** | PASS | All queries and actions are server-only; no client-side data fetching |
-| **III. Incremental Staged Development** | PASS | Plan breaks work into 3 isolated stages (server schema, queries, actions) |
-| **IV. Performance Standards** | N/A | Backend-only phase; no UI rendering impact |
-| **V. Accessibility** | N/A | No UI in this phase |
-| **VI. Consistent Error Handling** | PASS | All actions wrapped with `errorHandler()`; server-side Zod validation via `zodValidation()` |
-| **Code Quality Gate** | PASS | `npm run check` will be run after each stage |
+| Gate                                    | Status | Notes                                                                                                         |
+| --------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------- |
+| **I. Module-First Architecture**        | PASS   | All code lives in `modules/community/` with proper separation: `queries.ts`, `actions.ts`, `server-schema.ts` |
+| **II. Server-First Rendering**          | PASS   | All queries and actions are server-only; no client-side data fetching                                         |
+| **III. Incremental Staged Development** | PASS   | Plan breaks work into 3 isolated stages (server schema, queries, actions)                                     |
+| **IV. Performance Standards**           | N/A    | Backend-only phase; no UI rendering impact                                                                    |
+| **V. Accessibility**                    | N/A    | No UI in this phase                                                                                           |
+| **VI. Consistent Error Handling**       | PASS   | All actions wrapped with `errorHandler()`; server-side Zod validation via `zodValidation()`                   |
+| **Code Quality Gate**                   | PASS   | `npm run check` will be run after each stage                                                                  |
 
 No violations. No complexity tracking needed.
 

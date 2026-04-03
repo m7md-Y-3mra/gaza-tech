@@ -10,18 +10,16 @@
 
 ```typescript
 type FileUploadProps = {
-  name: string;                    // react-hook-form field name
-  config: FileUploadConfig;        // Controls all behavior
-  disabled?: boolean;              // Disable all interactions (e.g., during form submit)
-} & (
-  | { mode: 'create' }
-  | { mode: 'update'; initialFiles: FileUploadItem[] }
-);
+  name: string; // react-hook-form field name
+  config: FileUploadConfig; // Controls all behavior
+  disabled?: boolean; // Disable all interactions (e.g., during form submit)
+} & ({ mode: 'create' } | { mode: 'update'; initialFiles: FileUploadItem[] });
 ```
 
 ### Behavior by Display Mode
 
 #### `image-grid` mode
+
 - Renders a drop zone + image grid (like current listings)
 - Shows image previews in grid cells
 - Supports thumbnail designation (first image auto-marked)
@@ -30,6 +28,7 @@ type FileUploadProps = {
 - Shows "X / maxFiles" count badge
 
 #### `file-list` mode
+
 - Renders a drop zone + vertical file list
 - Image files: inline thumbnail preview
 - Non-image files: file-type icon (from lucide-react)
@@ -54,10 +53,7 @@ type UseFileUploadProps = {
   name: string;
   config: FileUploadConfig;
   disabled?: boolean;
-} & (
-  | { mode: 'create' }
-  | { mode: 'update'; initialFiles: FileUploadItem[] }
-);
+} & ({ mode: 'create' } | { mode: 'update'; initialFiles: FileUploadItem[] });
 ```
 
 ### Return
@@ -142,12 +138,12 @@ type UseFileUploaderReturn = {
 
 ### Actions
 
-| Action Type | Payload | Preconditions |
-|-------------|---------|---------------|
-| `ADD_FILES` | `{ files: File[]; remainingSlots: number; displayMode: FileUploadDisplayMode }` | `files.length > 0` |
-| `REMOVE_FILE` | `{ id: string }` | `id` exists in state |
-| `SET_THUMBNAIL` | `{ id: string }` | `id` exists in state |
-| `REORDER_FILES` | `{ startIndex: number; endIndex: number }` | Valid indices |
+| Action Type     | Payload                                                                         | Preconditions        |
+| --------------- | ------------------------------------------------------------------------------- | -------------------- |
+| `ADD_FILES`     | `{ files: File[]; remainingSlots: number; displayMode: FileUploadDisplayMode }` | `files.length > 0`   |
+| `REMOVE_FILE`   | `{ id: string }`                                                                | `id` exists in state |
+| `SET_THUMBNAIL` | `{ id: string }`                                                                | `id` exists in state |
+| `REORDER_FILES` | `{ startIndex: number; endIndex: number }`                                      | Valid indices        |
 
 ### State Shape
 

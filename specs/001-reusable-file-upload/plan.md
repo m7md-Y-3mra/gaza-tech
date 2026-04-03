@@ -21,27 +21,27 @@ Extract a shared, configuration-driven file upload component from the existing l
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Module-First Architecture | PASS | Shared component in `components/file-upload/` (global shared). Listings module keeps its own integration wrapper. No duplication of global responsibilities. |
-| II. Server-First Rendering | PASS | `'use client'` justified — component requires drag-drop, file input, browser APIs (`URL.createObjectURL`). No server data fetching in component. |
-| III. Incremental Staged Development | PASS | Work broken into 5+ stages with explicit approval gates (enforced in tasks). |
-| IV. Performance Standards | PASS | Client-only component loaded on form pages only. Image compression reduces upload size. ObjectURL previews avoid network requests. |
-| V. Accessibility (WCAG AA) | PASS | Requires: keyboard-accessible file input, proper labels, `aria-live` error announcements, semantic list markup, visible focus states. |
-| VI. Consistent Error Handling | PASS | File validation via zod schemas. Upload errors follow atomic rollback pattern. Per-file rejection messages via toast. |
+| Principle                           | Status | Notes                                                                                                                                                        |
+| ----------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| I. Module-First Architecture        | PASS   | Shared component in `components/file-upload/` (global shared). Listings module keeps its own integration wrapper. No duplication of global responsibilities. |
+| II. Server-First Rendering          | PASS   | `'use client'` justified — component requires drag-drop, file input, browser APIs (`URL.createObjectURL`). No server data fetching in component.             |
+| III. Incremental Staged Development | PASS   | Work broken into 5+ stages with explicit approval gates (enforced in tasks).                                                                                 |
+| IV. Performance Standards           | PASS   | Client-only component loaded on form pages only. Image compression reduces upload size. ObjectURL previews avoid network requests.                           |
+| V. Accessibility (WCAG AA)          | PASS   | Requires: keyboard-accessible file input, proper labels, `aria-live` error announcements, semantic list markup, visible focus states.                        |
+| VI. Consistent Error Handling       | PASS   | File validation via zod schemas. Upload errors follow atomic rollback pattern. Per-file rejection messages via toast.                                        |
 
 **No violations. No complexity tracking needed.**
 
 ### Post-Phase 1 Re-check
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Module-First Architecture | PASS | Data model keeps types in `components/file-upload/types/` (shared), consumer-specific extensions in their modules. |
-| II. Server-First Rendering | PASS | Only `FileUpload.tsx` needs `'use client'`. Hooks are client-only by nature. |
-| IV. Performance Standards | PASS | No heavy dependencies added. `browser-image-compression` uses WebWorker (off-thread). |
-| V. Accessibility (WCAG AA) | PASS | Contract specifies keyboard-reachable interactions, proper ARIA, focus states. |
+| Principle                    | Status | Notes                                                                                                              |
+| ---------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| I. Module-First Architecture | PASS   | Data model keeps types in `components/file-upload/types/` (shared), consumer-specific extensions in their modules. |
+| II. Server-First Rendering   | PASS   | Only `FileUpload.tsx` needs `'use client'`. Hooks are client-only by nature.                                       |
+| IV. Performance Standards    | PASS   | No heavy dependencies added. `browser-image-compression` uses WebWorker (off-thread).                              |
+| V. Accessibility (WCAG AA)   | PASS   | Contract specifies keyboard-reachable interactions, proper ARIA, focus states.                                     |
 
 ## Project Structure
 
@@ -109,6 +109,7 @@ When compression is enabled and transforms to WebP, the generated storage path u
 ### 4. Listings Refactor Strategy
 
 The existing `ImageUpload` component becomes a thin wrapper that:
+
 1. Constructs a `FileUploadConfig` from existing constants
 2. Renders `<FileUpload />` with `displayMode: 'image-grid'`
 3. Maintains the same props interface (`mode`, `name`, `disabled`, `initialImages`)
