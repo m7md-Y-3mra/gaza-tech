@@ -20,6 +20,24 @@ export const createCommunityFileSchema = (t: TranslationFunction) =>
     .max(MAX_COMMUNITY_UPLOAD_SIZE, t('attachmentMaxSize'))
     .mime(ACCEPTED_COMMUNITY_FILE_TYPES, t('attachmentInvalidType'));
 
+// ── New attachment item schema (factory) — matches FileUploadItem without id ─
+
+const createNewAttachmentSchema = (t: TranslationFunction) =>
+  z.object({
+    file: createCommunityFileSchema(t),
+    preview: z.string(),
+    isThumbnail: z.boolean(),
+    isExisting: z.literal(false).optional(),
+  });
+
+// ── Existing attachment item schema — for update mode ────────────────
+
+const existingAttachmentSchema = z.object({
+  preview: z.string(),
+  isThumbnail: z.boolean(),
+  isExisting: z.literal(true),
+});
+
 // ── Create schema (factory) ───────────────────────────────────────────
 
 export const createCreateCommunityPostClientSchema = (t: TranslationFunction) =>
@@ -39,7 +57,7 @@ export const createCreateCommunityPostClientSchema = (t: TranslationFunction) =>
       .default('questions'),
 
     attachments: z
-      .array(createCommunityFileSchema(t))
+      .array(createNewAttachmentSchema(t))
       .max(MAX_COMMUNITY_ATTACHMENTS, t('attachmentsMaxCount'))
       .optional(),
   });
@@ -63,7 +81,7 @@ export const createUpdateCommunityPostClientSchema = (t: TranslationFunction) =>
       .default('questions'),
 
     attachments: z
-      .array(z.union([createCommunityFileSchema(t), z.string().url()]))
+      .array(z.union([createNewAttachmentSchema(t), existingAttachmentSchema]))
       .max(MAX_COMMUNITY_ATTACHMENTS, t('attachmentsMaxCount'))
       .optional(),
   });
