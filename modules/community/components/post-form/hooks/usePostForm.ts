@@ -63,13 +63,12 @@ export const usePostForm = (
   const schema = useMemo(() => {
     return mode === 'create'
       ? createCreateCommunityPostClientSchema(
-        tValidation as unknown as TranslationFunction
-      )
+          tValidation as unknown as TranslationFunction
+        )
       : createUpdateCommunityPostClientSchema(
-        tValidation as unknown as TranslationFunction
-      );
+          tValidation as unknown as TranslationFunction
+        );
   }, [mode, tValidation]);
-
 
   const form = useForm({
     resolver: zodResolver(schema),
