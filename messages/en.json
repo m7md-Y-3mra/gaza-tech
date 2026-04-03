@@ -1,5 +1,13 @@
 {
   "Metadata": {
+    "createPost": {
+      "title": "Create a Post | Gaza Tech",
+      "description": "Create a new post in the community"
+    },
+    "editPost": {
+      "title": "Edit Post | Gaza Tech",
+      "description": "Edit your community post"
+    },
     "siteName": "Gaza Tech Market",
     "home": {
       "title": "Gaza Tech Market - Buy & Sell Technology Products",
@@ -621,5 +629,101 @@
     "inputPlaceholder": "E.g. Gaming laptops under 1000 ILS...",
     "unexpectedError": "An unexpected error occurred.",
     "errorPrefix": "Error: "
+  },
+  "CommunityForm": {
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMin": "Title must be at least 5 characters long",
+      "titleMax": "Title cannot exceed 100 characters",
+      "contentRequired": "Content is required",
+      "contentMin": "Content must be at least 10 characters long",
+      "contentMax": "Content cannot exceed 5000 characters",
+      "categoryRequired": "Please select a valid category",
+      "attachmentMaxSize": "File size must be less than 5MB",
+      "attachmentInvalidType": "Invalid file type. Only JPG, PNG, GIF, WEBP and PDF are allowed.",
+      "attachmentsMaxCount": "You can attach a maximum of 5 files"
+    }
+  },
+  "FileUpload": {
+    "uploadTitle": "Upload Files",
+    "dragDrop": "Drag and drop or click to browse",
+    "chooseFiles": "Choose Files",
+    "supportedFormats": "Supported formats: {formats} (Max {maxSize}MB each)",
+    "fileCount": "{count}/{max} Files",
+    "cover": "Cover",
+    "setAsCover": "Set as Cover",
+    "removeFile": "Remove file",
+    "invalidFileType": "\"{name}\": Invalid file type",
+    "fileTooLarge": "\"{name}\": File size must be less than {maxSize}MB",
+    "fileTooSmall": "\"{name}\": File size must be at least {minSize}KB",
+    "fileError": "File {index}: {message}",
+    "maxFilesReached": "Maximum {max} files allowed"
+  },
+  "PostForm": {
+    "titleCreate": "Create a New Post",
+    "descriptionCreate": "Share your questions, tips, news, or troubleshooting guides with the community.",
+    "titleUpdate": "Edit Post",
+    "descriptionUpdate": "Update the details of your community post.",
+    "fields": {
+      "title": "Title",
+      "category": "Category",
+      "content": "Content",
+      "attachments": "Attachments (Optional)"
+    },
+    "placeholders": {
+      "title": "A short, descriptive title",
+      "content": "Write your post content here..."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "publish": "Publish",
+      "publishing": "Publishing...",
+      "update": "Update",
+      "updating": "Updating..."
+    },
+    "categories": {
+      "questions": {
+        "title": "Questions",
+        "description": "Ask the community for help"
+      },
+      "tips": {
+        "title": "Tips & Tutorials",
+        "description": "Share your knowledge"
+      },
+      "news": {
+        "title": "News",
+        "description": "Tech news and updates"
+      },
+      "troubleshooting": {
+        "title": "Troubleshooting",
+        "description": "Finding solutions to tech problems"
+      }
+    },
+    "toast": {
+      "createSuccess": "Post created successfully!",
+      "createError": "Failed to create post. Please try again.",
+      "updateSuccess": "Post updated successfully!",
+      "updateError": "Failed to update post. Please try again.",
+      "unexpectedError": "An unexpected error occurred."
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMin": "Title must be at least 5 characters long",
+      "titleMax": "Title cannot exceed 100 characters",
+      "contentRequired": "Content is required",
+      "contentMin": "Content must be at least 10 characters long",
+      "contentMax": "Content cannot exceed 5000 characters",
+      "categoryRequired": "Please select a category",
+      "attachmentsMaxCount": "Maximum of 5 attachments allowed",
+      "attachmentInvalidType": "Invalid file type. Only images and PDFs are allowed.",
+      "attachmentMaxSize": "File size exceeds the 5MB limit."
+    },
+    "error": {
+      "title": "Unable to Load Post Form",
+      "description": "We encountered an issue while loading the post form. This could be due to a network problem or server issue.",
+      "errorDetails": "Error Details:",
+      "tryAgain": "Try Again",
+      "goBack": "Go Back"
+    }
   }
 }
