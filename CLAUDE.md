@@ -297,6 +297,8 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 5. Open Graph image via `opengraph-image.tsx`
 
 ## Active Technologies
+- TypeScript 5.x + Next.js 16, React 19, `react-intersection-observer` ^10.0.2, `next-intl` ^4.7.0, shadcn/ui (radix), lucide-react (005-shared-infinite-scroll)
+- N/A (client-side state only; consumes existing server actions) (005-shared-infinite-scroll)
 
 - TypeScript, Next.js 16, React 19 + react-hook-form `^7.69.0`, zod `^4.2.1`, `@supabase/supabase-js` `^2.86.0`, browser-image-compression `^2.0.2`, next-intl `^4.7.0`, Tailwind CSS `^4`, shadcn/ui (radix), lucide-react (001-reusable-file-upload)
 - Supabase Storage (buckets: `marketplace-image` for listings, `community-attachments` for community) (001-reusable-file-upload)
