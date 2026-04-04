@@ -45,13 +45,30 @@ return (
 
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { InfiniteScrollSentinel } from '@/components/infinite-scroll-sentinel';
+import { getListingsAction } from '@/modules/listings/actions';
+import { ListingCardItem, ListingsFilters } from '@/modules/listings/queries';
+import { DEFAULT_LIMIT_NUMBER } from '@/constants/pagination';
+
+// Adapter: wraps the server action to match the FetchFn<TItem, TFilters> contract.
+// Required because errorHandler's return type (ApiResponseSuccess | ApiResponseError)
+// is a discriminated union — `data` only exists on the success branch.
+const fetchListings = (params: {
+  filters: ListingsFilters;
+  page: number;
+  limit: number;
+}) =>
+  getListingsAction({
+    filters: params.filters,
+    page: params.page,
+    limit: params.limit,
+  });
 
 const LoadMore = ({ filters, initialHasMore }) => {
   const { items, isLoading, error, hasMore, retry, sentinelRef } =
-    useInfiniteScroll({
-      fetchFn: getListingsAction,    // Any server action matching the contract
+    useInfiniteScroll<ListingCardItem, ListingsFilters>({
+      fetchFn: fetchListings, // Adapter, not the action directly
       filters,
-      initialItems: [],              // LoadMore only handles page 2+
+      initialItems: [], // LoadMore only handles page 2+
       initialHasMore,
       limit: DEFAULT_LIMIT_NUMBER,
     });
@@ -112,12 +129,12 @@ const CommunityFeedLoadMore = ({ filters, initialHasMore }) => {
 
 ## File Change Summary
 
-| File | Change |
-|---|---|
-| `hooks/use-infinite-scroll.ts` | **New** — shared hook |
-| `components/infinite-scroll-sentinel/InfiniteScrollSentinel.tsx` | **New** — sentinel component |
-| `components/infinite-scroll-sentinel/index.ts` | **New** — barrel export |
-| `modules/listings/home/components/load-more/LoadMore.tsx` | **Modified** — refactored internals |
-| `modules/listings/home/components/load-more/LoadMoreSkeleton.tsx` | **Unchanged** or removed if sentinel replaces it |
-| `messages/en.json` | **Modified** — add sentinel i18n keys (retry button text) |
-| `messages/ar.json` | **Modified** — add sentinel i18n keys (retry button text) |
+| File                                                              | Change                                                    |
+| ----------------------------------------------------------------- | --------------------------------------------------------- |
+| `hooks/use-infinite-scroll.ts`                                    | **New** — shared hook                                     |
+| `components/infinite-scroll-sentinel/InfiniteScrollSentinel.tsx`  | **New** — sentinel component                              |
+| `components/infinite-scroll-sentinel/index.ts`                    | **New** — barrel export                                   |
+| `modules/listings/home/components/load-more/LoadMore.tsx`         | **Modified** — refactored internals                       |
+| `modules/listings/home/components/load-more/LoadMoreSkeleton.tsx` | **Unchanged** or removed if sentinel replaces it          |
+| `messages/en.json`                                                | **Modified** — add sentinel i18n keys (retry button text) |
+| `messages/ar.json`                                                | **Modified** — add sentinel i18n keys (retry button text) |

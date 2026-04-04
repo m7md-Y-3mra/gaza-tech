@@ -725,5 +725,9 @@
       "tryAgain": "Try Again",
       "goBack": "Go Back"
     }
+  },
+  "InfiniteScrollSentinel": {
+    "error": "Failed to load more items. Please try again.",
+    "retry": "Try Again"
   }
 }

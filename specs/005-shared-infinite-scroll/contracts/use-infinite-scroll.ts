@@ -29,7 +29,7 @@ type FetchFn<TItem, TFilters> = (
   params: { filters: TFilters; page: number; limit: number },
 ) => Promise<{
   success: boolean;
-  data: { data: TItem[] };
+  data?: { data: TItem[] };
   message?: string;
 }>;
 
