@@ -242,16 +242,20 @@ All previously BLOCKER/HIGH/MED issues from `001review.md` are resolved. Remaini
 - Depends on: none
 - Affected tasks: T032
 - Evidence: `modules/community/actions.ts:157-159`:
+
   ```ts
   return Object.fromEntries(
     Object.entries(result).filter(([k]) => k !== 'post_author_id')
   ) as import('./types').EditCommentResult;
   ```
+
   - Dynamic filter runs on every edit-comment call.
   - Inline `import('./types').EditCommentResult` cast is a type-system escape hatch; a simple rest-destructure would let TS check the shape statically.
+
 - Root cause: the fix for prior Issue 1 opted for a runtime filter instead of an object-rest destructure.
 - Proposed solution (mechanically applicable):
   Replace lines 151-161 in `modules/community/actions.ts` with:
+
   ```ts
   export const editOwnCommentAction = errorHandler(
     async (input: EditOwnCommentInput) => {
@@ -262,8 +266,10 @@ All previously BLOCKER/HIGH/MED issues from `001review.md` are resolved. Remaini
     }
   );
   ```
+
   - `payload` is inferred as `EditCommentResult` because `editOwnCommentQuery`'s return type is `EditCommentResult & { post_author_id: string }`.
   - No runtime iteration, no dynamic `import(...)` cast, no behaviour change.
+
 - Test plan:
   1. `npm run check` — 0 errors.
   2. Log in as user B, edit a comment on user A's post; verify only `/community` and `/profile/${A.id}` are revalidated (behaviour identical to current fix).

@@ -695,7 +695,9 @@ export async function deleteOwnCommentQuery(
 
   const { data: existing, error: fetchError } = await client
     .from('community_post_comments')
-    .select('comment_id, author_id, post_id, is_deleted, community_posts!inner(author_id)')
+    .select(
+      'comment_id, author_id, post_id, is_deleted, community_posts!inner(author_id)'
+    )
     .eq('comment_id', input.comment_id)
     .single();
 

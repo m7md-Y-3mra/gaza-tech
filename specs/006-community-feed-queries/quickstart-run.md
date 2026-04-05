@@ -19,14 +19,14 @@ ORDER BY polname;
 
 **Result** — all six T001 policies confirmed present:
 
-| Policy name                              |
-|------------------------------------------|
-| community_post_comments_author_delete    |
-| community_post_comments_author_update    |
-| community_post_comments_read             |
-| community_posts_author_delete            |
-| community_posts_author_update            |
-| community_posts_read                     |
+| Policy name                           |
+| ------------------------------------- |
+| community_post_comments_author_delete |
+| community_post_comments_author_update |
+| community_post_comments_read          |
+| community_posts_author_delete         |
+| community_posts_author_update         |
+| community_posts_read                  |
 
 Additional pre-existing policies also present (from earlier migrations):
 `Anyone can view comments on published posts`, `Anyone can view published posts`,
@@ -159,12 +159,12 @@ evidence is recorded per scenario.
 
 ## Definition of Done Status
 
-| Item | Status |
-|------|--------|
-| All 16 smoke scenarios pass | Pending manual run |
-| `npm run check` passes with zero errors | ✅ Verified (2026-04-05) |
-| `types/supabase.ts` includes `parent_comment_id`, `is_deleted`, all new RPCs | ✅ Verified |
-| No UI files / client components added | ✅ Verified |
-| Migration is documented under `contracts/rpc-functions.sql` | ✅ Verified |
-| Every server action wrapped with `errorHandler()` | ✅ Verified |
-| RLS policies T001 confirmed in database | ✅ Verified via `pg_policy` probe |
+| Item                                                                         | Status                            |
+| ---------------------------------------------------------------------------- | --------------------------------- |
+| All 16 smoke scenarios pass                                                  | Pending manual run                |
+| `npm run check` passes with zero errors                                      | ✅ Verified (2026-04-05)          |
+| `types/supabase.ts` includes `parent_comment_id`, `is_deleted`, all new RPCs | ✅ Verified                       |
+| No UI files / client components added                                        | ✅ Verified                       |
+| Migration is documented under `contracts/rpc-functions.sql`                  | ✅ Verified                       |
+| Every server action wrapped with `errorHandler()`                            | ✅ Verified                       |
+| RLS policies T001 confirmed in database                                      | ✅ Verified via `pg_policy` probe |
