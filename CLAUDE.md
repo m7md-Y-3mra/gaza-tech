@@ -297,8 +297,11 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 5. Open Graph image via `opengraph-image.tsx`
 
 ## Active Technologies
+
 - TypeScript 5.x + Next.js 16, React 19, `react-intersection-observer` ^10.0.2, `next-intl` ^4.7.0, shadcn/ui (radix), lucide-react (005-shared-infinite-scroll)
 - N/A (client-side state only; consumes existing server actions) (005-shared-infinite-scroll)
+- TypeScript 5.x, Next.js 16 (App Router), React 19 + `@supabase/supabase-js` ^2.86.0, `zod` ^4.2.1, `next-intl` ^4.7.0, shared utilities (`utils/error-handler.ts`, `utils/auth-handler.ts`, `utils/CustomError.ts`, `lib/zod-error.ts`) (006-community-feed-queries)
+- Supabase Postgres — tables `community_posts`, `community_posts_attachments`, `community_posts_likes`, `bookmarked_posts`, `community_post_comments`, `community_comments_likes`, `users`. Supabase Storage bucket `community-attachments` (public-read, URLs emitted via `storage.from().getPublicUrl()`). (006-community-feed-queries)
 
 - TypeScript, Next.js 16, React 19 + react-hook-form `^7.69.0`, zod `^4.2.1`, `@supabase/supabase-js` `^2.86.0`, browser-image-compression `^2.0.2`, next-intl `^4.7.0`, Tailwind CSS `^4`, shadcn/ui (radix), lucide-react (001-reusable-file-upload)
 - Supabase Storage (buckets: `marketplace-image` for listings, `community-attachments` for community) (001-reusable-file-upload)

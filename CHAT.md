@@ -7,6 +7,7 @@
 **Stack:** Next.js 16, React 19, Supabase, react-hook-form + zod v4, next-intl, Tailwind CSS 4, shadcn/ui (radix), sonner, lucide-react, react-intersection-observer, nuqs.
 
 **What Already Exists:**
+
 - `modules/community/` — create/update post form, actions, queries, types, schema (all implemented)
 - `app/[locale]/(main)/community/create/page.tsx` and `community/[postId]/edit/page.tsx` routes
 - `components/file-upload/` — shared reusable upload component (already extracted)
@@ -15,6 +16,7 @@
 - Profile tabs in `modules/user/profile/components/profile-tabs/`
 
 **What Doesn't Exist Yet:**
+
 - Community feed page (`app/[locale]/(main)/community/page.tsx`)
 - Post card component
 - Like/Bookmark/Share/Comment functionality for posts
@@ -28,59 +30,65 @@
 ## Database Schema Reference (from Supabase)
 
 ### `community_posts`
-| Column | Type | Default | Check |
-|---|---|---|---|
-| `post_id` | uuid PK | `uuid_generate_v4()` | — |
-| `author_id` | uuid FK → users | — | — |
-| `title` | text | — | — |
-| `content` | text | — | — |
-| `post_category` | text | `'questions'` | `questions`, `tips`, `news`, `troubleshooting` |
-| `content_status` | text | `'draft'` | `draft`, `published`, `removed` |
-| `published_at` | timestamptz | nullable | — |
-| `created_at` | timestamptz | `now()` | — |
-| `updated_at` | timestamptz | `now()` | — |
+
+| Column           | Type            | Default              | Check                                          |
+| ---------------- | --------------- | -------------------- | ---------------------------------------------- |
+| `post_id`        | uuid PK         | `uuid_generate_v4()` | —                                              |
+| `author_id`      | uuid FK → users | —                    | —                                              |
+| `title`          | text            | —                    | —                                              |
+| `content`        | text            | —                    | —                                              |
+| `post_category`  | text            | `'questions'`        | `questions`, `tips`, `news`, `troubleshooting` |
+| `content_status` | text            | `'draft'`            | `draft`, `published`, `removed`                |
+| `published_at`   | timestamptz     | nullable             | —                                              |
+| `created_at`     | timestamptz     | `now()`              | —                                              |
+| `updated_at`     | timestamptz     | `now()`              | —                                              |
 
 ### `community_posts_likes`
-| Column | Type |
-|---|---|
-| `user_id` | uuid PK (composite) FK → users |
-| `post_id` | uuid PK (composite) FK → community_posts |
-| `created_at` | timestamptz |
+
+| Column       | Type                                     |
+| ------------ | ---------------------------------------- |
+| `user_id`    | uuid PK (composite) FK → users           |
+| `post_id`    | uuid PK (composite) FK → community_posts |
+| `created_at` | timestamptz                              |
 
 ### `bookmarked_posts`
-| Column | Type |
-|---|---|
-| `user_id` | uuid PK (composite) FK → users |
-| `post_id` | uuid PK (composite) FK → community_posts |
-| `created_at` | timestamptz |
+
+| Column       | Type                                     |
+| ------------ | ---------------------------------------- |
+| `user_id`    | uuid PK (composite) FK → users           |
+| `post_id`    | uuid PK (composite) FK → community_posts |
+| `created_at` | timestamptz                              |
 
 ### `community_post_comments`
-| Column | Type | Notes |
-|---|---|---|
-| `comment_id` | uuid PK | auto-generated |
-| `post_id` | uuid FK → community_posts | — |
-| `author_id` | uuid FK → users | — |
-| `content` | text | — |
-| `parent_comment_id` | uuid FK → self | nullable (for nested replies) |
-| `is_edited` | boolean | default `false` |
-| `edited_at` | timestamptz | nullable |
-| `created_at` | timestamptz | `now()` |
-| `updated_at` | timestamptz | `now()` |
+
+| Column              | Type                      | Notes                         |
+| ------------------- | ------------------------- | ----------------------------- |
+| `comment_id`        | uuid PK                   | auto-generated                |
+| `post_id`           | uuid FK → community_posts | —                             |
+| `author_id`         | uuid FK → users           | —                             |
+| `content`           | text                      | —                             |
+| `parent_comment_id` | uuid FK → self            | nullable (for nested replies) |
+| `is_edited`         | boolean                   | default `false`               |
+| `edited_at`         | timestamptz               | nullable                      |
+| `created_at`        | timestamptz               | `now()`                       |
+| `updated_at`        | timestamptz               | `now()`                       |
 
 ### `community_comments_likes`
-| Column | Type |
-|---|---|
-| `user_id` | uuid PK (composite) FK → users |
+
+| Column       | Type                                             |
+| ------------ | ------------------------------------------------ |
+| `user_id`    | uuid PK (composite) FK → users                   |
 | `comment_id` | uuid PK (composite) FK → community_post_comments |
-| `created_at` | timestamptz |
+| `created_at` | timestamptz                                      |
 
 ### `community_posts_attachments`
-| Column | Type |
-|---|---|
-| `attachment_id` | uuid PK |
-| `post_id` | uuid FK → community_posts |
-| `file_url` | text |
-| `created_at` | timestamptz |
+
+| Column          | Type                      |
+| --------------- | ------------------------- |
+| `attachment_id` | uuid PK                   |
+| `post_id`       | uuid FK → community_posts |
+| `file_url`      | text                      |
+| `created_at`    | timestamptz               |
 
 ---
 
@@ -90,9 +98,9 @@ The `add_comment` function exists in Supabase as an RPC function. It uses `auth.
 
 ```ts
 const { data, error } = await supabase.rpc('add_comment', {
-  p_content,      // string — comment text
-  p_parent_id,    // uuid | null — parent comment id for replies
-  p_post_id,      // uuid — the post being commented on
+  p_content, // string — comment text
+  p_parent_id, // uuid | null — parent comment id for replies
+  p_post_id, // uuid — the post being commented on
 });
 ```
 
@@ -102,16 +110,16 @@ const { data, error } = await supabase.rpc('add_comment', {
 
 ## Phases Overview
 
-| Phase | Spec Name | Summary |
-|---|---|---|
-| 1 | `shared-infinite-scroll` | Extract infinite scroll logic from listings into a shared reusable hook |
-| 2 | `community-feed-queries` | All Supabase queries for the feed: list posts, like, bookmark, comments, delete |
-| 3 | `post-card-component` | The post card UI with like, bookmark, share, comment count |
-| 4 | `community-feed-page` | The feed page with search, category filters, infinite scroll |
-| 5 | `post-detail-modal` | Modal with full post, comments system (add/edit/delete), like comments |
-| 6 | `profile-community-tab` | Add "My Posts" tab in profile with update/delete |
-| 7 | `home-page-integration` | Mixed home page showing recent listings + community posts |
-| 8 | `translations-and-polish` | en.json + ar.json keys, RTL testing, edge cases |
+| Phase | Spec Name                 | Summary                                                                         |
+| ----- | ------------------------- | ------------------------------------------------------------------------------- |
+| 1     | `shared-infinite-scroll`  | Extract infinite scroll logic from listings into a shared reusable hook         |
+| 2     | `community-feed-queries`  | All Supabase queries for the feed: list posts, like, bookmark, comments, delete |
+| 3     | `post-card-component`     | The post card UI with like, bookmark, share, comment count                      |
+| 4     | `community-feed-page`     | The feed page with search, category filters, infinite scroll                    |
+| 5     | `post-detail-modal`       | Modal with full post, comments system (add/edit/delete), like comments          |
+| 6     | `profile-community-tab`   | Add "My Posts" tab in profile with update/delete                                |
+| 7     | `home-page-integration`   | Mixed home page showing recent listings + community posts                       |
+| 8     | `translations-and-polish` | en.json + ar.json keys, RTL testing, edge cases                                 |
 
 ---
 
@@ -132,7 +140,11 @@ type UseInfiniteScrollOptions<TItem, TFilters> = {
     filters: TFilters;
     page: number;
     limit: number;
-  }) => Promise<{ success: boolean; data: { data: TItem[] }; message?: string }>;
+  }) => Promise<{
+    success: boolean;
+    data: { data: TItem[] };
+    message?: string;
+  }>;
 };
 
 // Returns: { items, showSpinner, error, sentinelRef }
@@ -151,6 +163,7 @@ type UseInfiniteScrollOptions<TItem, TFilters> = {
 4. **Verify** listings infinite scroll works identically after refactor.
 
 ### Spec Acceptance Criteria
+
 - `hooks/useInfiniteScroll.ts` is fully typed and generic
 - Listings `LoadMore` uses it with zero behavioral change
 - The hook handles: loading, error, no-more-items, filter changes
@@ -172,26 +185,27 @@ Before starting, run `npx supabase gen types` to regenerate `types/supabase.ts`.
 
 Add these query functions:
 
-| Function | Description |
-|---|---|
-| `getCommunityPostsQuery({ filters, page, limit })` | Fetch paginated published posts with author info (first_name, last_name, avatar_url), like count, comment count, bookmark status for current user, like status for current user. Order by `published_at` desc. |
-| `togglePostLikeQuery(postId)` | Check if liked → delete, else → insert into `community_posts_likes`. Return `{ isLiked: boolean, likeCount: number }`. |
-| `togglePostBookmarkQuery(postId)` | Same pattern as `toggleBookmarkQuery` for listings but using `bookmarked_posts` table. Return `{ isBookmarked: boolean }`. |
-| `getPostCommentsQuery(postId)` | Fetch all comments for a post with author info and like count. Include `parent_comment_id` for threading. Order by `created_at` asc. |
-| `addCommentQuery(postId, content, parentId?)` | Use `.rpc('add_comment', { p_post_id, p_content, p_parent_id })` — no author param needed, the DB function uses `auth.uid()` internally. Return the new comment with author info by fetching it after insert. |
-| `updateCommentQuery(commentId, content)` | Update `content`, set `is_edited = true`, `edited_at = now()`. Auth check: only author can update. |
-| `deleteCommentQuery(commentId)` | Delete comment. Auth check: only author can delete. |
-| `toggleCommentLikeQuery(commentId)` | Toggle like on a comment in `community_comments_likes`. Return `{ isLiked: boolean, likeCount: number }`. |
-| `deleteCommunityPostQuery(postId)` | Delete post + attachments. Auth check: only author. Also delete attachments from storage bucket. |
-| `getUserCommunityPostsQuery({ userId, page, limit })` | Paginated posts by a specific user (for profile tab). |
-| `getPostDetailQuery(postId)` | Full post detail with author, attachments, like/bookmark/comment counts, current user's like/bookmark status. |
+| Function                                              | Description                                                                                                                                                                                                    |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getCommunityPostsQuery({ filters, page, limit })`    | Fetch paginated published posts with author info (first_name, last_name, avatar_url), like count, comment count, bookmark status for current user, like status for current user. Order by `published_at` desc. |
+| `togglePostLikeQuery(postId)`                         | Check if liked → delete, else → insert into `community_posts_likes`. Return `{ isLiked: boolean, likeCount: number }`.                                                                                         |
+| `togglePostBookmarkQuery(postId)`                     | Same pattern as `toggleBookmarkQuery` for listings but using `bookmarked_posts` table. Return `{ isBookmarked: boolean }`.                                                                                     |
+| `getPostCommentsQuery(postId)`                        | Fetch all comments for a post with author info and like count. Include `parent_comment_id` for threading. Order by `created_at` asc.                                                                           |
+| `addCommentQuery(postId, content, parentId?)`         | Use `.rpc('add_comment', { p_post_id, p_content, p_parent_id })` — no author param needed, the DB function uses `auth.uid()` internally. Return the new comment with author info by fetching it after insert.  |
+| `updateCommentQuery(commentId, content)`              | Update `content`, set `is_edited = true`, `edited_at = now()`. Auth check: only author can update.                                                                                                             |
+| `deleteCommentQuery(commentId)`                       | Delete comment. Auth check: only author can delete.                                                                                                                                                            |
+| `toggleCommentLikeQuery(commentId)`                   | Toggle like on a comment in `community_comments_likes`. Return `{ isLiked: boolean, likeCount: number }`.                                                                                                      |
+| `deleteCommunityPostQuery(postId)`                    | Delete post + attachments. Auth check: only author. Also delete attachments from storage bucket.                                                                                                               |
+| `getUserCommunityPostsQuery({ userId, page, limit })` | Paginated posts by a specific user (for profile tab).                                                                                                                                                          |
+| `getPostDetailQuery(postId)`                          | Full post detail with author, attachments, like/bookmark/comment counts, current user's like/bookmark status.                                                                                                  |
 
 #### 2.3 — The `getCommunityPostsQuery` select shape
 
 ```ts
 const { data, error, count } = await client
   .from('community_posts')
-  .select(`
+  .select(
+    `
     post_id, title, content, post_category, published_at, created_at,
     users!community_posts_author_id_fkey (
       user_id, first_name, last_name, avatar_url
@@ -200,7 +214,9 @@ const { data, error, count } = await client
     community_posts_likes ( user_id ),
     community_post_comments ( comment_id ),
     bookmarked_posts ( user_id )
-  `, { count: 'exact' })
+  `,
+    { count: 'exact' }
+  )
   .eq('content_status', 'published')
   .order('published_at', { ascending: false })
   .range(from, to);
@@ -225,7 +241,7 @@ export type CommunityPostCardItem = {
   attachments: { attachment_id: string; file_url: string }[];
   like_count: number;
   comment_count: number;
-  is_liked: boolean;      // current user liked?
+  is_liked: boolean; // current user liked?
   is_bookmarked: boolean; // current user bookmarked?
 };
 ```
@@ -247,6 +263,7 @@ Wrap all new query functions with `errorHandler()`:
 - `getPostDetailAction`
 
 ### Spec Acceptance Criteria
+
 - All queries use `authHandler()` for auth-required operations
 - All actions wrapped with `errorHandler()`
 - `getCommunityPostsQuery` returns flattened `CommunityPostCardItem[]` with counts computed from relation arrays (`.length`)
@@ -279,6 +296,7 @@ modules/community/
 ### Design Breakdown (from screenshot)
 
 Each card has:
+
 - **Header row:** Author avatar (circle) + author name + relative time (e.g., "منذ 2 ساعات") — right-aligned for RTL
 - **Category badge:** Colored pill badge (سؤال / نصائح / أخبار / حلول المشاكل)
 - **Title:** Bold text
@@ -305,6 +323,7 @@ Each card has:
 4. **Attachment indicators:** If a post has attachments, show a small paperclip icon + count next to the content preview.
 
 ### Spec Acceptance Criteria
+
 - Card matches the screenshot design (RTL-aware, responsive)
 - Like toggle is optimistic with rollback on error
 - Bookmark toggle is optimistic with rollback on error
@@ -393,6 +412,7 @@ modules/community/
    - Add translation keys for "Community" / "المجتمع" in navbar translations.
 
 ### Spec Acceptance Criteria
+
 - Feed page renders at `/community` with category filter tabs + search
 - Infinite scroll loads more posts as user scrolls down
 - Category tabs filter posts by `post_category`
@@ -500,6 +520,7 @@ export type CommentItem = {
 ```
 
 ### Spec Acceptance Criteria
+
 - Clicking comment icon on PostCard opens the modal with full post + comments
 - Comments load on modal open
 - User can add a comment (calls `add_comment` RPC with `p_post_id`, `p_content`, `p_parent_id`)
@@ -549,12 +570,13 @@ modules/user/profile/components/profile-tabs/
    - The posts tab is visible to everyone viewing the profile (like listings), not just the owner.
 
 4. **Update `ProfileTabsClientProps`:**
+
    ```ts
    export type ProfileTabsClientProps = {
      isOwner: boolean;
      listingsContent: ReactNode;
-     bookmarkedContent: ReactNode;  // owner-only
-     postsContent: ReactNode;       // new — visible to all
+     bookmarkedContent: ReactNode; // owner-only
+     postsContent: ReactNode; // new — visible to all
    };
    ```
 
@@ -562,6 +584,7 @@ modules/user/profile/components/profile-tabs/
    - Pass `postsContent` to `ProfileTabs`.
 
 ### Spec Acceptance Criteria
+
 - "My Posts" tab appears in profile for all users
 - Owner sees Edit + Delete actions on their posts
 - Delete uses AlertDialog confirmation
@@ -607,6 +630,7 @@ Currently `app/[locale]/(main)/page.tsx` renders `<ListingsPage />` directly. Th
 ```
 
 **Why this approach:**
+
 - Users immediately see both sections — marketplace and community.
 - "View All" links drive navigation to the full pages.
 - Keeps the home page lightweight (no infinite scroll, no filters — just a preview).
@@ -655,6 +679,7 @@ app/[locale]/(main)/
 5. **Keep `/listings` working** — it already has its own dedicated route, so no changes needed.
 
 ### Spec Acceptance Criteria
+
 - Home page shows latest 4 listings + latest 3 community posts
 - Each section has a heading + "View All" link
 - Listings link to `/listings`, community links to `/community`
@@ -672,16 +697,16 @@ app/[locale]/(main)/
 
 1. **Add translation keys to `messages/en.json` and `messages/ar.json`:**
 
-   | Namespace | Keys (examples) |
-   |---|---|
-   | `Community.Feed` | `title`, `searchPlaceholder`, `emptyTitle`, `emptyDescription`, `createFirstPost`, `errorTitle`, `errorDescription` |
-   | `Community.Categories` | `all`, `questions`, `tips`, `news`, `troubleshooting` |
-   | `Community.PostCard` | `likeCount`, `commentCount`, `share`, `linkCopied`, `bookmark`, `bookmarkAdded`, `bookmarkRemoved`, `ago` |
+   | Namespace              | Keys (examples)                                                                                                                                                                   |
+   | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `Community.Feed`       | `title`, `searchPlaceholder`, `emptyTitle`, `emptyDescription`, `createFirstPost`, `errorTitle`, `errorDescription`                                                               |
+   | `Community.Categories` | `all`, `questions`, `tips`, `news`, `troubleshooting`                                                                                                                             |
+   | `Community.PostCard`   | `likeCount`, `commentCount`, `share`, `linkCopied`, `bookmark`, `bookmarkAdded`, `bookmarkRemoved`, `ago`                                                                         |
    | `Community.PostDetail` | `comments`, `noComments`, `beFirst`, `addComment`, `commentPlaceholder`, `edit`, `delete`, `deleteConfirm`, `deleteConfirmMessage`, `cancel`, `save`, `edited`, `replyTo`, `send` |
-   | `Community.CreatePost` | `buttonLabel` |
-   | `Profile.Tabs` | `myPosts` |
-   | `HomePage` | `latestListings`, `communityHighlights`, `viewAll` |
-   | `Navbar` | `community` |
+   | `Community.CreatePost` | `buttonLabel`                                                                                                                                                                     |
+   | `Profile.Tabs`         | `myPosts`                                                                                                                                                                         |
+   | `HomePage`             | `latestListings`, `communityHighlights`, `viewAll`                                                                                                                                |
+   | `Navbar`               | `community`                                                                                                                                                                       |
 
 2. **RTL-specific checks:**
    - FAB position: bottom-left in RTL, bottom-right in LTR. Use `ltr:right-6 rtl:left-6`.
@@ -712,6 +737,7 @@ app/[locale]/(main)/
    - Image attachments: use `next/image` with proper `width`/`height`/`sizes`.
 
 ### Spec Acceptance Criteria
+
 - All visible text is translated in en + ar
 - RTL layout works correctly in Arabic
 - Edge cases handled gracefully
@@ -742,6 +768,7 @@ Phase 8 (translations-and-polish)    ← depends on all above
 ```
 
 **Parallelizable:**
+
 - Phase 1 ‖ Phase 2
 - Phase 5 ‖ Phase 6 ‖ Phase 7 (after Phase 4)
 
