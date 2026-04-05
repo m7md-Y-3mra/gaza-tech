@@ -23,14 +23,14 @@ Extract the infinite scroll logic from the listings `LoadMore` component into a 
 
 _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|---|---|---|
-| I. Module-First Architecture | PASS | Hook in global `hooks/`, sentinel in global `components/` — both are shared utilities, not module-specific. Listings `LoadMore` stays in its module. |
-| II. Server-First Rendering | PASS | First page is server-rendered. Hook is client-only for page 2+, used in focused client components. |
-| III. Incremental Staged Development | PASS | Implementation will follow staged commits: hook → sentinel → refactor → i18n. |
-| IV. Performance Standards | PASS | No new bundle dependencies. Intersection Observer is performant (no scroll event listeners). |
-| V. Accessibility (WCAG AA) | PASS | Retry button will be a semantic `<button>` with descriptive text. Skeleton has appropriate ARIA. |
-| VI. Consistent Error Handling | PASS | Hook follows the project's `{ success, data, message }` return shape. Error state exposed for UI rendering. |
+| Principle                           | Status | Notes                                                                                                                                                |
+| ----------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. Module-First Architecture        | PASS   | Hook in global `hooks/`, sentinel in global `components/` — both are shared utilities, not module-specific. Listings `LoadMore` stays in its module. |
+| II. Server-First Rendering          | PASS   | First page is server-rendered. Hook is client-only for page 2+, used in focused client components.                                                   |
+| III. Incremental Staged Development | PASS   | Implementation will follow staged commits: hook → sentinel → refactor → i18n.                                                                        |
+| IV. Performance Standards           | PASS   | No new bundle dependencies. Intersection Observer is performant (no scroll event listeners).                                                         |
+| V. Accessibility (WCAG AA)          | PASS   | Retry button will be a semantic `<button>` with descriptive text. Skeleton has appropriate ARIA.                                                     |
+| VI. Consistent Error Handling       | PASS   | Hook follows the project's `{ success, data, message }` return shape. Error state exposed for UI rendering.                                          |
 
 **Post-Phase 1 Re-check**: All gates still PASS. No new violations introduced by the design artifacts.
 

@@ -11,35 +11,35 @@ This feature introduces no new database entities. It operates on the client side
 
 The `useInfiniteScroll` hook manages the following internal state:
 
-| Field | Type | Description |
-|---|---|---|
-| `items` | `TItem[]` | Accumulated items across all loaded pages |
-| `page` | `number` (ref) | Current page number (starts at `DEFAULT_PAGE_NUMBER`) |
-| `isLoading` | `boolean` | Whether a fetch is currently in progress |
-| `error` | `string \| null` | Error message from the last failed fetch, or `null` |
-| `hasMore` | `boolean` | Whether more pages are available |
-| `isFetching` | `boolean` (ref) | Guard to prevent concurrent fetches |
+| Field             | Type                    | Description                                                 |
+| ----------------- | ----------------------- | ----------------------------------------------------------- |
+| `items`           | `TItem[]`               | Accumulated items across all loaded pages                   |
+| `page`            | `number` (ref)          | Current page number (starts at `DEFAULT_PAGE_NUMBER`)       |
+| `isLoading`       | `boolean`               | Whether a fetch is currently in progress                    |
+| `error`           | `string \| null`        | Error message from the last failed fetch, or `null`         |
+| `hasMore`         | `boolean`               | Whether more pages are available                            |
+| `isFetching`      | `boolean` (ref)         | Guard to prevent concurrent fetches                         |
 | `abortController` | `AbortController` (ref) | Controller for aborting in-flight requests on filter change |
 
 ### Hook Input Parameters
 
-| Parameter | Type | Required | Default | Description |
-|---|---|---|---|---|
-| `fetchFn` | `FetchFn<TItem, TFilters>` | Yes | — | Generic fetch function matching the project's error-handler return shape |
-| `filters` | `TFilters` | Yes | — | Filter object; changes trigger state reset |
-| `initialItems` | `TItem[]` | Yes | — | Server-rendered first page of data |
-| `initialHasMore` | `boolean` | Yes | — | Whether there are more items beyond the initial page |
-| `limit` | `number` | No | `DEFAULT_LIMIT_NUMBER` | Page size |
+| Parameter        | Type                       | Required | Default                | Description                                                              |
+| ---------------- | -------------------------- | -------- | ---------------------- | ------------------------------------------------------------------------ |
+| `fetchFn`        | `FetchFn<TItem, TFilters>` | Yes      | —                      | Generic fetch function matching the project's error-handler return shape |
+| `filters`        | `TFilters`                 | Yes      | —                      | Filter object; changes trigger state reset                               |
+| `initialItems`   | `TItem[]`                  | Yes      | —                      | Server-rendered first page of data                                       |
+| `initialHasMore` | `boolean`                  | Yes      | —                      | Whether there are more items beyond the initial page                     |
+| `limit`          | `number`                   | No       | `DEFAULT_LIMIT_NUMBER` | Page size                                                                |
 
 ### Hook Return Value
 
-| Field | Type | Description |
-|---|---|---|
-| `items` | `TItem[]` | All items (initial + loaded) |
-| `isLoading` | `boolean` | Loading state for the current fetch |
-| `error` | `string \| null` | Error message or null |
-| `hasMore` | `boolean` | Whether the sentinel should remain visible |
-| `retry` | `() => void` | Retries the last failed fetch |
+| Field         | Type                               | Description                                    |
+| ------------- | ---------------------------------- | ---------------------------------------------- |
+| `items`       | `TItem[]`                          | All items (initial + loaded)                   |
+| `isLoading`   | `boolean`                          | Loading state for the current fetch            |
+| `error`       | `string \| null`                   | Error message or null                          |
+| `hasMore`     | `boolean`                          | Whether the sentinel should remain visible     |
+| `retry`       | `() => void`                       | Retries the last failed fetch                  |
 | `sentinelRef` | `(node?: Element \| null) => void` | Ref callback to attach to the sentinel element |
 
 ### Fetch Function Contract
@@ -57,14 +57,14 @@ type FetchFn<TItem, TFilters> = (
 
 ### Sentinel Component Props
 
-| Prop | Type | Required | Description |
-|---|---|---|---|
-| `sentinelRef` | `(node?: Element \| null) => void` | Yes | Ref from the hook |
-| `isLoading` | `boolean` | Yes | Whether to show the skeleton |
-| `error` | `string \| null` | Yes | Error message to display |
-| `hasMore` | `boolean` | Yes | Whether sentinel should render |
-| `retry` | `() => void` | Yes | Error retry handler |
-| `skeleton` | `React.ReactNode` | Yes | Domain-specific loading skeleton |
+| Prop          | Type                               | Required | Description                      |
+| ------------- | ---------------------------------- | -------- | -------------------------------- |
+| `sentinelRef` | `(node?: Element \| null) => void` | Yes      | Ref from the hook                |
+| `isLoading`   | `boolean`                          | Yes      | Whether to show the skeleton     |
+| `error`       | `string \| null`                   | Yes      | Error message to display         |
+| `hasMore`     | `boolean`                          | Yes      | Whether sentinel should render   |
+| `retry`       | `() => void`                       | Yes      | Error retry handler              |
+| `skeleton`    | `React.ReactNode`                  | Yes      | Domain-specific loading skeleton |
 
 ### State Transitions
 

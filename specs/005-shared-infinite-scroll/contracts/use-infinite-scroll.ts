@@ -25,9 +25,11 @@
  * @param params.page - Page number to fetch (1-indexed)
  * @param params.limit - Number of items per page
  */
-type FetchFn<TItem, TFilters> = (
-  params: { filters: TFilters; page: number; limit: number },
-) => Promise<{
+type FetchFn<TItem, TFilters> = (params: {
+  filters: TFilters;
+  page: number;
+  limit: number;
+}) => Promise<{
   success: boolean;
   data?: { data: TItem[] };
   message?: string;
@@ -82,11 +84,7 @@ interface UseInfiniteScrollReturn<TItem> {
  * ```
  */
 declare function useInfiniteScroll<TItem, TFilters>(
-  options: UseInfiniteScrollOptions<TItem, TFilters>,
+  options: UseInfiniteScrollOptions<TItem, TFilters>
 ): UseInfiniteScrollReturn<TItem>;
 
-export type {
-  FetchFn,
-  UseInfiniteScrollOptions,
-  UseInfiniteScrollReturn,
-};
+export type { FetchFn, UseInfiniteScrollOptions, UseInfiniteScrollReturn };

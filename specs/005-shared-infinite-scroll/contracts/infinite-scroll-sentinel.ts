@@ -51,7 +51,7 @@ interface InfiniteScrollSentinelProps {
  * - Otherwise → renders invisible sentinel div (triggers next fetch on scroll)
  */
 declare function InfiniteScrollSentinel(
-  props: InfiniteScrollSentinelProps,
+  props: InfiniteScrollSentinelProps
 ): ReactNode;
 
 export type { InfiniteScrollSentinelProps };
