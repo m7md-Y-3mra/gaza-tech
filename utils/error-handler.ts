@@ -10,6 +10,7 @@ type ApiResponseSuccess<T> = {
 
 type ApiResponseError = {
   success: false;
+  code?: string;
   message: string;
   errors?: Record<string, string>;
 };
@@ -48,6 +49,7 @@ export function errorHandler<Args extends unknown[], Return>(
       if (err instanceof CustomError) {
         return {
           success: false,
+          code: err.code,
           message: err.message,
           errors: err.errors,
         };
