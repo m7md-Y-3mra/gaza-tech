@@ -729,5 +729,29 @@
   "InfiniteScrollSentinel": {
     "error": "Failed to load more items. Please try again.",
     "retry": "Try Again"
+  },
+  "PostCard": {
+    "deletedUser": "Deleted user",
+    "like": "Like",
+    "unlike": "Unlike",
+    "bookmark": "Bookmark",
+    "unbookmark": "Remove bookmark",
+    "share": "Share",
+    "openComments": "Comments",
+    "shareCopied": "Link copied to clipboard",
+    "shareError": "Failed to copy link",
+    "bookmarkAdded": "Post bookmarked",
+    "bookmarkRemoved": "Bookmark removed",
+    "likeError": "Failed to update like",
+    "bookmarkError": "Failed to update bookmark",
+    "attachments": "{count, plural, one {# attachment} other {# attachments}}",
+    "openCommentsFor": "Open comments for post \"{title}\"",
+    "viewProfile": "View profile of {name}",
+    "categories": {
+      "questions": "Questions",
+      "tips": "Tips & Tutorials",
+      "news": "News",
+      "troubleshooting": "Troubleshooting"
+    }
   }
 }

@@ -729,5 +729,29 @@
   "InfiniteScrollSentinel": {
     "error": "فشل تحميل المزيد من العناصر. يرجى المحاولة مرة أخرى.",
     "retry": "حاول مرة أخرى"
+  },
+  "PostCard": {
+    "deletedUser": "مستخدم محذوف",
+    "like": "إعجاب",
+    "unlike": "إلغاء الإعجاب",
+    "bookmark": "حفظ",
+    "unbookmark": "إلغاء الحفظ",
+    "share": "مشاركة",
+    "openComments": "التعليقات",
+    "shareCopied": "تم نسخ الرابط",
+    "shareError": "فشل نسخ الرابط",
+    "bookmarkAdded": "تم حفظ المنشور",
+    "bookmarkRemoved": "تم إلغاء الحفظ",
+    "likeError": "فشل تحديث الإعجاب",
+    "bookmarkError": "فشل تحديث الحفظ",
+    "attachments": "{count, plural, one {# مرفق} other {# مرفقات}}",
+    "openCommentsFor": "فتح تعليقات المنشور \"{title}\"",
+    "viewProfile": "عرض ملف {name}",
+    "categories": {
+      "questions": "أسئلة",
+      "tips": "نصائح ودروس",
+      "news": "أخبار",
+      "troubleshooting": "حل المشكلات"
+    }
   }
 }
