@@ -297,6 +297,7 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 5. Open Graph image via `opengraph-image.tsx`
 
 ## Active Technologies
+
 - TypeScript 5.x, Next.js 16, React 19 + `next-intl` ^4.7.0, `date-fns` ^4.1.0, `lucide-react` ^0.562.0, `sonner` ^2.0.7, `@supabase/supabase-js` ^2.86.0, shadcn/ui (radix), Tailwind CSS ^4 (007-post-card-component)
 - N/A (consumes existing server actions; no new DB work) (007-post-card-component)
 

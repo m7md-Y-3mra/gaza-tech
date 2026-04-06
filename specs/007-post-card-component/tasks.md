@@ -19,9 +19,9 @@
 
 **Purpose**: Create file structure, types, and constants for the post-card component
 
-- [ ] T001 Create PostCardProps and CategoryColorMap types in `modules/community/components/post-card/types/index.ts`
-- [ ] T002 [P] Create constants (category color map, avatar palette, time threshold) in `modules/community/components/post-card/constants.ts` — include a `getAvatarColorIndex(name: string): number` utility that computes the palette index as `charCodeSum % AVATAR_PALETTE.length`
-- [ ] T003 [P] Create barrel export file in `modules/community/components/post-card/index.ts`
+- [x] T001 Create PostCardProps and CategoryColorMap types in `modules/community/components/post-card/types/index.ts`
+- [x] T002 [P] Create constants (category color map, avatar palette, time threshold) in `modules/community/components/post-card/constants.ts` — include a `getAvatarColorIndex(name: string): number` utility that computes the palette index as `charCodeSum % AVATAR_PALETTE.length`
+- [x] T003 [P] Create barrel export file in `modules/community/components/post-card/index.ts`
 
 ---
 
@@ -31,7 +31,7 @@
 
 **CRITICAL**: No auth-gated user story work (US2, US3) can begin until this phase is complete
 
-- [ ] T004 Implement `useCurrentUser` shared hook in `hooks/use-current-user.ts` — calls `supabase.auth.getUser()` on mount, returns `{ user, isLoading }`
+- [x] T004 Implement `useCurrentUser` shared hook in `hooks/use-current-user.ts` — calls `supabase.auth.getUser()` on mount, returns `{ user, isLoading }`
 
 **Checkpoint**: Foundation ready — user story implementation can now begin
 
@@ -45,11 +45,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Build the PostCardSkeleton server component in `modules/community/components/post-card/PostCardSkeleton.tsx` — shimmer placeholders matching card visual footprint (avatar, title line, 2 content lines, action bar)
-- [ ] T006 [US1] Build the static PostCard layout in `modules/community/components/post-card/PostCard.tsx` — author avatar (with initials fallback + deterministic color), author name, relative/absolute publish time (7-day threshold, date-fns), category badge (colored per constants), title (1-line clamp), content preview (2-line clamp, newlines collapsed, empty body reserves space), attachment indicator (icon + count, hidden when 0), like count and comment count (compact notation via Intl.NumberFormat)
-- [ ] T007 [US1] Add English i18n keys under `PostCard.*` in `messages/en.json` — category labels, deleted user fallback (`PostCard.deletedUser`), attachment count, action labels, toast messages, accessible labels. The `deletedUser` key MUST be used by the card instead of the raw `DELETED_USER_NAME_KEY` constant for display
-- [ ] T008 [US1] Add Arabic i18n keys under `PostCard.*` in `messages/ar.json` — mirrored keys with Arabic translations. The `deletedUser` key MUST be used by the card instead of the raw `DELETED_USER_NAME_KEY` constant for display
-- [ ] T009 [US1] Wire PostCard and PostCardSkeleton exports in `modules/community/components/post-card/index.ts`
+- [x] T005 [US1] Build the PostCardSkeleton server component in `modules/community/components/post-card/PostCardSkeleton.tsx` — shimmer placeholders matching card visual footprint (avatar, title line, 2 content lines, action bar)
+- [x] T006 [US1] Build the static PostCard layout in `modules/community/components/post-card/PostCard.tsx` — author avatar (with initials fallback + deterministic color), author name, relative/absolute publish time (7-day threshold, date-fns), category badge (colored per constants), title (1-line clamp), content preview (2-line clamp, newlines collapsed, empty body reserves space), attachment indicator (icon + count, hidden when 0), like count and comment count (compact notation via Intl.NumberFormat)
+- [x] T007 [US1] Add English i18n keys under `PostCard.*` in `messages/en.json` — category labels, deleted user fallback (`PostCard.deletedUser`), attachment count, action labels, toast messages, accessible labels. The `deletedUser` key MUST be used by the card instead of the raw `DELETED_USER_NAME_KEY` constant for display
+- [x] T008 [US1] Add Arabic i18n keys under `PostCard.*` in `messages/ar.json` — mirrored keys with Arabic translations. The `deletedUser` key MUST be used by the card instead of the raw `DELETED_USER_NAME_KEY` constant for display
+- [x] T009 [US1] Wire PostCard and PostCardSkeleton exports in `modules/community/components/post-card/index.ts`
 
 **Checkpoint**: PostCard renders all static information for a single post. Skeleton matches its footprint. Both locales work. No interactive actions yet.
 
@@ -63,8 +63,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Create `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — optimistic like state (useState + useRef for in-flight), `handleLike` (auth check via `useCurrentUser`, guest redirect: build sign-in URL as `/${locale}/login?redirect=${encodeURIComponent(pathname + search)}` where locale comes from `useLocale()` (next-intl) and redirect value MUST be a same-origin pathname starting with `/`, use `router.push()`, optimistic toggle, call `togglePostLikeAction`, revert + error toast on failure, no success toast), ignore clicks while auth loading or in-flight
-- [ ] T011 [US2] Integrate like action into PostCard UI in `modules/community/components/post-card/PostCard.tsx` — heart icon (filled/outline), like count, keyboard accessible button, ARIA label reflecting state ("Like"/"Unlike"), wire `handleLike` from `usePostCard`
+- [x] T010 [US2] Create `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — optimistic like state (useState + useRef for in-flight), `handleLike` (auth check via `useCurrentUser`, guest redirect: build sign-in URL as `/${locale}/login?redirect=${encodeURIComponent(pathname + search)}` where locale comes from `useLocale()` (next-intl) and redirect value MUST be a same-origin pathname starting with `/`, use `router.push()`, optimistic toggle, call `togglePostLikeAction`, revert + error toast on failure, no success toast), ignore clicks while auth loading or in-flight
+- [x] T011 [US2] Integrate like action into PostCard UI in `modules/community/components/post-card/PostCard.tsx` — heart icon (filled/outline), like count, keyboard accessible button, ARIA label reflecting state ("Like"/"Unlike"), wire `handleLike` from `usePostCard`
 
 **Checkpoint**: Like toggle works end-to-end with optimistic UI, rollback, auth gating, and rapid-click protection.
 
@@ -78,8 +78,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T012 [US3] Add optimistic bookmark state and `handleBookmark` to `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — same pattern as like (useState + useRef in-flight), call `togglePostBookmarkAction`, success toast on completion, revert + error toast on failure, ignore clicks while auth loading or in-flight
-- [ ] T013 [US3] Integrate bookmark action into PostCard UI in `modules/community/components/post-card/PostCard.tsx` — bookmark icon (filled/outline), keyboard accessible button, ARIA label reflecting state ("Bookmark"/"Remove bookmark"), wire `handleBookmark`
+- [x] T012 [US3] Add optimistic bookmark state and `handleBookmark` to `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — same pattern as like (useState + useRef in-flight), call `togglePostBookmarkAction`, success toast on completion, revert + error toast on failure, ignore clicks while auth loading or in-flight
+- [x] T013 [US3] Integrate bookmark action into PostCard UI in `modules/community/components/post-card/PostCard.tsx` — bookmark icon (filled/outline), keyboard accessible button, ARIA label reflecting state ("Bookmark"/"Remove bookmark"), wire `handleBookmark`
 
 **Checkpoint**: Bookmark toggle works end-to-end alongside like. Both actions are independently functional.
 
@@ -93,8 +93,8 @@
 
 ### Implementation for User Story 4
 
-- [ ] T014 [US4] Add `handleShare` to `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — build canonical URL (`/community/${postId}`), `navigator.clipboard.writeText()` in try/catch, success toast, error toast on failure; no auth gating
-- [ ] T015 [US4] Integrate share action into PostCard UI in `modules/community/components/post-card/PostCard.tsx` — share icon button, keyboard accessible, ARIA label, wire `handleShare`
+- [x] T014 [US4] Add `handleShare` to `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — build canonical URL (`/community/${postId}`), `navigator.clipboard.writeText()` in try/catch, success toast, error toast on failure; no auth gating
+- [x] T015 [US4] Integrate share action into PostCard UI in `modules/community/components/post-card/PostCard.tsx` — share icon button, keyboard accessible, ARIA label, wire `handleShare`
 
 **Checkpoint**: Share works for all viewers. Clipboard writes succeed or degrade gracefully.
 
@@ -108,9 +108,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T016 [US5] Add `handleOpenComments` to `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — wraps `onOpenComments(post.post_id)`, no auth gating
-- [ ] T017 [US5] Wire comment-open hotspots in PostCard UI in `modules/community/components/post-card/PostCard.tsx` — comment icon button (with count), title as `<h3>` wrapping unstyled `<button>`, content preview as unstyled `<button>`, all with accessible labels (e.g., "Open comments for post '<title>'"), all invoke `handleOpenComments`
-- [ ] T018 [US5] Wire author header link in PostCard UI in `modules/community/components/post-card/PostCard.tsx` — author avatar and name as `<a>` to `/[locale]/profile/[userId]`, keyboard reachable, accessible label; deleted/missing authors render as non-interactive (no link)
+- [x] T016 [US5] Add `handleOpenComments` to `usePostCard` hook in `modules/community/components/post-card/hooks/usePostCard.ts` — wraps `onOpenComments(post.post_id)`, no auth gating
+- [x] T017 [US5] Wire comment-open hotspots in PostCard UI in `modules/community/components/post-card/PostCard.tsx` — comment icon button (with count), title as `<h3>` wrapping unstyled `<button>`, content preview as unstyled `<button>`, all with accessible labels (e.g., "Open comments for post '<title>'"), all invoke `handleOpenComments`
+- [x] T018 [US5] Wire author header link in PostCard UI in `modules/community/components/post-card/PostCard.tsx` — author avatar and name as `<a>` to `/[locale]/profile/[userId]`, keyboard reachable, accessible label; deleted/missing authors render as non-interactive (no link)
 
 **Checkpoint**: All interactive hotspots on the card are functional. Comment callback fires correctly. Author profile link navigates.
 
@@ -124,7 +124,7 @@
 
 ### Implementation for User Story 6
 
-- [ ] T019 [US6] Refine PostCardSkeleton dimensions in `modules/community/components/post-card/PostCardSkeleton.tsx` — ensure pixel-level match with real PostCard footprint (same padding, gaps, heights for avatar, title, content lines, action bar); verify no `'use client'` directive; verify zero CLS contribution
+- [x] T019 [US6] Refine PostCardSkeleton dimensions in `modules/community/components/post-card/PostCardSkeleton.tsx` — ensure pixel-level match with real PostCard footprint (same padding, gaps, heights for avatar, title, content lines, action bar); verify no `'use client'` directive; verify zero CLS contribution
 
 **Checkpoint**: Skeleton is production-ready and matches card footprint exactly.
 
@@ -134,11 +134,11 @@
 
 **Purpose**: Accessibility, performance, and final validation
 
-- [ ] T020 [P] Accessibility audit on PostCard — verify all interactive elements are keyboard reachable, have visible focus states, carry correct ARIA labels with state reflection, semantic HTML (`<h3>`, `<button>`, `<a>`), color contrast 4.5:1 on all badges and text in `modules/community/components/post-card/PostCard.tsx`
-- [ ] T021 [P] RTL/responsive verification — test card in Arabic locale on mobile (<=640px) and desktop (>=1024px), verify no clipped text, correct icon mirroring, correct reading order
-- [ ] T022 Run `npm run check` (format + lint + type-check) and fix any issues
+- [x] T020 [P] Accessibility audit on PostCard — verify all interactive elements are keyboard reachable, have visible focus states, carry correct ARIA labels with state reflection, semantic HTML (`<h3>`, `<button>`, `<a>`), color contrast 4.5:1 on all badges and text in `modules/community/components/post-card/PostCard.tsx`
+- [x] T021 [P] RTL/responsive verification — test card in Arabic locale on mobile (<=640px) and desktop (>=1024px), verify no clipped text, correct icon mirroring, correct reading order
+- [x] T022 Run `npm run check` (format + lint + type-check) and fix any issues
 - [ ] T023 Run Lighthouse audit and verify LCP < 2.5s, FID < 100ms, CLS < 0.1 with skeleton swap
-- [ ] T024 Run quickstart.md validation — render PostCard and PostCardSkeleton in community feed page to verify integration
+- [x] T024 Run quickstart.md validation — render PostCard and PostCardSkeleton in community feed page to verify integration
 
 ---
 
@@ -168,10 +168,12 @@
 ### Parallel Opportunities
 
 After Phase 2 + US1 complete:
+
 - US4 (share) and US5 (comments) can run in parallel with US2 (like)
 - US6 (skeleton refinement) can run in parallel with US2
 
 After US2 completes:
+
 - US3 (bookmark) can begin
 
 ---

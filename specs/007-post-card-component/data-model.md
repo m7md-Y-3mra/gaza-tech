@@ -14,38 +14,38 @@ The Post Card Component is a pure frontend feature — it consumes existing data
 **Source**: `modules/community/types/index.ts`
 **Used as**: The single `post` prop for `PostCard`
 
-| Field | Type | Card Usage |
-|---|---|---|
-| `post_id` | `string` | Passed to callbacks (`onOpenComments`), used in share URL |
-| `author` | `AuthorStub` | Author header (avatar, name, profile link) |
-| `title` | `string` | Title display (1-line clamp), comment-open hotspot |
-| `content` | `string` | Content preview (2-line clamp), comment-open hotspot |
-| `post_category` | `string` | Category badge color + label |
-| `published_at` | `string` (ISO) | Relative/absolute time display |
-| `attachments` | `FeedAttachment[]` | Attachment indicator (count only) |
-| `like_count` | `number` | Like count display (compact notation) |
-| `comment_count` | `number` | Comment count display (compact notation) |
-| `is_liked` | `boolean` | Initial like state (optimistic toggle) |
-| `is_bookmarked` | `boolean` | Initial bookmark state (optimistic toggle) |
+| Field           | Type               | Card Usage                                                |
+| --------------- | ------------------ | --------------------------------------------------------- |
+| `post_id`       | `string`           | Passed to callbacks (`onOpenComments`), used in share URL |
+| `author`        | `AuthorStub`       | Author header (avatar, name, profile link)                |
+| `title`         | `string`           | Title display (1-line clamp), comment-open hotspot        |
+| `content`       | `string`           | Content preview (2-line clamp), comment-open hotspot      |
+| `post_category` | `string`           | Category badge color + label                              |
+| `published_at`  | `string` (ISO)     | Relative/absolute time display                            |
+| `attachments`   | `FeedAttachment[]` | Attachment indicator (count only)                         |
+| `like_count`    | `number`           | Like count display (compact notation)                     |
+| `comment_count` | `number`           | Comment count display (compact notation)                  |
+| `is_liked`      | `boolean`          | Initial like state (optimistic toggle)                    |
+| `is_bookmarked` | `boolean`          | Initial bookmark state (optimistic toggle)                |
 
 ### AuthorStub
 
 **Source**: `modules/community/types/index.ts`
 
-| Field | Type | Card Usage |
-|---|---|---|
-| `id` | `string \| null` | Profile link target; `null` = deleted author (no link) |
-| `name` | `string` | Display name; fallback `"Deleted user"` from `DELETED_USER_NAME_KEY` |
-| `avatar_url` | `string \| null` | Avatar image; `null` = initials fallback |
+| Field        | Type             | Card Usage                                                           |
+| ------------ | ---------------- | -------------------------------------------------------------------- |
+| `id`         | `string \| null` | Profile link target; `null` = deleted author (no link)               |
+| `name`       | `string`         | Display name; fallback `"Deleted user"` from `DELETED_USER_NAME_KEY` |
+| `avatar_url` | `string \| null` | Avatar image; `null` = initials fallback                             |
 
 ### FeedAttachment
 
 **Source**: `modules/community/types/index.ts`
 
-| Field | Type | Card Usage |
-|---|---|---|
-| `attachment_id` | `string` | Not used by card |
-| `file_url` | `string` | Not used by card (gallery deferred) |
+| Field           | Type     | Card Usage                          |
+| --------------- | -------- | ----------------------------------- |
+| `attachment_id` | `string` | Not used by card                    |
+| `file_url`      | `string` | Not used by card (gallery deferred) |
 
 Only `attachments.length` is used for the attachment count indicator.
 
@@ -69,8 +69,8 @@ type PostCardProps = {
 type PostCategory = 'questions' | 'tips' | 'news' | 'troubleshooting';
 
 type CategoryColors = {
-  bg: string;      // Tailwind bg class (light + dark)
-  text: string;    // Tailwind text class (light + dark)
+  bg: string; // Tailwind bg class (light + dark)
+  text: string; // Tailwind text class (light + dark)
 };
 
 type CategoryColorMap = Record<PostCategory, CategoryColors>;
@@ -125,6 +125,7 @@ Initial: { isBookmarked: post.is_bookmarked }
 ## Validation Rules
 
 No form validation needed — the card is read-only and action-driven. The only validation is:
+
 - Share URL: Must be same-origin pathname starting with `/`
 - Redirect URL: Must be same-origin pathname starting with `/` (encoded)
 

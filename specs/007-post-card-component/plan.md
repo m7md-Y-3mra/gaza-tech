@@ -23,14 +23,14 @@ Build a reusable `PostCard` client component and a server-renderable `PostCardSk
 
 _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|---|---|---|
-| I. Module-First Architecture | ✅ PASS | Component lives in `modules/community/components/post-card/`. Route files untouched. |
-| II. Server-First Rendering | ✅ PASS | `PostCard` is `'use client'` only because it manages interactive state (like, bookmark, auth check). `PostCardSkeleton` is server-renderable. No client-side data fetching. |
-| III. Incremental Staged Development | ✅ PASS | Tasks will be split into small stages: skeleton → static card layout → category badge → action bar → optimistic logic → auth gating → i18n → a11y. |
-| IV. Performance Standards | ✅ PASS | Skeleton prevents CLS. No heavy dependencies. `next/dynamic` not needed (card is lightweight). Compact number formatting avoids layout reflows. |
-| V. Accessibility (WCAG AA) | ✅ PASS | Semantic HTML (`<h3>`, `<button>`, `<a>`), keyboard-reachable actions, visible focus states, ARIA labels, 4.5:1 contrast on all badge colors. |
-| VI. Consistent Error Handling | ✅ PASS | Server actions already wrapped with `errorHandler()`. Card uses `toast.error()` for failures. |
+| Principle                           | Status  | Notes                                                                                                                                                                       |
+| ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. Module-First Architecture        | ✅ PASS | Component lives in `modules/community/components/post-card/`. Route files untouched.                                                                                        |
+| II. Server-First Rendering          | ✅ PASS | `PostCard` is `'use client'` only because it manages interactive state (like, bookmark, auth check). `PostCardSkeleton` is server-renderable. No client-side data fetching. |
+| III. Incremental Staged Development | ✅ PASS | Tasks will be split into small stages: skeleton → static card layout → category badge → action bar → optimistic logic → auth gating → i18n → a11y.                          |
+| IV. Performance Standards           | ✅ PASS | Skeleton prevents CLS. No heavy dependencies. `next/dynamic` not needed (card is lightweight). Compact number formatting avoids layout reflows.                             |
+| V. Accessibility (WCAG AA)          | ✅ PASS | Semantic HTML (`<h3>`, `<button>`, `<a>`), keyboard-reachable actions, visible focus states, ARIA labels, 4.5:1 contrast on all badge colors.                               |
+| VI. Consistent Error Handling       | ✅ PASS | Server actions already wrapped with `errorHandler()`. Card uses `toast.error()` for failures.                                                                               |
 
 **Result**: All gates pass. No violations to justify.
 

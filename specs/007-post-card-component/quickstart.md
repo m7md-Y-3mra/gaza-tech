@@ -71,7 +71,9 @@ export default async function CommunityPage() {
         <PostCard
           key={post.post_id}
           post={post}
-          onOpenComments={(id) => {/* Phase 5 */}}
+          onOpenComments={(id) => {
+            /* Phase 5 */
+          }}
         />
       ))}
     </div>
@@ -81,17 +83,17 @@ export default async function CommunityPage() {
 
 ## Key Files
 
-| File | Purpose |
-|---|---|
-| `modules/community/components/post-card/PostCard.tsx` | Main interactive card (`'use client'`) |
-| `modules/community/components/post-card/PostCardSkeleton.tsx` | Server-renderable skeleton |
-| `modules/community/components/post-card/index.ts` | Public exports |
-| `modules/community/components/post-card/constants.ts` | Category colors, avatar palette, time threshold |
-| `modules/community/components/post-card/hooks/usePostCard.ts` | Optimistic state, handlers |
-| `modules/community/components/post-card/types/index.ts` | PostCardProps type |
-| `hooks/use-current-user.ts` | Shared auth hook (new) |
-| `messages/en.json` | English translations (PostCard.*) |
-| `messages/ar.json` | Arabic translations (PostCard.*) |
+| File                                                          | Purpose                                         |
+| ------------------------------------------------------------- | ----------------------------------------------- |
+| `modules/community/components/post-card/PostCard.tsx`         | Main interactive card (`'use client'`)          |
+| `modules/community/components/post-card/PostCardSkeleton.tsx` | Server-renderable skeleton                      |
+| `modules/community/components/post-card/index.ts`             | Public exports                                  |
+| `modules/community/components/post-card/constants.ts`         | Category colors, avatar palette, time threshold |
+| `modules/community/components/post-card/hooks/usePostCard.ts` | Optimistic state, handlers                      |
+| `modules/community/components/post-card/types/index.ts`       | PostCardProps type                              |
+| `hooks/use-current-user.ts`                                   | Shared auth hook (new)                          |
+| `messages/en.json`                                            | English translations (PostCard.\*)              |
+| `messages/ar.json`                                            | Arabic translations (PostCard.\*)               |
 
 ## i18n Keys Added
 
@@ -111,11 +113,13 @@ PostCard.categories.questions / tips / news / troubleshooting
 ## Development Workflow
 
 Run the development server:
+
 ```bash
 npm run dev
 ```
 
 Check code quality:
+
 ```bash
 npm run check  # format + lint + type-check
 ```
