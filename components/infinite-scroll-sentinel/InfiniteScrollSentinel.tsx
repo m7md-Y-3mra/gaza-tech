@@ -24,9 +24,6 @@ const InfiniteScrollSentinel = ({
 }: InfiniteScrollSentinelProps) => {
   const t = useTranslations('InfiniteScrollSentinel');
 
-  // Done — nothing more to load
-  if (!hasMore) return null;
-
   // Error state — show message + retry button
   if (error) {
     return (
@@ -43,6 +40,9 @@ const InfiniteScrollSentinel = ({
       </div>
     );
   }
+
+  // Done — nothing more to load
+  if (!hasMore) return null;
 
   // Loading state — render the domain-specific skeleton
   if (isLoading) {

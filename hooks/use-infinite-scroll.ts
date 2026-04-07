@@ -140,13 +140,27 @@ export function useInfiniteScroll<TItem, TFilters>({
 
     // Reset state
     setItems(initialItems);
-    page.current = DEFAULT_PAGE_NUMBER;
+    page.current =
+      initialItems.length > 0 ? DEFAULT_PAGE_NUMBER : DEFAULT_PAGE_NUMBER - 1;
     setHasMore(initialHasMore);
     setError(null);
     isFetching.current = false;
-    setIsLoading(false);
+
+    // If we reset to empty but expect more data, trigger an immediate fetch state
+    if (initialItems.length === 0 && initialHasMore) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersKey]);
+
+  // ── Auto-fetch when reset leaves us with empty items but hasMore ──────
+  useEffect(() => {
+    if (items.length === 0 && hasMore && isLoading && !isFetching.current) {
+      fetchNextPage();
+    }
+  }, [items.length, hasMore, isLoading, fetchNextPage]);
 
   // ── Retry handler ─────────────────────────────────────────────────────────
   // Increments retryTrigger so the effect above fires, guaranteeing a fetch
