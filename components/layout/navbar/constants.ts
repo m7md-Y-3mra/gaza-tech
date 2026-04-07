@@ -2,6 +2,7 @@ import type { NavLink } from './types';
 
 export const NAV_LINKS: NavLink[] = [
   { href: '/listings', labelKey: 'home', allowedRoles: ['registered'] },
+  { href: '/community', labelKey: 'community', allowedRoles: ['registered'] },
   {
     href: '/listings/create',
     labelKey: 'createListing',

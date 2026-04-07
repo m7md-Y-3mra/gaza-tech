@@ -613,6 +613,7 @@
   },
   "Navbar": {
     "home": "Home",
+    "community": "Community",
     "listings": "Listings",
     "createListing": "Create Listing",
     "verificationRequest": "Verification Request",
@@ -687,7 +688,7 @@
         "description": "Ask the community for help"
       },
       "tips": {
-        "title": "Tips & Tutorials",
+        "title": "Tips",
         "description": "Share your knowledge"
       },
       "news": {
@@ -749,9 +750,38 @@
     "viewProfile": "View profile of {name}",
     "categories": {
       "questions": "Questions",
-      "tips": "Tips & Tutorials",
+      "tips": "Tips",
       "news": "News",
       "troubleshooting": "Troubleshooting"
+    }
+  },
+  "CommunityFeed": {
+    "meta": {
+      "title": "Community",
+      "description": "Browse and share with the Gaza Tech community"
+    },
+    "pageTitle": "Community",
+    "createPost": "Create Post",
+    "createPostFab": "New Post",
+    "filters": {
+      "categoryLabel": "Filter by category",
+      "searchPlaceholder": "Search posts...",
+      "clearSearch": "Clear search",
+      "all": "All",
+      "questions": "Questions",
+      "tips": "Tips",
+      "news": "News",
+      "troubleshooting": "Troubleshooting"
+    },
+    "emptyState": {
+      "title": "No posts found",
+      "description": "Be the first to share something with the community.",
+      "descriptionFiltered": "No posts match your current filters.",
+      "cta": "Create Post"
+    },
+    "errorState": {
+      "title": "Failed to load posts",
+      "retry": "Try Again"
     }
   }
 }

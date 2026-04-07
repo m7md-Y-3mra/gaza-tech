@@ -31,6 +31,7 @@ export const postCategorySchema = z.enum(POST_CATEGORY_VALUES).optional();
 
 export const feedQuerySchema = paginationSchema.extend({
   category: postCategorySchema,
+  search: z.string().trim().max(200).optional(),
 });
 
 // ── Server schemas (no translation needed) ────────────────────────────

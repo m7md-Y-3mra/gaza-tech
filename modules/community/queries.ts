@@ -340,12 +340,13 @@ export async function getCommunityFeedQuery(
 ): Promise<Page<FeedPost>> {
   'use server';
   const client = await createClient();
-  const { page, limit, category } = feedQuerySchema.parse(input);
+  const { page, limit, category, search } = feedQuerySchema.parse(input);
 
   const { data, error } = await client.rpc('get_community_feed', {
     p_page: page,
     p_limit: limit + 1,
     p_category: category ?? null,
+    p_search: search ?? null,
   });
 
   if (error) throw error;

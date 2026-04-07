@@ -613,6 +613,7 @@
   },
   "Navbar": {
     "home": "الرئيسية",
+    "community": "المجتمع",
     "listings": "الإعلانات",
     "createListing": "إنشاء إعلان",
     "verificationRequest": "طلب التحقق",
@@ -687,7 +688,7 @@
         "description": "اطلب المساعدة من المجتمع"
       },
       "tips": {
-        "title": "نصائح وشروحات",
+        "title": "نصائح",
         "description": "شارك معرفتك"
       },
       "news": {
@@ -749,9 +750,38 @@
     "viewProfile": "عرض ملف {name}",
     "categories": {
       "questions": "أسئلة",
-      "tips": "نصائح ودروس",
+      "tips": "نصائح",
       "news": "أخبار",
       "troubleshooting": "حل المشكلات"
+    }
+  },
+  "CommunityFeed": {
+    "meta": {
+      "title": "المجتمع",
+      "description": "تصفح وشارك مع مجتمع غزة للتقنية"
+    },
+    "pageTitle": "المجتمع",
+    "createPost": "إنشاء منشور",
+    "createPostFab": "منشور جديد",
+    "filters": {
+      "categoryLabel": "تصفية حسب الفئة",
+      "searchPlaceholder": "ابحث في المنشورات...",
+      "clearSearch": "مسح البحث",
+      "all": "الكل",
+      "questions": "أسئلة",
+      "tips": "نصائح",
+      "news": "أخبار",
+      "troubleshooting": "حل المشكلات"
+    },
+    "emptyState": {
+      "title": "لا توجد منشورات",
+      "description": "كن أول من يشارك شيئاً مع المجتمع.",
+      "descriptionFiltered": "لا توجد منشورات تطابق معايير البحث الحالية.",
+      "cta": "إنشاء منشور"
+    },
+    "errorState": {
+      "title": "فشل تحميل المنشورات",
+      "retry": "حاول مرة أخرى"
     }
   }
 }
