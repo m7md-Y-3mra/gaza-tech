@@ -399,7 +399,6 @@ _(Phase 1 intentionally empty — proceed directly to Phase 2.)_
   - **Done when**: `quickstart.md` § "A11y: keyboard-only flow" passes for owner and non-owner.
 
 - [x] T020 Final validation: run the full `quickstart.md` manual acceptance script end-to-end.
-
   - Run: `npm run dev`, then step through every section in `quickstart.md` (US1, US2, US3, US4, edge cases, a11y, RTL).
   - Run: `npm run check` (format + lint + type-check) — must pass with zero errors.
   - **Done when**: every acceptance scenario in `spec.md` passes AND `npm run check` is green AND no strings in the tab UI are untranslated (verify by toggling `/en/` vs `/ar/` on a profile).

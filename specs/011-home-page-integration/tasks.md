@@ -45,7 +45,7 @@
 
 **Purpose**: Create the `modules/home/` directory structure and all empty files.
 
-- [ ] T001 Create the following directory structure and files (all files can be empty initially, they will be filled in subsequent tasks):
+- [x] T001 Create the following directory structure and files (all files can be empty initially, they will be filled in subsequent tasks):
 
   ```
   modules/home/
@@ -75,7 +75,7 @@
 
 ⚠️ **CRITICAL**: No UI work can begin until this phase is complete.
 
-- [ ] T002 Update the `"HomePage"` object in `messages/en.json` (line 41-43). **Replace** the existing `"HomePage": { "title": "Hello world!" }` with:
+- [x] T002 Update the `"HomePage"` object in `messages/en.json` (line 41-43). **Replace** the existing `"HomePage": { "title": "Hello world!" }` with:
 
   ```json
   "HomePage": {
@@ -90,7 +90,7 @@
   }
   ```
 
-- [ ] T003 Update the `"HomePage"` object in `messages/ar.json` (line 41-43). **Replace** the existing `"HomePage": { "title": "مرحبا بالعالم!" }` with:
+- [x] T003 Update the `"HomePage"` object in `messages/ar.json` (line 41-43). **Replace** the existing `"HomePage": { "title": "مرحبا بالعالم!" }` with:
 
   ```json
   "HomePage": {
@@ -117,7 +117,7 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] Create the `LatestListingsSkeleton` component in `modules/home/components/latest-listings/LatestListingsSkeleton.tsx`.
+- [x] T004 [P] [US1] Create the `LatestListingsSkeleton` component in `modules/home/components/latest-listings/LatestListingsSkeleton.tsx`.
 
   **This is a Server Component (NO `'use client'` directive).**
 
@@ -130,7 +130,7 @@
 
   Export as a named export: `export function LatestListingsSkeleton() { ... }`
 
-- [ ] T005 [P] [US1] Create the `CommunityHighlightsSkeleton` component in `modules/home/components/community-highlights/CommunityHighlightsSkeleton.tsx`.
+- [x] T005 [P] [US1] Create the `CommunityHighlightsSkeleton` component in `modules/home/components/community-highlights/CommunityHighlightsSkeleton.tsx`.
 
   **This is a Server Component (NO `'use client'` directive).**
 
@@ -143,7 +143,7 @@
 
   Export as a named export: `export function CommunityHighlightsSkeleton() { ... }`
 
-- [ ] T006 [US1] Create the `LatestListings` server component in `modules/home/components/latest-listings/LatestListings.tsx`.
+- [x] T006 [US1] Create the `LatestListings` server component in `modules/home/components/latest-listings/LatestListings.tsx`.
 
   **This is an async Server Component (NO `'use client'` directive).** Here is exactly what to write:
 
@@ -181,7 +181,7 @@
   - `ListingsGrid` is a default export, so import with `import ListingsGrid from '...'`.
   - Use `getTranslations` (server-side, from `next-intl/server`) NOT `useTranslations`.
 
-- [ ] T007 [US1] Create the `CommunityHighlights` server component in `modules/home/components/community-highlights/CommunityHighlights.tsx`.
+- [x] T007 [US1] Create the `CommunityHighlights` server component in `modules/home/components/community-highlights/CommunityHighlights.tsx`.
 
   **This is an async Server Component (NO `'use client'` directive).** Here is exactly what to write:
 
@@ -223,7 +223,7 @@
   - `getCommunityFeedAction` returns `{ success, data: { data: FeedPost[], has_more, next_page, total_count }, message }`.
   - `PostCard` is a `'use client'` component but can be rendered as a child of a server component (Next.js handles the boundary automatically).
 
-- [ ] T008 [US1] Create the main `HomePage` component in `modules/home/HomePage.tsx`.
+- [x] T008 [US1] Create the main `HomePage` component in `modules/home/HomePage.tsx`.
 
   **This is an async Server Component (NO `'use client'` directive).** It composes the two sections with independent `Suspense` boundaries. Here is exactly what to write:
 
@@ -282,7 +282,7 @@
   - `Link` from `next/link` handles locale-aware routing automatically (locale prefix is applied by `next-intl` middleware).
   - Uses `getTranslations` from `next-intl/server` (server component pattern).
 
-- [ ] T009 [US1] Update the route page at `app/[locale]/(main)/page.tsx` to render `<HomePage />` instead of `<ListingsPage />`.
+- [x] T009 [US1] Update the route page at `app/[locale]/(main)/page.tsx` to render `<HomePage />` instead of `<ListingsPage />`.
 
   **Replace the ENTIRE file content** with:
 
@@ -309,7 +309,7 @@
 
 **Purpose**: Error boundaries, accessibility, and final quality checks.
 
-- [ ] T010 [US1] Add Error Boundaries for both sections in `modules/home/HomePage.tsx`.
+- [x] T010 [US1] Add Error Boundaries for both sections in `modules/home/HomePage.tsx`.
 
   **What to do:** Create a small `'use client'` error boundary component. Create a new file `modules/home/components/section-error-boundary/SectionErrorBoundary.tsx`:
 
@@ -368,14 +368,14 @@
 
   **Don't forget**: Add `import { SectionErrorBoundary } from './components/section-error-boundary/SectionErrorBoundary';` to `HomePage.tsx`. Also create `modules/home/components/section-error-boundary/index.ts` with `export { SectionErrorBoundary } from './SectionErrorBoundary';`.
 
-- [ ] T011 Add semantic HTML and accessibility attributes to `modules/home/HomePage.tsx`.
+- [x] T011 Add semantic HTML and accessibility attributes to `modules/home/HomePage.tsx`.
 
   Ensure:
   - Each `<section>` has an `aria-labelledby` pointing to its heading's `id` (e.g., `id="latest-listings-heading"` and `aria-labelledby="latest-listings-heading"`).
   - The "View All" links have `aria-label` attributes (e.g., `aria-label={t('viewAll') + ' - ' + t('latestListings')}`).
   - The page uses a `<main>` wrapper if not already provided by the layout.
 
-- [ ] T012 Run `npm run check` (format + lint + type-check) from the project root and fix any errors.
+- [x] T012 Run `npm run check` (format + lint + type-check) from the project root and fix any errors.
 
   Run the command: `npm run check`
 
