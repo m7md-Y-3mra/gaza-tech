@@ -3,12 +3,12 @@ import CustomError from './CustomError';
 import { parseZodErrorServer } from '@/lib/zod-error';
 import { PostgrestError } from '@supabase/supabase-js';
 
-type ApiResponseSuccess<T> = {
+export type ApiResponseSuccess<T> = {
   success: true;
   data: T;
 };
 
-type ApiResponseError = {
+export type ApiResponseError = {
   success: false;
   code?: string;
   message: string;
