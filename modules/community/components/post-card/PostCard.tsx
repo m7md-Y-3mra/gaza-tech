@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { formatDistanceToNow, format, differenceInDays } from 'date-fns';
 import { enUS, ar as arLocale } from 'date-fns/locale';
@@ -20,7 +21,7 @@ import { usePostCard } from './hooks/usePostCard';
 import type { PostCardProps } from './types';
 import type { PostCategory } from '@/modules/community/types';
 
-export function PostCard({ post, onOpenComments }: PostCardProps) {
+export function PostCard({ post }: PostCardProps) {
   const t = useTranslations('PostCard');
   const {
     isLiked,
@@ -29,9 +30,9 @@ export function PostCard({ post, onOpenComments }: PostCardProps) {
     isBookmarked,
     handleBookmark,
     handleShare,
-    handleOpenComments,
     locale,
-  } = usePostCard({ post, onOpenComments });
+    commentCount,
+  } = usePostCard({ post });
 
   const author = post.author;
   const isDeletedAuthor = author.id === null;
@@ -107,8 +108,8 @@ export function PostCard({ post, onOpenComments }: PostCardProps) {
       </div>
     </div>
   ) : (
-    <a
-      href={`/${locale}/profile/${author.id}`}
+    <Link
+      href={`/profile/${author.id}`}
       className="group focus-visible:ring-ring flex min-w-0 items-center gap-3 rounded-sm focus:outline-none focus-visible:ring-2"
       aria-label={t('viewProfile', { name: displayName })}
     >
@@ -119,7 +120,7 @@ export function PostCard({ post, onOpenComments }: PostCardProps) {
         </p>
         <p className="text-muted-foreground text-xs">{timeDisplay}</p>
       </div>
-    </a>
+    </Link>
   );
 
   return (
@@ -136,27 +137,23 @@ export function PostCard({ post, onOpenComments }: PostCardProps) {
         )}
       </div>
 
-      {/* Title — comment-open hotspot */}
+      {/* Title — Link to post detail */}
       <h3 className="text-base leading-snug font-semibold">
-        <button
-          type="button"
-          onClick={handleOpenComments}
+        <Link
+          href={`/community/${post.post_id}`}
           className="focus-visible:ring-ring line-clamp-1 w-full rounded-sm text-start hover:underline focus:outline-none focus-visible:ring-2"
-          aria-label={t('openCommentsFor', { title: post.title })}
         >
           {post.title}
-        </button>
+        </Link>
       </h3>
 
-      {/* Content preview — comment-open hotspot */}
-      <button
-        type="button"
-        onClick={handleOpenComments}
+      {/* Content preview — Link to post detail */}
+      <Link
+        href={`/${locale}/community/${post.post_id}`}
         className={`text-muted-foreground focus-visible:ring-ring w-full rounded-sm text-start text-sm focus:outline-none focus-visible:ring-2 ${post.content ? 'line-clamp-2' : 'min-h-[2lh]'}`}
-        aria-label={t('openCommentsFor', { title: post.title })}
       >
         {contentPreview || <span className="invisible">placeholder</span>}
-      </button>
+      </Link>
 
       {/* Attachment indicator */}
       {post.attachments.length > 0 && (
@@ -183,16 +180,15 @@ export function PostCard({ post, onOpenComments }: PostCardProps) {
           <span>{formatCount(likeCount)}</span>
         </button>
 
-        {/* Comment button — open comments hotspot */}
-        <button
-          type="button"
-          onClick={handleOpenComments}
+        {/* Comment button — Link to post detail */}
+        <Link
+          href={`/${locale}/community/${post.post_id}`}
           className="text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:ring-ring flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm transition-colors focus:outline-none focus-visible:ring-2"
           aria-label={t('openCommentsFor', { title: post.title })}
         >
           <MessageCircle className="h-4 w-4" aria-hidden="true" />
-          <span>{formatCount(post.comment_count)}</span>
-        </button>
+          <span>{formatCount(commentCount)}</span>
+        </Link>
 
         <div className="ms-auto flex items-center gap-1">
           {/* Share button */}

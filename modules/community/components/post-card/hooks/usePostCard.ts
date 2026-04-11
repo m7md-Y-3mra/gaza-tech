@@ -7,24 +7,30 @@ import { toast } from 'sonner';
 import { togglePostLikeAction } from '@/modules/community/actions';
 import { togglePostBookmarkAction } from '@/modules/community/actions';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { usePostUpdate } from '@/modules/community/components/post-detail-context';
 import type { FeedPost } from '@/modules/community/types';
 
 type UsePostCardOptions = {
   post: FeedPost;
-  onOpenComments: (postId: string) => void;
 };
 
-export function usePostCard({ post, onOpenComments }: UsePostCardOptions) {
+export function usePostCard({ post }: UsePostCardOptions) {
   const t = useTranslations('PostCard');
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
   const { user, isLoading: isAuthLoading } = useCurrentUser();
 
+  // ── Context Sync ──────────────────────────────────────────────────────
+  const postUpdate = usePostUpdate(post.post_id);
+
   // ── Like state ────────────────────────────────────────────────────────
   const [isLiked, setIsLiked] = useState(post.is_liked);
   const [likeCount, setLikeCount] = useState(post.like_count);
   const likeInFlight = useRef(false);
+
+  const effectiveLiked = postUpdate?.is_liked ?? isLiked;
+  const effectiveLikeCount = postUpdate?.like_count ?? likeCount;
 
   const handleLike = async () => {
     if (isAuthLoading || likeInFlight.current) return;
@@ -37,8 +43,8 @@ export function usePostCard({ post, onOpenComments }: UsePostCardOptions) {
       return;
     }
 
-    const prevLiked = isLiked;
-    const prevCount = likeCount;
+    const prevLiked = effectiveLiked;
+    const prevCount = effectiveLikeCount;
 
     likeInFlight.current = true;
     setIsLiked(!prevLiked);
@@ -59,6 +65,8 @@ export function usePostCard({ post, onOpenComments }: UsePostCardOptions) {
   const [isBookmarked, setIsBookmarked] = useState(post.is_bookmarked);
   const bookmarkInFlight = useRef(false);
 
+  const effectiveBookmarked = postUpdate?.is_bookmarked ?? isBookmarked;
+
   const handleBookmark = async () => {
     if (isAuthLoading || bookmarkInFlight.current) return;
 
@@ -70,7 +78,7 @@ export function usePostCard({ post, onOpenComments }: UsePostCardOptions) {
       return;
     }
 
-    const prevBookmarked = isBookmarked;
+    const prevBookmarked = effectiveBookmarked;
 
     bookmarkInFlight.current = true;
     setIsBookmarked(!prevBookmarked);
@@ -89,7 +97,7 @@ export function usePostCard({ post, onOpenComments }: UsePostCardOptions) {
 
   // ── Share ─────────────────────────────────────────────────────────────
   const handleShare = async () => {
-    const url = `${window.location.origin}/community/${post.post_id}`;
+    const url = `${window.location.origin}/${locale}/community/${post.post_id}`;
     try {
       await navigator.clipboard.writeText(url);
       toast.success(t('shareCopied'));
@@ -98,19 +106,16 @@ export function usePostCard({ post, onOpenComments }: UsePostCardOptions) {
     }
   };
 
-  // ── Open comments ─────────────────────────────────────────────────────
-  const handleOpenComments = () => {
-    onOpenComments(post.post_id);
-  };
+  const effectiveCommentCount = postUpdate?.comment_count ?? post.comment_count;
 
   return {
-    isLiked,
-    likeCount,
+    isLiked: effectiveLiked,
+    likeCount: effectiveLikeCount,
     handleLike,
-    isBookmarked,
+    isBookmarked: effectiveBookmarked,
     handleBookmark,
     handleShare,
-    handleOpenComments,
     locale,
+    commentCount: effectiveCommentCount,
   };
 }
