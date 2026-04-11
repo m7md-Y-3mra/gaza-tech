@@ -1,0 +1,1 @@
+export { PostDetailModal } from './PostDetailModal';
