@@ -77,19 +77,11 @@ export function FeedList({
     return <FeedEmptyState hasActiveFilters={hasActiveFilters} />;
   }
 
-  const handleOpenComments = (_postId: string) => {
-    // Comments modal handling will be implemented in a future phase.
-  };
-
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-6">
         {items.map((post) => (
-          <PostCard
-            key={post.post_id}
-            post={post}
-            onOpenComments={handleOpenComments}
-          />
+          <PostCard key={post.post_id} post={post} />
         ))}
       </div>
 
