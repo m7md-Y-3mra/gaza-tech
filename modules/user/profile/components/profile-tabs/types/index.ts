@@ -10,4 +10,5 @@ export type ProfileTabsClientProps = {
   isOwner: boolean;
   listingsContent: ReactNode;
   bookmarkedContent: ReactNode;
+  postsContent: ReactNode;
 };
