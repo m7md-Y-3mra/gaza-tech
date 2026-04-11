@@ -755,6 +755,56 @@
       "troubleshooting": "Troubleshooting"
     }
   },
+  "PostDetail": {
+    "modal": {
+      "close": "Close",
+      "loading": "Loading post..."
+    },
+    "comments": {
+      "title": "Comments",
+      "titleWithCount": "{count, plural, one {# Comment} other {# Comments}}",
+      "empty": "No comments yet — be the first!",
+      "loadMore": "Load more comments",
+      "loadMoreReplies": "Load more replies",
+      "replyingTo": "Replying to {name}",
+      "edited": "(edited)",
+      "deletedComment": "This comment has been deleted",
+      "loginToComment": "Please log in to participate in the conversation."
+    },
+    "commentInput": {
+      "placeholder": "Write a comment...",
+      "replyPlaceholder": "Write a reply...",
+      "send": "Send",
+      "charCount": "{current}/{max}"
+    },
+    "commentActions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "like": "Like",
+      "unlike": "Unlike",
+      "reply": "Reply",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "deleteConfirm": {
+      "title": "Delete comment",
+      "message": "Are you sure you want to delete this comment? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "addFailed": "Failed to add comment",
+      "editFailed": "Failed to edit comment",
+      "deleteFailed": "Failed to delete comment",
+      "likeFailed": "Failed to update like",
+      "loadFailed": "Failed to load comments",
+      "loadPostFailed": "Failed to load post",
+      "retry": "Try again"
+    },
+    "fullPage": {
+      "backToFeed": "Back to community"
+    }
+  },
   "CommunityFeed": {
     "meta": {
       "title": "Community",

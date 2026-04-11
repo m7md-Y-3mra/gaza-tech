@@ -755,6 +755,56 @@
       "troubleshooting": "حل المشكلات"
     }
   },
+  "PostDetail": {
+    "modal": {
+      "close": "إغلاق",
+      "loading": "جاري تحميل المنشور..."
+    },
+    "comments": {
+      "title": "التعليقات",
+      "titleWithCount": "{count, plural, one {تعليق واحد} other {# تعليقات}}",
+      "empty": "لا توجد تعليقات بعد — كن أول من يعلق!",
+      "loadMore": "تحميل المزيد من التعليقات",
+      "loadMoreReplies": "تحميل المزيد من الردود",
+      "replyingTo": "رد على {name}",
+      "edited": "(تم التعديل)",
+      "deletedComment": "تم حذف هذا التعليق",
+      "loginToComment": "يرجى تسجيل الدخول للمشاركة في المحادثة."
+    },
+    "commentInput": {
+      "placeholder": "اكتب تعليقاً...",
+      "replyPlaceholder": "اكتب رداً...",
+      "send": "إرسال",
+      "charCount": "{current}/{max}"
+    },
+    "commentActions": {
+      "edit": "تعديل",
+      "delete": "حذف",
+      "like": "إعجاب",
+      "unlike": "إلغاء الإعجاب",
+      "reply": "رد",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    },
+    "deleteConfirm": {
+      "title": "حذف التعليق",
+      "message": "هل أنت متأكد من حذف هذا التعليق؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "errors": {
+      "addFailed": "فشل إضافة التعليق",
+      "editFailed": "فشل تعديل التعليق",
+      "deleteFailed": "فشل حذف التعليق",
+      "likeFailed": "فشل تحديث الإعجاب",
+      "loadFailed": "فشل تحميل التعليقات",
+      "loadPostFailed": "فشل تحميل المنشور",
+      "retry": "حاول مرة أخرى"
+    },
+    "fullPage": {
+      "backToFeed": "العودة إلى المجتمع"
+    }
+  },
   "CommunityFeed": {
     "meta": {
       "title": "المجتمع",
