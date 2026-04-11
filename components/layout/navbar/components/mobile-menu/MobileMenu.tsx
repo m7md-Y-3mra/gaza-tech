@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { Menu, LogOut, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -22,6 +23,7 @@ const MobileMenu = ({ user, navLinks }: MobileMenuProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations('Navbar');
   const router = useRouter();
+  const pathname = usePathname();
 
   const initials = user
     ? `${user.firstName?.charAt(0) ?? ''}${user.lastName?.charAt(0) ?? ''}`.toUpperCase() ||
@@ -73,16 +75,30 @@ const MobileMenu = ({ user, navLinks }: MobileMenuProps) => {
 
         {/* Navigation links */}
         <nav className="flex flex-col gap-1 px-3 py-3">
-          {navLinks.map((link) => (
-            <SheetClose asChild key={link.href}>
-              <Link
-                href={link.href}
-                className="text-foreground hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2.5 text-sm font-medium transition-colors"
-              >
-                {t(link.labelKey)}
-              </Link>
-            </SheetClose>
-          ))}
+          {navLinks.map((link) => {
+            const isActive =
+              link.href === '/'
+                ? pathname === '/'
+                : pathname === link.href ||
+                  pathname.startsWith(`${link.href}/`);
+
+            return (
+              <SheetClose asChild key={link.href}>
+                <Link
+                  href={link.href as React.ComponentProps<typeof Link>['href']}
+                  className={cn(
+                    'rounded-md px-3 py-2.5 text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-accent/60 text-foreground shadow-sm'
+                      : 'text-foreground hover:bg-accent hover:text-accent-foreground'
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {t(link.labelKey as Parameters<typeof t>[0])}
+                </Link>
+              </SheetClose>
+            );
+          })}
         </nav>
 
         <Separator />
