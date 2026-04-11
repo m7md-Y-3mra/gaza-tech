@@ -298,6 +298,9 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 
 ## Active Technologies
 
+- TypeScript 5.x + Next.js 16 (App Router), React 19, `next-intl` ^4.7.0, `nuqs` ^2.8.8 (profile page-param cache), `sonner` ^2.0.7, `lucide-react` ^0.562.0, shadcn/ui (radix Tabs, AlertDialog), Tailwind CSS ^4, `react-error-boundary` (010-profile-community-tab)
+- N/A (consumes existing `getUserCommunityPostsAction` and `deleteCommunityPostAction`; no new DB work, no new queries) (010-profile-community-tab)
+
 - TypeScript 5.x + Next.js 16 (App Router), React 19, `next-intl` ^4.7.0, `date-fns` ^4.1.0, `lucide-react` ^0.562.0, `sonner` ^2.0.7, shadcn/ui (radix), Tailwind CSS ^4 (009-post-detail-modal)
 - N/A (consumes existing server actions — no new DB work) (009-post-detail-modal)
 

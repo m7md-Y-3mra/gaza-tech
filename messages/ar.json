@@ -581,7 +581,23 @@
     },
     "Tabs": {
       "myListings": "إعلاناتي",
+      "myPosts": "منشوراتي",
       "savedItems": "العناصر المحفوظة"
+    },
+    "PostsTab": {
+      "emptyTitle": "لا توجد منشورات بعد",
+      "emptyDescription": "لم ينشر هذا المستخدم أي منشورات في المجتمع بعد.",
+      "createFirstPost": "أنشئ أول منشور لك",
+      "errorTitle": "تعذّر تحميل المنشورات",
+      "errorDescription": "حدث خطأ أثناء تحميل منشورات المجتمع. يرجى المحاولة مرة أخرى.",
+      "edit": "تعديل المنشور",
+      "delete": "حذف المنشور",
+      "deleteConfirmTitle": "هل تريد حذف هذا المنشور؟",
+      "deleteConfirmMessage": "لا يمكن التراجع عن هذا الإجراء. سيُزال المنشور من خلاصة المجتمع ومن ملفك الشخصي.",
+      "deleteConfirmAction": "حذف",
+      "deleteCancel": "إلغاء",
+      "deleteSuccess": "تم حذف المنشور.",
+      "deleteError": "تعذّر حذف المنشور. يرجى المحاولة مرة أخرى."
     },
     "ListingsTab": {
       "noListings": "لا توجد إعلانات بعد",

@@ -581,7 +581,23 @@
     },
     "Tabs": {
       "myListings": "My Listings",
+      "myPosts": "My Posts",
       "savedItems": "Saved Items"
+    },
+    "PostsTab": {
+      "emptyTitle": "No posts yet",
+      "emptyDescription": "This user has not published any community posts.",
+      "createFirstPost": "Create your first post",
+      "errorTitle": "Couldn't load posts",
+      "errorDescription": "Something went wrong while loading community posts. Please try again.",
+      "edit": "Edit post",
+      "delete": "Delete post",
+      "deleteConfirmTitle": "Delete this post?",
+      "deleteConfirmMessage": "This action cannot be undone. The post will be removed from the community feed and from your profile.",
+      "deleteConfirmAction": "Delete",
+      "deleteCancel": "Cancel",
+      "deleteSuccess": "Post deleted.",
+      "deleteError": "Couldn't delete the post. Please try again."
     },
     "ListingsTab": {
       "noListings": "No listings yet",
