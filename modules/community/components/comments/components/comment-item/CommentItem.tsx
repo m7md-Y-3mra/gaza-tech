@@ -88,7 +88,10 @@ export function CommentItem({
       {/* Content Area */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-foreground truncate text-xs font-semibold">
+          <span
+            dir="auto"
+            className="text-foreground truncate text-xs font-semibold"
+          >
             {authorName}
           </span>
           <span className="text-muted-foreground text-[10px] whitespace-nowrap">
@@ -104,6 +107,7 @@ export function CommentItem({
         {isEditing ? (
           <div className="mt-2 space-y-2">
             <textarea
+              dir="auto"
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
               className="bg-muted focus:ring-primary w-full resize-none rounded-lg border p-2 text-sm focus:ring-1 focus:outline-none"
@@ -126,7 +130,10 @@ export function CommentItem({
             </div>
           </div>
         ) : (
-          <p className="text-foreground mt-1 text-sm leading-normal break-words whitespace-pre-wrap">
+          <p
+            dir="auto"
+            className="text-foreground mt-1 text-sm leading-normal break-words whitespace-pre-wrap"
+          >
             {comment.content}
           </p>
         )}

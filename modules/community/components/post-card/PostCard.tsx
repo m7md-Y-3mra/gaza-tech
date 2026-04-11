@@ -101,7 +101,10 @@ export function PostCard({ post }: PostCardProps) {
     <div className="flex min-w-0 items-center gap-3">
       {authorAvatarEl}
       <div className="min-w-0">
-        <p className="text-foreground truncate text-sm font-semibold">
+        <p
+          dir="auto"
+          className="text-foreground truncate text-sm font-semibold"
+        >
           {displayName}
         </p>
         <p className="text-muted-foreground text-xs">{timeDisplay}</p>
@@ -115,7 +118,10 @@ export function PostCard({ post }: PostCardProps) {
     >
       {authorAvatarEl}
       <div className="min-w-0">
-        <p className="text-foreground truncate text-sm font-semibold group-hover:underline">
+        <p
+          dir="auto"
+          className="text-foreground truncate text-sm font-semibold group-hover:underline"
+        >
           {displayName}
         </p>
         <p className="text-muted-foreground text-xs">{timeDisplay}</p>
@@ -140,6 +146,7 @@ export function PostCard({ post }: PostCardProps) {
       {/* Title — Link to post detail */}
       <h3 className="text-base leading-snug font-semibold">
         <Link
+          dir="auto"
           href={`/community/${post.post_id}`}
           className="focus-visible:ring-ring line-clamp-1 w-full rounded-sm text-start hover:underline focus:outline-none focus-visible:ring-2"
         >
@@ -149,6 +156,7 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Content preview — Link to post detail */}
       <Link
+        dir="auto"
         href={`/${locale}/community/${post.post_id}`}
         className={`text-muted-foreground focus-visible:ring-ring w-full rounded-sm text-start text-sm focus:outline-none focus-visible:ring-2 ${post.content ? 'line-clamp-2' : 'min-h-[2lh]'}`}
       >

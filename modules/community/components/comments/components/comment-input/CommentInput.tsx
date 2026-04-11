@@ -75,6 +75,7 @@ export function CommentInput({
         <div className="relative flex items-end gap-2">
           <div className="relative flex-1">
             <textarea
+              dir="auto"
               ref={textareaRef}
               value={content}
               onChange={(e) => setContent(e.target.value)}

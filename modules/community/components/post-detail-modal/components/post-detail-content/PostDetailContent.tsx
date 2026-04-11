@@ -15,7 +15,10 @@ export function PostDetailContent({
 }: PostDetailContentProps) {
   return (
     <div className="space-y-4">
-      <p className="text-foreground text-base leading-relaxed break-words whitespace-pre-wrap">
+      <p
+        dir="auto"
+        className="text-foreground text-base leading-relaxed break-words whitespace-pre-wrap"
+      >
         {content}
       </p>
 

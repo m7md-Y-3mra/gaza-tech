@@ -36,7 +36,9 @@ export function PostDetailModal({ data }: PostDetailModalProps) {
         </DialogHeader>
         <div className="flex-1 space-y-4 overflow-y-auto px-4 pt-4 pb-4">
           <PostDetailHeader post={post} />
-          <h2 className="text-lg font-semibold">{post.title}</h2>
+          <h2 dir="auto" className="text-lg font-semibold">
+            {post.title}
+          </h2>
           <PostDetailContent
             content={post.content}
             attachments={post.attachments}

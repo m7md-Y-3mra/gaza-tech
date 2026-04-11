@@ -81,11 +81,15 @@ export function PostDetailHeader({ post }: PostDetailHeaderProps) {
 
           <div className="flex flex-col">
             {isDeletedUser ? (
-              <span className="text-foreground text-sm font-semibold">
+              <span
+                dir="auto"
+                className="text-foreground text-sm font-semibold"
+              >
                 {authorName}
               </span>
             ) : (
               <Link
+                dir="auto"
                 href={`/${locale}/profile/${post.author.id}`}
                 className="text-foreground hover:text-primary text-sm font-semibold transition-colors"
               >

@@ -25,7 +25,9 @@ export function PostDetailView({ post }: { post: FeedPost }) {
       <article className="border-border bg-card space-y-6 rounded-xl border p-6 shadow-sm">
         <div className="space-y-4">
           <PostDetailHeader post={post} />
-          <h1 className="text-2xl font-bold tracking-tight">{post.title}</h1>
+          <h1 dir="auto" className="text-2xl font-bold tracking-tight">
+            {post.title}
+          </h1>
           <PostDetailContent
             content={post.content}
             attachments={post.attachments}

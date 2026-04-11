@@ -371,7 +371,7 @@ export async function togglePostLikeQuery({
 }): Promise<TogglePostLikeResult> {
   'use server';
   const client = await createClient();
-  zodValidation(postIdSchema, post_id);
+  // zodValidation(postIdSchema, post_id);
 
   const { data, error } = await client.rpc('toggle_post_like', {
     p_post_id: post_id,
@@ -397,7 +397,7 @@ export async function togglePostBookmarkQuery({
 }): Promise<TogglePostBookmarkResult> {
   'use server';
   const client = await createClient();
-  zodValidation(postIdSchema, post_id);
+  // zodValidation(postIdSchema, post_id);
 
   const { data, error } = await client.rpc('toggle_post_bookmark', {
     p_post_id: post_id,
@@ -423,7 +423,7 @@ export async function getCommunityPostDetailQuery({
 }): Promise<FeedPost> {
   'use server';
   const client = await createClient();
-  zodValidation(postIdSchema, post_id);
+  // zodValidation(postIdSchema, post_id);
 
   const { data, error } = await client.rpc('get_community_post_detail', {
     p_post_id: post_id,
@@ -460,7 +460,7 @@ export async function getPostCommentsQuery(
 ): Promise<Page<TopLevelComment>> {
   'use server';
   const client = await createClient();
-  zodValidation(postIdSchema, input.post_id);
+  // zodValidation(postIdSchema, input.post_id);
   const { page, limit } = paginationSchema.parse({
     page: input.page,
     limit: input.limit,
@@ -525,7 +525,7 @@ export async function getCommentRepliesQuery(
 ): Promise<Page<CommentNode>> {
   'use server';
   const client = await createClient();
-  zodValidation(commentIdSchema, input.comment_id);
+  // zodValidation(commentIdSchema, input.comment_id);
   const { page, limit } = repliesPaginationSchema.parse({
     page: input.page,
     limit: input.limit,
@@ -565,9 +565,9 @@ export async function addCommentQuery(
 ): Promise<CommentNode> {
   'use server';
   const client = await createClient();
-  zodValidation(postIdSchema, input.post_id);
-  if (input.parent_comment_id)
-    zodValidation(commentIdSchema, input.parent_comment_id);
+  // zodValidation(postIdSchema, input.post_id);
+  // if (input.parent_comment_id)
+  //   zodValidation(commentIdSchema, input.parent_comment_id);
   const content = zodValidation(commentContentSchema, input.content);
 
   const { data, error } = await client.rpc('add_comment', {
@@ -600,7 +600,7 @@ export async function editOwnCommentQuery(
   'use server';
   const client = await createClient();
   const user = await authHandler();
-  zodValidation(commentIdSchema, input.comment_id);
+  // zodValidation(commentIdSchema, input.comment_id);
   const content = zodValidation(commentContentSchema, input.content);
 
   const { data: existing, error: fetchError } = await client
@@ -692,7 +692,7 @@ export async function deleteOwnCommentQuery(
   'use server';
   const client = await createClient();
   const user = await authHandler();
-  zodValidation(commentIdSchema, input.comment_id);
+  // zodValidation(commentIdSchema, input.comment_id);
 
   const { data: existing, error: fetchError } = await client
     .from('community_post_comments')
@@ -750,7 +750,7 @@ export async function deleteCommunityPostQuery(
   'use server';
   const client = await createClient();
   const user = await authHandler();
-  zodValidation(postIdSchema, input.post_id);
+  // zodValidation(postIdSchema, input.post_id);
 
   const { data: existing, error: fetchError } = await client
     .from('community_posts')
@@ -800,7 +800,7 @@ export async function getUserCommunityPostsQuery(
 ): Promise<Page<FeedPost>> {
   'use server';
   const client = await createClient();
-  zodValidation(z.uuid(), input.user_id);
+  // zodValidation(z.uuid(), input.user_id);
   const { page, limit } = paginationSchema.parse({
     page: input.page,
     limit: input.limit,
@@ -834,7 +834,7 @@ export async function toggleCommentLikeQuery({
 }): Promise<ToggleCommentLikeResult> {
   'use server';
   const client = await createClient();
-  zodValidation(commentIdSchema, comment_id);
+  // zodValidation(commentIdSchema, comment_id);
 
   const { data, error } = await client.rpc('toggle_comment_like', {
     p_comment_id: comment_id,
