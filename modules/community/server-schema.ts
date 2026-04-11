@@ -6,6 +6,34 @@ const POST_CATEGORY_VALUES = Object.keys(POST_CATEGORIES) as [
   ...Array<keyof typeof POST_CATEGORIES>,
 ];
 
+// ── Feed / comment query schemas ──────────────────────────────────────
+
+export const postIdSchema = z.uuid();
+export const commentIdSchema = z.uuid();
+
+export const paginationSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .default(10)
+    .transform((n) => Math.min(n, 50)),
+});
+
+export const commentContentSchema = z
+  .string()
+  .trim()
+  .min(1, 'Comment cannot be empty')
+  .max(2000, 'Comment is too long');
+
+export const postCategorySchema = z.enum(POST_CATEGORY_VALUES).optional();
+
+export const feedQuerySchema = paginationSchema.extend({
+  category: postCategorySchema,
+  search: z.string().trim().max(200).optional(),
+});
+
 // ── Server schemas (no translation needed) ────────────────────────────
 
 export const createCommunityPostServerSchema = z.object({

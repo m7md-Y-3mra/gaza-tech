@@ -298,6 +298,23 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 
 ## Active Technologies
 
+- TypeScript 5.x + Next.js 16 (App Router), React 19, `next-intl` ^4.7.0, `nuqs` ^2.8.8 (profile page-param cache), `sonner` ^2.0.7, `lucide-react` ^0.562.0, shadcn/ui (radix Tabs, AlertDialog), Tailwind CSS ^4, `react-error-boundary` (010-profile-community-tab)
+- N/A (consumes existing `getUserCommunityPostsAction` and `deleteCommunityPostAction`; no new DB work, no new queries) (010-profile-community-tab)
+
+- TypeScript 5.x + Next.js 16 (App Router), React 19, `next-intl` ^4.7.0, `date-fns` ^4.1.0, `lucide-react` ^0.562.0, `sonner` ^2.0.7, shadcn/ui (radix), Tailwind CSS ^4 (009-post-detail-modal)
+- N/A (consumes existing server actions — no new DB work) (009-post-detail-modal)
+
+- TypeScript 5.x, Next.js 16 (App Router), React 19 + `nuqs` ^2.8.8, `next-intl` ^4.7.0, `react-intersection-observer` ^10.0.2, shadcn/ui (radix), `lucide-react` ^0.562.0, Tailwind CSS ^4 (008-community-feed-page)
+- Supabase Postgres — `community_posts`, `community_posts_attachments`, `community_posts_likes`, `bookmarked_posts`; Supabase RPC `get_community_feed` (008-community-feed-page)
+
+- TypeScript 5.x, Next.js 16, React 19 + `next-intl` ^4.7.0, `date-fns` ^4.1.0, `lucide-react` ^0.562.0, `sonner` ^2.0.7, `@supabase/supabase-js` ^2.86.0, shadcn/ui (radix), Tailwind CSS ^4 (007-post-card-component)
+- N/A (consumes existing server actions; no new DB work) (007-post-card-component)
+
+- TypeScript 5.x + Next.js 16, React 19, `react-intersection-observer` ^10.0.2, `next-intl` ^4.7.0, shadcn/ui (radix), lucide-react (005-shared-infinite-scroll)
+- N/A (client-side state only; consumes existing server actions) (005-shared-infinite-scroll)
+- TypeScript 5.x, Next.js 16 (App Router), React 19 + `@supabase/supabase-js` ^2.86.0, `zod` ^4.2.1, `next-intl` ^4.7.0, shared utilities (`utils/error-handler.ts`, `utils/auth-handler.ts`, `utils/CustomError.ts`, `lib/zod-error.ts`) (006-community-feed-queries)
+- Supabase Postgres — tables `community_posts`, `community_posts_attachments`, `community_posts_likes`, `bookmarked_posts`, `community_post_comments`, `community_comments_likes`, `users`. Supabase Storage bucket `community-attachments` (public-read, URLs emitted via `storage.from().getPublicUrl()`). (006-community-feed-queries)
+
 - TypeScript, Next.js 16, React 19 + react-hook-form `^7.69.0`, zod `^4.2.1`, `@supabase/supabase-js` `^2.86.0`, browser-image-compression `^2.0.2`, next-intl `^4.7.0`, Tailwind CSS `^4`, shadcn/ui (radix), lucide-react (001-reusable-file-upload)
 - Supabase Storage (buckets: `marketplace-image` for listings, `community-attachments` for community) (001-reusable-file-upload)
 - TypeScript, Next.js 16, React 19 + zod ^4.2.1, react-hook-form ^7.69.0, @hookform/resolvers/zod, next-intl ^4.7.0, @supabase/supabase-js ^2.86.0 (002-community-post-schema)

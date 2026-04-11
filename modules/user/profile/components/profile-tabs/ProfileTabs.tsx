@@ -7,29 +7,48 @@ import { ProfileListingsTabError } from './profile-listings-tab/ProfileListingsT
 import ProfileBookmarkTab from './profile-bookmark-tab/ProfileBookmarkTab';
 import { ProfileBookmarkTabSkeleton } from './profile-bookmark-tab/ProfileBookmarkTabSkeleton';
 import { ProfileBookmarkTabError } from './profile-bookmark-tab/ProfileBookmarkTabError';
+import {
+  ProfilePostsTab,
+  ProfilePostsTabSkeleton,
+  ProfilePostsTabError,
+} from './profile-posts-tab';
 import type { ProfileTabsProps } from './types';
+import { PostDetailProvider } from '@/modules/community/components/post-detail-context';
 
 const ProfileTabs = ({ userId, page, isOwner }: ProfileTabsProps) => {
   return (
-    <ProfileTabsClient
-      isOwner={isOwner}
-      listingsContent={
-        <Suspense fallback={<ProfileListingsTabSkeleton />}>
-          <ErrorBoundary FallbackComponent={ProfileListingsTabError}>
-            <ProfileListingsTab userId={userId} page={page} isOwner={isOwner} />
-          </ErrorBoundary>
-        </Suspense>
-      }
-      bookmarkedContent={
-        isOwner ? (
-          <Suspense fallback={<ProfileBookmarkTabSkeleton />}>
-            <ErrorBoundary FallbackComponent={ProfileBookmarkTabError}>
-              <ProfileBookmarkTab page={page} />
+    <PostDetailProvider>
+      <ProfileTabsClient
+        isOwner={isOwner}
+        listingsContent={
+          <Suspense fallback={<ProfileListingsTabSkeleton />}>
+            <ErrorBoundary FallbackComponent={ProfileListingsTabError}>
+              <ProfileListingsTab
+                userId={userId}
+                page={page}
+                isOwner={isOwner}
+              />
             </ErrorBoundary>
           </Suspense>
-        ) : null
-      }
-    />
+        }
+        postsContent={
+          <Suspense fallback={<ProfilePostsTabSkeleton />}>
+            <ErrorBoundary FallbackComponent={ProfilePostsTabError}>
+              <ProfilePostsTab userId={userId} page={page} isOwner={isOwner} />
+            </ErrorBoundary>
+          </Suspense>
+        }
+        bookmarkedContent={
+          isOwner ? (
+            <Suspense fallback={<ProfileBookmarkTabSkeleton />}>
+              <ErrorBoundary FallbackComponent={ProfileBookmarkTabError}>
+                <ProfileBookmarkTab page={page} />
+              </ErrorBoundary>
+            </Suspense>
+          ) : null
+        }
+      />
+    </PostDetailProvider>
   );
 };
 

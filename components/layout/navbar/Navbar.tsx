@@ -6,7 +6,10 @@ import { getUserById } from '@/modules/user/queries';
 import { rbacConfig } from '@/config/rbac';
 import { NAV_LINKS } from './constants';
 import UserDropdown from './components/user-dropdown';
+import { DesktopNav } from './components/desktop-nav';
 import MobileMenu from './components/mobile-menu';
+import { ThemeToggle } from './components/theme-toggle';
+import { LanguageToggle } from './components/language-toggle';
 import type { NavbarUser } from './types';
 import type { UserRole } from '@/config/rbac';
 
@@ -46,36 +49,31 @@ export async function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {visibleLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-muted-foreground hover:text-foreground hover:bg-accent rounded-md px-3 py-2 text-sm font-medium transition-colors"
-            >
-              {t(link.labelKey)}
-            </Link>
-          ))}
-        </nav>
+        <DesktopNav links={visibleLinks} />
 
-        {/* Desktop Auth / User */}
-        <div className="hidden items-center gap-3 md:flex">
-          {navbarUser ? (
-            <UserDropdown user={navbarUser} />
-          ) : (
-            <>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/login">{t('login')}</Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link href="/signup">{t('signUp')}</Link>
-              </Button>
-            </>
-          )}
+        {/* Actions (Desktop & Mobile) */}
+        <div className="flex items-center gap-2 md:gap-3">
+          <ThemeToggle />
+          <LanguageToggle />
+
+          <div className="hidden items-center gap-3 md:flex">
+            {navbarUser ? (
+              <UserDropdown user={navbarUser} />
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/login">{t('login')}</Link>
+                </Button>
+                <Button size="sm" asChild>
+                  <Link href="/signup">{t('signUp')}</Link>
+                </Button>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Menu */}
+          <MobileMenu user={navbarUser} navLinks={visibleLinks} />
         </div>
-
-        {/* Mobile Menu */}
-        <MobileMenu user={navbarUser} navLinks={visibleLinks} />
       </div>
     </header>
   );

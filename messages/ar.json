@@ -39,7 +39,14 @@
     }
   },
   "HomePage": {
-    "title": "مرحبا بالعالم!"
+    "title": "مرحباً بك في غزة تك",
+    "latestListings": "أحدث الإعلانات",
+    "communityHighlights": "أبرز منشورات المجتمع",
+    "viewAll": "عرض الكل",
+    "emptyListings": "لا توجد إعلانات بعد",
+    "emptyPosts": "لا توجد منشورات بعد",
+    "errorListings": "فشل تحميل الإعلانات",
+    "errorPosts": "فشل تحميل منشورات المجتمع"
   },
   "Auth": {
     "common": {
@@ -581,7 +588,23 @@
     },
     "Tabs": {
       "myListings": "إعلاناتي",
+      "myPosts": "منشوراتي",
       "savedItems": "العناصر المحفوظة"
+    },
+    "PostsTab": {
+      "emptyTitle": "لا توجد منشورات بعد",
+      "emptyDescription": "لم ينشر هذا المستخدم أي منشورات في المجتمع بعد.",
+      "createFirstPost": "أنشئ أول منشور لك",
+      "errorTitle": "تعذّر تحميل المنشورات",
+      "errorDescription": "حدث خطأ أثناء تحميل منشورات المجتمع. يرجى المحاولة مرة أخرى.",
+      "edit": "تعديل المنشور",
+      "delete": "حذف المنشور",
+      "deleteConfirmTitle": "هل تريد حذف هذا المنشور؟",
+      "deleteConfirmMessage": "لا يمكن التراجع عن هذا الإجراء. سيُزال المنشور من خلاصة المجتمع ومن ملفك الشخصي.",
+      "deleteConfirmAction": "حذف",
+      "deleteCancel": "إلغاء",
+      "deleteSuccess": "تم حذف المنشور.",
+      "deleteError": "تعذّر حذف المنشور. يرجى المحاولة مرة أخرى."
     },
     "ListingsTab": {
       "noListings": "لا توجد إعلانات بعد",
@@ -613,6 +636,7 @@
   },
   "Navbar": {
     "home": "الرئيسية",
+    "community": "المجتمع",
     "listings": "الإعلانات",
     "createListing": "إنشاء إعلان",
     "verificationRequest": "طلب التحقق",
@@ -687,7 +711,7 @@
         "description": "اطلب المساعدة من المجتمع"
       },
       "tips": {
-        "title": "نصائح وشروحات",
+        "title": "نصائح",
         "description": "شارك معرفتك"
       },
       "news": {
@@ -724,6 +748,113 @@
       "errorDetails": "تفاصيل الخطأ:",
       "tryAgain": "حاول مرة أخرى",
       "goBack": "العودة"
+    }
+  },
+  "InfiniteScrollSentinel": {
+    "error": "فشل تحميل المزيد من العناصر. يرجى المحاولة مرة أخرى.",
+    "retry": "حاول مرة أخرى"
+  },
+  "PostCard": {
+    "deletedUser": "مستخدم محذوف",
+    "like": "إعجاب",
+    "unlike": "إلغاء الإعجاب",
+    "bookmark": "حفظ",
+    "unbookmark": "إلغاء الحفظ",
+    "share": "مشاركة",
+    "openComments": "التعليقات",
+    "shareCopied": "تم نسخ الرابط",
+    "shareError": "فشل نسخ الرابط",
+    "bookmarkAdded": "تم حفظ المنشور",
+    "bookmarkRemoved": "تم إلغاء الحفظ",
+    "likeError": "فشل تحديث الإعجاب",
+    "bookmarkError": "فشل تحديث الحفظ",
+    "attachments": "{count, plural, one {# مرفق} other {# مرفقات}}",
+    "openCommentsFor": "فتح تعليقات المنشور \"{title}\"",
+    "viewProfile": "عرض ملف {name}",
+    "categories": {
+      "questions": "أسئلة",
+      "tips": "نصائح",
+      "news": "أخبار",
+      "troubleshooting": "حل المشكلات"
+    }
+  },
+  "PostDetail": {
+    "modal": {
+      "close": "إغلاق",
+      "loading": "جاري تحميل المنشور..."
+    },
+    "comments": {
+      "title": "التعليقات",
+      "titleWithCount": "{count, plural, one {تعليق واحد} other {# تعليقات}}",
+      "empty": "لا توجد تعليقات بعد — كن أول من يعلق!",
+      "loadMore": "تحميل المزيد من التعليقات",
+      "loadMoreReplies": "تحميل المزيد من الردود",
+      "replyingTo": "رد على {name}",
+      "edited": "(تم التعديل)",
+      "deletedComment": "تم حذف هذا التعليق",
+      "loginToComment": "يرجى تسجيل الدخول للمشاركة في المحادثة."
+    },
+    "commentInput": {
+      "placeholder": "اكتب تعليقاً...",
+      "replyPlaceholder": "اكتب رداً...",
+      "send": "إرسال",
+      "charCount": "{current}/{max}"
+    },
+    "commentActions": {
+      "edit": "تعديل",
+      "delete": "حذف",
+      "like": "إعجاب",
+      "unlike": "إلغاء الإعجاب",
+      "reply": "رد",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    },
+    "deleteConfirm": {
+      "title": "حذف التعليق",
+      "message": "هل أنت متأكد من حذف هذا التعليق؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "errors": {
+      "addFailed": "فشل إضافة التعليق",
+      "editFailed": "فشل تعديل التعليق",
+      "deleteFailed": "فشل حذف التعليق",
+      "likeFailed": "فشل تحديث الإعجاب",
+      "loadFailed": "فشل تحميل التعليقات",
+      "loadPostFailed": "فشل تحميل المنشور",
+      "retry": "حاول مرة أخرى"
+    },
+    "fullPage": {
+      "backToFeed": "العودة إلى المجتمع"
+    }
+  },
+  "CommunityFeed": {
+    "meta": {
+      "title": "المجتمع",
+      "description": "تصفح وشارك مع مجتمع غزة للتقنية"
+    },
+    "pageTitle": "المجتمع",
+    "createPost": "إنشاء منشور",
+    "createPostFab": "منشور جديد",
+    "filters": {
+      "categoryLabel": "تصفية حسب الفئة",
+      "searchPlaceholder": "ابحث في المنشورات...",
+      "clearSearch": "مسح البحث",
+      "all": "الكل",
+      "questions": "أسئلة",
+      "tips": "نصائح",
+      "news": "أخبار",
+      "troubleshooting": "حل المشكلات"
+    },
+    "emptyState": {
+      "title": "لا توجد منشورات",
+      "description": "كن أول من يشارك شيئاً مع المجتمع.",
+      "descriptionFiltered": "لا توجد منشورات تطابق معايير البحث الحالية.",
+      "cta": "إنشاء منشور"
+    },
+    "errorState": {
+      "title": "فشل تحميل المنشورات",
+      "retry": "حاول مرة أخرى"
     }
   }
 }

@@ -182,7 +182,9 @@ export type Database = {
           content: string;
           created_at: string | null;
           edited_at: string | null;
+          is_deleted: boolean;
           is_edited: boolean | null;
+          parent_comment_id: string | null;
           post_id: string;
           updated_at: string | null;
         };
@@ -192,7 +194,9 @@ export type Database = {
           content: string;
           created_at?: string | null;
           edited_at?: string | null;
+          is_deleted?: boolean;
           is_edited?: boolean | null;
+          parent_comment_id?: string | null;
           post_id: string;
           updated_at?: string | null;
         };
@@ -202,7 +206,9 @@ export type Database = {
           content?: string;
           created_at?: string | null;
           edited_at?: string | null;
+          is_deleted?: boolean;
           is_edited?: boolean | null;
+          parent_comment_id?: string | null;
           post_id?: string;
           updated_at?: string | null;
         };
@@ -220,6 +226,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'users_with_email';
             referencedColumns: ['user_id'];
+          },
+          {
+            foreignKeyName: 'community_post_comments_parent_comment_id_fkey';
+            columns: ['parent_comment_id'];
+            isOneToOne: false;
+            referencedRelation: 'community_post_comments';
+            referencedColumns: ['comment_id'];
           },
           {
             foreignKeyName: 'community_post_comments_post_id_fkey';
@@ -978,7 +991,110 @@ export type Database = {
       };
     };
     Functions: {
+      add_comment: {
+        Args: {
+          p_post_id: string;
+          p_parent_comment_id: string;
+          p_content: string;
+        };
+        Returns: {
+          author: Json;
+          comment_id: string;
+          content: string;
+          created_at: string;
+          edited_at: string;
+          is_deleted: boolean;
+          is_edited: boolean;
+          is_liked: boolean;
+          like_count: number;
+          parent_comment_id: string;
+          post_id: string;
+        }[];
+      };
+      get_comment_replies: {
+        Args: { p_comment_id: string; p_limit?: number; p_page?: number };
+        Returns: {
+          author: Json;
+          comment_id: string;
+          content: string;
+          created_at: string;
+          edited_at: string;
+          is_deleted: boolean;
+          is_edited: boolean;
+          is_liked: boolean;
+          like_count: number;
+          parent_comment_id: string;
+          post_id: string;
+        }[];
+      };
+      get_community_feed: {
+        Args: { p_category?: string; p_limit?: number; p_page?: number };
+        Returns: {
+          attachments: Json;
+          author: Json;
+          comment_count: number;
+          content: string;
+          is_bookmarked: boolean;
+          is_liked: boolean;
+          like_count: number;
+          post_category: string;
+          post_id: string;
+          published_at: string;
+          title: string;
+        }[];
+      };
+      get_community_post_detail: {
+        Args: { p_post_id: string };
+        Returns: {
+          attachments: Json;
+          author: Json;
+          comment_count: number;
+          content: string;
+          is_bookmarked: boolean;
+          is_liked: boolean;
+          like_count: number;
+          post_category: string;
+          post_id: string;
+          published_at: string;
+          title: string;
+        }[];
+      };
       get_grouped_categories: { Args: never; Returns: Json };
+      get_post_comments: {
+        Args: { p_limit?: number; p_page?: number; p_post_id: string };
+        Returns: {
+          author: Json;
+          comment_id: string;
+          content: string;
+          created_at: string;
+          edited_at: string;
+          has_more_replies: boolean;
+          is_deleted: boolean;
+          is_edited: boolean;
+          is_liked: boolean;
+          like_count: number;
+          parent_comment_id: string;
+          post_id: string;
+          replies: Json;
+          replies_count: number;
+        }[];
+      };
+      get_user_community_posts: {
+        Args: { p_limit?: number; p_page?: number; p_user_id: string };
+        Returns: {
+          attachments: Json;
+          author: Json;
+          comment_count: number;
+          content: string;
+          is_bookmarked: boolean;
+          is_liked: boolean;
+          like_count: number;
+          post_category: string;
+          post_id: string;
+          published_at: string;
+          title: string;
+        }[];
+      };
       hybrid_search_listings: {
         Args: {
           match_limit?: number;
@@ -999,6 +1115,26 @@ export type Database = {
       is_moderator_or_admin: { Args: never; Returns: boolean };
       is_verified_seller: { Args: never; Returns: boolean };
       retry_failed_enrichments: { Args: never; Returns: undefined };
+      toggle_comment_like: {
+        Args: { p_comment_id: string };
+        Returns: {
+          is_liked: boolean;
+          like_count: number;
+        }[];
+      };
+      toggle_post_bookmark: {
+        Args: { p_post_id: string };
+        Returns: {
+          is_bookmarked: boolean;
+        }[];
+      };
+      toggle_post_like: {
+        Args: { p_post_id: string };
+        Returns: {
+          is_liked: boolean;
+          like_count: number;
+        }[];
+      };
       validate_listing_specs: { Args: { specs: Json }; Returns: boolean };
     };
     Enums: {

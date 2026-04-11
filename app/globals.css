@@ -329,17 +329,11 @@
 
   /* Base RTL styles */
   html[dir='rtl'] {
-    unicode-bidi: plaintext;
   }
 
   /* Ensure proper text direction for mixed content */
   html[dir='rtl'] body {
     text-align: right;
-  }
-
-  /* Fix flex direction for RTL */
-  html[dir='rtl'] .flex-row {
-    flex-direction: row-reverse;
   }
 
   /* Keep certain elements LTR (like numbers, code) */
@@ -348,7 +342,7 @@
   html[dir='rtl'] pre,
   html[dir='rtl'] [dir='ltr'] {
     direction: ltr;
-    unicode-bidi: isolate;
+    /* unicode-bidi: isolate; */
   }
 
   /* Flip icons in RTL */
@@ -357,17 +351,6 @@
   }
 
   /* Fix spacing for RTL */
-  html[dir='rtl'] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir='rtl'] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir='rtl'] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
 
   /* Fix gap direction - Tailwind already handles this with logical properties */
 
@@ -386,19 +369,8 @@
   }
 
   /* Dropdown menu positioning for RTL */
-  html[dir='rtl'] .absolute.right-0 {
-    right: auto;
-    left: 0;
-  }
 
   /* Text alignment utilities for RTL */
-  html[dir='rtl'] .text-left {
-    text-align: right;
-  }
-
-  html[dir='rtl'] .text-right {
-    text-align: left;
-  }
 
   /* Keep start/end alignment semantic */
   .text-start {
@@ -410,9 +382,9 @@
   }
 
   /* Unicode bidi for specific elements */
-  [style*='unicode-bidi: plaintext'],
+  /* [style*='unicode-bidi: plaintext'], */
   .bidi-plaintext {
-    unicode-bidi: plaintext;
+    /* unicode-bidi: plaintext; */
   }
 
   /* Ensure forms work properly in RTL */
