@@ -39,7 +39,14 @@
     }
   },
   "HomePage": {
-    "title": "مرحبا بالعالم!"
+    "title": "مرحباً بك في غزة تك",
+    "latestListings": "أحدث الإعلانات",
+    "communityHighlights": "أبرز منشورات المجتمع",
+    "viewAll": "عرض الكل",
+    "emptyListings": "لا توجد إعلانات بعد",
+    "emptyPosts": "لا توجد منشورات بعد",
+    "errorListings": "فشل تحميل الإعلانات",
+    "errorPosts": "فشل تحميل منشورات المجتمع"
   },
   "Auth": {
     "common": {

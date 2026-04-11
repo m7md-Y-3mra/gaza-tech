@@ -39,7 +39,14 @@
     }
   },
   "HomePage": {
-    "title": "Hello world!"
+    "title": "Welcome to Gaza Tech",
+    "latestListings": "Latest Listings",
+    "communityHighlights": "Community Highlights",
+    "viewAll": "View All",
+    "emptyListings": "No listings yet",
+    "emptyPosts": "No community posts yet",
+    "errorListings": "Failed to load listings",
+    "errorPosts": "Failed to load community posts"
   },
   "Auth": {
     "common": {
