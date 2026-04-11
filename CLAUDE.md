@@ -298,6 +298,9 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 
 ## Active Technologies
 
+- TypeScript 5.x + Next.js 16 (App Router), React 19, `next-intl` ^4.7.0, `date-fns` ^4.1.0, `lucide-react` ^0.562.0, `sonner` ^2.0.7, shadcn/ui (radix), Tailwind CSS ^4 (009-post-detail-modal)
+- N/A (consumes existing server actions — no new DB work) (009-post-detail-modal)
+
 - TypeScript 5.x, Next.js 16 (App Router), React 19 + `nuqs` ^2.8.8, `next-intl` ^4.7.0, `react-intersection-observer` ^10.0.2, shadcn/ui (radix), `lucide-react` ^0.562.0, Tailwind CSS ^4 (008-community-feed-page)
 - Supabase Postgres — `community_posts`, `community_posts_attachments`, `community_posts_likes`, `bookmarked_posts`; Supabase RPC `get_community_feed` (008-community-feed-page)
 
