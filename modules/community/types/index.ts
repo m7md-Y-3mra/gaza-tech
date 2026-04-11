@@ -99,6 +99,10 @@ export type Page<T> = {
   next_page: number | null;
 };
 
+export type PageWithCount<T> = Page<T> & {
+  total_count: number;
+};
+
 export type TogglePostLikeResult = {
   is_liked: boolean;
   like_count: number;

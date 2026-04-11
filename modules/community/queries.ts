@@ -23,6 +23,7 @@ import type {
   CommentNode,
   TopLevelComment,
   Page,
+  PageWithCount,
   TogglePostLikeResult,
   TogglePostBookmarkResult,
   ToggleCommentLikeResult,
@@ -797,7 +798,7 @@ export type GetUserCommunityPostsInput = {
 
 export async function getUserCommunityPostsQuery(
   input: GetUserCommunityPostsInput
-): Promise<Page<FeedPost>> {
+): Promise<PageWithCount<FeedPost>> {
   'use server';
   const client = await createClient();
   // zodValidation(z.uuid(), input.user_id);
@@ -806,15 +807,22 @@ export async function getUserCommunityPostsQuery(
     limit: input.limit,
   });
 
-  const { data, error } = await client.rpc('get_user_community_posts', {
-    p_user_id: input.user_id,
-    p_page: page,
-    p_limit: limit + 1,
-  });
+  const [rpcResult, countResult] = await Promise.all([
+    client.rpc('get_user_community_posts', {
+      p_user_id: input.user_id,
+      p_page: page,
+      p_limit: limit + 1,
+    }),
+    client
+      .from('community_posts')
+      .select('post_id', { count: 'exact', head: true })
+      .eq('author_id', input.user_id)
+      .eq('content_status', 'published'),
+  ]);
 
-  if (error) throw error;
+  if (rpcResult.error) throw rpcResult.error;
 
-  const rows = data ?? [];
+  const rows = rpcResult.data ?? [];
   const has_more = rows.length > limit;
   const sliced = has_more ? rows.slice(0, limit) : rows;
 
@@ -822,6 +830,7 @@ export async function getUserCommunityPostsQuery(
     data: sliced.map(mapFeedPostRow),
     has_more,
     next_page: has_more ? page + 1 : null,
+    total_count: countResult.count ?? 0,
   };
 }
 
