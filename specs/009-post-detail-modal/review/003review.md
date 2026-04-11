@@ -319,12 +319,18 @@ Do **NOT** set `dir="auto"` on layout containers (navbars, sidebars, action bars
 
 ### Issue 2: Dead / harmful CSS rules in `app/globals.css` hide the effect of correct bidi and corrupt RTL layouts
 
-- [ ] FIXED
+- [x] FIXED
 - Severity: MED
 - Depends on: Issue 1 (apply `dir="auto"` first, then prove the page still looks right, then remove the overrides)
 - Affected tasks: B11
 - Evidence: Lines 331-333, 341-343, 360-370, 389-392, 395-401 of `app/globals.css` — see Task B11.
 - Root cause analysis: These rules were added as a blunt-force RTL workaround before Tailwind v4's logical properties were used consistently. They now fight with the logical-property utilities (`ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`) and silently reverse things the component author expected to stay put.
+- Fix notes: Removed 5 blocks of dead/harmful RTL overrides from `app/globals.css`:
+  - `html[dir='rtl']` unicode-bidi (no effect on children)
+  - `html[dir='rtl'] .flex-row` (conflicted with logical properties)
+  - `html[dir='rtl'] .space-x-*` (Tailwind v4 handles this automatically)
+  - `html[dir='rtl'] .absolute.right-0` (prefer `end-0`)
+  - `html[dir='rtl'] .text-left/right` (conflicted with explicit text alignment)
 - Proposed solution:
   1. Open `app/globals.css`.
   2. Delete line 331-333 (the `html[dir='rtl'] { unicode-bidi: plaintext; }` block).
