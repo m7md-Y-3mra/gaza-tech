@@ -1,0 +1,28 @@
+'use client';
+
+import React from 'react';
+import { Search } from 'lucide-react';
+import { useQueryState } from 'nuqs';
+import { Input } from '@/components/ui/input';
+
+const ReportQueueSearch: React.FC = () => {
+  const [query, setQuery] = useQueryState('query', {
+    defaultValue: '',
+    shallow: false,
+    throttleMs: 500,
+  });
+
+  return (
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        placeholder="Search reporters or content..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="pl-9"
+      />
+    </div>
+  );
+};
+
+export default ReportQueueSearch;

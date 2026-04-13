@@ -9,6 +9,7 @@ import {
   Globe,
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { ReportButton } from '@/modules/reports/components';
 import type { ProfileHeroProps } from './types';
 import { getTranslations } from 'next-intl/server';
 
@@ -32,6 +33,16 @@ const ProfileHero = async ({ user }: ProfileHeroProps) => {
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 h-96 w-96 rounded-full bg-white blur-3xl"></div>
         <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-white blur-3xl"></div>
+      </div>
+
+      <div className="absolute top-4 right-4 z-20">
+        <ReportButton
+          contentType="user"
+          contentId={user.user_id}
+          contentOwnerId={user.user_id}
+          variant="secondary"
+          className="bg-white/20 hover:bg-white/30 text-white rounded-full h-10 w-10 backdrop-blur-sm"
+        />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">

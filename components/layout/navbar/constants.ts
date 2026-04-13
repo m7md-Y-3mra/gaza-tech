@@ -19,9 +19,4 @@ export const NAV_LINKS: NavLink[] = [
     labelKey: 'dashboard',
     allowedRoles: ['admin', 'moderator'],
   },
-  {
-    href: '/dashboard/verification-review',
-    labelKey: 'verificationQueue',
-    allowedRoles: ['admin', 'moderator'],
-  },
 ];

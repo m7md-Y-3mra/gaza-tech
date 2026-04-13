@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { formatDistanceToNow } from 'date-fns';
 import { ar, enUS } from 'date-fns/locale';
 import { Heart, Pencil, Trash2, Reply } from 'lucide-react';
+import { ReportButton } from '@/modules/reports/components';
 
 import { cn } from '@/lib/utils';
 import {
@@ -171,6 +172,16 @@ export function CommentItem({
                 <Reply className="h-3.5 w-3.5" />
                 <span>{t('commentActions.reply')}</span>
               </button>
+            )}
+
+            {!isOwnComment && (
+              <ReportButton
+                contentType="comment"
+                contentId={comment.comment_id}
+                contentOwnerId={comment.author.id || ''}
+                size="sm"
+                className="p-0 h-auto w-auto"
+              />
             )}
 
             {isOwnComment && (

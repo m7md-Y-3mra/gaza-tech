@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Heart, Bookmark, Share2 } from 'lucide-react';
+import { ReportButton } from '@/modules/reports/components';
 import { toast } from 'sonner';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -160,6 +161,14 @@ export function PostDetailActions({ post }: PostDetailActionsProps) {
         >
           <Share2 className="h-5 w-5" aria-hidden="true" />
         </button>
+
+        <ReportButton
+          contentType="post"
+          contentId={post.post_id}
+          contentOwnerId={post.author.id || ''}
+          size="default"
+          className="px-3 py-2"
+        />
       </div>
     </div>
   );

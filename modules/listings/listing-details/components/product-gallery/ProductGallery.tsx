@@ -4,6 +4,7 @@ import MainImageContainer from './components/main-image-container';
 import ShareButton from './components/share-button';
 import ProductBadge from './components/product-badge';
 import BookmarkStatus from './components/bookmark-status';
+import { ReportButton } from '@/modules/reports/components';
 import ThumbnailGrid from './components/thumbnail-grid';
 import ImageLightbox from './components/image-lightbox';
 import { getTranslations } from 'next-intl/server';
@@ -13,6 +14,7 @@ const ProductGallery = async ({
   listingId,
   title,
   productCondition,
+  sellerId,
 }: ProductGalleryProps) => {
   const t = await getTranslations('ListingDetails.a11y');
 
@@ -34,6 +36,13 @@ const ProductGallery = async ({
 
           {/* Action Buttons - Top Right (LTR) / Top Left (RTL) */}
           <div className="absolute top-4 right-4 flex gap-2 rtl:right-auto rtl:left-4">
+            <ReportButton
+              contentType="listing"
+              contentId={listingId}
+              contentOwnerId={sellerId}
+              variant="secondary"
+              className="bg-background/80 hover:bg-background h-10 w-10 rounded-full shadow-sm backdrop-blur-sm"
+            />
             <BookmarkStatus listingId={listingId} />
             <ShareButton title={title} />
           </div>
