@@ -8,6 +8,7 @@
 ## Clarifications
 
 ### Session 2026-04-14
+
 - Q: Frequency of is_active status verification in Middleware → A: Cache for 5 minutes (Balanced).
 - Q: Handling users banned while active in multiple sessions → A: Immediate restriction on next request.
 

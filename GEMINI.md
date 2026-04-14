@@ -297,8 +297,10 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 5. Open Graph image via `opengraph-image.tsx`
 
 ## Active Technologies
+
 - Next.js 15+, TypeScript 5+ + Supabase Auth/PostgreSQL, next-intl, zod, react-hook-form (014-ban-enforcement)
 - PostgreSQL (public.users table: is_active, ban_reason) (014-ban-enforcement)
 
 ## Recent Changes
+
 - 014-ban-enforcement: Added Next.js 15+, TypeScript 5+ + Supabase Auth/PostgreSQL, next-intl, zod, react-hook-form

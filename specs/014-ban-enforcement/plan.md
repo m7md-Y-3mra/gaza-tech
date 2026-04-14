@@ -23,14 +23,14 @@ Implement a robust ban enforcement layer using Next.js Middleware and Server Act
 
 _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Gate | Status | Logic |
-| :--- | :--- | :--- |
-| **Module-First Architecture** | PASS | Banned page logic/UI will reside in a module (likely `modules/user/banned-page`). |
-| **Server-First Rendering** | PASS | Middleware is server-side; Banned page will be a Server Component to fetch `ban_reason` securely. |
-| **Incremental Development** | PASS | Plan follows Design -> Frontend Logic -> Enhancement phases. |
-| **Performance Standards** | PASS | 5-minute caching in Middleware prevents excessive DB hits; no heavy client components on `/banned`. |
-| **Accessibility (WCAG AA)** | PASS | `/banned` page will use semantic HTML and meet contrast requirements. |
-| **Consistent Error Handling** | PASS | `signIn` action and profile fetching will use `errorHandler` and `CustomError`. |
+| Gate                          | Status | Logic                                                                                               |
+| :---------------------------- | :----- | :-------------------------------------------------------------------------------------------------- |
+| **Module-First Architecture** | PASS   | Banned page logic/UI will reside in a module (likely `modules/user/banned-page`).                   |
+| **Server-First Rendering**    | PASS   | Middleware is server-side; Banned page will be a Server Component to fetch `ban_reason` securely.   |
+| **Incremental Development**   | PASS   | Plan follows Design -> Frontend Logic -> Enhancement phases.                                        |
+| **Performance Standards**     | PASS   | 5-minute caching in Middleware prevents excessive DB hits; no heavy client components on `/banned`. |
+| **Accessibility (WCAG AA)**   | PASS   | `/banned` page will use semantic HTML and meet contrast requirements.                               |
+| **Consistent Error Handling** | PASS   | `signIn` action and profile fetching will use `errorHandler` and `CustomError`.                     |
 
 ## Project Structure
 
@@ -75,5 +75,5 @@ modules/auth/login/components/LoginForm/actions/
 ## Complexity Tracking
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-| :--- | :--- | :--- |
-| None | - | - |
+| :-------- | :--------- | :----------------------------------- |
+| None      | -          | -                                    |
