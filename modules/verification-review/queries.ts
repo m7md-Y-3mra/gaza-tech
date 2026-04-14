@@ -265,4 +265,3 @@ export async function getPendingVerificationCountQuery() {
 
   return count || 0;
 }
-

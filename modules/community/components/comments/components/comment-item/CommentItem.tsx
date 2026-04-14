@@ -180,7 +180,7 @@ export function CommentItem({
                 contentId={comment.comment_id}
                 contentOwnerId={comment.author.id || ''}
                 size="sm"
-                className="p-0 h-auto w-auto"
+                className="h-auto w-auto p-0"
               />
             )}
 

@@ -41,7 +41,7 @@ const ProfileHero = async ({ user }: ProfileHeroProps) => {
           contentId={user.user_id}
           contentOwnerId={user.user_id}
           variant="secondary"
-          className="bg-white/20 hover:bg-white/30 text-white rounded-full h-10 w-10 backdrop-blur-sm"
+          className="h-10 w-10 rounded-full bg-white/20 text-white backdrop-blur-sm hover:bg-white/30"
         />
       </div>
 

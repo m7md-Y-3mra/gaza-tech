@@ -14,7 +14,13 @@ import {
  * Dismiss a report.
  */
 export const dismissReportAction = errorHandler(
-  async ({ reportId, resolutionNotes }: { reportId: string; resolutionNotes?: string }) => {
+  async ({
+    reportId,
+    resolutionNotes,
+  }: {
+    reportId: string;
+    resolutionNotes?: string;
+  }) => {
     const result = await resolveReportQuery({
       reportId,
       status: 'dismissed',

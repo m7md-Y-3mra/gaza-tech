@@ -68,10 +68,14 @@ export async function getReportQueueQuery({
   }
 
   // Apply content type filter
-  if (contentType === 'post') request = request.not('reported_post_id', 'is', null);
-  if (contentType === 'listing') request = request.not('reported_listing_id', 'is', null);
-  if (contentType === 'comment') request = request.not('reported_comment_id', 'is', null);
-  if (contentType === 'user') request = request.not('reported_user_id', 'is', null);
+  if (contentType === 'post')
+    request = request.not('reported_post_id', 'is', null);
+  if (contentType === 'listing')
+    request = request.not('reported_listing_id', 'is', null);
+  if (contentType === 'comment')
+    request = request.not('reported_comment_id', 'is', null);
+  if (contentType === 'user')
+    request = request.not('reported_user_id', 'is', null);
 
   // Apply search query (on reporter name)
   if (query.trim()) {
@@ -117,7 +121,8 @@ export async function getReportQueueQuery({
       reason: item.reason,
       report_status: item.report_status as any,
       created_at: item.created_at!,
-      reporter_name: `${reporter?.first_name || ''} ${reporter?.last_name || ''}`.trim(),
+      reporter_name:
+        `${reporter?.first_name || ''} ${reporter?.last_name || ''}`.trim(),
       content_type: type,
       content_id: id,
     };
@@ -134,21 +139,25 @@ export async function getReportQueueQuery({
 /**
  * Fetch full report details including joined content and history.
  */
-export async function getReportByIdQuery(reportId: string): Promise<ReportDetail> {
+export async function getReportByIdQuery(
+  reportId: string
+): Promise<ReportDetail> {
   const supabase = await createClient();
   await requireRole(['admin', 'moderator']);
 
   // 1. Fetch the base report
   const { data: report, error } = await supabase
     .from('reports')
-    .select(`
+    .select(
+      `
       *,
       reporter:users!reports_reporter_id_fkey (
         first_name,
         last_name,
         avatar_url
       )
-    `)
+    `
+    )
     .eq('report_id', reportId)
     .single();
 
@@ -209,9 +218,12 @@ export async function getReportByIdQuery(reportId: string): Promise<ReportDetail
     .order('created_at', { ascending: false });
 
   if (contentType === 'post') historyQuery.eq('reported_post_id', contentId);
-  else if (contentType === 'listing') historyQuery.eq('reported_listing_id', contentId);
-  else if (contentType === 'comment') historyQuery.eq('reported_comment_id', contentId);
-  else if (contentType === 'user') historyQuery.eq('reported_user_id', contentId);
+  else if (contentType === 'listing')
+    historyQuery.eq('reported_listing_id', contentId);
+  else if (contentType === 'comment')
+    historyQuery.eq('reported_comment_id', contentId);
+  else if (contentType === 'user')
+    historyQuery.eq('reported_user_id', contentId);
 
   const { data: history } = await historyQuery;
 
@@ -222,9 +234,9 @@ export async function getReportByIdQuery(reportId: string): Promise<ReportDetail
       type: contentType,
       data: contentData,
     },
-    history: (history || []).map(h => ({
+    history: (history || []).map((h) => ({
       ...h,
-      created_at: h.created_at!
+      created_at: h.created_at!,
     })),
   };
 }
@@ -271,8 +283,8 @@ export async function resolveReportQuery({
     .single();
 
   if (report && status === 'resolved' && actionTaken) {
-    const ownerId = report.reported_user_id ||
-      (await getOwnerId(supabase, report));
+    const ownerId =
+      report.reported_user_id || (await getOwnerId(supabase, report));
 
     if (ownerId) {
       let title = '';
@@ -291,7 +303,7 @@ export async function resolveReportQuery({
         title,
         description,
         notification_type: 'moderation',
-        notification_data: { report_id: reportId, action: actionTaken }
+        notification_data: { report_id: reportId, action: actionTaken },
       });
     }
   }
@@ -301,20 +313,31 @@ export async function resolveReportQuery({
 
 async function getOwnerId(supabase: any, report: any) {
   if (report.reported_post_id) {
-    const { data } = await supabase.from('community_posts').select('author_id').eq('post_id', report.reported_post_id).single();
+    const { data } = await supabase
+      .from('community_posts')
+      .select('author_id')
+      .eq('post_id', report.reported_post_id)
+      .single();
     return data?.author_id;
   }
   if (report.reported_listing_id) {
-    const { data } = await supabase.from('marketplace_listings').select('seller_id').eq('listing_id', report.reported_listing_id).single();
+    const { data } = await supabase
+      .from('marketplace_listings')
+      .select('seller_id')
+      .eq('listing_id', report.reported_listing_id)
+      .single();
     return data?.seller_id;
   }
   if (report.reported_comment_id) {
-    const { data } = await supabase.from('community_post_comments').select('author_id').eq('comment_id', report.reported_comment_id).single();
+    const { data } = await supabase
+      .from('community_post_comments')
+      .select('author_id')
+      .eq('comment_id', report.reported_comment_id)
+      .single();
     return data?.author_id;
   }
   return null;
 }
-
 
 /**
  * Hide community post.
@@ -360,7 +383,7 @@ export async function hideCommentQuery(commentId: string) {
     .update({
       is_deleted: true,
       content: '[Removed by moderator]',
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     })
     .eq('comment_id', commentId);
 
@@ -384,7 +407,11 @@ export async function banUserQuery({
   await requireRole(['admin', 'moderator']);
 
   const me = await supabase.auth.getUser();
-  const { data } = await supabase.from('users').select('*').eq('user_id', me.data.user?.id).single();
+  const { data } = await supabase
+    .from('users')
+    .select('*')
+    .eq('user_id', me.data.user?.id)
+    .single();
   console.log(data);
 
   const { error } = await supabase
@@ -397,7 +424,7 @@ export async function banUserQuery({
     })
     .eq('user_id', userId);
 
-  console.log(error)
+  console.log(error);
 
   if (error) throw new CustomError({ message: 'Failed to ban user' });
   return { success: true };
@@ -423,5 +450,3 @@ export async function getPendingReportCountQuery() {
 
   return count || 0;
 }
-
-

@@ -64,13 +64,19 @@ export default async function DashboardSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className="flex items-center justify-between w-full">
+                    <Link
+                      href={item.url}
+                      className="flex w-full items-center justify-between"
+                    >
                       <div className="flex items-center gap-2">
                         <item.icon />
                         <span>{item.title}</span>
                       </div>
                       {item.badge && (
-                        <Badge variant="destructive" className="h-5 min-w-5 px-1 justify-center">
+                        <Badge
+                          variant="destructive"
+                          className="h-5 min-w-5 justify-center px-1"
+                        >
                           {item.badge}
                         </Badge>
                       )}

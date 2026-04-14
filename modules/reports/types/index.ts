@@ -19,5 +19,9 @@ export type ReportReason = (typeof REPORT_REASONS)[number];
 export const REPORT_STATUSES = ['pending', 'resolved', 'dismissed'] as const;
 export type ReportStatus = (typeof REPORT_STATUSES)[number];
 
-export const ACTION_TYPES = ['content_removed', 'user_warned', 'user_banned'] as const;
+export const ACTION_TYPES = [
+  'content_removed',
+  'user_warned',
+  'user_banned',
+] as const;
 export type ActionType = (typeof ACTION_TYPES)[number];

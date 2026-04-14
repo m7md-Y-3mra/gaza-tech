@@ -57,7 +57,11 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
     const result = await removeContentAction({
       reportId: report.report_id,
       contentType: report.reported_content.type,
-      contentId: report.reported_post_id || report.reported_listing_id || report.reported_comment_id || '',
+      contentId:
+        report.reported_post_id ||
+        report.reported_listing_id ||
+        report.reported_comment_id ||
+        '',
       resolutionNotes: notes,
     });
     setIsSubmitting(false);
@@ -71,13 +75,14 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
   };
 
   const handleBanUser = async () => {
-    const userId = report.reported_user_id || 
-                   report.reported_content.data?.author_id || 
-                   report.reported_content.data?.seller_id;
-    
+    const userId =
+      report.reported_user_id ||
+      report.reported_content.data?.author_id ||
+      report.reported_content.data?.seller_id;
+
     if (!userId) {
-        toast.error("Could not identify user to ban");
-        return;
+      toast.error('Could not identify user to ban');
+      return;
     }
 
     setIsSubmitting(true);
@@ -100,10 +105,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
   const isResolved = report.report_status !== 'pending';
 
   return (
-    <div className="flex flex-col h-full p-6 bg-muted/10">
-      <h2 className="text-xl font-bold mb-6">Moderation Actions</h2>
+    <div className="bg-muted/10 flex h-full flex-col p-6">
+      <h2 className="mb-6 text-xl font-bold">Moderation Actions</h2>
 
-      <div className="space-y-6 flex-1">
+      <div className="flex-1 space-y-6">
         <div className="space-y-2">
           <Label htmlFor="notes">Resolution Notes</Label>
           <Textarea
@@ -120,9 +125,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
           {/* Dismiss Button */}
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button 
-                variant="outline" 
-                className="w-full" 
+              <Button
+                variant="outline"
+                className="w-full"
                 disabled={isSubmitting || isResolved}
               >
                 Dismiss Report
@@ -130,9 +135,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure you want to dismiss this report?</AlertDialogTitle>
+                <AlertDialogTitle>
+                  Are you sure you want to dismiss this report?
+                </AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will mark the report as dismissed without taking any action on the content.
+                  This will mark the report as dismissed without taking any
+                  action on the content.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -148,9 +156,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
           {report.reported_content.type !== 'user' && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button 
-                  variant="destructive" 
-                  className="w-full" 
+                <Button
+                  variant="destructive"
+                  className="w-full"
                   disabled={isSubmitting || isResolved}
                 >
                   Remove Content
@@ -158,14 +166,21 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure you want to remove this content? This action cannot be undone.</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    Are you sure you want to remove this content? This action
+                    cannot be undone.
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
-                    The content will be hidden from all users. This action is recorded in the moderation history.
+                    The content will be hidden from all users. This action is
+                    recorded in the moderation history.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleRemoveContent} className="bg-destructive text-destructive-foreground">
+                  <AlertDialogAction
+                    onClick={handleRemoveContent}
+                    className="bg-destructive text-destructive-foreground"
+                  >
                     Remove Content
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -176,9 +191,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
           {/* Ban User Button */}
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button 
-                variant="destructive" 
-                className="w-full font-bold" 
+              <Button
+                variant="destructive"
+                className="w-full font-bold"
                 disabled={isSubmitting || isResolved}
               >
                 Ban User
@@ -186,14 +201,20 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Ban this user from the platform?</AlertDialogTitle>
+                <AlertDialogTitle>
+                  Ban this user from the platform?
+                </AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will permanently disable the user's account. They will no longer be able to log in or use the platform.
+                  This will permanently disable the user's account. They will no
+                  longer be able to log in or use the platform.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleBanUser} className="bg-destructive text-destructive-foreground">
+                <AlertDialogAction
+                  onClick={handleBanUser}
+                  className="bg-destructive text-destructive-foreground"
+                >
                   Ban User
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -203,13 +224,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
       </div>
 
       {isSubmitting && (
-        <div className="absolute inset-0 bg-background/50 flex items-center justify-center backdrop-blur-[1px] z-50">
+        <div className="bg-background/50 absolute inset-0 z-50 flex items-center justify-center backdrop-blur-[1px]">
           <LoadingSubmittingSpinner />
         </div>
       )}
 
       {isResolved && (
-        <div className="mt-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm font-medium text-center">
+        <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm font-medium text-green-800">
           This report has been resolved.
         </div>
       )}

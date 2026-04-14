@@ -14,7 +14,7 @@ export default async function ReportQueuePage({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b p-4 space-y-3 bg-background/50 backdrop-blur-sm sticky top-0 z-10">
+      <div className="bg-background/50 sticky top-0 z-10 space-y-3 border-b p-4 backdrop-blur-sm">
         <h2 className="text-lg font-bold">Report Queue</h2>
         <ReportQueueSearch />
         <ReportQueueFilters />

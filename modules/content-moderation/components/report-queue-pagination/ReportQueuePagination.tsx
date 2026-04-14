@@ -31,7 +31,7 @@ const ReportQueuePagination: React.FC<ReportQueuePaginationProps> = ({
   if (totalPages <= 1) return null;
 
   return (
-    <Pagination className="mt-auto border-t bg-background py-2">
+    <Pagination className="bg-background mt-auto border-t py-2">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -45,7 +45,7 @@ const ReportQueuePagination: React.FC<ReportQueuePaginationProps> = ({
         </PaginationItem>
 
         <PaginationItem>
-          <span className="text-xs font-medium px-2">
+          <span className="px-2 text-xs font-medium">
             {page} / {totalPages}
           </span>
         </PaginationItem>
@@ -57,7 +57,9 @@ const ReportQueuePagination: React.FC<ReportQueuePaginationProps> = ({
               e.preventDefault();
               if (page < totalPages) setPage(page + 1);
             }}
-            className={page >= totalPages ? 'pointer-events-none opacity-50' : ''}
+            className={
+              page >= totalPages ? 'pointer-events-none opacity-50' : ''
+            }
           />
         </PaginationItem>
       </PaginationContent>

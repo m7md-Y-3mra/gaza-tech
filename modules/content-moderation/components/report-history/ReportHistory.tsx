@@ -35,7 +35,9 @@ const ReportHistory: React.FC<ReportHistoryProps> = ({ history }) => {
     return (
       <div>
         <h3 className="mb-4 text-lg font-bold">Report History</h3>
-        <p className="text-sm text-muted-foreground italic">No previous reports for this content.</p>
+        <p className="text-muted-foreground text-sm italic">
+          No previous reports for this content.
+        </p>
       </div>
     );
   }
@@ -50,8 +52,10 @@ const ReportHistory: React.FC<ReportHistoryProps> = ({ history }) => {
             className="flex items-center justify-between rounded-md border p-3 text-sm"
           >
             <div className="space-y-1">
-              <span className="font-semibold uppercase">{REASON_LABELS[h.reason] ?? h.reason}</span>
-              <p className="text-xs text-muted-foreground">
+              <span className="font-semibold uppercase">
+                {REASON_LABELS[h.reason] ?? h.reason}
+              </span>
+              <p className="text-muted-foreground text-xs">
                 {format(new Date(h.created_at), 'PPP p')}
               </p>
             </div>

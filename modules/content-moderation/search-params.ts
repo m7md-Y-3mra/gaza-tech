@@ -17,13 +17,16 @@ export const reportQueueSearchParams = {
   status: parseAsString.withDefault('pending'),
 };
 
-export const reportQueueSearchParamsCache =
-  createSearchParamsCache(reportQueueSearchParams);
+export const reportQueueSearchParamsCache = createSearchParamsCache(
+  reportQueueSearchParams
+);
 
 export type ReportQueueSearchParamsType = Awaited<
   ReturnType<typeof reportQueueSearchParamsCache.parse>
 >;
 
-export const serializeReportQueueSearchParams = createSerializer(reportQueueSearchParams);
+export const serializeReportQueueSearchParams = createSerializer(
+  reportQueueSearchParams
+);
 
 export { DEFAULT_LIMIT_NUMBER as QUEUE_PAGE_SIZE };
