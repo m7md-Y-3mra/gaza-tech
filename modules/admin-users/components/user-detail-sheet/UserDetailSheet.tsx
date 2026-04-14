@@ -13,6 +13,7 @@ import { RoleBadge } from '@/modules/admin-users/components/role-badge';
 import { StatusBadge } from '@/modules/admin-users/components/status-badge';
 import type { AdminUser } from '@/modules/admin-users/types';
 import { BanTab } from './BanTab';
+import { ProfileTab } from './ProfileTab';
 import { RoleTab } from './RoleTab';
 
 interface UserDetailSheetProps {
@@ -85,13 +86,7 @@ export function UserDetailSheet({
             </TabsContent>
 
             <TabsContent value="profile">
-              <p className="text-muted-foreground text-sm">
-                {t('userDetail.tabs.profile')} — pending{' '}
-                <code className="bg-muted rounded px-1 text-xs">
-                  admin_edit_user
-                </code>{' '}
-                RPC.
-              </p>
+              <ProfileTab user={user} onMutationSuccess={onMutationSuccess} />
             </TabsContent>
           </div>
         </Tabs>

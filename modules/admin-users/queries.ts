@@ -7,6 +7,7 @@ import type {
   ChangeRoleInput,
   BanUserInput,
   UnbanUserInput,
+  EditUserInput,
 } from './types';
 
 export async function listAdminUsersRpc(
@@ -81,6 +82,25 @@ export async function unbanUserRpc(
 ): Promise<void> {
   const { error } = await supabase.rpc('admin_unban_user', {
     p_target_user_id: input.targetUserId,
+  });
+
+  if (error) {
+    throw new CustomError({
+      message: error.message,
+      code: error.hint ?? undefined,
+    });
+  }
+}
+
+export async function editUserRpc(
+  supabase: SupabaseClient,
+  input: EditUserInput
+): Promise<void> {
+  const { error } = await supabase.rpc('admin_edit_user', {
+    p_target_user_id: input.targetUserId,
+    p_first_name: input.firstName,
+    p_last_name: input.lastName,
+    p_is_verified: input.isVerified,
   });
 
   if (error) {

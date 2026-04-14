@@ -1001,6 +1001,14 @@
       },
       "ban": {
         "currentBanReason": "Current ban reason"
+      },
+      "profile": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "isVerified": "Verified Seller",
+        "save": "Save Changes",
+        "success": "Profile updated successfully.",
+        "error": "Failed to update profile."
       }
     }
   }

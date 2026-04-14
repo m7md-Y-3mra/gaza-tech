@@ -78,3 +78,10 @@ export interface BulkBanInput {
   targetUserIds: string[];
   reason: string;
 }
+
+export interface EditUserInput {
+  targetUserId: string;
+  firstName: string;
+  lastName: string;
+  isVerified: boolean;
+}

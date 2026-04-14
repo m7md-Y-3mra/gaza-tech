@@ -13,12 +13,14 @@ import type {
   UnbanUserInput,
   BulkChangeRoleInput,
   BulkBanInput,
+  EditUserInput,
 } from './types';
 import {
   listAdminUsersRpc,
   changeUserRoleRpc,
   banUserRpc,
   unbanUserRpc,
+  editUserRpc,
 } from './queries';
 
 const AdminUserListInputSchema = z.object({
@@ -55,6 +57,13 @@ const UnbanUserInputSchema = z.object({
 const BulkChangeRoleInputSchema = z.object({
   targetUserIds: z.array(z.string().uuid()).min(1).max(100),
   newRole: z.enum(ROLES),
+});
+
+const EditUserInputSchema = z.object({
+  targetUserId: z.string().uuid(),
+  firstName: z.string().trim().min(1).max(100),
+  lastName: z.string().trim().min(1).max(100),
+  isVerified: z.boolean(),
 });
 
 const BulkBanInputSchema = z.object({
@@ -95,6 +104,15 @@ export const unbanUserAction = errorHandler(
     const parsed = UnbanUserInputSchema.parse(input);
     const supabase = await createClient();
     return unbanUserRpc(supabase, parsed as UnbanUserInput);
+  }
+);
+
+export const editUserAction = errorHandler(
+  async (input: EditUserInput): Promise<void> => {
+    await requireRole(['admin']);
+    const parsed = EditUserInputSchema.parse(input);
+    const supabase = await createClient();
+    return editUserRpc(supabase, parsed as EditUserInput);
   }
 );
 
