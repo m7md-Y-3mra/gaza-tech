@@ -46,7 +46,7 @@ export function UsersTable({
   const hasSelection = Object.keys(table.getState().rowSelection).length > 0;
 
   return (
-    <div className="space-y-4" data-testid="users-table">
+    <div className="w-full space-y-4" data-testid="users-table">
       <UsersTableToolbar
         table={table}
         q={params.q}

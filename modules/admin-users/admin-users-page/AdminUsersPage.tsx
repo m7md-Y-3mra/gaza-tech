@@ -100,7 +100,7 @@ export async function AdminUsersPage({
   const currentAdminUserId = user?.id ?? '';
 
   return (
-    <div className="space-y-4 p-6">
+    <div className="flex h-full flex-col gap-4 p-6">
       <div>
         <h1 className="text-2xl font-bold">{t('pageTitle')}</h1>
         <p className="text-muted-foreground">{t('pageDescription')}</p>
