@@ -935,7 +935,8 @@
       "trigger": "Open menu",
       "changeRole": "Change Role",
       "ban": "Ban User",
-      "unban": "Unban User"
+      "unban": "Unban User",
+      "viewDetails": "View Details"
     },
     "dialogs": {
       "changeRole": {
@@ -990,6 +991,14 @@
     "error": {
       "title": "Failed to load users",
       "retry": "Retry"
+    },
+    "userDetail": {
+      "sheetTitle": "User Details",
+      "tabs": {
+        "role": "Role",
+        "ban": "Ban",
+        "profile": "Profile"
+      }
     }
   }
 }
