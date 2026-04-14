@@ -13,7 +13,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-import { ArrowLeft, ShieldCheck, Flag } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Flag, Users } from 'lucide-react';
 import { getPendingReportCountQuery } from '@/modules/content-moderation/queries';
 import { getPendingVerificationCountQuery } from '@/modules/verification-review/queries';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,12 @@ export default async function DashboardSidebar() {
       url: '/dashboard/content-moderation',
       icon: Flag,
       badge: pendingReportsCount > 0 ? pendingReportsCount : null,
+    },
+    {
+      title: 'User Management',
+      url: '/dashboard/users',
+      icon: Users,
+      badge: null,
     },
   ];
 
