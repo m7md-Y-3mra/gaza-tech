@@ -56,9 +56,7 @@ export function RoleTab({ user, onMutationSuccess }: RoleTabProps) {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="role-select">
-          {t('dialogs.changeRole.title')}
-        </Label>
+        <Label htmlFor="role-select">{t('dialogs.changeRole.title')}</Label>
         <Select
           value={selectedRole}
           onValueChange={(v) => setSelectedRole(v as UserRole)}

@@ -40,7 +40,9 @@ export function UserDetailSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="flex w-full flex-col sm:max-w-md">
         <SheetHeader className="pb-0">
-          <SheetTitle className="sr-only">{t('userDetail.sheetTitle')}</SheetTitle>
+          <SheetTitle className="sr-only">
+            {t('userDetail.sheetTitle')}
+          </SheetTitle>
           {/* Header: avatar + name + badges */}
           <div className="flex items-center gap-4 pb-4">
             <Avatar className="size-14">
@@ -67,7 +69,10 @@ export function UserDetailSheet({
           </div>
         </SheetHeader>
 
-        <Tabs defaultValue="role" className="flex flex-1 flex-col overflow-hidden">
+        <Tabs
+          defaultValue="role"
+          className="flex flex-1 flex-col overflow-hidden"
+        >
           <TabsList className="mx-4 w-auto self-start">
             <TabsTrigger value="role">{t('userDetail.tabs.role')}</TabsTrigger>
             <TabsTrigger value="ban">{t('userDetail.tabs.ban')}</TabsTrigger>
