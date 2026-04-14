@@ -34,6 +34,8 @@ type RouteConfig = {
 const PROTECTED_ROUTES: Record<string, RouteConfig> = {
   '/dashboard': { allowedRoles: ['admin', 'moderator'] },
   '/dashboard/*': { allowedRoles: ['admin', 'moderator'] },
+  '/dashboard/users': { allowedRoles: ['admin'] },
+  '/dashboard/users/*': { allowedRoles: ['admin'] },
   '/listings/create': { allowedRoles: '*' },
   '/verification-request': { allowedRoles: '*' },
 };

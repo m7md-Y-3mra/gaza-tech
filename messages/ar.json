@@ -893,5 +893,102 @@
       "failed": "فشل إرسال البلاغ. يرجى المحاولة مرة أخرى.",
       "notFound": "المحتوى الذي تحاول الإبلاغ عنه لم يعد موجوداً."
     }
+  },
+  "AdminUsers": {
+    "pageTitle": "إدارة المستخدمين",
+    "pageDescription": "تصفح وإدارة جميع المستخدمين المسجلين.",
+    "columns": {
+      "avatar": "الصورة",
+      "name": "الاسم",
+      "role": "الدور",
+      "status": "الحالة",
+      "verified": "موثق",
+      "joined": "تاريخ الانضمام",
+      "lastActive": "آخر نشاط",
+      "actions": "الإجراءات"
+    },
+    "roles": {
+      "registered": "مسجل",
+      "verified_seller": "بائع موثق",
+      "moderator": "مشرف",
+      "admin": "مدير"
+    },
+    "status": {
+      "active": "نشط",
+      "banned": "محظور"
+    },
+    "verified": {
+      "yes": "موثق",
+      "no": "غير موثق"
+    },
+    "search": {
+      "placeholder": "ابحث بالاسم أو البريد الإلكتروني..."
+    },
+    "filters": {
+      "role": "الدور",
+      "status": "الحالة",
+      "reset": "إعادة تعيين",
+      "columns": "الأعمدة"
+    },
+    "rowActions": {
+      "trigger": "فتح القائمة",
+      "changeRole": "تغيير الدور",
+      "ban": "حظر المستخدم",
+      "unban": "رفع الحظر"
+    },
+    "dialogs": {
+      "changeRole": {
+        "title": "تغيير دور المستخدم",
+        "confirm": "تأكيد",
+        "cancel": "إلغاء"
+      },
+      "ban": {
+        "title": "حظر المستخدم",
+        "reasonLabel": "السبب",
+        "reasonPlaceholder": "أدخل سبب حظر هذا المستخدم...",
+        "submit": "حظر المستخدم",
+        "cancel": "إلغاء"
+      },
+      "unban": {
+        "title": "رفع الحظر عن المستخدم",
+        "submit": "رفع الحظر",
+        "cancel": "إلغاء"
+      }
+    },
+    "bulk": {
+      "selectedCount": "{count} محدد",
+      "changeRole": "تغيير الدور",
+      "ban": "حظر",
+      "clear": "مسح",
+      "confirm": {
+        "changeRole": "تغيير دور {count} مستخدم محدد؟",
+        "ban": "حظر {count} مستخدم محدد؟"
+      }
+    },
+    "toast": {
+      "role": {
+        "success": "تم تحديث الدور بنجاح.",
+        "error": "فشل تحديث الدور."
+      },
+      "ban": {
+        "success": "تم حظر المستخدم بنجاح.",
+        "error": "فشل حظر المستخدم."
+      },
+      "unban": {
+        "success": "تم رفع الحظر عن المستخدم بنجاح.",
+        "error": "فشل رفع الحظر."
+      },
+      "bulk": {
+        "summary": "{ok} من {total} إجراء نجح. {failed} فشل."
+      }
+    },
+    "empty": {
+      "title": "لا يوجد مستخدمون",
+      "description": "حاول تعديل البحث أو الفلاتر."
+    },
+    "error": {
+      "title": "فشل تحميل المستخدمين",
+      "retry": "إعادة المحاولة"
+    }
   }
 }

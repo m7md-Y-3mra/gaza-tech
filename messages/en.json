@@ -894,5 +894,102 @@
       "failed": "Failed to submit report. Please try again.",
       "notFound": "The content you are trying to report no longer exists."
     }
+  },
+  "AdminUsers": {
+    "pageTitle": "User Management",
+    "pageDescription": "Browse and manage all registered users.",
+    "columns": {
+      "avatar": "Avatar",
+      "name": "Name",
+      "role": "Role",
+      "status": "Status",
+      "verified": "Verified",
+      "joined": "Joined",
+      "lastActive": "Last Active",
+      "actions": "Actions"
+    },
+    "roles": {
+      "registered": "Registered",
+      "verified_seller": "Verified Seller",
+      "moderator": "Moderator",
+      "admin": "Admin"
+    },
+    "status": {
+      "active": "Active",
+      "banned": "Banned"
+    },
+    "verified": {
+      "yes": "Verified",
+      "no": "Not Verified"
+    },
+    "search": {
+      "placeholder": "Search by name or email..."
+    },
+    "filters": {
+      "role": "Role",
+      "status": "Status",
+      "reset": "Reset",
+      "columns": "Columns"
+    },
+    "rowActions": {
+      "trigger": "Open menu",
+      "changeRole": "Change Role",
+      "ban": "Ban User",
+      "unban": "Unban User"
+    },
+    "dialogs": {
+      "changeRole": {
+        "title": "Change User Role",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "ban": {
+        "title": "Ban User",
+        "reasonLabel": "Reason",
+        "reasonPlaceholder": "Enter the reason for banning this user...",
+        "submit": "Ban User",
+        "cancel": "Cancel"
+      },
+      "unban": {
+        "title": "Unban User",
+        "submit": "Unban User",
+        "cancel": "Cancel"
+      }
+    },
+    "bulk": {
+      "selectedCount": "{count} selected",
+      "changeRole": "Change Role",
+      "ban": "Ban",
+      "clear": "Clear",
+      "confirm": {
+        "changeRole": "Change role for {count} selected users?",
+        "ban": "Ban {count} selected users?"
+      }
+    },
+    "toast": {
+      "role": {
+        "success": "Role updated successfully.",
+        "error": "Failed to update role."
+      },
+      "ban": {
+        "success": "User banned successfully.",
+        "error": "Failed to ban user."
+      },
+      "unban": {
+        "success": "User unbanned successfully.",
+        "error": "Failed to unban user."
+      },
+      "bulk": {
+        "summary": "{ok} of {total} actions succeeded. {failed} failed."
+      }
+    },
+    "empty": {
+      "title": "No users found",
+      "description": "Try adjusting your search or filters."
+    },
+    "error": {
+      "title": "Failed to load users",
+      "retry": "Retry"
+    }
   }
 }
