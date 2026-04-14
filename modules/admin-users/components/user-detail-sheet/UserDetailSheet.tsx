@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RoleBadge } from '@/modules/admin-users/components/role-badge';
 import { StatusBadge } from '@/modules/admin-users/components/status-badge';
 import type { AdminUser } from '@/modules/admin-users/types';
+import { RoleTab } from './RoleTab';
 
 interface UserDetailSheetProps {
   user: AdminUser | null;
@@ -24,7 +25,7 @@ export function UserDetailSheet({
   user,
   open,
   onOpenChange,
-  onMutationSuccess: _onMutationSuccess,
+  onMutationSuccess,
 }: UserDetailSheetProps) {
   const t = useTranslations('AdminUsers');
 
@@ -75,8 +76,7 @@ export function UserDetailSheet({
 
           <div className="flex-1 overflow-y-auto px-4 py-4">
             <TabsContent value="role">
-              {/* Stage 2: Role Tab */}
-              <p className="text-muted-foreground text-sm">Role tab — coming in Stage 2.</p>
+              <RoleTab user={user} onMutationSuccess={onMutationSuccess} />
             </TabsContent>
 
             <TabsContent value="ban">
