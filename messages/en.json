@@ -152,7 +152,8 @@
       "arabic": "العربية",
       "toast": {
         "success": "Signed in successfully!",
-        "error": "Failed to sign in"
+        "error": "Failed to sign in",
+        "banned": "Your account has been banned. Please contact support."
       },
       "validation": {
         "emailInvalid": "Please enter a valid email address",
@@ -585,6 +586,12 @@
       "instagram": "Instagram",
       "facebook": "Facebook",
       "website": "Website"
+    },
+    "banned": {
+      "title": "Account Banned",
+      "description": "We're sorry, but your access to Gaza Tech has been restricted for the following reason:",
+      "contactSupport": "If you believe this is a mistake, please contact our support team.",
+      "logout": "Log Out"
     },
     "Tabs": {
       "myListings": "My Listings",
