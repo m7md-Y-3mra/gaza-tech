@@ -998,6 +998,9 @@
         "role": "Role",
         "ban": "Ban",
         "profile": "Profile"
+      },
+      "ban": {
+        "currentBanReason": "Current ban reason"
       }
     }
   }

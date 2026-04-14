@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RoleBadge } from '@/modules/admin-users/components/role-badge';
 import { StatusBadge } from '@/modules/admin-users/components/status-badge';
 import type { AdminUser } from '@/modules/admin-users/types';
+import { BanTab } from './BanTab';
 import { RoleTab } from './RoleTab';
 
 interface UserDetailSheetProps {
@@ -80,8 +81,7 @@ export function UserDetailSheet({
             </TabsContent>
 
             <TabsContent value="ban">
-              {/* Stage 3: Ban Tab */}
-              <p className="text-muted-foreground text-sm">Ban tab — coming in Stage 3.</p>
+              <BanTab user={user} onMutationSuccess={onMutationSuccess} />
             </TabsContent>
 
             <TabsContent value="profile">
