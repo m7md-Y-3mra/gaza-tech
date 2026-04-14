@@ -298,6 +298,9 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 
 ## Active Technologies
 
+- TypeScript 5.x + Next.js 16 (App Router), React 19 + `@supabase/supabase-js` ^2.86.0, `zod` ^4.2.1, existing project utilities (`utils/error-handler.ts`, `utils/rbac-handler.ts`, `utils/auth-handler.ts`, `utils/CustomError.ts`, `lib/supabase/server.ts`, `config/rbac.ts`) (013-admin-user-rpcs)
+- Supabase PostgreSQL — `public.users` (existing, augmented), `public.admin_action_rate_log` (new), Supabase RPC functions (new, `SECURITY DEFINER`). Read path uses `public.users_with_email` view (already exists) for name+email search. (013-admin-user-rpcs)
+
 - TypeScript 5.x + Next.js 16 (App Router), React 19, `next-intl` ^4.7.0, `nuqs` ^2.8.8 (profile page-param cache), `sonner` ^2.0.7, `lucide-react` ^0.562.0, shadcn/ui (radix Tabs, AlertDialog), Tailwind CSS ^4, `react-error-boundary` (010-profile-community-tab)
 - N/A (consumes existing `getUserCommunityPostsAction` and `deleteCommunityPostAction`; no new DB work, no new queries) (010-profile-community-tab)
 
