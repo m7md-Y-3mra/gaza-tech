@@ -11,12 +11,12 @@ No new RPCs. Each bulk action iterates targets and invokes the corresponding sin
 ```ts
 BulkChangeRoleInputSchema = z.object({
   targetUserIds: z.array(z.string().uuid()).min(1).max(100),
-  newRole:       z.enum(['registered','verified_seller','moderator','admin']),
+  newRole: z.enum(['registered', 'verified_seller', 'moderator', 'admin']),
 });
 
 BulkBanInputSchema = z.object({
   targetUserIds: z.array(z.string().uuid()).min(1).max(100),
-  reason:        z.string().trim().min(1).max(500),
+  reason: z.string().trim().min(1).max(500),
 });
 ```
 

@@ -12,13 +12,27 @@ Zod-validated. All fields required (callers supply defaults at the URL layer).
 
 ```ts
 AdminUserListInputSchema = z.object({
-  pageIndex:     z.number().int().min(0),
-  pageSize:      z.union([z.literal(10), z.literal(20), z.literal(50), z.literal(100)]),
-  sortColumn:    z.enum(['name','role','status','is_verified','created_at','last_activity_at']),
-  sortDirection: z.enum(['asc','desc']),
-  search:        z.string().trim().min(0).nullable(),
-  roleFilter:    z.array(z.enum(['registered','verified_seller','moderator','admin'])).nullable(),
-  statusFilter:  z.enum(['active','banned','all']),
+  pageIndex: z.number().int().min(0),
+  pageSize: z.union([
+    z.literal(10),
+    z.literal(20),
+    z.literal(50),
+    z.literal(100),
+  ]),
+  sortColumn: z.enum([
+    'name',
+    'role',
+    'status',
+    'is_verified',
+    'created_at',
+    'last_activity_at',
+  ]),
+  sortDirection: z.enum(['asc', 'desc']),
+  search: z.string().trim().min(0).nullable(),
+  roleFilter: z
+    .array(z.enum(['registered', 'verified_seller', 'moderator', 'admin']))
+    .nullable(),
+  statusFilter: z.enum(['active', 'banned', 'all']),
 });
 ```
 
@@ -34,12 +48,12 @@ Where `AdminUserListResult` is `{ totalCount, items, pageIndex, pageSize }` from
 
 Produced by `errorHandler()`; possible codes forwarded from RPC:
 
-| Code                | Cause                              | UX                              |
-| ------------------- | ---------------------------------- | ------------------------------- |
-| `NOT_AUTHENTICATED` | No session                         | Redirect to login               |
-| `NOT_ADMIN`         | Session exists but not admin       | Redirect out of `/dashboard/*`  |
+| Code                | Cause                               | UX                               |
+| ------------------- | ----------------------------------- | -------------------------------- |
+| `NOT_AUTHENTICATED` | No session                          | Redirect to login                |
+| `NOT_ADMIN`         | Session exists but not admin        | Redirect out of `/dashboard/*`   |
 | `VALIDATION`        | Bad inputs (shouldn't happen in UI) | Inline error + reset to defaults |
-| `UNEXPECTED`        | Other                               | Toast + inline retry button     |
+| `UNEXPECTED`        | Other                               | Toast + inline retry button      |
 
 ## Behavior
 

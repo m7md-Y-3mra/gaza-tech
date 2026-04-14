@@ -25,9 +25,9 @@ export interface AdminUser {
   user_role: UserRole;
   is_active: boolean;
   is_verified: boolean;
-  ban_reason: string | null;       // only set when is_active === false
-  banned_at: string | null;        // ISO timestamp
-  created_at: string;              // ISO timestamp
+  ban_reason: string | null; // only set when is_active === false
+  banned_at: string | null; // ISO timestamp
+  created_at: string; // ISO timestamp
   last_activity_at: string | null; // ISO timestamp
 }
 ```
@@ -54,11 +54,11 @@ Normalized input to the server action. `statusFilter` uses the RPC's scalar cont
 
 ```ts
 export interface AdminUserListInput {
-  pageIndex: number;       // 0-based
-  pageSize: number;        // 10 | 20 | 50 | 100
+  pageIndex: number; // 0-based
+  pageSize: number; // 10 | 20 | 50 | 100
   sortColumn: SortColumn;
   sortDirection: SortDirection;
-  search: string | null;   // trimmed or null
+  search: string | null; // trimmed or null
   roleFilter: UserRole[] | null; // null/empty → all
   statusFilter: 'active' | 'banned' | 'all';
 }
@@ -81,12 +81,12 @@ All parsed via `nuqs`. Defaults live in `modules/admin-users/admin-users-page/co
 
 ```ts
 export interface UsersTableState {
-  pageIndex: number;                   // default 0
-  pageSize: 10 | 20 | 50 | 100;        // default 20
-  sortColumn: SortColumn;              // default 'created_at'
-  sortDirection: SortDirection;        // default 'desc'
-  search: string;                      // default ''
-  roleFilter: UserRole[];              // default []
+  pageIndex: number; // default 0
+  pageSize: 10 | 20 | 50 | 100; // default 20
+  sortColumn: SortColumn; // default 'created_at'
+  sortDirection: SortDirection; // default 'desc'
+  search: string; // default ''
+  roleFilter: UserRole[]; // default []
   statusFilter: Array<'active' | 'banned'>; // default []
   columnVisibility: Record<string, boolean>; // default {}
 }
@@ -94,16 +94,16 @@ export interface UsersTableState {
 
 URL keys (short form, kept terse to avoid oversize links):
 
-| State field        | URL key   |
-| ------------------ | --------- |
-| `pageIndex`        | `page`    |
-| `pageSize`         | `size`    |
-| `sortColumn`       | `sort`    |
-| `sortDirection`    | `dir`     |
-| `search`           | `q`       |
-| `roleFilter`       | `role`    |
-| `statusFilter`     | `status`  |
-| `columnVisibility` | `cols`    |
+| State field        | URL key  |
+| ------------------ | -------- |
+| `pageIndex`        | `page`   |
+| `pageSize`         | `size`   |
+| `sortColumn`       | `sort`   |
+| `sortDirection`    | `dir`    |
+| `search`           | `q`      |
+| `roleFilter`       | `role`   |
+| `statusFilter`     | `status` |
+| `columnVisibility` | `cols`   |
 
 ### UI → RPC mapping
 

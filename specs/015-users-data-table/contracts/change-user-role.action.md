@@ -11,7 +11,7 @@ Wraps Supabase RPC `admin_change_user_role`.
 ```ts
 ChangeRoleInputSchema = z.object({
   targetUserId: z.string().uuid(),
-  newRole:      z.enum(['registered','verified_seller','moderator','admin']),
+  newRole: z.enum(['registered', 'verified_seller', 'moderator', 'admin']),
 });
 ```
 

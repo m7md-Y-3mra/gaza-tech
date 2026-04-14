@@ -297,6 +297,7 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 5. Open Graph image via `opengraph-image.tsx`
 
 ## Active Technologies
+
 - TypeScript 5.x + Next.js 16 (App Router), React 19 + `@tanstack/react-table` ^8.21.3, `nuqs` ^2.8.8 (URL state), `next-intl` ^4.7.0, `sonner` ^2.0.7, `date-fns` ^4.1.0, `lucide-react` ^0.562.0, `react-hook-form` ^7.69.0 + `zod` ^4.2.1 (ban/role dialogs), shadcn/ui (radix primitives), Tailwind CSS ^4 (015-users-data-table)
 - Consumes existing Supabase RPCs `admin_list_users`, `admin_change_user_role`, `admin_ban_user`, `admin_unban_user` via `lib/supabase/server.ts`. No new DB work in this feature. (015-users-data-table)
 
