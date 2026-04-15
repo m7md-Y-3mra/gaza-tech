@@ -13,13 +13,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-import {
-  ArrowLeft,
-  ShieldCheck,
-  Flag,
-  Users,
-  BarChart3,
-} from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Flag, Users, BarChart3 } from 'lucide-react';
 import { getPendingReportCountQuery } from '@/modules/content-moderation/queries';
 import { getPendingVerificationCountQuery } from '@/modules/verification-review/queries';
 import { Badge } from '@/components/ui/badge';
@@ -78,7 +72,9 @@ export default async function DashboardSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{t('DashboardSidebar.dashboard')}</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            {t('DashboardSidebar.dashboard')}
+          </SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>

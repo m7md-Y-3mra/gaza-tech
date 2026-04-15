@@ -10,7 +10,8 @@ import { SupabaseClient } from '@supabase/supabase-js';
  */
 export const getAdminDashboardStatsAction = errorHandler(
   async (timeRangeDays: number): Promise<AdminDashboardStatsResponse> => {
-    const supabase = (await createClient()) as unknown as SupabaseClient<ExtendedDatabase>;
+    const supabase =
+      (await createClient()) as unknown as SupabaseClient<ExtendedDatabase>;
     const { data, error } = await getAdminDashboardStatsQuery(
       supabase,
       timeRangeDays
