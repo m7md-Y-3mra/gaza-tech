@@ -47,7 +47,7 @@ export default async function LocaleLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <NextTopLoader color="#00bc7d" showSpinner={false} />
+              <NextTopLoader color="#0B57D0" showSpinner={false} />
               <NextIntlClientProvider>
                 {children}
                 {chat}
