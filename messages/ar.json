@@ -656,7 +656,10 @@
   "DashboardSidebar": {
     "backToSite": "العودة للموقع",
     "dashboard": "لوحة التحكم",
-    "contentModeration": "إدارة المحتوى"
+    "statistics": "الإحصائيات",
+    "verificationReview": "مراجعة التوثيق",
+    "contentModeration": "إدارة المحتوى",
+    "userManagement": "إدارة المستخدمين"
   },
   "Chat": {
     "title": "المساعد الذكي",

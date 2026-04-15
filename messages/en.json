@@ -657,7 +657,10 @@
   "DashboardSidebar": {
     "backToSite": "Back to site",
     "dashboard": "Dashboard",
-    "contentModeration": "Content Moderation"
+    "statistics": "Statistics",
+    "verificationReview": "Verification Review",
+    "contentModeration": "Content Moderation",
+    "userManagement": "User Management"
   },
   "Chat": {
     "title": "AI Assistant",

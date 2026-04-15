@@ -13,12 +13,21 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-import { ArrowLeft, ShieldCheck, Flag, Users } from 'lucide-react';
+import {
+  ArrowLeft,
+  ShieldCheck,
+  Flag,
+  Users,
+  BarChart3,
+} from 'lucide-react';
 import { getPendingReportCountQuery } from '@/modules/content-moderation/queries';
 import { getPendingVerificationCountQuery } from '@/modules/verification-review/queries';
 import { Badge } from '@/components/ui/badge';
+import { getTranslations } from 'next-intl/server';
 
 export default async function DashboardSidebar() {
+  const t = await getTranslations();
+
   const [pendingReportsCount, pendingVerificationCount] = await Promise.all([
     getPendingReportCountQuery(),
     getPendingVerificationCountQuery(),
@@ -27,19 +36,25 @@ export default async function DashboardSidebar() {
   // Menu items.
   const items = [
     {
-      title: 'Verification Review',
+      title: t('DashboardSidebar.statistics'),
+      url: '/dashboard',
+      icon: BarChart3,
+      badge: null,
+    },
+    {
+      title: t('DashboardSidebar.verificationReview'),
       url: '/dashboard/verification-review',
       icon: ShieldCheck,
       badge: pendingVerificationCount > 0 ? pendingVerificationCount : null,
     },
     {
-      title: 'Content Moderation',
+      title: t('DashboardSidebar.contentModeration'),
       url: '/dashboard/content-moderation',
       icon: Flag,
       badge: pendingReportsCount > 0 ? pendingReportsCount : null,
     },
     {
-      title: 'User Management',
+      title: t('DashboardSidebar.userManagement'),
       url: '/dashboard/users',
       icon: Users,
       badge: null,
@@ -54,7 +69,7 @@ export default async function DashboardSidebar() {
             <SidebarMenuButton asChild>
               <Link href="/" className="text-sky-700 hover:text-sky-600">
                 <ArrowLeft />
-                <span>Back to site</span>
+                <span>{t('DashboardSidebar.backToSite')}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -63,7 +78,7 @@ export default async function DashboardSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('DashboardSidebar.dashboard')}</SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>
