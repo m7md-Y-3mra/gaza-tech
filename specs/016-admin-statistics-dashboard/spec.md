@@ -8,6 +8,7 @@
 ## Clarifications
 
 ### Session 2026-04-15
+
 - Q: How frequently should the dashboard data be updated? → A: Near Real-time (refresh on page load)
 - Q: What level of time-range filtering is required for the charts? → A: Preset ranges (e.g., last 7, 30, or 90 days)
 - Q: How should the statistical data be aggregated? → A: Frontend aggregation (calculate in Component/Hook)

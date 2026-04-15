@@ -1,6 +1,7 @@
 # Data Model: Admin Statistics Dashboard
 
 ## Summary Metrics Type
+
 ```typescript
 interface MetricComparison {
   current: number;
@@ -18,6 +19,7 @@ interface AdminDashboardSummary {
 ```
 
 ## Trend Data Type
+
 ```typescript
 interface AdminTrendPoint {
   date: string; // ISO format (YYYY-MM-DD)
@@ -31,6 +33,7 @@ interface AdminDashboardTrends {
 ```
 
 ## Complete RPC Response
+
 ```typescript
 interface AdminDashboardStatsResponse {
   summary: AdminDashboardSummary;
@@ -39,6 +42,7 @@ interface AdminDashboardStatsResponse {
 ```
 
 ## Frontend State (Filter context)
+
 ```typescript
 type TimeRange = '7d' | '30d' | '90d';
 ```

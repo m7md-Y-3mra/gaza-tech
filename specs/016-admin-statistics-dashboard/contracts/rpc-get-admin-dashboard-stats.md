@@ -1,17 +1,21 @@
 # Contract: Supabase RPC `get_admin_dashboard_stats`
 
 ## Purpose
+
 Returns all dashboard statistics (summary and trends) in a single optimized JSON object.
 
 ## Input Parameters
-| Parameter | Type | Required | Description |
-| :--- | :--- | :--- | :--- |
-| `time_range_days` | `int` | Yes | Number of days for trend analysis (e.g., 7, 30, 90) |
+
+| Parameter         | Type  | Required | Description                                         |
+| :---------------- | :---- | :------- | :-------------------------------------------------- |
+| `time_range_days` | `int` | Yes      | Number of days for trend analysis (e.g., 7, 30, 90) |
 
 ## Response Format
+
 Returns a single JSON object (record) of type `jsonb`.
 
 ## Sample Response
+
 ```json
 {
   "summary": {
@@ -35,5 +39,6 @@ Returns a single JSON object (record) of type `jsonb`.
 ```
 
 ## Security & Access
+
 - Function MUST be restricted to `authenticated` role.
 - Internal check inside RPC MUST verify the user has the "admin" role before execution.

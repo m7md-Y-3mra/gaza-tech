@@ -4,6 +4,7 @@
 **Input**: Feature specification from `/specs/016-admin-statistics-dashboard/spec.md`
 
 ## Summary
+
 Implement a secure, localized Admin Statistics Dashboard at `app/[locale]/dashboard/page.tsx`. The dashboard will feature summary cards with percentage changes and interactive trend line charts (Daily New Users, Listing Growth). All data will be fetched via a single optimized Supabase RPC. We will use **Recharts** for visualizations and **xlsx** for data exporting.
 
 ## Technical Context
@@ -70,5 +71,5 @@ modules/dashboard/
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-| :--- | :--- | :--- |
-| None | N/A | N/A |
+| :-------- | :--------- | :----------------------------------- |
+| None      | N/A        | N/A                                  |
