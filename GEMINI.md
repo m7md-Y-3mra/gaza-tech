@@ -298,6 +298,9 @@ After each stage: stop and ask for explicit approval. Do not continue until appr
 
 ## Active Technologies
 
+- Next.js 15+, TypeScript 5+ + Supabase, next-intl, zod, react-hook-form, shadcn/ui, lucide-react, @tanstack/react-table (017-category-location-mgmt)
+- PostgreSQL (via Supabase) (017-category-location-mgmt)
+
 - Next.js 15+, TypeScript 5+ + Supabase Auth/PostgreSQL, next-intl, zod, react-hook-form (014-ban-enforcement)
 - PostgreSQL (public.users table: is_active, ban_reason) (014-ban-enforcement)
 - Recharts, xlsx (016-admin-statistics-dashboard)

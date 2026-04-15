@@ -660,7 +660,8 @@
     "statistics": "Statistics",
     "verificationReview": "Verification Review",
     "contentModeration": "Content Moderation",
-    "userManagement": "User Management"
+    "userManagement": "User Management",
+    "management": "Management"
   },
   "Chat": {
     "title": "AI Assistant",
@@ -1041,6 +1042,80 @@
       "button": "Export Data",
       "success": "Export started successfully",
       "error": "Failed to export data"
+    }
+  },
+  "CategoryLocation": {
+    "categories": "Categories",
+    "locations": "Locations",
+    "management": "Management",
+    "pageTitle": "Category & Location Management",
+    "pageDescription": "Manage product categories and location entries",
+    "categories_tab": "Categories",
+    "locations_tab": "Locations",
+    "addCategory": "Add Category",
+    "addLocation": "Add Location",
+    "editCategory": "Edit Category",
+    "editLocation": "Edit Location",
+    "deleteCategory": "Delete Category",
+    "deleteLocation": "Delete Location",
+    "table": {
+      "name": "Name (EN)",
+      "name_ar": "Name (AR)",
+      "slug": "Slug",
+      "status": "Status",
+      "sortOrder": "Sort Order",
+      "actions": "Actions",
+      "noResults": "No results found.",
+      "searchPlaceholder": "Search by name...",
+      "clearFilters": "Clear Filters",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "form": {
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "description": "Description",
+      "iconUrl": "Icon URL",
+      "sortOrder": "Sort Order",
+      "isActive": "Active",
+      "nameEnPlaceholder": "Enter name in English",
+      "nameArPlaceholder": "أدخل الاسم بالعربية",
+      "descriptionPlaceholder": "Enter a brief description",
+      "iconUrlPlaceholder": "https://example.com/icon.png",
+      "sortOrderPlaceholder": "0",
+      "save": "Save",
+      "cancel": "Cancel",
+      "creating": "Creating...",
+      "updating": "Updating..."
+    },
+    "delete": {
+      "confirmTitle": "Delete {name}?",
+      "confirmDescription": "This action cannot be undone.",
+      "inUseTitle": "Cannot Delete {name}",
+      "inUseDescription": "This {entity} is linked to one or more active listings and cannot be deleted.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "success": {
+      "categoryCreated": "Category created successfully",
+      "categoryUpdated": "Category updated successfully",
+      "categoryDeleted": "Category deleted successfully",
+      "locationCreated": "Location created successfully",
+      "locationUpdated": "Location updated successfully",
+      "locationDeleted": "Location deleted successfully"
+    },
+    "errors": {
+      "categoryCreateFailed": "Failed to create category",
+      "categoryUpdateFailed": "Failed to update category",
+      "categoryDeleteFailed": "Failed to delete category",
+      "locationCreateFailed": "Failed to create location",
+      "locationUpdateFailed": "Failed to update location",
+      "locationDeleteFailed": "Failed to delete location",
+      "nameRequired": "Name is required",
+      "nameArRequired": "Arabic name is required",
+      "nameTooLong": "Name must be at most 100 characters",
+      "slugUnique": "Slug must be unique",
+      "invalidUrl": "Invalid URL format"
     }
   }
 }
