@@ -659,7 +659,8 @@
     "statistics": "الإحصائيات",
     "verificationReview": "مراجعة التوثيق",
     "contentModeration": "إدارة المحتوى",
-    "userManagement": "إدارة المستخدمين"
+    "userManagement": "إدارة المستخدمين",
+    "management": "الإدارة"
   },
   "Chat": {
     "title": "المساعد الذكي",
@@ -1040,6 +1041,80 @@
       "button": "تصدير البيانات",
       "success": "بدأ التصدير بنجاح",
       "error": "فشل تصدير البيانات"
+    }
+  },
+  "CategoryLocation": {
+    "categories": "الفئات",
+    "locations": "المواقع",
+    "management": "الإدارة",
+    "pageTitle": "إدارة الفئات والمواقع",
+    "pageDescription": "إدارة فئات المنتجات وإدخالات المواقع",
+    "categories_tab": "الفئات",
+    "locations_tab": "المواقع",
+    "addCategory": "إضافة فئة",
+    "addLocation": "إضافة موقع",
+    "editCategory": "تعديل الفئة",
+    "editLocation": "تعديل الموقع",
+    "deleteCategory": "حذف الفئة",
+    "deleteLocation": "حذف الموقع",
+    "table": {
+      "name": "الاسم (إنجليزي)",
+      "name_ar": "الاسم (عربي)",
+      "slug": "المعرف",
+      "status": "الحالة",
+      "sortOrder": "ترتيب العرض",
+      "actions": "إجراءات",
+      "noResults": "لا توجد نتائج.",
+      "searchPlaceholder": "ابحث بالاسم...",
+      "clearFilters": "مسح الفلاتر",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "form": {
+      "nameEn": "الاسم (إنجليزي)",
+      "nameAr": "الاسم (عربي)",
+      "description": "الوصف",
+      "iconUrl": "رابط الأيقونة",
+      "sortOrder": "ترتيب العرض",
+      "isActive": "نشط",
+      "nameEnPlaceholder": "أدخل الاسم بالإنجليزية",
+      "nameArPlaceholder": "أدخل الاسم بالعربية",
+      "descriptionPlaceholder": "أدخل وصفاً مختصراً",
+      "iconUrlPlaceholder": "https://example.com/icon.png",
+      "sortOrderPlaceholder": "0",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "creating": "جاري الإنشاء...",
+      "updating": "جاري التحديث..."
+    },
+    "delete": {
+      "confirmTitle": "حذف {name}؟",
+      "confirmDescription": "لا يمكن التراجع عن هذا الإجراء.",
+      "inUseTitle": "لا يمكن حذف {name}",
+      "inUseDescription": "هذا {entity} مرتبط بإعلانات نشطة ولا يمكن حذفه.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "success": {
+      "categoryCreated": "تم إنشاء الفئة بنجاح",
+      "categoryUpdated": "تم تحديث الفئة بنجاح",
+      "categoryDeleted": "تم حذف الفئة بنجاح",
+      "locationCreated": "تم إنشاء الموقع بنجاح",
+      "locationUpdated": "تم تحديث الموقع بنجاح",
+      "locationDeleted": "تم حذف الموقع بنجاح"
+    },
+    "errors": {
+      "categoryCreateFailed": "فشل إنشاء الفئة",
+      "categoryUpdateFailed": "فشل تحديث الفئة",
+      "categoryDeleteFailed": "فشل حذف الفئة",
+      "locationCreateFailed": "فشل إنشاء الموقع",
+      "locationUpdateFailed": "فشل تحديث الموقع",
+      "locationDeleteFailed": "فشل حذف الموقع",
+      "nameRequired": "الاسم مطلوب",
+      "nameArRequired": "الاسم العربي مطلوب",
+      "nameTooLong": "يجب ألا يتجاوز الاسم 100 حرف",
+      "slugUnique": "يجب أن يكون المعرف فريداً",
+      "invalidUrl": "تنسيق الرابط غير صالح"
     }
   }
 }

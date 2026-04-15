@@ -13,7 +13,14 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-import { ArrowLeft, ShieldCheck, Flag, Users, BarChart3 } from 'lucide-react';
+import {
+  ArrowLeft,
+  ShieldCheck,
+  Flag,
+  Users,
+  BarChart3,
+  Tags,
+} from 'lucide-react';
 import { getPendingReportCountQuery } from '@/modules/content-moderation/queries';
 import { getPendingVerificationCountQuery } from '@/modules/verification-review/queries';
 import { Badge } from '@/components/ui/badge';
@@ -51,6 +58,12 @@ export default async function DashboardSidebar() {
       title: t('DashboardSidebar.userManagement'),
       url: '/dashboard/users',
       icon: Users,
+      badge: null,
+    },
+    {
+      title: t('DashboardSidebar.management'),
+      url: '/dashboard/management',
+      icon: Tags,
       badge: null,
     },
   ];
