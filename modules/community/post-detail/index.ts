@@ -1,0 +1,1 @@
+export { PostDetailView } from './PostDetailView';

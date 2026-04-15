@@ -1,0 +1,1 @@
+export { CategoryLocationPage } from './CategoryLocationPage';

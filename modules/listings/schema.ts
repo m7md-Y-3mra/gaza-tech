@@ -1,11 +1,11 @@
 import { z, ZodType } from 'zod';
-import { Database } from '@/types/supabase';
 import {
   Currency,
   CustomSpecificationType,
   ImageUploadResult,
   InsertListings,
   InsertListingsWithoutSellerId,
+  Listing,
   PredefinedSpecificationType,
   ProductCondition,
   SpecificationEnum,
@@ -92,7 +92,7 @@ const createBaseListingSchema = (t: TranslationFunction) =>
     created_at: z.string().nullable(),
     updated_at: z.string().nullable(),
   }) satisfies ZodType<
-    Database['public']['Tables']['marketplace_listings']['Row']
+    Omit<Listing, 'ai_metadata' | 'embedding' | 'enrichment_status'>
   >;
 
 // ── Insert schema (factory) ──────────────────────────────────────────

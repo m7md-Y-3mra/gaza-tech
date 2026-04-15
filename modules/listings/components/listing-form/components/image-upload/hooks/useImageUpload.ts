@@ -16,7 +16,8 @@ export const useImageUpload = (props: UseImageUploadProps) => {
 
   /** Sync the reducer state to react-hook-form */
   useEffect(() => {
-    const images = state.images.map(({ id: _id, ...rest }) => rest);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const images = state.images.map(({ id: _imageId, ...rest }) => rest);
     setValue(name, images, {
       shouldTouch: true,
       shouldDirty: true,

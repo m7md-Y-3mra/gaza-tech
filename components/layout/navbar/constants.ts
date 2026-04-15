@@ -1,7 +1,9 @@
 import type { NavLink } from './types';
 
 export const NAV_LINKS: NavLink[] = [
-  { href: '/listings', labelKey: 'home', allowedRoles: ['registered'] },
+  { href: '/', labelKey: 'home' },
+  { href: '/listings', labelKey: 'listings' },
+  { href: '/community', labelKey: 'community' },
   {
     href: '/listings/create',
     labelKey: 'createListing',
@@ -15,11 +17,6 @@ export const NAV_LINKS: NavLink[] = [
   {
     href: '/dashboard',
     labelKey: 'dashboard',
-    allowedRoles: ['admin', 'moderator'],
-  },
-  {
-    href: '/dashboard/verification-review',
-    labelKey: 'verificationQueue',
     allowedRoles: ['admin', 'moderator'],
   },
 ];

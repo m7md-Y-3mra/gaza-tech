@@ -1,7 +1,7 @@
 import type { Database } from '@/types/supabase';
 
 // Re-export Supabase types
-export type ProfileUser = Database['public']['Tables']['users']['Row'];
+export type User = Database['public']['Tables']['users']['Row'];
 
 // Listing card item for profile page
 export type ProfileListingItem = {

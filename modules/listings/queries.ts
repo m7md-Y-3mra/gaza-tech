@@ -4,7 +4,7 @@ import type { Database } from '@/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { CAROUSEL_CARD_NUM } from '@/constant';
 import { authHandler } from '@/utils/auth-handler';
-import { GroupedCategory, ImageUploadResult } from './types';
+import { GroupedCategory, ImageUploadResult, Listing } from './types';
 import { zodValidation } from '@/lib/zod-error';
 import z from 'zod';
 import { createListingServerSchema, updateListingServerSchema } from './schema';
@@ -13,6 +13,7 @@ import {
   DEFAULT_PAGE_NUMBER,
 } from '@/constants/pagination';
 import { getPriceRangesForBothCurrencies } from './home/utils/currency';
+import { User } from '../user/types';
 
 // Type definitions for return types
 type ListingRow = Database['public']['Tables']['marketplace_listings']['Row'];
@@ -23,11 +24,13 @@ type LocationRow = Database['public']['Tables']['locations']['Row'];
 type ListingImageRow = Database['public']['Tables']['listing_images']['Row'];
 
 export type ListingCardItem = SimilarListingRes & {
-  created_at: string;
   image: string;
   location: string;
   sellerName: string;
   isVerified: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  specifications?: any;
+  category?: string;
 };
 
 export type PriceRange = {
@@ -698,4 +701,116 @@ export async function deleteListingQuery(listingId: string): Promise<void> {
     console.error('Error deleting listing:', error);
     throw new Error('Failed to delete listing');
   }
+}
+
+// ─── Hybrid AI Search ──────────────────────────────────────────────────────────
+type HybridSearchRow = Pick<
+  Listing,
+  | 'listing_id'
+  | 'title'
+  | 'description'
+  | 'specifications'
+  | 'price'
+  | 'currency'
+  | 'product_condition'
+  | 'content_status'
+  | 'created_at'
+  | 'ai_metadata'
+> & {
+  listing_images: Pick<ListingImageRow, 'image_url' | 'is_thumbnail'>[];
+  locations: Pick<LocationRow, 'location_id' | 'name' | 'name_ar'>[];
+  seller: Pick<User, 'first_name' | 'last_name' | 'is_verified'>;
+  category_name: string;
+  similarity: number;
+};
+
+/**
+ * Performs hybrid vector + price search using the hybrid_search_listings RPC.
+ * Returns results shaped as ListingCardItem so they can be passed directly
+ * to <ListingCard /> without any further transformation.
+ */
+export async function hybridSearchListingsQuery(params: {
+  query_embedding: number[];
+  max_price?: number;
+  min_ram_gb?: number | null;
+  requires_gaming?: boolean | null;
+  target_location?: string | null;
+  target_seller?: string | null;
+  target_category?: string | null;
+  target_condition?: string | null;
+  preferred_use_case?: string | null;
+  expected_audience?: string | null;
+  match_limit?: number;
+}): Promise<ListingCardItem[]> {
+  'use server';
+  const client = await createClient();
+
+  const test = {
+    query_embedding: `[${params.query_embedding.join(',')}]`,
+    max_price: params.max_price ?? 999999,
+    min_ram_gb: params.min_ram_gb ?? null,
+    requires_gaming: params.requires_gaming ?? null,
+    target_location: params.target_location ?? null,
+    target_seller: params.target_seller ?? null,
+    target_category: params.target_category ?? null,
+    target_condition: params.target_condition ?? null,
+    match_limit: params.match_limit ?? 5,
+  };
+  console.log(test);
+
+  // Call the updated RPC function with all the metadata parameters
+  const { data, error } = await client.rpc('hybrid_search_listings', {
+    query_embedding: `[${params.query_embedding.join(',')}]`,
+    max_price: params.max_price ?? 999999,
+    min_ram_gb: params.min_ram_gb ?? null,
+    requires_gaming: params.requires_gaming ?? null,
+    target_location: params.target_location ?? null,
+    target_seller: params.target_seller ?? null,
+    target_category: params.target_category ?? null,
+    target_condition: params.target_condition ?? null,
+    match_limit: params.match_limit ?? 5,
+  });
+
+  if (error) {
+    console.error('Error calling hybrid_search_listings:', error);
+    throw new Error('Hybrid search failed');
+  }
+
+  // The mapping logic remains exactly the same so it fits your UI perfectly
+  return ((data ?? []) as HybridSearchRow[]).map((row) => {
+    // Thumbnail image or first image
+    const thumbnail = row.listing_images?.find((img) => img.is_thumbnail);
+    const image =
+      thumbnail?.image_url ?? row.listing_images?.[0]?.image_url ?? '';
+
+    // First location entry
+    const locationEntry = Array.isArray(row.locations)
+      ? row.locations[0]
+      : null;
+    const location = locationEntry?.name ?? '';
+
+    // Seller details
+    const sellerName = row.seller
+      ? `${row.seller.first_name} ${row.seller.last_name}`
+      : '';
+    const isVerified = row.seller?.is_verified ?? false;
+
+    return {
+      listing_id: row.listing_id,
+      title: row.title,
+      price: row.price,
+      currency: row.currency,
+      product_condition: row.product_condition,
+      content_status: row.content_status,
+      created_at: row.created_at,
+      specifications: row.specifications ?? {},
+      listing_images: row.listing_images ?? [],
+      locations: Array.isArray(row.locations) ? row.locations : [],
+      image,
+      location,
+      sellerName,
+      isVerified,
+      category: row.category_name ?? '',
+    };
+  });
 }

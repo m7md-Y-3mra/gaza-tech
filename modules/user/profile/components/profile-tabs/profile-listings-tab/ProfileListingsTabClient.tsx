@@ -17,7 +17,7 @@ const ProfileListingsTabClient = ({
   pageSize,
 }: ProfileListingsTabClientProps) => {
   const t = useTranslations('Profile.ListingsTab');
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const [optimisticListings, removeOptimisticListing] = useOptimistic(
     listings,

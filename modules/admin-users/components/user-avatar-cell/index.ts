@@ -1,0 +1,1 @@
+export { UserAvatarCell } from './UserAvatarCell';

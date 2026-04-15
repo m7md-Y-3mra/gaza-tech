@@ -42,3 +42,5 @@ next-env.d.ts
 
 index.html
 todo.txt
+
+.mcp.json

@@ -1,0 +1,86 @@
+description = "Fix ALL unchecked issues from a review file, marking each [x] as it is completed. Processes issues in Fix Plan order."
+
+prompt = """
+---
+name: review-fix
+description: Fix ALL unchecked issues from a review file, marking each [x] as it is completed. Processes issues in Fix Plan order.
+---
+
+You are a coding agent that applies ALL fixes described in a review file.
+You MUST process EVERY unchecked issue (`- [ ] FIXED`) until none remain.
+
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+## Context Extraction
+
+- REVIEW_ID = $ARGUMENTS (optional)
+- You MUST infer SPEC_NAME from the current branch:
+  1. Run `git rev-parse --abbrev-ref HEAD`.
+  2. Take the last segment (after the last `/`).
+  3. Map to `specs/<SPEC_NAME>/`.
+
+## Review File Location
+
+- `specs/<SPEC_NAME>/review/`
+
+## Resolving Which Review File To Use
+
+1. If REVIEW_ID is empty:
+   - Pick the latest numbered file in `specs/<SPEC_NAME>/review/` matching `^[0-9]{3}review\\.md$` (max number).
+2. If REVIEW_ID is "001" (3 digits):
+   - Use `specs/<SPEC_NAME>/review/001review.md`
+3. If REVIEW_ID ends with "review.md":
+   - Use that exact file name under the review folder.
+
+## Main Loop — Repeat until all issues are checked off
+
+### STEP 1: READ
+Read the review file (re-read every iteration to see current state).
+
+### STEP 2: DETERMINE FIX ORDER
+- If the review contains a "## Fix Plan (Ordered)" section, follow that order.
+- Otherwise, process issues top-to-bottom by severity: BLOCKER > HIGH > MED > LOW.
+
+### STEP 3: FIND NEXT
+- Scan the "## Issues List" section for the first `- [ ] FIXED` entry that matches the next item in the fix order.
+- If NO unchecked issues remain → go to FINISH.
+
+### STEP 4: FIX THE ISSUE
+a) Read the issue's "Proposed solution" steps carefully.
+b) Use `grep_search`/`glob` to locate the exact files and lines before editing.
+c) Apply the fix with minimal, safe changes using `replace` or `write_file`.
+d) If the issue has a "Test plan" section, run those test commands using `run_shell_command`.
+   - If no test plan, run the project's default test command (check `package.json` or `GEMINI.md`).
+e) If tests pass:
+   - Edit the review file: change `- [ ] FIXED` to `- [x] FIXED` for THIS issue.
+   - Append a "- Fix notes:" line under the issue summarizing what changed (file paths, what was done — keep it short, no large code blocks).
+f) If tests FAIL:
+   - Investigate the failure. If it's caused by your change, fix it.
+   - If the failure is unrelated to this issue, note it and continue.
+   - If you cannot fix the issue safely, do NOT mark [x]. Instead append "- Blocked: <reason>" under the issue.
+
+### STEP 5: LOOP
+Go back to STEP 1.
+
+## Finish
+
+- Re-read the review file one final time.
+- Run the full test suite and lint command.
+- Print a summary:
+  - Total issues: N
+  - Fixed: X
+  - Blocked: Y (list which ones and why)
+  - Test results: pass/fail count
+
+## Hard Rules
+
+- Do NOT stop after one issue. You MUST continue the loop until all issues are [x] or blocked.
+- Always re-read the review file at the START of each iteration.
+- Follow the Fix Plan order.
+- Make minimal changes per issue.
+- If you encounter a new bug not in the review, note it but do NOT fix it.
+"""

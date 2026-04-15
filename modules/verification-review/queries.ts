@@ -245,3 +245,23 @@ export async function updateVerificationStatusQuery({
 
   return { success: true };
 }
+
+/**
+ * Get count of pending verification requests.
+ */
+export async function getPendingVerificationCountQuery() {
+  const supabase = await createClient();
+  await requireRole(['admin', 'moderator']);
+
+  const { count, error } = await supabase
+    .from('verification_requests')
+    .select('*', { count: 'exact', head: true })
+    .eq('verification_status', 'pending');
+
+  if (error) {
+    console.error('Error fetching verification count:', error);
+    return 0;
+  }
+
+  return count || 0;
+}

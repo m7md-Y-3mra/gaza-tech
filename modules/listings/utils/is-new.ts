@@ -1,5 +1,5 @@
 export const isNew = (productCondition: string) => {
-  const isNew = ['new', 'like new', 'brand new', 'good'].includes(
+  const isNew = ['brand_new', 'used_excellent'].includes(
     productCondition.toLowerCase()
   );
   return isNew;

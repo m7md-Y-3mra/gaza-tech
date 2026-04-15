@@ -1,5 +1,13 @@
 {
   "Metadata": {
+    "createPost": {
+      "title": "إنشاء منشور | غزة تك",
+      "description": "قم بإنشاء منشور جديد في المجتمع"
+    },
+    "editPost": {
+      "title": "تعديل المنشور | غزة تك",
+      "description": "تعديل تفاصيل منشورك"
+    },
     "siteName": "غزة تك ماركت",
     "home": {
       "title": "غزة تك ماركت - شراء وبيع المنتجات التقنية",
@@ -31,7 +39,14 @@
     }
   },
   "HomePage": {
-    "title": "مرحبا بالعالم!"
+    "title": "مرحباً بك في غزة تك",
+    "latestListings": "أحدث الإعلانات",
+    "communityHighlights": "أبرز منشورات المجتمع",
+    "viewAll": "عرض الكل",
+    "emptyListings": "لا توجد إعلانات بعد",
+    "emptyPosts": "لا توجد منشورات بعد",
+    "errorListings": "فشل تحميل الإعلانات",
+    "errorPosts": "فشل تحميل منشورات المجتمع"
   },
   "Auth": {
     "common": {
@@ -351,7 +366,11 @@
       "new": "جديد",
       "used": "مستخدم",
       "broken": "مكسور",
-      "refurbished": "مجدد"
+      "refurbished": "مجدد",
+      "brand_new": "جديد",
+      "used_good": "مستخدم جيد",
+      "used_excellent": "مستخدم ممتاز",
+      "for_parts": "للقطع"
     },
     "location": {
       "title": "الموقع",
@@ -567,9 +586,31 @@
       "facebook": "فيسبوك",
       "website": "الموقع الإلكتروني"
     },
+    "banned": {
+      "title": "الحساب محظور",
+      "description": "عذراً، تم تقييد وصولك إلى غزة تك للسبب التالي:",
+      "contactSupport": "إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع فريق الدعم لدينا.",
+      "logout": "تسجيل الخروج"
+    },
     "Tabs": {
       "myListings": "إعلاناتي",
+      "myPosts": "منشوراتي",
       "savedItems": "العناصر المحفوظة"
+    },
+    "PostsTab": {
+      "emptyTitle": "لا توجد منشورات بعد",
+      "emptyDescription": "لم ينشر هذا المستخدم أي منشورات في المجتمع بعد.",
+      "createFirstPost": "أنشئ أول منشور لك",
+      "errorTitle": "تعذّر تحميل المنشورات",
+      "errorDescription": "حدث خطأ أثناء تحميل منشورات المجتمع. يرجى المحاولة مرة أخرى.",
+      "edit": "تعديل المنشور",
+      "delete": "حذف المنشور",
+      "deleteConfirmTitle": "هل تريد حذف هذا المنشور؟",
+      "deleteConfirmMessage": "لا يمكن التراجع عن هذا الإجراء. سيُزال المنشور من خلاصة المجتمع ومن ملفك الشخصي.",
+      "deleteConfirmAction": "حذف",
+      "deleteCancel": "إلغاء",
+      "deleteSuccess": "تم حذف المنشور.",
+      "deleteError": "تعذّر حذف المنشور. يرجى المحاولة مرة أخرى."
     },
     "ListingsTab": {
       "noListings": "لا توجد إعلانات بعد",
@@ -601,6 +642,7 @@
   },
   "Navbar": {
     "home": "الرئيسية",
+    "community": "المجتمع",
     "listings": "الإعلانات",
     "createListing": "إنشاء إعلان",
     "verificationRequest": "طلب التحقق",
@@ -608,6 +650,471 @@
     "signUp": "إنشاء حساب",
     "logOut": "تسجيل الخروج",
     "profile": "الملف الشخصي",
+    "dashboard": "لوحة التحكم",
     "myListings": "إعلاناتي"
+  },
+  "DashboardSidebar": {
+    "backToSite": "العودة للموقع",
+    "dashboard": "لوحة التحكم",
+    "statistics": "الإحصائيات",
+    "verificationReview": "مراجعة التوثيق",
+    "contentModeration": "إدارة المحتوى",
+    "userManagement": "إدارة المستخدمين",
+    "management": "الإدارة"
+  },
+  "Chat": {
+    "title": "المساعد الذكي",
+    "description": "ابحث في إعلانات السوق باستخدام اللغة الطبيعية.",
+    "welcomeMessage": "مرحباً! أنا المساعد الذكي. يمكنني مساعدتك في العثور على المنتجات من خلال مقارنة مواصفاتها وأسعارها واستخداماتها. عن ماذا تبحث؟",
+    "inputPlaceholder": "مثال: لابتوب ألعاب بسعر أقل من 1000 شيكل...",
+    "unexpectedError": "حدث خطأ غير متوقع.",
+    "errorPrefix": "خطأ: "
+  },
+  "CommunityForm": {
+    "validation": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
+      "titleMax": "لا يمكن أن يتجاوز العنوان 100 حرف",
+      "contentRequired": "المحتوى مطلوب",
+      "contentMin": "يجب أن يكون المحتوى 10 أحرف على الأقل",
+      "contentMax": "لا يمكن أن يتجاوز المحتوى 5000 حرف",
+      "categoryRequired": "يرجى اختيار فئة صالحة",
+      "attachmentMaxSize": "يجب أن يكون حجم الملف أقل من 5 ميجابايت",
+      "attachmentInvalidType": "نوع ملف غير صالح. يُسمح فقط بـ JPG وPNG وGIF وWEBP وPDF.",
+      "attachmentsMaxCount": "يمكنك إرفاق 5 ملفات كحد أقصى"
+    }
+  },
+  "FileUpload": {
+    "uploadTitle": "رفع الملفات",
+    "dragDrop": "اسحب وأفلت أو اضغط للتصفح",
+    "chooseFiles": "اختر ملفات",
+    "supportedFormats": "الصيغ المدعومة: {formats} (حد أقصى {maxSize} ميجابايت لكل ملف)",
+    "fileCount": "{count}/{max} ملفات",
+    "cover": "الغلاف",
+    "setAsCover": "تعيين كغلاف",
+    "removeFile": "إزالة الملف",
+    "invalidFileType": "\"{name}\": نوع ملف غير صالح",
+    "fileTooLarge": "\"{name}\": حجم الملف يجب أن يكون أقل من {maxSize} ميجابايت",
+    "fileTooSmall": "\"{name}\": حجم الملف يجب أن يكون على الأقل {minSize} كيلوبايت",
+    "fileError": "ملف {index}: {message}",
+    "maxFilesReached": "الحد الأقصى {max} ملفات مسموح"
+  },
+  "PostForm": {
+    "titleCreate": "إنشاء منشور جديد",
+    "descriptionCreate": "شارك أسئلتك، نصائحك، أخبارك، أو أدلة حل المشكلات مع المجتمع.",
+    "titleUpdate": "تعديل المنشور",
+    "descriptionUpdate": "قم بتحديث تفاصيل منشورك في المجتمع.",
+    "fields": {
+      "title": "العنوان",
+      "category": "الفئة",
+      "content": "المحتوى",
+      "attachments": "المرفقات (اختياري)"
+    },
+    "placeholders": {
+      "title": "عنوان قصير ووصفي",
+      "content": "اكتب محتوى منشورك هنا..."
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "publish": "نشر",
+      "publishing": "جاري النشر...",
+      "update": "تحديث",
+      "updating": "جاري التحديث..."
+    },
+    "categories": {
+      "questions": {
+        "title": "أسئلة",
+        "description": "اطلب المساعدة من المجتمع"
+      },
+      "tips": {
+        "title": "نصائح",
+        "description": "شارك معرفتك"
+      },
+      "news": {
+        "title": "أخبار",
+        "description": "أخبار وتحديثات التقنية"
+      },
+      "troubleshooting": {
+        "title": "حل المشكلات",
+        "description": "إيجاد حلول للمشاكل التقنية"
+      }
+    },
+    "toast": {
+      "createSuccess": "تم إنشاء المنشور بنجاح!",
+      "createError": "فشل إنشاء المنشور. يرجى المحاولة مرة أخرى.",
+      "updateSuccess": "تم تحديث المنشور بنجاح!",
+      "updateError": "فشل تحديث المنشور. يرجى المحاولة مرة أخرى.",
+      "unexpectedError": "حدث خطأ غير متوقع."
+    },
+    "validation": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
+      "titleMax": "لا يمكن أن يتجاوز العنوان 100 حرف",
+      "contentRequired": "المحتوى مطلوب",
+      "contentMin": "يجب أن يكون المحتوى 10 أحرف على الأقل",
+      "contentMax": "لا يمكن أن يتجاوز المحتوى 5000 حرف",
+      "categoryRequired": "يرجى اختيار الفئة",
+      "attachmentsMaxCount": "الحد الأقصى المسموح به هو 5 مرفقات",
+      "attachmentInvalidType": "نوع ملف غير صالح. يسمح فقط بالصور وملفات PDF.",
+      "attachmentMaxSize": "حجم الملف يتجاوز الحد الأقصى 5 ميغابايت."
+    },
+    "error": {
+      "title": "تعذر تحميل نموذج المنشور",
+      "description": "واجهنا مشكلة أثناء تحميل نموذج المنشور. قد يكون السبب مشكلة في الشبكة أو الخادم.",
+      "errorDetails": "تفاصيل الخطأ:",
+      "tryAgain": "حاول مرة أخرى",
+      "goBack": "العودة"
+    }
+  },
+  "InfiniteScrollSentinel": {
+    "error": "فشل تحميل المزيد من العناصر. يرجى المحاولة مرة أخرى.",
+    "retry": "حاول مرة أخرى"
+  },
+  "PostCard": {
+    "deletedUser": "مستخدم محذوف",
+    "like": "إعجاب",
+    "unlike": "إلغاء الإعجاب",
+    "bookmark": "حفظ",
+    "unbookmark": "إلغاء الحفظ",
+    "share": "مشاركة",
+    "openComments": "التعليقات",
+    "shareCopied": "تم نسخ الرابط",
+    "shareError": "فشل نسخ الرابط",
+    "bookmarkAdded": "تم حفظ المنشور",
+    "bookmarkRemoved": "تم إلغاء الحفظ",
+    "likeError": "فشل تحديث الإعجاب",
+    "bookmarkError": "فشل تحديث الحفظ",
+    "attachments": "{count, plural, one {# مرفق} other {# مرفقات}}",
+    "openCommentsFor": "فتح تعليقات المنشور \"{title}\"",
+    "viewProfile": "عرض ملف {name}",
+    "categories": {
+      "questions": "أسئلة",
+      "tips": "نصائح",
+      "news": "أخبار",
+      "troubleshooting": "حل المشكلات"
+    }
+  },
+  "PostDetail": {
+    "modal": {
+      "close": "إغلاق",
+      "loading": "جاري تحميل المنشور..."
+    },
+    "comments": {
+      "title": "التعليقات",
+      "titleWithCount": "{count, plural, one {تعليق واحد} other {# تعليقات}}",
+      "empty": "لا توجد تعليقات بعد — كن أول من يعلق!",
+      "loadMore": "تحميل المزيد من التعليقات",
+      "loadMoreReplies": "تحميل المزيد من الردود",
+      "replyingTo": "رد على {name}",
+      "edited": "(تم التعديل)",
+      "deletedComment": "تم حذف هذا التعليق",
+      "loginToComment": "يرجى تسجيل الدخول للمشاركة في المحادثة."
+    },
+    "commentInput": {
+      "placeholder": "اكتب تعليقاً...",
+      "replyPlaceholder": "اكتب رداً...",
+      "send": "إرسال",
+      "charCount": "{current}/{max}"
+    },
+    "commentActions": {
+      "edit": "تعديل",
+      "delete": "حذف",
+      "like": "إعجاب",
+      "unlike": "إلغاء الإعجاب",
+      "reply": "رد",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    },
+    "deleteConfirm": {
+      "title": "حذف التعليق",
+      "message": "هل أنت متأكد من حذف هذا التعليق؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "errors": {
+      "addFailed": "فشل إضافة التعليق",
+      "editFailed": "فشل تعديل التعليق",
+      "deleteFailed": "فشل حذف التعليق",
+      "likeFailed": "فشل تحديث الإعجاب",
+      "loadFailed": "فشل تحميل التعليقات",
+      "loadPostFailed": "فشل تحميل المنشور",
+      "retry": "حاول مرة أخرى"
+    },
+    "fullPage": {
+      "backToFeed": "العودة إلى المجتمع"
+    }
+  },
+  "CommunityFeed": {
+    "meta": {
+      "title": "المجتمع",
+      "description": "تصفح وشارك مع مجتمع غزة للتقنية"
+    },
+    "pageTitle": "المجتمع",
+    "createPost": "إنشاء منشور",
+    "createPostFab": "منشور جديد",
+    "filters": {
+      "categoryLabel": "تصفية حسب الفئة",
+      "searchPlaceholder": "ابحث في المنشورات...",
+      "clearSearch": "مسح البحث",
+      "all": "الكل",
+      "questions": "أسئلة",
+      "tips": "نصائح",
+      "news": "أخبار",
+      "troubleshooting": "حل المشكلات"
+    },
+    "emptyState": {
+      "title": "لا توجد منشورات",
+      "description": "كن أول من يشارك شيئاً مع المجتمع.",
+      "descriptionFiltered": "لا توجد منشورات تطابق معايير البحث الحالية.",
+      "cta": "إنشاء منشور"
+    },
+    "errorState": {
+      "title": "فشل تحميل المنشورات",
+      "retry": "حاول مرة أخرى"
+    }
+  },
+  "Report": {
+    "title": "إبلاغ عن محتوى",
+    "subtitle": "ساعدنا في فهم سبب رغبتك في الإبلاغ عن هذا المحتوى. بلاغك مجهول الهوية.",
+    "reason": "السبب",
+    "description": "تفاصيل إضافية (اختياري)",
+    "descriptionPlaceholder": "أضف مزيداً من المعلومات لمساعدة المشرفين لدينا...",
+    "submit": "إرسال البلاغ",
+    "submitting": "جاري الإرسال...",
+    "cancel": "إلغاء",
+    "success": "تم إرسال البلاغ بنجاح. شكراً لمساعدتك في الحفاظ على أمان مجتمعنا.",
+    "alreadyReported": "لقد قمت بالإبلاغ عن هذا المحتوى بالفعل.",
+    "reasons": {
+      "spam": "محتوى مزعج (Spam)",
+      "inappropriate": "محتوى غير لائق",
+      "harassment": "تحرش أو مضايقة",
+      "misleading": "معلومات مضللة",
+      "fraud": "احتيال / نصب",
+      "hate_speech": "خطاب كراهية",
+      "other": "أخرى"
+    },
+    "errors": {
+      "failed": "فشل إرسال البلاغ. يرجى المحاولة مرة أخرى.",
+      "notFound": "المحتوى الذي تحاول الإبلاغ عنه لم يعد موجوداً."
+    }
+  },
+  "AdminUsers": {
+    "pageTitle": "إدارة المستخدمين",
+    "pageDescription": "تصفح وإدارة جميع المستخدمين المسجلين.",
+    "columns": {
+      "avatar": "الصورة",
+      "name": "الاسم",
+      "role": "الدور",
+      "status": "الحالة",
+      "verified": "موثق",
+      "joined": "تاريخ الانضمام",
+      "lastActive": "آخر نشاط",
+      "actions": "الإجراءات"
+    },
+    "roles": {
+      "registered": "مسجل",
+      "verified_seller": "بائع موثق",
+      "moderator": "مشرف",
+      "admin": "مدير"
+    },
+    "status": {
+      "active": "نشط",
+      "banned": "محظور"
+    },
+    "verified": {
+      "yes": "موثق",
+      "no": "غير موثق"
+    },
+    "search": {
+      "placeholder": "ابحث بالاسم أو البريد الإلكتروني..."
+    },
+    "filters": {
+      "role": "الدور",
+      "status": "الحالة",
+      "reset": "إعادة تعيين",
+      "columns": "الأعمدة"
+    },
+    "rowActions": {
+      "trigger": "فتح القائمة",
+      "changeRole": "تغيير الدور",
+      "ban": "حظر المستخدم",
+      "unban": "رفع الحظر",
+      "viewDetails": "عرض التفاصيل"
+    },
+    "dialogs": {
+      "changeRole": {
+        "title": "تغيير دور المستخدم",
+        "confirm": "تأكيد",
+        "cancel": "إلغاء"
+      },
+      "ban": {
+        "title": "حظر المستخدم",
+        "reasonLabel": "السبب",
+        "reasonPlaceholder": "أدخل سبب حظر هذا المستخدم...",
+        "submit": "حظر المستخدم",
+        "cancel": "إلغاء"
+      },
+      "unban": {
+        "title": "رفع الحظر عن المستخدم",
+        "submit": "رفع الحظر",
+        "cancel": "إلغاء"
+      }
+    },
+    "bulk": {
+      "selectedCount": "{count} محدد",
+      "changeRole": "تغيير الدور",
+      "ban": "حظر",
+      "clear": "مسح",
+      "confirm": {
+        "changeRole": "تغيير دور {count} مستخدم محدد؟",
+        "ban": "حظر {count} مستخدم محدد؟"
+      }
+    },
+    "toast": {
+      "role": {
+        "success": "تم تحديث الدور بنجاح.",
+        "error": "فشل تحديث الدور."
+      },
+      "ban": {
+        "success": "تم حظر المستخدم بنجاح.",
+        "error": "فشل حظر المستخدم."
+      },
+      "unban": {
+        "success": "تم رفع الحظر عن المستخدم بنجاح.",
+        "error": "فشل رفع الحظر."
+      },
+      "bulk": {
+        "summary": "{ok} من {total} إجراء نجح. {failed} فشل."
+      }
+    },
+    "empty": {
+      "title": "لا يوجد مستخدمون",
+      "description": "حاول تعديل البحث أو الفلاتر."
+    },
+    "error": {
+      "title": "فشل تحميل المستخدمين",
+      "retry": "إعادة المحاولة"
+    },
+    "userDetail": {
+      "sheetTitle": "تفاصيل المستخدم",
+      "tabs": {
+        "role": "الدور",
+        "ban": "الحظر",
+        "profile": "الملف الشخصي"
+      },
+      "ban": {
+        "currentBanReason": "سبب الحظر الحالي"
+      },
+      "profile": {
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "isVerified": "بائع موثق",
+        "save": "حفظ التغييرات",
+        "success": "تم تحديث الملف الشخصي بنجاح.",
+        "error": "فشل تحديث الملف الشخصي."
+      }
+    }
+  },
+  "Dashboard": {
+    "title": "لوحة تحكم المسؤول",
+    "summary": {
+      "totalUsers": "إجمالي المستخدمين",
+      "newListings": "إعلانات جديدة",
+      "newPosts": "منشورات جديدة",
+      "pendingReports": "بلاغات معلقة",
+      "pendingVerifications": "طلبات توثيق معلقة",
+      "vsPrevious": "مقارنة بالفترة السابقة"
+    },
+    "charts": {
+      "growthTrends": "اتجاهات النمو",
+      "newUsers": "المستخدمون الجدد يومياً",
+      "listingGrowth": "نمو الإعلانات",
+      "noData": "لا توجد بيانات متاحة"
+    },
+    "filters": {
+      "last7Days": "آخر ٧ أيام",
+      "last30Days": "آخر ٣٠ يوماً",
+      "last90Days": "آخر ٩٠ يوماً",
+      "timeRange": "النطاق الزمني"
+    },
+    "export": {
+      "button": "تصدير البيانات",
+      "success": "بدأ التصدير بنجاح",
+      "error": "فشل تصدير البيانات"
+    }
+  },
+  "CategoryLocation": {
+    "categories": "الفئات",
+    "locations": "المواقع",
+    "management": "الإدارة",
+    "pageTitle": "إدارة الفئات والمواقع",
+    "pageDescription": "إدارة فئات المنتجات وإدخالات المواقع",
+    "categories_tab": "الفئات",
+    "locations_tab": "المواقع",
+    "addCategory": "إضافة فئة",
+    "addLocation": "إضافة موقع",
+    "editCategory": "تعديل الفئة",
+    "editLocation": "تعديل الموقع",
+    "deleteCategory": "حذف الفئة",
+    "deleteLocation": "حذف الموقع",
+    "table": {
+      "name": "الاسم (إنجليزي)",
+      "name_ar": "الاسم (عربي)",
+      "slug": "المعرف",
+      "status": "الحالة",
+      "sortOrder": "ترتيب العرض",
+      "actions": "إجراءات",
+      "noResults": "لا توجد نتائج.",
+      "searchPlaceholder": "ابحث بالاسم...",
+      "clearFilters": "مسح الفلاتر",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "form": {
+      "nameEn": "الاسم (إنجليزي)",
+      "nameAr": "الاسم (عربي)",
+      "description": "الوصف",
+      "iconUrl": "رابط الأيقونة",
+      "sortOrder": "ترتيب العرض",
+      "isActive": "نشط",
+      "nameEnPlaceholder": "أدخل الاسم بالإنجليزية",
+      "nameArPlaceholder": "أدخل الاسم بالعربية",
+      "descriptionPlaceholder": "أدخل وصفاً مختصراً",
+      "iconUrlPlaceholder": "https://example.com/icon.png",
+      "sortOrderPlaceholder": "0",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "creating": "جاري الإنشاء...",
+      "updating": "جاري التحديث..."
+    },
+    "delete": {
+      "confirmTitle": "حذف {name}؟",
+      "confirmDescription": "لا يمكن التراجع عن هذا الإجراء.",
+      "inUseTitle": "لا يمكن حذف {name}",
+      "inUseDescription": "هذا {entity} مرتبط بإعلانات نشطة ولا يمكن حذفه.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "success": {
+      "categoryCreated": "تم إنشاء الفئة بنجاح",
+      "categoryUpdated": "تم تحديث الفئة بنجاح",
+      "categoryDeleted": "تم حذف الفئة بنجاح",
+      "locationCreated": "تم إنشاء الموقع بنجاح",
+      "locationUpdated": "تم تحديث الموقع بنجاح",
+      "locationDeleted": "تم حذف الموقع بنجاح"
+    },
+    "errors": {
+      "categoryCreateFailed": "فشل إنشاء الفئة",
+      "categoryUpdateFailed": "فشل تحديث الفئة",
+      "categoryDeleteFailed": "فشل حذف الفئة",
+      "locationCreateFailed": "فشل إنشاء الموقع",
+      "locationUpdateFailed": "فشل تحديث الموقع",
+      "locationDeleteFailed": "فشل حذف الموقع",
+      "nameRequired": "الاسم مطلوب",
+      "nameArRequired": "الاسم العربي مطلوب",
+      "nameTooLong": "يجب ألا يتجاوز الاسم 100 حرف",
+      "slugUnique": "يجب أن يكون المعرف فريداً",
+      "invalidUrl": "تنسيق الرابط غير صالح"
+    }
   }
 }

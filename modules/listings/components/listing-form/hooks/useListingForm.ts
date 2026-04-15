@@ -19,7 +19,7 @@ import type {
 } from '../types';
 import type { z } from 'zod';
 import { useRouter } from 'nextjs-toploader/app';
-import { useImageUploader } from '../components/image-upload/hooks/useImageUploader';
+import { useFileUploader } from '@/components/file-upload';
 import { toast } from 'sonner';
 import { extractPathFromUrl } from '@/utils/supabase';
 import { getDefaultValues } from '../constant';
@@ -41,8 +41,12 @@ export const useListingForm = (
   const tValidation = useTranslations('ListingForm.validation');
   const tToast = useTranslations('ListingForm.toast');
 
-  const { uploadImages, deleteImages, isUploading, uploadError } =
-    useImageUploader();
+  const { uploadFiles, deleteFiles, isUploading, uploadError } =
+    useFileUploader({
+      bucketName: 'marketplace-image',
+      pathPrefix: 'listings/',
+      enableCompression: true,
+    });
 
   // Build translated schema using the factory
   const schema = useMemo(() => {
@@ -75,7 +79,14 @@ export const useListingForm = (
       if (mode === 'create') {
         // Create mode: upload all images
         const { images, ...listingData } = data as CreateFormData;
-        const uploadResults = await uploadImages(images);
+        const rawResults = await uploadFiles(
+          images.map((img) => ({ file: img.file }))
+        );
+        // Map isThumbnail back from form data
+        const uploadResults = rawResults.map((result, i) => ({
+          ...result,
+          isThumbnail: images[i].isThumbnail,
+        }));
         uploadedPaths = uploadResults.map((r) => r.path);
 
         const result = await createListingAction({
@@ -85,7 +96,7 @@ export const useListingForm = (
 
         if (!result.success) {
           if (uploadedPaths.length > 0) {
-            await deleteImages(uploadedPaths);
+            await deleteFiles(uploadedPaths);
           }
           setSubmitError(result.message || tToast('createError'));
           return;
@@ -130,7 +141,7 @@ export const useListingForm = (
 
         if (removedPaths.length > 0) {
           try {
-            await deleteImages(removedPaths);
+            await deleteFiles(removedPaths);
           } catch (error) {
             console.error('Failed to delete removed images:', error);
             // Continue with update even if delete fails
@@ -144,7 +155,13 @@ export const useListingForm = (
           isThumbnail: boolean;
         }[] = [];
         if (newImages.length > 0) {
-          uploadResults = await uploadImages(newImages);
+          const rawUploadResults = await uploadFiles(
+            newImages.map((img) => ({ file: img.file }))
+          );
+          uploadResults = rawUploadResults.map((result, i) => ({
+            ...result,
+            isThumbnail: newImages[i].isThumbnail,
+          }));
           uploadedPaths = uploadResults.map((r) => r.path);
         }
 
@@ -170,7 +187,7 @@ export const useListingForm = (
 
         if (!result.success) {
           if (uploadedPaths.length > 0) {
-            await deleteImages(uploadedPaths);
+            await deleteFiles(uploadedPaths);
           }
           setSubmitError(result.message || tToast('updateError'));
           return;
@@ -185,7 +202,7 @@ export const useListingForm = (
       console.error('Form submission error:', error);
 
       if (uploadedPaths.length > 0) {
-        await deleteImages(uploadedPaths);
+        await deleteFiles(uploadedPaths);
       }
 
       setSubmitError(

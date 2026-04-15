@@ -1,232 +1,60 @@
 'use client';
-import { useFormContext } from 'react-hook-form';
-import {
-  AlertCircle,
-  CloudUpload,
-  FolderOpen,
-  Plus,
-  Trash,
-} from 'lucide-react';
-import { useImageUpload } from './hooks/useImageUpload';
+
+import { FileUpload } from '@/components/file-upload';
+import type {
+  FileUploadConfig,
+  FileUploadItem,
+} from '@/components/file-upload';
 import type { ImageUploadProps } from './types';
-import Image from 'next/image';
 import {
   ACCEPTED_FILE_TYPES,
   MAX_IMAGES_NUMBER,
   MAX_UPLOAD_SIZE,
 } from '@/constants/image-file';
-import type { ImageFileUploadImage } from './types';
-import { useTranslations } from 'next-intl';
+
+const LISTING_UPLOAD_CONFIG: FileUploadConfig = {
+  bucketName: 'marketplace-image',
+  pathPrefix: 'listings/',
+  maxFiles: MAX_IMAGES_NUMBER,
+  maxSizeBytes: MAX_UPLOAD_SIZE,
+  minSizeBytes: 10_000,
+  acceptedTypes: ACCEPTED_FILE_TYPES,
+  enableCompression: true,
+  displayMode: 'image-grid',
+};
 
 const ImageUpload: React.FC<ImageUploadProps> = (props) => {
-  const { mode, name, disabled = false } = props;
-  const initialImages = (
-    mode === 'update' ? props.initialImages : []
-  ) as ImageFileUploadImage[];
-  const {
-    formState: { errors, touchedFields, isSubmitted },
-  } = useFormContext();
-  const t = useTranslations('ListingForm.images');
+  const { mode, name, disabled } = props;
 
-  const {
-    images,
-    isDragging,
-    setIsDragging,
-    addImages,
-    removeImage,
-    setThumbnail,
-  } = useImageUpload(
-    mode === 'create' ? { mode, name } : { mode, name, initialImages }
-  );
+  if (mode === 'update') {
+    // Convert listing-specific ImageFileUploadImage[] to FileUploadItem[]
+    const initialFiles: FileUploadItem[] = props.initialImages.map((img) => ({
+      id: img.id,
+      preview: img.preview,
+      isThumbnail: img.isThumbnail,
+      ...(img.isExisting
+        ? { isExisting: true as const }
+        : { isExisting: false as const, file: (img as { file: File }).file }),
+    }));
 
-  const error = errors[name];
-  const touched = touchedFields[name];
-  const hasError = (isSubmitted || touched) && !!error;
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    if (!disabled) {
-      setIsDragging(true);
-    }
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    if (!disabled && e.dataTransfer.files) {
-      addImages(e.dataTransfer.files);
-    }
-  };
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      addImages(e.target.files);
-    }
-  };
+    return (
+      <FileUpload
+        name={name}
+        mode="update"
+        initialFiles={initialFiles}
+        config={LISTING_UPLOAD_CONFIG}
+        disabled={disabled}
+      />
+    );
+  }
 
   return (
-    <div>
-      {/* Upload Area - Only show when not at max */}
-      {images.length < MAX_IMAGES_NUMBER && (
-        <div
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          className={`border-muted-foreground/30 relative mb-6 cursor-pointer rounded-xl border-3 border-dashed p-12 text-center transition-all duration-200 ${
-            isDragging
-              ? 'border-primary bg-green-50'
-              : 'hover:border-primary hover:bg-green-50'
-          } ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
-        >
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            disabled={disabled}
-            className="absolute inset-0 cursor-pointer opacity-0"
-            aria-label={t('uploadTitle')}
-            onChange={handleFileInput}
-          />
-          <div className="flex flex-col items-center">
-            <div className="from-primary to-secondary mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br shadow-lg">
-              <CloudUpload className="h-9 w-9 text-white" />
-            </div>
-            <h3 className="text-foreground mb-2 text-lg font-bold">
-              {t('uploadTitle')}
-            </h3>
-            <p className="text-muted-foreground mb-4">{t('dragDrop')}</p>
-            <button
-              type="button"
-              className="bg-muted text-foreground hover:bg-muted/80 flex rounded-xl px-6 py-3 font-semibold transition-all duration-200"
-            >
-              <FolderOpen className="me-2 h-5 w-5" /> {t('chooseFiles')}
-            </button>
-            <p className="text-muted-foreground mt-4 text-xs">
-              {t('supportedFormats', {
-                formats: ACCEPTED_FILE_TYPES.map(
-                  (type) => type.split('/')[1]
-                ).join(', '),
-                maxSize: String(MAX_UPLOAD_SIZE / 1_000_000),
-              })}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Image Grid */}
-      {images.length > 0 && (
-        <div className="mb-6 grid grid-cols-5 gap-4">
-          {images.map((image) => (
-            <div key={image.id} className="group relative">
-              <div
-                className={`bg-muted aspect-square overflow-hidden rounded-xl ${
-                  image.isThumbnail
-                    ? 'border-primary border-2'
-                    : 'border-2 border-transparent'
-                }`}
-              >
-                <Image
-                  src={image.preview}
-                  alt="Preview"
-                  className="h-full w-full object-cover"
-                  fill
-                />
-              </div>
-
-              {/* Cover Badge */}
-              {image.isThumbnail && (
-                <div className="bg-primary absolute start-2 top-2 rounded-md px-2 py-1 text-xs font-bold text-white">
-                  {t('cover')}
-                </div>
-              )}
-
-              {/* Delete Button */}
-              <button
-                type="button"
-                onClick={() => removeImage(image.id)}
-                disabled={disabled}
-                className="absolute end-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-red-500 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 hover:bg-red-600"
-              >
-                <Trash className="h-5 w-5" />
-              </button>
-
-              {/* Set as Cover Button - Only show on hover if not already cover */}
-              {!image.isThumbnail && (
-                <div className="absolute start-2 end-2 bottom-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  <button
-                    type="button"
-                    onClick={() => setThumbnail(image.id)}
-                    disabled={disabled}
-                    className="bg-card bg-opacity-90 text-foreground hover:bg-opacity-100 w-full rounded py-1 text-xs"
-                  >
-                    {t('setAsCover')}
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-
-          {/* Empty Slots */}
-          {Array.from({ length: MAX_IMAGES_NUMBER - images.length }).map(
-            (_, index) => (
-              <div
-                key={`empty-${index}`}
-                onClick={() =>
-                  document
-                    .querySelector<HTMLInputElement>('input[type="file"]')
-                    ?.click()
-                }
-                className="border-muted-foreground/30 bg-muted/30 hover:border-primary flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed transition-all duration-200 hover:bg-green-50"
-              >
-                <Plus className="text-muted-foreground h-5 w-5" />
-              </div>
-            )
-          )}
-        </div>
-      )}
-
-      {/* Error Message */}
-      {hasError && (
-        <div className="text-destructive mb-4 flex items-center gap-2 text-sm">
-          <span>
-            {Array.isArray(error) ? (
-              error?.map((err, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4" />
-                  <p>
-                    {t('fileError', {
-                      index: index + 1,
-                      message: err.file.message,
-                    })}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p>{error?.message as string}</p>
-            )}
-          </span>
-        </div>
-      )}
-
-      {/* Image Count Badge */}
-      {images.length > 0 && (
-        <div className="flex justify-end">
-          <div className="rounded-lg bg-green-50 px-4 py-2">
-            <span className="text-primary text-sm font-semibold">
-              {t('imageCount', {
-                count: images.length,
-                max: MAX_IMAGES_NUMBER,
-              })}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
+    <FileUpload
+      name={name}
+      mode="create"
+      config={LISTING_UPLOAD_CONFIG}
+      disabled={disabled}
+    />
   );
 };
 

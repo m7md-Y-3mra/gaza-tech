@@ -7,6 +7,7 @@ import { categoryIconMap } from './constant';
 import { useQueryState } from 'nuqs';
 import { listingsSearchParams } from '../../search-params';
 import { useTranslations } from 'next-intl';
+import { CategoryType } from '@/modules/listings/types';
 
 const CategoryFilters: FC<CategoryFiltersClientProps> = ({
   categories: categoriesRes,
@@ -28,7 +29,7 @@ const CategoryFilters: FC<CategoryFiltersClientProps> = ({
     ...categoriesRes.map((category) => ({
       id: category.marketplace_category_id,
       label: category.name,
-      icon: categoryIconMap[category.name] || null,
+      icon: categoryIconMap[category.name as CategoryType] || null,
     })),
   ];
 

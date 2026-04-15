@@ -8,6 +8,7 @@ const ProfileTabsClient = ({
   isOwner,
   listingsContent,
   bookmarkedContent,
+  postsContent,
 }: ProfileTabsClientProps) => {
   const t = useTranslations('Profile.Tabs');
 
@@ -23,6 +24,16 @@ const ProfileTabsClient = ({
             className="data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-card flex-1 items-center justify-center border-b-2 border-transparent px-6 py-4 text-sm font-semibold transition-all data-[state=active]:shadow-none ltr:rounded-tl-xl ltr:rounded-bl-none rtl:rounded-tr-xl rtl:rounded-br-none"
           >
             {t('myListings')}
+          </TabsTrigger>
+          <TabsTrigger
+            value="posts"
+            className={`data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-card flex-1 items-center justify-center border-b-2 border-transparent px-6 py-4 text-sm font-semibold transition-all data-[state=active]:shadow-none ${
+              !isOwner
+                ? 'ltr:rounded-tr-xl ltr:rounded-br-none rtl:rounded-tl-xl rtl:rounded-bl-none'
+                : ''
+            }`}
+          >
+            {t('myPosts')}
           </TabsTrigger>
           {isOwner && (
             <TabsTrigger
@@ -41,6 +52,14 @@ const ProfileTabsClient = ({
         className="animate-in fade-in slide-in-from-bottom-2 px-8 duration-300"
       >
         {listingsContent}
+      </TabsContent>
+
+      {/* Posts Tab */}
+      <TabsContent
+        value="posts"
+        className="animate-in fade-in slide-in-from-bottom-2 mt-0 p-6 duration-300"
+      >
+        {postsContent}
       </TabsContent>
 
       {/* Bookmarked Tab */}

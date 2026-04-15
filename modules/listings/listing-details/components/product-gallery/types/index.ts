@@ -3,6 +3,7 @@ export interface ProductGalleryProps {
   listingId: string;
   title: string;
   productCondition: string;
+  sellerId: string;
 }
 
 export interface UseProductGalleryProps {
@@ -10,4 +11,5 @@ export interface UseProductGalleryProps {
   title: string;
   productCondition: string;
   listingId: string;
+  sellerId: string;
 }
