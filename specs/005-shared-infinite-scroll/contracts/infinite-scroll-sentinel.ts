@@ -50,6 +50,7 @@ interface InfiniteScrollSentinelProps {
  * - isLoading=true → renders skeleton
  * - Otherwise → renders invisible sentinel div (triggers next fetch on scroll)
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare function InfiniteScrollSentinel(
   props: InfiniteScrollSentinelProps
 ): ReactNode;

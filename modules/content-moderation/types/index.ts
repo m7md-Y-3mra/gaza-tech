@@ -18,7 +18,7 @@ export interface ReportDetail extends ReportRow {
   };
   reported_content: {
     type: 'listing' | 'post' | 'comment' | 'user';
-    data: any; // We'll cast this to specific types in components
+    data: Record<string, unknown> | null;
   };
   history: {
     report_id: string;

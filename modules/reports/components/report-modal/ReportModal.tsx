@@ -34,7 +34,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
 
   const translatedOptions = REASON_OPTIONS.map((option) => ({
     value: option.value,
-    label: t(option.labelKey as any),
+    label: t(option.labelKey as Parameters<typeof t>[0]),
   }));
 
   return (

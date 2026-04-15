@@ -8,8 +8,6 @@ import CustomError from '@/utils/CustomError';
 import {
   createCommunityPostServerSchema,
   updateCommunityPostServerSchema,
-  postIdSchema,
-  commentIdSchema,
   paginationSchema,
   commentContentSchema,
   feedQuerySchema,

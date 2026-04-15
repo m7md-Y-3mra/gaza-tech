@@ -5,8 +5,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, Calendar, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 
+interface CommentAuthor {
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
+}
+
+interface CommentData {
+  author?: CommentAuthor;
+  content?: string;
+  created_at: string;
+  community_posts?: { title?: string };
+}
+
 interface ReportedCommentProps {
-  comment: any;
+  comment: CommentData;
 }
 
 const ReportedComment: React.FC<ReportedCommentProps> = ({ comment }) => {

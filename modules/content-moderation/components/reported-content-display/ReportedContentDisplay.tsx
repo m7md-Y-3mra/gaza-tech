@@ -109,10 +109,38 @@ const ReportedContentDisplay: React.FC<ReportedContentDisplayProps> = ({
           </div>
 
           <div className="bg-card rounded-lg border shadow-sm">
-            {type === 'post' && <ReportedPost post={data} />}
-            {type === 'listing' && <ReportedListing listing={data} />}
-            {type === 'comment' && <ReportedComment comment={data} />}
-            {type === 'user' && <ReportedUser user={data} />}
+            {type === 'post' && data && (
+              <ReportedPost
+                post={
+                  data as unknown as Parameters<typeof ReportedPost>[0]['post']
+                }
+              />
+            )}
+            {type === 'listing' && data && (
+              <ReportedListing
+                listing={
+                  data as unknown as Parameters<
+                    typeof ReportedListing
+                  >[0]['listing']
+                }
+              />
+            )}
+            {type === 'comment' && data && (
+              <ReportedComment
+                comment={
+                  data as unknown as Parameters<
+                    typeof ReportedComment
+                  >[0]['comment']
+                }
+              />
+            )}
+            {type === 'user' && data && (
+              <ReportedUser
+                user={
+                  data as unknown as Parameters<typeof ReportedUser>[0]['user']
+                }
+              />
+            )}
             {!data && (
               <div className="text-muted-foreground p-8 text-center">
                 Content not found.

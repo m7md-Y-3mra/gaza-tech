@@ -7,7 +7,7 @@ import {
   PaginationLink,
 } from '@/components/ui/pagination';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import type { ProfilePaginationProps } from './types';
 import { useProfilePagination } from './hooks/useProfilePagination';
 
@@ -18,8 +18,6 @@ const ProfilePagination = ({
   const t = useTranslations('Profile.Pagination');
   const { page, totalPages, visiblePages, handlePageChange } =
     useProfilePagination(totalCount, pageSize);
-  const locale = useLocale();
-
   if (totalPages <= 1) return null;
 
   return (

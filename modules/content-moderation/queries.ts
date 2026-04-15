@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { requireRole } from '@/utils/rbac-handler';
 import CustomError from '@/utils/CustomError';
 import { ReportQueueItem, ReportDetail } from './types';
+import type { ReportStatus } from '@/modules/reports/types';
 import {
   DEFAULT_LIMIT_NUMBER,
   DEFAULT_PAGE_NUMBER,
@@ -98,7 +99,14 @@ export async function getReportQueueQuery({
   }
 
   const items: ReportQueueItem[] = (data || []).map((item) => {
-    const reporter = item.users as any;
+    type ReporterShape = {
+      first_name: string | null;
+      last_name: string | null;
+    } | null;
+    const usersRaw = item.users as unknown;
+    const reporter: ReporterShape = Array.isArray(usersRaw)
+      ? (usersRaw[0] as ReporterShape)
+      : (usersRaw as ReporterShape);
     let type: 'listing' | 'post' | 'comment' | 'user' = 'user';
     let id = '';
 
@@ -119,7 +127,7 @@ export async function getReportQueueQuery({
     return {
       report_id: item.report_id,
       reason: item.reason,
-      report_status: item.report_status as any,
+      report_status: item.report_status as ReportStatus,
       created_at: item.created_at!,
       reporter_name:
         `${reporter?.first_name || ''} ${reporter?.last_name || ''}`.trim(),
@@ -170,7 +178,7 @@ export async function getReportByIdQuery(
   // 2. Fetch reported content
   let contentType: 'listing' | 'post' | 'comment' | 'user' = 'user';
   let contentId = '';
-  let contentData: any = null;
+  let contentData: Record<string, unknown> | null = null;
 
   if (report.reported_post_id) {
     contentType = 'post';
@@ -229,7 +237,7 @@ export async function getReportByIdQuery(
 
   return {
     ...report,
-    reporter: report.reporter as any,
+    reporter: report.reporter as ReportDetail['reporter'],
     reported_content: {
       type: contentType,
       data: contentData,
@@ -311,7 +319,16 @@ export async function resolveReportQuery({
   return { success: true };
 }
 
-async function getOwnerId(supabase: any, report: any) {
+interface ReportRecord {
+  reported_post_id?: string | null;
+  reported_listing_id?: string | null;
+  reported_comment_id?: string | null;
+}
+
+async function getOwnerId(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  report: ReportRecord
+) {
   if (report.reported_post_id) {
     const { data } = await supabase
       .from('community_posts')

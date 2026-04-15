@@ -1,12 +1,30 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, Calendar, Tag, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 
+interface ListingSeller {
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
+}
+
+interface ListingData {
+  seller?: ListingSeller;
+  title?: string;
+  price?: number | string;
+  currency?: string;
+  description?: string;
+  created_at: string;
+  listing_images?: { image_url: string }[];
+  locations?: { name?: string };
+}
+
 interface ReportedListingProps {
-  listing: any;
+  listing: ListingData;
 }
 
 const ReportedListing: React.FC<ReportedListingProps> = ({ listing }) => {
@@ -34,9 +52,11 @@ const ReportedListing: React.FC<ReportedListingProps> = ({ listing }) => {
 
       <div className="flex flex-col gap-4 sm:flex-row">
         {listing.listing_images && listing.listing_images.length > 0 && (
-          <img
+          <Image
             src={listing.listing_images[0].image_url}
-            alt={listing.title}
+            alt={listing.title ?? ''}
+            width={160}
+            height={160}
             className="h-40 w-full rounded-md border object-cover sm:w-40"
           />
         )}

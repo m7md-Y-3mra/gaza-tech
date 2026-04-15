@@ -75,10 +75,15 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
   };
 
   const handleBanUser = async () => {
+    const contentData = report.reported_content.data;
     const userId =
       report.reported_user_id ||
-      report.reported_content.data?.author_id ||
-      report.reported_content.data?.seller_id;
+      (typeof contentData?.author_id === 'string'
+        ? contentData.author_id
+        : undefined) ||
+      (typeof contentData?.seller_id === 'string'
+        ? contentData.seller_id
+        : undefined);
 
     if (!userId) {
       toast.error('Could not identify user to ban');
@@ -205,8 +210,8 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ report }) => {
                   Ban this user from the platform?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will permanently disable the user's account. They will no
-                  longer be able to log in or use the platform.
+                  This will permanently disable the user&apos;s account. They
+                  will no longer be able to log in or use the platform.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

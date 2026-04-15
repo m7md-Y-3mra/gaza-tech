@@ -83,6 +83,7 @@ interface UseInfiniteScrollReturn<TItem> {
  *   });
  * ```
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare function useInfiniteScroll<TItem, TFilters>(
   options: UseInfiniteScrollOptions<TItem, TFilters>
 ): UseInfiniteScrollReturn<TItem>;

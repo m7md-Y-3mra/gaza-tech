@@ -6,9 +6,10 @@ import QueueContentSkeleton from '@/modules/content-moderation/components/queue-
 export default async function ReportQueuePage({
   searchParams,
 }: {
-  searchParams: Promise<any>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const params = reportQueueSearchParamsCache.parse(await searchParams);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { reportId: _reportId, ...queueParams } = params;
 
   return (

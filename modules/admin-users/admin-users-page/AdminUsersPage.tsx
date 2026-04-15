@@ -75,7 +75,6 @@ export async function AdminUsersPage({
 
   const t = await getTranslations({ locale, namespace: 'AdminUsers' });
 
-  let initialData;
   const result = await listAdminUsersAction(input);
 
   if (!result.success) {
@@ -90,7 +89,7 @@ export async function AdminUsersPage({
     );
   }
 
-  initialData = result.data;
+  const initialData = result.data;
 
   const supabase = await createClient();
   const {

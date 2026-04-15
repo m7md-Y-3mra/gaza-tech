@@ -5,8 +5,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, Calendar, ShieldCheck } from 'lucide-react';
 import { format } from 'date-fns';
 
+interface UserData {
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
+  user_role?: string;
+  is_active?: boolean;
+  bio?: string;
+  created_at: string;
+}
+
 interface ReportedUserProps {
-  user: any;
+  user: UserData;
 }
 
 const ReportedUser: React.FC<ReportedUserProps> = ({ user }) => {

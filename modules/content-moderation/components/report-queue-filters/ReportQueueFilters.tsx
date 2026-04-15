@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { REPORT_REASONS } from '@/modules/reports/types';
 import { useQueuePending } from '../queue-pending-context/QueuePendingContext';
 
 const ReportQueueFilters: React.FC = () => {

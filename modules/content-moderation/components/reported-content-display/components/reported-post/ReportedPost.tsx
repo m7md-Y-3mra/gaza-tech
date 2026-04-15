@@ -1,12 +1,31 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, Calendar, Paperclip } from 'lucide-react';
 import { format } from 'date-fns';
 
+interface PostAuthor {
+  first_name?: string;
+  last_name?: string;
+  avatar_url?: string;
+}
+
+interface PostAttachment {
+  file_url: string;
+}
+
+interface PostData {
+  author?: PostAuthor;
+  title?: string;
+  content?: string;
+  created_at: string;
+  attachments?: PostAttachment[];
+}
+
 interface ReportedPostProps {
-  post: any;
+  post: PostData;
 }
 
 const ReportedPost: React.FC<ReportedPostProps> = ({ post }) => {
@@ -41,12 +60,14 @@ const ReportedPost: React.FC<ReportedPostProps> = ({ post }) => {
 
       {post.attachments && post.attachments.length > 0 && (
         <div className="flex flex-wrap gap-2 border-t pt-2">
-          {post.attachments.map((att: any, idx: number) => (
+          {post.attachments.map((att, idx: number) => (
             <div key={idx} className="group relative">
               {att.file_url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                <img
+                <Image
                   src={att.file_url}
                   alt={`Attachment ${idx + 1}`}
+                  width={96}
+                  height={96}
                   className="h-24 w-24 rounded-md border object-cover"
                 />
               ) : (
