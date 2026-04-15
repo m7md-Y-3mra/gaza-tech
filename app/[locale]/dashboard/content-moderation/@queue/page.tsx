@@ -12,7 +12,10 @@ export default async function ReportQueuePage({
   const { reportId: _reportId, ...queueParams } = params;
 
   return (
-    <Suspense key={JSON.stringify(queueParams)} fallback={<QueueContentSkeleton />}>
+    <Suspense
+      key={JSON.stringify(queueParams)}
+      fallback={<QueueContentSkeleton />}
+    >
       <QueueContent params={params} />
     </Suspense>
   );
