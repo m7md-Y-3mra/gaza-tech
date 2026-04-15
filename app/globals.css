@@ -69,83 +69,83 @@
   --radius: 0.625rem;
 
   /* Primary - Brand Blue (Gmail M3) */
-  --primary: #0B57D0;
-  --primary-foreground: #FFFFFF;
+  --primary: #0b57d0;
+  --primary-foreground: #ffffff;
 
   /* Backgrounds & Surfaces */
-  --background: #FFFFFF;
-  --background-alt: #F1F3F4;
-  --foreground: #1F1F1F;
-  --card: #F7F7F7;
-  --card-foreground: #1F1F1F;
-  --popover: #F7F7F7;
-  --popover-foreground: #1F1F1F;
+  --background: #ffffff;
+  --background-alt: #f1f3f4;
+  --foreground: #1f1f1f;
+  --card: #f7f7f7;
+  --card-foreground: #1f1f1f;
+  --popover: #f7f7f7;
+  --popover-foreground: #1f1f1f;
 
   /* Secondary */
-  --secondary: #8E918F;
-  --secondary-foreground: #FFFFFF;
+  --secondary: #8e918f;
+  --secondary-foreground: #ffffff;
 
   /* Accent - soft blue highlight */
-  --accent: #E8F0FE;
-  --accent-foreground: #0B57D0;
+  --accent: #e8f0fe;
+  --accent-foreground: #0b57d0;
 
   /* Muted */
-  --muted: #F1F3F4;
-  --muted-foreground: #5F6368;
+  --muted: #f1f3f4;
+  --muted-foreground: #5f6368;
 
   /* Destructive - error */
-  --destructive: #D93025;
-  --destructive-foreground: #FFFFFF;
+  --destructive: #d93025;
+  --destructive-foreground: #ffffff;
 
   /* Success */
-  --success: #C4EECE;
-  --success-foreground: #1E8E3E;
+  --success: #c4eece;
+  --success-foreground: #1e8e3e;
 
   /* Info - maps to primary soft */
-  --info: #E8F0FE;
-  --info-foreground: #0B57D0;
+  --info: #e8f0fe;
+  --info-foreground: #0b57d0;
 
   /* Warning */
-  --warning: #FEF7E0;
-  --warning-foreground: #EA8600;
+  --warning: #fef7e0;
+  --warning-foreground: #ea8600;
 
   /* Auth layout gradient */
-  --auth-gradient-from: #FFFFFF;
-  --auth-gradient-via: #F7F7F7;
-  --auth-gradient-to: #F1F3F4;
+  --auth-gradient-from: #ffffff;
+  --auth-gradient-via: #f7f7f7;
+  --auth-gradient-to: #f1f3f4;
 
   /* Circle track for SVG */
-  --circle-track: #E3E3E3;
+  --circle-track: #e3e3e3;
 
   /* Left panel */
-  --left-panel-gradient-to: #0842A0;
-  --left-panel-text-muted: #C2E7FF;
+  --left-panel-gradient-to: #0842a0;
+  --left-panel-text-muted: #c2e7ff;
 
   /* Borders & Inputs */
-  --border: #C4C7C5;
-  --input: #E3E3E3;
-  --ring: #0B57D0;
+  --border: #c4c7c5;
+  --input: #e3e3e3;
+  --ring: #0b57d0;
 
   /* Charts */
-  --chart-1: #D93025;
-  --chart-2: #1E8E3E;
-  --chart-3: #EA8600;
-  --chart-4: #0B57D0;
-  --chart-5: #7B2D8B;
+  --chart-1: #d93025;
+  --chart-2: #1e8e3e;
+  --chart-3: #ea8600;
+  --chart-4: #0b57d0;
+  --chart-5: #7b2d8b;
 
   /* Sidebar */
-  --sidebar: #F7F7F7;
-  --sidebar-foreground: #1F1F1F;
-  --sidebar-primary: #0B57D0;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F1F3F4;
-  --sidebar-accent-foreground: #1F1F1F;
-  --sidebar-border: #C4C7C5;
-  --sidebar-ring: #0B57D0;
+  --sidebar: #f7f7f7;
+  --sidebar-foreground: #1f1f1f;
+  --sidebar-primary: #0b57d0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f3f4;
+  --sidebar-accent-foreground: #1f1f1f;
+  --sidebar-border: #c4c7c5;
+  --sidebar-ring: #0b57d0;
 
   /* Active Filter Badge */
-  --active-filter-background: #E8F0FE;
-  --active-filter-border: #C2E7FF;
+  --active-filter-background: #e8f0fe;
+  --active-filter-border: #c2e7ff;
 
   /* Verification Badge */
   --verification-icon: oklch(0.623 0.214 259.815);
@@ -154,83 +154,83 @@
 
 .dark {
   /* Primary - Adapted for dark backgrounds */
-  --primary: #A8C7FA;
-  --primary-foreground: #1F1F1F;
+  --primary: #a8c7fa;
+  --primary-foreground: #1f1f1f;
 
   /* Backgrounds & Surfaces */
-  --background: #1F1F1F;
+  --background: #1f1f1f;
   --background-alt: #303030;
-  --foreground: #E3E3E3;
-  --card: #2D2D2D;
-  --card-foreground: #E3E3E3;
-  --popover: #2D2D2D;
-  --popover-foreground: #E3E3E3;
+  --foreground: #e3e3e3;
+  --card: #2d2d2d;
+  --card-foreground: #e3e3e3;
+  --popover: #2d2d2d;
+  --popover-foreground: #e3e3e3;
 
   /* Secondary */
   --secondary: #747775;
-  --secondary-foreground: #E3E3E3;
+  --secondary-foreground: #e3e3e3;
 
   /* Accent - dark soft blue */
-  --accent: #1B3A5C;
-  --accent-foreground: #A8C7FA;
+  --accent: #1b3a5c;
+  --accent-foreground: #a8c7fa;
 
   /* Muted */
   --muted: #303030;
-  --muted-foreground: #9AA0A6;
+  --muted-foreground: #9aa0a6;
 
   /* Destructive - error */
-  --destructive: #F28B82;
-  --destructive-foreground: #8C1D18;
+  --destructive: #f28b82;
+  --destructive-foreground: #8c1d18;
 
   /* Success */
-  --success: #0F5223;
-  --success-foreground: #81C995;
+  --success: #0f5223;
+  --success-foreground: #81c995;
 
   /* Info */
-  --info: #1B3A5C;
-  --info-foreground: #A8C7FA;
+  --info: #1b3a5c;
+  --info-foreground: #a8c7fa;
 
   /* Warning */
-  --warning: #7B5800;
-  --warning-foreground: #FDD663;
+  --warning: #7b5800;
+  --warning-foreground: #fdd663;
 
   /* Auth layout gradient */
-  --auth-gradient-from: #2D2D2D;
+  --auth-gradient-from: #2d2d2d;
   --auth-gradient-via: #303030;
-  --auth-gradient-to: #2D2D2D;
+  --auth-gradient-to: #2d2d2d;
 
   /* Circle track for SVG */
   --circle-track: #444746;
 
   /* Left panel */
-  --left-panel-gradient-to: #004A77;
-  --left-panel-text-muted: #A8C7FA;
+  --left-panel-gradient-to: #004a77;
+  --left-panel-text-muted: #a8c7fa;
 
   /* Borders & Inputs */
   --border: #444746;
-  --input: #3C4043;
-  --ring: #A8C7FA;
+  --input: #3c4043;
+  --ring: #a8c7fa;
 
   /* Charts */
-  --chart-1: #F28B82;
-  --chart-2: #81C995;
-  --chart-3: #FDD663;
-  --chart-4: #A8C7FA;
-  --chart-5: #CE93D8;
+  --chart-1: #f28b82;
+  --chart-2: #81c995;
+  --chart-3: #fdd663;
+  --chart-4: #a8c7fa;
+  --chart-5: #ce93d8;
 
   /* Sidebar */
-  --sidebar: #2D2D2D;
-  --sidebar-foreground: #E3E3E3;
-  --sidebar-primary: #A8C7FA;
-  --sidebar-primary-foreground: #1F1F1F;
+  --sidebar: #2d2d2d;
+  --sidebar-foreground: #e3e3e3;
+  --sidebar-primary: #a8c7fa;
+  --sidebar-primary-foreground: #1f1f1f;
   --sidebar-accent: #303030;
-  --sidebar-accent-foreground: #E3E3E3;
+  --sidebar-accent-foreground: #e3e3e3;
   --sidebar-border: #444746;
-  --sidebar-ring: #A8C7FA;
+  --sidebar-ring: #a8c7fa;
 
   /* Active Filter Badge */
-  --active-filter-background: #1B3A5C;
-  --active-filter-border: #004A77;
+  --active-filter-background: #1b3a5c;
+  --active-filter-border: #004a77;
 
   /* Verification Badge */
   --verification-icon: oklch(0.707 0.165 254.624);
