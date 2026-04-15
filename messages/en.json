@@ -657,7 +657,10 @@
   "DashboardSidebar": {
     "backToSite": "Back to site",
     "dashboard": "Dashboard",
-    "contentModeration": "Content Moderation"
+    "statistics": "Statistics",
+    "verificationReview": "Verification Review",
+    "contentModeration": "Content Moderation",
+    "userManagement": "User Management"
   },
   "Chat": {
     "title": "AI Assistant",
@@ -1010,6 +1013,34 @@
         "success": "Profile updated successfully.",
         "error": "Failed to update profile."
       }
+    }
+  },
+  "Dashboard": {
+    "title": "Admin Dashboard",
+    "summary": {
+      "totalUsers": "Total Users",
+      "newListings": "New Listings",
+      "newPosts": "New Posts",
+      "pendingReports": "Pending Reports",
+      "pendingVerifications": "Pending Verifications",
+      "vsPrevious": "vs last period"
+    },
+    "charts": {
+      "growthTrends": "Growth Trends",
+      "newUsers": "Daily New Users",
+      "listingGrowth": "Listing Growth",
+      "noData": "No data available"
+    },
+    "filters": {
+      "last7Days": "Last 7 Days",
+      "last30Days": "Last 30 Days",
+      "last90Days": "Last 90 Days",
+      "timeRange": "Time Range"
+    },
+    "export": {
+      "button": "Export Data",
+      "success": "Export started successfully",
+      "error": "Failed to export data"
     }
   }
 }
