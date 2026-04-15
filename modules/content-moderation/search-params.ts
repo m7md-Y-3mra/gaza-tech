@@ -15,6 +15,7 @@ export const reportQueueSearchParams = {
   contentType: parseAsString.withDefault('all'),
   reason: parseAsString.withDefault('all'),
   status: parseAsString.withDefault('pending'),
+  reportId: parseAsString.withDefault(''),
 };
 
 export const reportQueueSearchParamsCache = createSearchParamsCache(

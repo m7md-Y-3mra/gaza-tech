@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS } from 'date-fns/locale';
@@ -38,10 +38,8 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const ReportQueueList: React.FC<ReportQueueListProps> = ({ items }) => {
-  const params = useParams();
   const searchParams = useSearchParams();
-  const selectedId = params.id as string;
-  const queryString = searchParams.toString();
+  const selectedId = searchParams.get('reportId') ?? '';
 
   if (items.length === 0) {
     return (
@@ -61,7 +59,7 @@ const ReportQueueList: React.FC<ReportQueueListProps> = ({ items }) => {
         return (
           <Link
             key={item.report_id}
-            href={`/dashboard/content-moderation/${item.report_id}${queryString ? `?${queryString}` : ''}`}
+            href={`/dashboard/content-moderation?${new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), reportId: item.report_id }).toString()}`}
             className={cn(
               'hover:bg-muted/50 flex flex-col gap-1 p-4 transition-colors',
               isSelected && 'bg-muted'
