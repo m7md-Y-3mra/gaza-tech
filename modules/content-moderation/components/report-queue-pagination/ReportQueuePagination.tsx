@@ -11,6 +11,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { QUEUE_PAGE_SIZE } from '../../search-params';
+import { useQueuePending } from '../queue-pending-context/QueuePendingContext';
 
 interface ReportQueuePaginationProps {
   totalCount: number;
@@ -19,11 +20,14 @@ interface ReportQueuePaginationProps {
 const ReportQueuePagination: React.FC<ReportQueuePaginationProps> = ({
   totalCount,
 }) => {
+  const { startTransition } = useQueuePending();
+
   const [page, setPage] = useQueryState('page', {
     parse: (value) => parseInt(value) || 1,
     serialize: (value) => value.toString(),
     defaultValue: 1,
     shallow: false,
+    startTransition,
   });
 
   const totalPages = Math.ceil(totalCount / QUEUE_PAGE_SIZE);

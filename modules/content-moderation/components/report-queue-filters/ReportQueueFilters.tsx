@@ -10,16 +10,21 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { REPORT_REASONS } from '@/modules/reports/types';
+import { useQueuePending } from '../queue-pending-context/QueuePendingContext';
 
 const ReportQueueFilters: React.FC = () => {
+  const { startTransition } = useQueuePending();
+
   const [contentType, setContentType] = useQueryState('contentType', {
     defaultValue: 'all',
     shallow: false,
+    startTransition,
   });
 
   const [status, setStatus] = useQueryState('status', {
     defaultValue: 'pending',
     shallow: false,
+    startTransition,
   });
 
   return (

@@ -4,12 +4,16 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import { Input } from '@/components/ui/input';
+import { useQueuePending } from '../queue-pending-context/QueuePendingContext';
 
 const ReportQueueSearch: React.FC = () => {
+  const { startTransition } = useQueuePending();
+
   const [query, setQuery] = useQueryState('query', {
     defaultValue: '',
     shallow: false,
     throttleMs: 500,
+    startTransition,
   });
 
   return (
