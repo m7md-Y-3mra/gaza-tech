@@ -1010,5 +1010,33 @@
         "error": "فشل تحديث الملف الشخصي."
       }
     }
+  },
+  "Dashboard": {
+    "title": "لوحة تحكم المسؤول",
+    "summary": {
+      "totalUsers": "إجمالي المستخدمين",
+      "newListings": "إعلانات جديدة",
+      "newPosts": "منشورات جديدة",
+      "pendingReports": "بلاغات معلقة",
+      "pendingVerifications": "طلبات توثيق معلقة",
+      "vsPrevious": "مقارنة بالفترة السابقة"
+    },
+    "charts": {
+      "growthTrends": "اتجاهات النمو",
+      "newUsers": "المستخدمون الجدد يومياً",
+      "listingGrowth": "نمو الإعلانات",
+      "noData": "لا توجد بيانات متاحة"
+    },
+    "filters": {
+      "last7Days": "آخر ٧ أيام",
+      "last30Days": "آخر ٣٠ يوماً",
+      "last90Days": "آخر ٩٠ يوماً",
+      "timeRange": "النطاق الزمني"
+    },
+    "export": {
+      "button": "تصدير البيانات",
+      "success": "بدأ التصدير بنجاح",
+      "error": "فشل تصدير البيانات"
+    }
   }
 }
