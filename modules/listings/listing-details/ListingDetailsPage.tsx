@@ -58,6 +58,7 @@ const ListingDetailsPage = async ({ id }: ListingDetailsPageProps) => {
               listingId={listing.listing_id}
               title={listing.title}
               productCondition={listing.product_condition}
+              sellerId={listing.seller_id}
             />
             <ProductDescription description={listing.description} />
             <Specifications specifications={specifications} />

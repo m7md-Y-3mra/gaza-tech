@@ -7,6 +7,7 @@ import { formatDistanceToNow, format } from 'date-fns';
 import { ar, enUS } from 'date-fns/locale';
 
 import { cn } from '@/lib/utils';
+import { ReportButton } from '@/modules/reports/components';
 import type { FeedPost, PostCategory } from '@/modules/community/types';
 import {
   CATEGORY_COLOR_MAP,
@@ -106,15 +107,23 @@ export function PostDetailHeader({ post }: PostDetailHeaderProps) {
           </div>
         </div>
 
-        <span
-          className={cn(
-            'rounded-full px-2.5 py-0.5 text-xs font-medium',
-            categoryColors.bg,
-            categoryColors.text
-          )}
-        >
-          {t(`categories.${post.post_category}`)}
-        </span>
+        <div className="flex items-center gap-2">
+          <ReportButton
+            contentType="post"
+            contentId={post.post_id}
+            contentOwnerId={post.author.id || ''}
+            size="sm"
+          />
+          <span
+            className={cn(
+              'rounded-full px-2.5 py-0.5 text-xs font-medium',
+              categoryColors.bg,
+              categoryColors.text
+            )}
+          >
+            {t(`categories.${post.post_category}`)}
+          </span>
+        </div>
       </div>
     </div>
   );

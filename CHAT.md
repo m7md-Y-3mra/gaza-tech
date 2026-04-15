@@ -1,889 +1,726 @@
-# Community Feeds Page — Spec Kit Implementation Plan
+# Content Moderation & Reporting System — Full Spec Kit Plan
 
-## Context
-
-**Goal:** Build the community feeds page with all interactive features (infinite scroll, likes, bookmarks, comments, share, profile integration, and home page connection).
-
-**Stack:** Next.js 16, React 19, Supabase, react-hook-form + zod v4, next-intl, Tailwind CSS 4, shadcn/ui (radix), sonner, lucide-react, react-intersection-observer, nuqs.
-
-**What Already Exists:**
-
-- `modules/community/` — create/update post form, actions, queries, types, schema (all implemented)
-- `app/[locale]/(main)/community/create/page.tsx` and `community/[postId]/edit/page.tsx` routes
-- `components/file-upload/` — shared reusable upload component (already extracted)
-- Listings infinite scroll in `modules/listings/home/components/load-more/LoadMore.tsx`
-- Bookmark optimistic update pattern in `modules/listings/.../bookmark-status/hooks/useBookmarkStatus.ts`
-- Profile tabs in `modules/user/profile/components/profile-tabs/`
-
-**What Doesn't Exist Yet:**
-
-- Community feed page (`app/[locale]/(main)/community/page.tsx`)
-- Post card component
-- Like/Bookmark/Share/Comment functionality for posts
-- Post detail modal with comments
-- Shared infinite scroll hook
-- Community posts in profile
-- Home page with mixed content
+**Project**: Gaza Tech Market
+**Created**: 2026-04-12
+**Status**: Draft
+**Input**: User description: "Create a content moderation system with report/flag functionality on listings, posts, comments, replies, and user profiles, plus a dashboard moderator review panel."
 
 ---
 
-## Database Schema Reference (from Supabase)
+## Table of Contents
 
-### `community_posts`
-
-| Column           | Type            | Default              | Check                                          |
-| ---------------- | --------------- | -------------------- | ---------------------------------------------- |
-| `post_id`        | uuid PK         | `uuid_generate_v4()` | —                                              |
-| `author_id`      | uuid FK → users | —                    | —                                              |
-| `title`          | text            | —                    | —                                              |
-| `content`        | text            | —                    | —                                              |
-| `post_category`  | text            | `'questions'`        | `questions`, `tips`, `news`, `troubleshooting` |
-| `content_status` | text            | `'draft'`            | `draft`, `published`, `removed`                |
-| `published_at`   | timestamptz     | nullable             | —                                              |
-| `created_at`     | timestamptz     | `now()`              | —                                              |
-| `updated_at`     | timestamptz     | `now()`              | —                                              |
-
-### `community_posts_likes`
-
-| Column       | Type                                     |
-| ------------ | ---------------------------------------- |
-| `user_id`    | uuid PK (composite) FK → users           |
-| `post_id`    | uuid PK (composite) FK → community_posts |
-| `created_at` | timestamptz                              |
-
-### `bookmarked_posts`
-
-| Column       | Type                                     |
-| ------------ | ---------------------------------------- |
-| `user_id`    | uuid PK (composite) FK → users           |
-| `post_id`    | uuid PK (composite) FK → community_posts |
-| `created_at` | timestamptz                              |
-
-### `community_post_comments`
-
-| Column              | Type                      | Notes                         |
-| ------------------- | ------------------------- | ----------------------------- |
-| `comment_id`        | uuid PK                   | auto-generated                |
-| `post_id`           | uuid FK → community_posts | —                             |
-| `author_id`         | uuid FK → users           | —                             |
-| `content`           | text                      | —                             |
-| `parent_comment_id` | uuid FK → self            | nullable (for nested replies) |
-| `is_edited`         | boolean                   | default `false`               |
-| `edited_at`         | timestamptz               | nullable                      |
-| `created_at`        | timestamptz               | `now()`                       |
-| `updated_at`        | timestamptz               | `now()`                       |
-
-### `community_comments_likes`
-
-| Column       | Type                                             |
-| ------------ | ------------------------------------------------ |
-| `user_id`    | uuid PK (composite) FK → users                   |
-| `comment_id` | uuid PK (composite) FK → community_post_comments |
-| `created_at` | timestamptz                                      |
-
-### `community_posts_attachments`
-
-| Column          | Type                      |
-| --------------- | ------------------------- |
-| `attachment_id` | uuid PK                   |
-| `post_id`       | uuid FK → community_posts |
-| `file_url`      | text                      |
-| `created_at`    | timestamptz               |
+1. [Overview & Architecture](#overview--architecture)
+2. [Existing Infrastructure Analysis](#existing-infrastructure-analysis)
+3. [Phase Breakdown (Spec Kit)](#phase-breakdown-spec-kit)
+4. [Phase 1 — Database & Report Submission](#phase-1--012-report-submission-backend)
+5. [Phase 2 — Report Flag UI (User-Facing)](#phase-2--013-report-flag-ui)
+6. [Phase 3 — Content Moderation Dashboard](#phase-3--014-content-moderation-dashboard)
+7. [Phase 4 — Moderation Actions & Enforcement](#phase-4--015-moderation-actions--enforcement)
+8. [Phase 5 — Notifications & Polish](#phase-5--016-notifications--polish)
 
 ---
 
-## ✅ Confirmed: `add_comment` Database Function
+## Overview & Architecture
 
-The `add_comment` function exists in Supabase as an RPC function. It uses `auth.uid()` internally (no author param needed). Usage:
+### What We're Building
+
+A two-sided content moderation system:
+
+**User side** — Any authenticated user can flag/report content (listings, posts, comments/replies, user profiles) via a bottom-sheet modal with predefined reasons and optional description. Bilingual (EN/AR).
+
+**Admin side** — A new dashboard section (`/dashboard/content-moderation`) where admins/moderators review incoming reports, view reported content in context, and take actions (dismiss, warn, hide content, ban user). Follows the same parallel-slot layout pattern used in `/dashboard/verification-review`.
+
+### Report Reasons (from screenshots)
+
+| Key             | English               | Arabic         |
+| --------------- | --------------------- | -------------- |
+| `spam`          | Spam                  | محتوى مزعج     |
+| `inappropriate` | Inappropriate Content | محتوى غير لائق |
+| `harassment`    | Harassment            | تحرش           |
+| `misleading`    | Misleading            | مضلل           |
+| `fraud`         | Fraud / Scam          | احتيال         |
+| `hate_speech`   | Hate Speech           | خطاب كراهية    |
+| `other`         | Other                 | أخرى           |
+
+### Reportable Content Types
+
+| Type    | Target Table              | FK Column in `reports` |
+| ------- | ------------------------- | ---------------------- |
+| Listing | `marketplace_listings`    | `reported_listing_id`  |
+| Post    | `community_posts`         | `reported_post_id`     |
+| Comment | `community_post_comments` | `reported_comment_id`  |
+| User    | `users`                   | `reported_user_id`     |
+
+> **Note**: Replies are comments with a `parent_comment_id` — they use the same `reported_comment_id` FK.
+
+---
+
+## Existing Infrastructure Analysis
+
+### `reports` Table (Already Exists)
+
+The `reports` table is already defined in the Supabase schema with all the columns we need:
+
+```
+reports
+├── report_id          (uuid, PK)
+├── reporter_id        (uuid, FK → users.user_id)
+├── reported_listing_id (uuid?, FK → marketplace_listings)
+├── reported_post_id    (uuid?, FK → community_posts)
+├── reported_comment_id (uuid?, FK → community_post_comments)
+├── reported_user_id    (uuid?, FK → users)
+├── reason             (text, required)
+├── description        (text?, optional details)
+├── report_status      (text?, default 'pending')
+├── action_taken       (text?)
+├── resolution_notes   (text?)
+├── reviewed_by        (uuid?, FK → users)
+├── reviewed_at        (timestamp?)
+├── created_at         (timestamp)
+└── updated_at         (timestamp)
+```
+
+### Existing Patterns to Follow
+
+| Pattern                        | Reference File                                                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------------- |
+| Server actions + errorHandler  | `modules/verification-review/actions.ts`                                                    |
+| Query pattern (requireRole)    | `modules/verification-review/queries.ts`                                                    |
+| Parallel-slot dashboard layout | `app/[locale]/dashboard/verification-review/layout.tsx`                                     |
+| Queue list + pagination        | `modules/verification-review/components/queue-list/`                                        |
+| Search params (nuqs)           | `modules/verification-review/search-params.ts`                                              |
+| Dashboard sidebar items        | `modules/dashboard/components/dashboard-sidebar/`                                           |
+| RBAC config                    | `config/rbac.ts` — dashboard routes require `['admin', 'moderator']`                        |
+| Type derivation from DB        | `modules/verification-review/types/index.ts`                                                |
+| i18n bilingual keys            | `messages/en.json` / `messages/ar.json`                                                     |
+| `content_status` field         | `marketplace_listings` and `community_posts` both have it (`draft`, `published`, `removed`) |
+
+### Key Observations
+
+- The `reports` table already has FKs for all four content types — **no migration needed for the base table**.
+- `content_status` already exists on `marketplace_listings` and `community_posts` — we can set it to `'removed'` for hiding content.
+- `users.is_active` and `users.ban_reason` / `users.banned_expires_at` already exist for user bans.
+- `community_post_comments.is_deleted` already exists for soft-deleting comments.
+- The RBAC system already gates `/dashboard/*` to `['admin', 'moderator']`.
+
+---
+
+## Phase Breakdown (Spec Kit)
+
+Each phase maps to a Spec Kit spec folder (`specs/012-*`, `013-*`, etc.). Phases are designed so each can be independently implemented and tested.
+
+| Phase | Spec ID | Name                             | Depends On | Deliverable                                                   |
+| ----- | ------- | -------------------------------- | ---------- | ------------------------------------------------------------- |
+| 1     | `012`   | Report Submission Backend        | —          | Server actions, queries, Zod schema, RLS policies             |
+| 2     | `013`   | Report Flag UI                   | Phase 1    | Report modal component, flag buttons in all content types     |
+| 3     | `014`   | Content Moderation Dashboard     | Phase 1    | Dashboard parallel-slot page, queue, display, filters         |
+| 4     | `015`   | Moderation Actions & Enforcement | Phase 3    | Action buttons, content hiding, user warnings/bans            |
+| 5     | `016`   | Notifications & Polish           | Phase 4    | Email notifications, report count badges, duplicate detection |
+
+---
+
+## Phase 1 — `012-report-submission-backend`
+
+**Feature Branch**: `012-report-submission-backend`
+**Goal**: Backend infrastructure to accept and store reports from any authenticated user.
+
+### User Story 1 — Submit a Report (Priority: P1)
+
+An authenticated user encounters problematic content (a listing, post, comment, or user profile). They submit a report by selecting a reason from a predefined list and optionally adding a text description. The report is saved and they see a success confirmation.
+
+**Why this priority**: Nothing else works without the ability to create reports.
+
+**Independent Test**: Call the server action with valid data and verify a row appears in the `reports` table with correct FKs and `report_status = 'pending'`.
+
+**Acceptance Scenarios**:
+
+1. **Given** an authenticated user, **When** they submit a report with reason `spam` and `reported_post_id = <valid-id>`, **Then** a new row is created in `reports` with `reporter_id` = current user, `report_status = 'pending'`, and the report ID is returned.
+2. **Given** an authenticated user, **When** they submit a report without selecting a reason, **Then** a Zod validation error is returned.
+3. **Given** an authenticated user, **When** they submit a report with a `reported_listing_id` that doesn't exist, **Then** a `CustomError` with code `CONTENT_NOT_FOUND` is returned.
+4. **Given** an unauthenticated visitor, **When** they attempt to submit a report, **Then** the server action fails with an auth error.
+
+### User Story 2 — Prevent Duplicate Reports (Priority: P2)
+
+The system prevents a user from submitting multiple reports against the same piece of content. If they try, they see a message saying they've already reported it.
+
+**Acceptance Scenarios**:
+
+1. **Given** user A has already reported post X, **When** user A tries to report post X again, **Then** a `CustomError` with code `ALREADY_REPORTED` is returned.
+2. **Given** user A has reported post X, **When** user B reports post X, **Then** the report is accepted (different reporter).
+
+### Data Model
+
+No new tables needed. We use the existing `reports` table as-is.
+
+**RLS Policies needed**:
+
+- `INSERT`: Authenticated users can insert rows where `reporter_id = auth.uid()`.
+- `SELECT`: Users can read their own reports (`reporter_id = auth.uid()`). Admins/moderators can read all.
+- `UPDATE`: Only admins/moderators can update (for status changes).
+
+**Zod Schema** (`modules/reports/schema.ts`):
 
 ```ts
-const { data, error } = await supabase.rpc('add_comment', {
-  p_content, // string — comment text
-  p_parent_id, // uuid | null — parent comment id for replies
-  p_post_id, // uuid — the post being commented on
-});
+import { z } from 'zod';
+
+export const REPORT_REASONS = [
+  'spam',
+  'inappropriate',
+  'harassment',
+  'misleading',
+  'fraud',
+  'hate_speech',
+  'other',
+] as const;
+
+export type ReportReason = (typeof REPORT_REASONS)[number];
+
+export const createReportSchema = z
+  .object({
+    reason: z.enum(REPORT_REASONS),
+    description: z.string().max(1000).optional(),
+    reported_listing_id: z.string().uuid().optional(),
+    reported_post_id: z.string().uuid().optional(),
+    reported_comment_id: z.string().uuid().optional(),
+    reported_user_id: z.string().uuid().optional(),
+  })
+  .refine(
+    (data) =>
+      [
+        data.reported_listing_id,
+        data.reported_post_id,
+        data.reported_comment_id,
+        data.reported_user_id,
+      ].filter(Boolean).length === 1,
+    { message: 'Exactly one reported content ID must be provided' }
+  );
 ```
 
-**Action required before Phase 2:** Run `npx supabase gen types` to regenerate `types/supabase.ts` so the `add_comment` function appears in the TypeScript types. No migration needed.
+### Source Code Structure
+
+```
+modules/reports/
+├── types/
+│   └── index.ts           # ReportRow, ReportReason, CreateReportInput
+├── schema.ts              # Zod validation schema
+├── queries.ts             # createReportQuery, checkDuplicateReportQuery
+└── actions.ts             # createReportAction (wrapped with errorHandler)
+```
+
+### Tasks
+
+```
+Phase 1: Setup
+
+- [ ] T001 [P] Create `modules/reports/types/index.ts` — derive types from `Database['public']['Tables']['reports']`, export `ReportRow`, `ReportReason`, `REPORT_REASONS`, `REPORT_STATUSES`
+- [ ] T002 [P] Create `modules/reports/schema.ts` — Zod `createReportSchema` with refine (exactly one FK must be set)
+
+Phase 2: Queries & Actions
+
+- [ ] T003 Create `modules/reports/queries.ts`:
+       - `checkDuplicateReportQuery(reporterId, targetType, targetId)` — returns boolean
+       - `createReportQuery(input: CreateReportInput)` — inserts row, returns report_id
+       - Both gated with `requireAuth()` (not requireRole — any authenticated user)
+- [ ] T004 Create `modules/reports/actions.ts` — wrap queries with `errorHandler()`
+- [ ] T005 Create RLS policies on `reports` table via Supabase migration:
+       - INSERT: `auth.uid() = reporter_id`
+       - SELECT own: `auth.uid() = reporter_id`
+       - SELECT all: `is_moderator_or_admin()`
+       - UPDATE: `is_moderator_or_admin()`
+
+Phase 3: i18n
+
+- [ ] T006 [P] Add translation keys to `messages/en.json` under `Report` namespace:
+       reasons (spam, inappropriate, harassment, misleading, fraud, hate_speech, other),
+       labels (title, subtitle, description placeholder, submit, success, alreadyReported)
+- [ ] T007 [P] Add Arabic translations to `messages/ar.json` under `Report` namespace
+```
 
 ---
 
-## Phases Overview
+## Phase 2 — `013-report-flag-ui`
 
-| Phase | Spec Name                 | Summary                                                                         |
-| ----- | ------------------------- | ------------------------------------------------------------------------------- |
-| 1     | `shared-infinite-scroll`  | Extract infinite scroll logic from listings into a shared reusable hook         |
-| 2     | `community-feed-queries`  | All Supabase queries for the feed: list posts, like, bookmark, comments, delete |
-| 3     | `post-card-component`     | The post card UI with like, bookmark, share, comment count                      |
-| 4     | `community-feed-page`     | The feed page with search, category filters, infinite scroll                    |
-| 5     | `post-detail-modal`       | Modal with full post, comments system (add/edit/delete), like comments          |
-| 6     | `profile-community-tab`   | Add "My Posts" tab in profile with update/delete                                |
-| 7     | `home-page-integration`   | Mixed home page showing recent listings + community posts                       |
-| 8     | `translations-and-polish` | en.json + ar.json keys, RTL testing, edge cases                                 |
+**Feature Branch**: `013-report-flag-ui`
+**Goal**: User-facing report modal and flag buttons integrated into listings, posts, comments, and profiles.
+
+### User Story 1 — Report a Post (Priority: P1)
+
+A user viewing a post sees a flag icon (🚩) in the post header or action bar. They tap it, a bottom-sheet modal slides up showing the report reasons as radio options, an optional description textarea, and a "Submit Report" button. On success, a toast confirms the report was submitted.
+
+**Why this priority**: Posts are the highest-traffic content type and the reference implementation for the modal.
+
+**Independent Test**: Navigate to a post detail, click the flag icon, select "Spam", click Submit. Verify toast appears and report exists in DB.
+
+**Acceptance Scenarios**:
+
+1. **Given** an authenticated user on a post detail page, **When** they click the flag icon, **Then** a report modal slides up with the 7 reason options, a description textarea, and a submit button.
+2. **Given** the report modal is open, **When** the user selects "Harassment" and clicks Submit, **Then** the modal closes, a success toast appears, and a report is created in the DB.
+3. **Given** the user is the post author, **When** they view the post, **Then** the flag icon is NOT shown (users cannot report their own content).
+4. **Given** an unauthenticated visitor, **When** they click the flag icon, **Then** they are redirected to the login page.
+5. **Given** the user already reported this post, **When** they click the flag icon, **Then** the modal shows "You've already reported this" with the submit button disabled.
+6. **Given** Arabic locale, **When** the modal opens, **Then** all text, reason labels, and layout direction are RTL Arabic.
+
+### User Story 2 — Report a Listing (Priority: P1)
+
+Same modal behavior, triggered from the listing detail page. The flag icon appears near the share button in the `ProductGallery` header area.
+
+**Acceptance Scenarios**:
+
+1. **Given** a user on a listing detail page, **When** they click the flag icon, **Then** the report modal opens with `reported_listing_id` pre-set.
+2. **Given** the user is the listing seller, **Then** the flag icon is NOT shown.
+
+### User Story 3 — Report a Comment/Reply (Priority: P2)
+
+The flag option appears in the comment action row (next to the like/reply/edit/delete buttons). For replies, same behavior — they share the `reported_comment_id` FK.
+
+**Acceptance Scenarios**:
+
+1. **Given** a user viewing comments on a post, **When** they click the flag on a comment, **Then** the report modal opens with `reported_comment_id` pre-set.
+2. **Given** a user viewing a nested reply, **When** they click the flag, **Then** `reported_comment_id` is set to the reply's `comment_id`.
+3. **Given** the user is the comment author, **Then** the flag icon is NOT shown.
+
+### User Story 4 — Report a User Profile (Priority: P3)
+
+On the profile page, a "Report User" option appears (three-dot menu or flag icon near the hero section). Only visible when viewing another user's profile.
+
+**Acceptance Scenarios**:
+
+1. **Given** user A viewing user B's profile, **When** they click "Report User", **Then** the modal opens with `reported_user_id = B`.
+2. **Given** user A viewing their own profile, **Then** the report option is NOT shown.
+
+### Source Code Structure
+
+```
+modules/reports/
+├── components/
+│   ├── report-modal/
+│   │   ├── hooks/
+│   │   │   └── useReportModal.ts     # form state, submit logic, duplicate check
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   ├── constant.ts               # REPORT_REASONS array for radio options
+│   │   ├── index.ts
+│   │   ├── ReportModal.tsx           # Sheet/Dialog with radio group + textarea
+│   │   └── ReportModalClient.tsx     # 'use client' wrapper
+│   └── report-button/
+│       ├── types/
+│       │   └── index.ts
+│       ├── index.ts
+│       └── ReportButton.tsx          # Flag icon button that opens the modal
+├── types/
+│   └── index.ts
+├── schema.ts
+├── queries.ts
+└── actions.ts
+```
+
+### Integration Points (where to add ReportButton)
+
+| Content Type | File to Modify                                                                                        | Placement                                                 |
+| ------------ | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Post Card    | `modules/community/components/post-card/PostCard.tsx`                                                 | In action bar, after bookmark button                      |
+| Post Detail  | `modules/community/components/post-detail-modal/components/post-detail-header/PostDetailHeader.tsx`   | Top-right, next to category badge                         |
+| Post Actions | `modules/community/components/post-detail-modal/components/post-detail-actions/PostDetailActions.tsx` | After share button                                        |
+| Comment      | `modules/community/components/comments/components/comment-item/CommentItem.tsx`                       | After existing action buttons (like, reply, edit, delete) |
+| Listing      | `modules/listings/listing-details/components/product-gallery/ProductGallery.tsx`                      | Near share/bookmark buttons                               |
+| Profile      | `modules/user/profile/components/profile-hero/ProfileHero.tsx`                                        | Three-dot menu or flag icon near name                     |
+
+### Tasks
+
+```
+Phase 1: Shared Report Modal Component
+
+- [ ] T001 Create `modules/reports/components/report-modal/types/index.ts` — `ReportModalProps` (contentType, contentId, contentOwnerId)
+- [ ] T002 Create `modules/reports/components/report-modal/constant.ts` — reason options array
+- [ ] T003 Create `modules/reports/components/report-modal/hooks/useReportModal.ts`:
+       - Manages open/close state
+       - Tracks selected reason + description
+       - Calls `createReportAction` on submit
+       - Handles duplicate check, loading, success/error toasts
+- [ ] T004 Create `modules/reports/components/report-modal/ReportModal.tsx`:
+       - Uses Sheet (bottom-sheet) from shadcn/ui
+       - Radio group for reasons (mapped from REPORT_REASONS)
+       - TextArea for optional description
+       - Submit button with loading spinner
+       - All text via useTranslations('Report')
+- [ ] T005 Create `modules/reports/components/report-modal/index.ts`
+
+Phase 2: Report Button Component
+
+- [ ] T006 Create `modules/reports/components/report-button/ReportButton.tsx`:
+       - Renders Flag icon (lucide-react)
+       - Accepts contentType, contentId, contentOwnerId
+       - Hides if currentUser === contentOwnerId
+       - Redirects to login if not authenticated
+       - Opens ReportModal on click
+- [ ] T007 Create barrel exports
+
+Phase 3: Integration — Posts
+
+- [ ] T008 Add ReportButton to `PostCard.tsx` action bar (after bookmark)
+- [ ] T009 Add ReportButton to `PostDetailActions.tsx` (after share)
+- [ ] T010 Add ReportButton to `PostDetailHeader.tsx` (top-right area, visible on post detail page)
+
+Phase 4: Integration — Comments
+
+- [ ] T011 Add ReportButton to `CommentItem.tsx` (after existing action buttons, hidden for own comments)
+
+Phase 5: Integration — Listings
+
+- [ ] T012 Add ReportButton to listing detail page (near share/bookmark in ProductGallery)
+
+Phase 6: Integration — User Profile
+
+- [ ] T013 Add ReportButton to `ProfileHero.tsx` (visible when viewing another user's profile)
+```
 
 ---
 
-## Phase 1 — `shared-infinite-scroll`
+## Phase 3 — `014-content-moderation-dashboard`
 
-**Goal:** Extract the infinite scroll logic from `modules/listings/home/components/load-more/LoadMore.tsx` into a shared, reusable hook so both listings and community can use it.
+**Feature Branch**: `014-content-moderation-dashboard`
+**Goal**: Dashboard page for admins/moderators to view and manage reports. Follows the same parallel-slot pattern as verification-review.
 
-### What to do
+### User Story 1 — Browse Report Queue (Priority: P1)
 
-1. **Create `hooks/useInfiniteScroll.ts`** (shared hook):
+A moderator navigates to `/dashboard/content-moderation`. They see a three-panel layout: a report queue list on the left, the reported content preview in the center, and actions panel on the right. The queue shows pending reports ordered by creation date (oldest first), with report count badges.
 
-```ts
-type UseInfiniteScrollOptions<TItem, TFilters> = {
-  initialHasMore: boolean;
-  filters: TFilters;
-  limit?: number;
-  fetchAction: (params: {
-    filters: TFilters;
-    page: number;
-    limit: number;
-  }) => Promise<{
-    success: boolean;
-    data: { data: TItem[] };
-    message?: string;
-  }>;
-};
+**Why this priority**: Moderators need a way to see what's been reported.
 
-// Returns: { items, showSpinner, error, sentinelRef }
+**Independent Test**: Navigate to `/dashboard/content-moderation`. With reports in the DB, verify the queue populates and clicking a report shows its details.
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator navigates to the content moderation page, **When** there are pending reports, **Then** a list of reports is shown sorted oldest-first, each showing: reporter name, content type icon, reason, and time ago.
+2. **Given** the queue has 25+ reports, **When** the moderator scrolls, **Then** pagination controls appear (same pattern as verification-review).
+3. **Given** no pending reports, **When** the page loads, **Then** an empty state message is shown.
+
+### User Story 2 — Filter & Search Reports (Priority: P2)
+
+Moderators can filter the queue by content type (listing, post, comment, user), by reason, and by status (pending, resolved, dismissed). They can also search by reporter name or reported content title.
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator on the queue page, **When** they select "Posts" filter, **Then** only reports where `reported_post_id IS NOT NULL` are shown.
+2. **Given** a moderator types a search term, **When** results load, **Then** reports matching the reporter's name or reported content are shown.
+
+### User Story 3 — View Reported Content in Context (Priority: P1)
+
+When a moderator clicks a report in the queue, the center panel shows the reported content in full context: the post content, listing details, comment thread, or user profile info. It also shows all other reports against the same content (report history).
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator clicks a post report, **Then** the center panel shows: post title, full content, author info, attachments, and a list of all reports against that post.
+2. **Given** a moderator clicks a comment report, **Then** the center panel shows: the comment text, the parent post title, the comment author, and report history.
+3. **Given** a moderator clicks a user report, **Then** the center panel shows: user profile info (name, avatar, bio, join date, verification status) and all reports against that user.
+
+### Source Code Structure
+
+```
+app/[locale]/dashboard/
+├── content-moderation/
+│   ├── @queue/
+│   │   ├── [id]/
+│   │   │   └── page.tsx              # Selected report highlight
+│   │   ├── layout.tsx
+│   │   ├── loading.tsx
+│   │   └── page.tsx                  # Queue list with filters
+│   ├── @display/
+│   │   ├── [id]/
+│   │   │   ├── error.tsx
+│   │   │   ├── loading.tsx
+│   │   │   └── page.tsx              # Reported content preview
+│   │   ├── default.tsx
+│   │   └── page.tsx
+│   ├── @actions/
+│   │   ├── [id]/
+│   │   │   ├── error.tsx
+│   │   │   ├── loading.tsx
+│   │   │   └── page.tsx              # Action buttons panel
+│   │   ├── default.tsx
+│   │   └── page.tsx
+│   ├── default.tsx
+│   ├── layout.tsx                    # 3-column grid (same as verification-review)
+│   └── page.tsx
+
+modules/content-moderation/
+├── components/
+│   ├── report-queue-list/
+│   │   ├── index.ts
+│   │   └── ReportQueueList.tsx
+│   ├── report-queue-search/
+│   │   ├── index.ts
+│   │   └── ReportQueueSearch.tsx
+│   ├── report-queue-filters/
+│   │   ├── index.ts
+│   │   └── ReportQueueFilters.tsx
+│   ├── report-queue-pagination/
+│   │   ├── index.ts
+│   │   └── ReportQueuePagination.tsx
+│   ├── report-item-row/
+│   │   ├── index.ts
+│   │   └── ReportItemRow.tsx
+│   ├── reported-content-display/
+│   │   ├── components/
+│   │   │   ├── reported-post/
+│   │   │   ├── reported-listing/
+│   │   │   ├── reported-comment/
+│   │   │   └── reported-user/
+│   │   ├── index.ts
+│   │   └── ReportedContentDisplay.tsx
+│   └── report-history/
+│       ├── index.ts
+│       └── ReportHistory.tsx
+├── types/
+│   └── index.ts
+├── queries.ts
+├── actions.ts
+└── search-params.ts
 ```
 
-- Uses `useInView` from `react-intersection-observer` (already installed).
-- Tracks `page` with `useRef`, appends new items to state.
-- Stops when returned items < limit.
-- Returns a `sentinelRef` to attach to the scroll sentinel element.
-- Resets state when `filters` change (via a `key` prop or internal `useEffect`).
+### Tasks
 
-2. **Create `components/infinite-scroll-sentinel/InfiniteScrollSentinel.tsx`** — a simple component that renders skeleton placeholders while loading. Accepts `skeleton` as a render prop so each consumer provides its own skeleton.
+```
+Phase 1: Setup & Types
 
-3. **Refactor `modules/listings/home/components/load-more/LoadMore.tsx`** to use `useInfiniteScroll` internally. The component itself stays the same from the outside (same props), but internally delegates to the shared hook.
+- [ ] T001 Create `modules/content-moderation/types/index.ts`:
+       - `ReportQueueItem` (slim type for list: report_id, reason, content_type, reporter name, created_at, status)
+       - `ReportDetail` (full report + joined reported content + reporter info)
+       - `REPORT_STATUSES`, `CONTENT_TYPES` constants
+- [ ] T002 Create `modules/content-moderation/search-params.ts`:
+       - nuqs parsers for query, page, contentType filter, reason filter, status filter
+- [ ] T003 Add "Content Moderation" item to `DashboardSidebar.tsx` with `Flag` icon from lucide-react
 
-4. **Verify** listings infinite scroll works identically after refactor.
+Phase 2: Queries & Actions
 
-### Spec Acceptance Criteria
+- [ ] T004 Create `modules/content-moderation/queries.ts`:
+       - `getReportQueueQuery({ query, page, contentType, reason, status })` — paginated, filterable
+       - `getReportByIdQuery(reportId)` — full detail with joined content + reporter
+       - `getReportHistoryForContentQuery(contentType, contentId)` — all reports for same content
+       - All gated with `requireRole(['admin', 'moderator'])`
+- [ ] T005 Create `modules/content-moderation/actions.ts` — wrap with errorHandler
 
-- `hooks/useInfiniteScroll.ts` is fully typed and generic
-- Listings `LoadMore` uses it with zero behavioral change
-- The hook handles: loading, error, no-more-items, filter changes
-- The sentinel component accepts a custom skeleton via render prop
+Phase 3: Route Pages (Parallel Slots)
+
+- [ ] T006 Create `app/[locale]/dashboard/content-moderation/layout.tsx` — 3-column grid
+- [ ] T007 Create `app/[locale]/dashboard/content-moderation/page.tsx` — returns null
+- [ ] T008 Create `app/[locale]/dashboard/content-moderation/default.tsx`
+- [ ] T009 [P] Create @queue slot: page.tsx (list), [id]/page.tsx (highlight), layout.tsx, loading.tsx
+- [ ] T010 [P] Create @display slot: page.tsx (empty), [id]/page.tsx (content preview), default.tsx, loading.tsx, error.tsx
+- [ ] T011 [P] Create @actions slot: page.tsx (empty), [id]/page.tsx (action panel), default.tsx, loading.tsx, error.tsx
+
+Phase 4: Queue Components
+
+- [ ] T012 Create `ReportQueueList.tsx` — maps reports to ReportItemRow
+- [ ] T013 Create `ReportItemRow.tsx` — shows content type icon, reason badge, reporter name, time ago
+- [ ] T014 Create `ReportQueueSearch.tsx` — search input with nuqs
+- [ ] T015 Create `ReportQueueFilters.tsx` — content type + reason + status dropdowns
+- [ ] T016 Create `ReportQueuePagination.tsx` — page controls
+
+Phase 5: Display Components
+
+- [ ] T017 Create `ReportedContentDisplay.tsx` — switches on content type, renders sub-component
+- [ ] T018 [P] Create `ReportedPost.tsx` — shows post title, content, author, attachments
+- [ ] T019 [P] Create `ReportedListing.tsx` — shows listing title, images, price, seller
+- [ ] T020 [P] Create `ReportedComment.tsx` — shows comment content, parent post, author
+- [ ] T021 [P] Create `ReportedUser.tsx` — shows user profile info
+- [ ] T022 Create `ReportHistory.tsx` — list of all reports against the same content
+
+Phase 6: i18n
+
+- [ ] T023 [P] Add EN translations for `ContentModeration` namespace
+- [ ] T024 [P] Add AR translations for `ContentModeration` namespace
+```
 
 ---
 
-## Phase 2 — `community-feed-queries`
+## Phase 4 — `015-moderation-actions--enforcement`
 
-**Goal:** All Supabase queries and server actions needed for the community feed — fetching posts, toggling like, toggling bookmark, comments CRUD, deleting posts.
+**Feature Branch**: `015-moderation-actions-enforcement`
+**Goal**: Enable moderators to take action on reports — dismiss, hide content, warn users, or ban users.
 
-### What to do
+### User Story 1 — Dismiss a Report (Priority: P1)
 
-#### 2.1 — Prerequisites
+A moderator reviews a report and determines it's not valid. They click "Dismiss" and optionally add resolution notes. The report status changes to `'dismissed'`.
 
-Before starting, run `npx supabase gen types` to regenerate `types/supabase.ts`. This ensures the `add_comment` RPC function and any recent schema changes are reflected in the TypeScript types.
+**Acceptance Scenarios**:
 
-#### 2.2 — Add to `modules/community/queries.ts`
+1. **Given** a moderator viewing a pending report, **When** they click Dismiss, **Then** `report_status = 'dismissed'`, `reviewed_by = moderator.id`, `reviewed_at = now()`.
+2. **Given** a moderator dismisses with notes, **Then** `resolution_notes` is saved.
 
-Add these query functions:
+### User Story 2 — Hide/Remove Content (Priority: P1)
 
-| Function                                              | Description                                                                                                                                                                                                    |
-| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `getCommunityPostsQuery({ filters, page, limit })`    | Fetch paginated published posts with author info (first_name, last_name, avatar_url), like count, comment count, bookmark status for current user, like status for current user. Order by `published_at` desc. |
-| `togglePostLikeQuery(postId)`                         | Check if liked → delete, else → insert into `community_posts_likes`. Return `{ isLiked: boolean, likeCount: number }`.                                                                                         |
-| `togglePostBookmarkQuery(postId)`                     | Same pattern as `toggleBookmarkQuery` for listings but using `bookmarked_posts` table. Return `{ isBookmarked: boolean }`.                                                                                     |
-| `getPostCommentsQuery(postId)`                        | Fetch all comments for a post with author info and like count. Include `parent_comment_id` for threading. Order by `created_at` asc.                                                                           |
-| `addCommentQuery(postId, content, parentId?)`         | Use `.rpc('add_comment', { p_post_id, p_content, p_parent_id })` — no author param needed, the DB function uses `auth.uid()` internally. Return the new comment with author info by fetching it after insert.  |
-| `updateCommentQuery(commentId, content)`              | Update `content`, set `is_edited = true`, `edited_at = now()`. Auth check: only author can update.                                                                                                             |
-| `deleteCommentQuery(commentId)`                       | Delete comment. Auth check: only author can delete.                                                                                                                                                            |
-| `toggleCommentLikeQuery(commentId)`                   | Toggle like on a comment in `community_comments_likes`. Return `{ isLiked: boolean, likeCount: number }`.                                                                                                      |
-| `deleteCommunityPostQuery(postId)`                    | Delete post + attachments. Auth check: only author. Also delete attachments from storage bucket.                                                                                                               |
-| `getUserCommunityPostsQuery({ userId, page, limit })` | Paginated posts by a specific user (for profile tab).                                                                                                                                                          |
-| `getPostDetailQuery(postId)`                          | Full post detail with author, attachments, like/bookmark/comment counts, current user's like/bookmark status.                                                                                                  |
+A moderator decides the reported content violates guidelines. They click "Remove Content":
 
-#### 2.3 — The `getCommunityPostsQuery` select shape
+- **Posts**: `content_status` → `'removed'`
+- **Listings**: `content_status` → `'removed'`
+- **Comments**: `is_deleted` → `true`, `content` → `'[Removed by moderator]'`
 
-```ts
-const { data, error, count } = await client
-  .from('community_posts')
-  .select(
-    `
-    post_id, title, content, post_category, published_at, created_at,
-    users!community_posts_author_id_fkey (
-      user_id, first_name, last_name, avatar_url
-    ),
-    community_posts_attachments ( attachment_id, file_url ),
-    community_posts_likes ( user_id ),
-    community_post_comments ( comment_id ),
-    bookmarked_posts ( user_id )
-  `,
-    { count: 'exact' }
-  )
-  .eq('content_status', 'published')
-  .order('published_at', { ascending: false })
-  .range(from, to);
+The report status changes to `'resolved'` with `action_taken = 'content_removed'`.
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator viewing a valid post report, **When** they click "Remove Content", **Then** the post's `content_status` is set to `'removed'` and the report is resolved.
+2. **Given** a removed post, **When** any user tries to view it, **Then** they see a "Content has been removed" message or 404.
+3. **Given** a moderator viewing a comment report, **When** they remove it, **Then** `is_deleted = true` and the comment shows `[Removed by moderator]`.
+
+### User Story 3 — Warn a User (Priority: P2)
+
+A moderator can send a warning to the content author. This creates a notification for the user. The report is resolved with `action_taken = 'user_warned'`.
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator clicks "Warn User", **Then** a notification is created in the `notifications` table for the content author.
+2. **Given** a warning is sent, **Then** the report is resolved with `action_taken = 'user_warned'`.
+
+### User Story 4 — Ban a User (Priority: P2)
+
+For severe violations, a moderator can ban the reported user. This sets `users.is_active = false` and populates `ban_reason` and optionally `banned_expires_at` (for temporary bans).
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator clicks "Ban User", **When** they select "Permanent", **Then** `is_active = false`, `ban_reason` is set, `banned_expires_at = null`.
+2. **Given** a moderator selects "Temporary (7 days)", **Then** `banned_expires_at` = now + 7 days.
+3. **Given** a banned user, **When** they try to log in, **Then** they see a "Your account has been suspended" message with the reason.
+
+### Source Code Structure
+
+```
+modules/content-moderation/
+├── components/
+│   ├── action-buttons/
+│   │   ├── index.ts
+│   │   └── ActionButtons.tsx         # Dismiss, Remove, Warn, Ban buttons
+│   ├── resolution-notes/
+│   │   ├── index.ts
+│   │   └── ResolutionNotes.tsx       # Textarea for moderator notes
+│   └── ban-dialog/
+│       ├── hooks/
+│       │   └── useBanDialog.ts
+│       ├── index.ts
+│       └── BanDialog.tsx             # Ban type selection (permanent/temporary) + reason
+├── queries.ts                        # Add: resolveReportQuery, hideContentQuery, warnUserQuery, banUserQuery
+└── actions.ts                        # Add: wrapped action functions
 ```
 
-Then flatten into a `CommunityPostCardItem` type:
+### Tasks
 
-```ts
-export type CommunityPostCardItem = {
-  post_id: string;
-  title: string;
-  content: string;
-  post_category: PostCategory;
-  published_at: string;
-  created_at: string;
-  author: {
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    avatar_url: string | null;
-  };
-  attachments: { attachment_id: string; file_url: string }[];
-  like_count: number;
-  comment_count: number;
-  is_liked: boolean; // current user liked?
-  is_bookmarked: boolean; // current user bookmarked?
-};
 ```
+Phase 1: Resolve/Dismiss Queries
 
-#### 2.4 — Add to `modules/community/actions.ts`
+- [ ] T001 Add `resolveReportQuery` to `modules/content-moderation/queries.ts`:
+       - Updates report_status, action_taken, resolution_notes, reviewed_by, reviewed_at
+       - Gated with requireRole(['admin', 'moderator'])
+- [ ] T002 Add `dismissReportQuery` — same as resolve but status = 'dismissed'
 
-Wrap all new query functions with `errorHandler()`:
+Phase 2: Content Removal Queries
 
-- `getCommunityPostsAction`
-- `togglePostLikeAction` (revalidate `/community`)
-- `togglePostBookmarkAction` (revalidate `/community`)
-- `getPostCommentsAction`
-- `addCommentAction` (revalidate relevant post)
-- `updateCommentAction`
-- `deleteCommentAction`
-- `toggleCommentLikeAction`
-- `deleteCommunityPostAction` (revalidate `/community` and profile)
-- `getUserCommunityPostsAction`
-- `getPostDetailAction`
+- [ ] T003 Add `hidePostQuery` — sets `content_status = 'removed'` on community_posts
+- [ ] T004 Add `hideListingQuery` — sets `content_status = 'removed'` on marketplace_listings
+- [ ] T005 Add `hideCommentQuery` — sets `is_deleted = true`, content = '[Removed by moderator]'
+- [ ] T006 Wrap all in errorHandler in actions.ts
 
-### Spec Acceptance Criteria
+Phase 3: User Actions
 
-- All queries use `authHandler()` for auth-required operations
-- All actions wrapped with `errorHandler()`
-- `getCommunityPostsQuery` returns flattened `CommunityPostCardItem[]` with counts computed from relation arrays (`.length`)
-- Like/Bookmark toggles are atomic (check then insert/delete)
-- `addCommentQuery` calls the `add_comment` RPC with `{ p_post_id, p_content, p_parent_id }`
-- Comment update/delete has author ownership check
-- Post delete also cleans up storage attachments
+- [ ] T007 Add `warnUserQuery` — creates notification + resolves report
+- [ ] T008 Add `banUserQuery` — sets `is_active = false`, `ban_reason`, `banned_expires_at`
+- [ ] T009 Create `BanDialog.tsx` — permanent/temporary selector, reason input, confirmation
+
+Phase 4: Action Panel UI
+
+- [ ] T010 Create `ActionButtons.tsx`:
+       - "Dismiss" (secondary), "Remove Content" (destructive), "Warn User" (warning), "Ban User" (destructive)
+       - Confirmation dialogs using AlertDialog from shadcn
+- [ ] T011 Create `ResolutionNotes.tsx` — textarea for moderator notes
+- [ ] T012 Wire action panel into @actions/[id]/page.tsx
+
+Phase 5: i18n
+
+- [ ] T013 [P] Add EN translations for action buttons, dialogs, confirmations
+- [ ] T014 [P] Add AR translations
+```
 
 ---
 
-## Phase 3 — `post-card-component`
+## Phase 5 — `016-notifications--polish`
 
-**Goal:** Build the `PostCard` component that renders a single community post in the feed — matching the screenshot design.
+**Feature Branch**: `016-notifications-polish`
+**Goal**: Email notifications for moderation actions, report count indicators, and UX polish.
 
-### Target Structure
+### User Story 1 — Notify Content Author of Action (Priority: P1)
+
+When a moderator removes content or warns/bans a user, the affected user receives an in-app notification (via `notifications` table) and optionally an email.
+
+**Acceptance Scenarios**:
+
+1. **Given** a moderator removes a post, **Then** the post author receives a notification: "Your post '[title]' has been removed for violating community guidelines."
+2. **Given** a moderator bans a user, **Then** the user receives a notification with the ban reason.
+
+### User Story 2 — Report Count Badges in Dashboard Sidebar (Priority: P2)
+
+The "Content Moderation" sidebar item shows a badge with the count of pending reports.
+
+**Acceptance Scenarios**:
+
+1. **Given** 5 pending reports, **Then** the sidebar shows "Content Moderation (5)".
+2. **Given** 0 pending reports, **Then** no badge is shown.
+
+### User Story 3 — Bulk Actions (Priority: P3)
+
+Moderators can select multiple reports and dismiss them in bulk.
+
+### Tasks
 
 ```
-modules/community/
-  components/
-    post-card/
-      hooks/
-        usePostActions.ts       ← like, bookmark, share logic
-      types/
-        index.ts
-      PostCard.tsx               ← the card component
-      PostCardSkeleton.tsx       ← loading skeleton
-      index.ts
+- [ ] T001 Create edge function `send-moderation-email` (follows pattern of `send-verification-email`)
+- [ ] T002 Add notification creation to hideContentQuery, warnUserQuery, banUserQuery
+- [ ] T003 Add pending report count query for sidebar badge
+- [ ] T004 Update DashboardSidebar to show badge count
+- [ ] T005 [P] Add bulk dismiss UI (checkboxes on queue items + "Dismiss Selected" button)
+- [ ] T006 [P] Add bulk dismiss query
+- [ ] T007 Add EN/AR translations for notification messages
 ```
-
-### Design Breakdown (from screenshot)
-
-Each card has:
-
-- **Header row:** Author avatar (circle) + author name + relative time (e.g., "منذ 2 ساعات") — right-aligned for RTL
-- **Category badge:** Colored pill badge (سؤال / نصائح / أخبار / حلول المشاكل)
-- **Title:** Bold text
-- **Content preview:** 2 lines of content text, truncated with `...`
-- **Action bar:** Bookmark icon | Share icon | (spacer) | Comment count + icon | Like count + heart icon
-
-### What to do
-
-1. **`PostCard.tsx`:**
-   - Accept `CommunityPostCardItem` + `currentUserId` props.
-   - Author section: `Avatar` component (from radix/shadcn) + name + `date-fns` `formatDistanceToNow` for relative time with locale support (`ar` / `en`).
-   - Category badge: Use shadcn `Badge` with variant colors per category (questions = blue, tips = green, news = orange, troubleshooting = purple).
-   - Content: `line-clamp-2` for truncation.
-   - Actions bar: four actions in a row.
-
-2. **`usePostActions.ts`** hook:
-   - **Like:** Optimistic update. On click: immediately toggle `isLiked` and `likeCount ± 1` in local state. Call `togglePostLikeAction` in background. Revert on failure.
-   - **Bookmark:** Optimistic update. Same pattern as listings `useBookmarkStatus`. On click: toggle `isBookmarked`. Call `togglePostBookmarkAction`. Revert on failure + toast error.
-   - **Share:** Copy post URL (`/community/{postId}`) to clipboard using `navigator.clipboard.writeText()`. Show sonner `toast.success(t('linkCopied'))`. This is the simplest and best UX — no extra component needed, sonner toast is sufficient.
-   - **Comment:** On click: open the post detail modal (Phase 5). This just calls a callback `onOpenComments(postId)`.
-
-3. **`PostCardSkeleton.tsx`:** Skeleton matching the card layout for loading states.
-
-4. **Attachment indicators:** If a post has attachments, show a small paperclip icon + count next to the content preview.
-
-### Spec Acceptance Criteria
-
-- Card matches the screenshot design (RTL-aware, responsive)
-- Like toggle is optimistic with rollback on error
-- Bookmark toggle is optimistic with rollback on error
-- Share copies link and shows toast notification
-- Comment click triggers a callback (modal handled in Phase 5)
-- Relative time uses `date-fns` (already installed) with locale support (en/ar)
-- Category badge has distinct color per category
-- Works in both LTR (en) and RTL (ar) layouts
 
 ---
 
-## Phase 4 — `community-feed-page`
+## Summary: How to Execute with Spec Kit
 
-**Goal:** Build the community feed page with search, category filter tabs, infinite scroll, and a "create post" button.
+For each phase, run the Spec Kit workflow:
 
-### Target Structure
+```bash
+# 1. Create spec branch and write spec
+/speckit.specify <paste the phase description>
 
-```
-app/[locale]/(main)/community/
-  page.tsx                          ← route page
+# 2. Build the technical plan
+/speckit.plan
 
-modules/community/
-  feed/
-    components/
-      category-tabs/
-        CategoryTabs.tsx            ← filter tabs (الكل, أسئلة, نصائح, أخبار, حلول المشاكل)
-        index.ts
-      community-search-bar/
-        CommunitySearchBar.tsx      ← search input
-        index.ts
-      post-feed/
-        PostFeed.tsx                ← server component, initial data fetch
-        PostFeedClient.tsx          ← client component with infinite scroll
-        index.ts
-      create-post-button/
-        CreatePostButton.tsx        ← FAB on mobile, inline button on desktop
-        index.ts
-    search-params.ts                ← nuqs search params (category, search)
-    index.ts
-    CommunityFeedPage.tsx           ← main page component
+# 3. Generate task list
+/speckit.tasks
+
+# 4. Implement tasks
+/speckit.implement
+
+# 5. Review implementation
+/spec-review
 ```
 
-### What to do
-
-1. **`search-params.ts`** — define search params using `nuqs`:
-   - `category`: `parseAsString` (optional, filters by `post_category`)
-   - `search`: `parseAsString` (optional, text search in title/content)
-
-2. **`CommunityFeedPage.tsx`** — main page:
-   - Parse search params.
-   - Render: search bar, category tabs, post feed, create post button.
-   - Page header: "المجتمع" / "Community".
-
-3. **`CategoryTabs.tsx`:**
-   - Horizontal scrollable tabs: All | Questions | Tips | News | Troubleshooting.
-   - Active tab highlighted (filled background per screenshot).
-   - Updates `category` search param via `nuqs` `useQueryState`.
-   - "All" clears the category filter.
-
-4. **`CommunitySearchBar.tsx`:**
-   - Search input with search icon.
-   - Debounced update to `search` search param via `nuqs`.
-   - Same pattern as listings `SearchBar`.
-
-5. **`PostFeed.tsx`** (server component):
-   - Fetch first page of posts via `getCommunityPostsAction({ filters, page: 1 })`.
-   - Pass to `PostFeedClient` along with `initialHasMore`.
-
-6. **`PostFeedClient.tsx`** (client component):
-   - Render initial posts as `PostCard` list.
-   - Use `useInfiniteScroll` (from Phase 1) for loading more.
-   - Empty state: icon + "No posts yet" message + "Create the first post" CTA.
-   - Error state: icon + error message.
-
-7. **`CreatePostButton.tsx`:**
-   - **Desktop:** Place a "Create Post" / "منشور جديد" button in the page header area, right-aligned next to the page title. Use shadcn `Button` with a `Plus` icon. This is the best UX — visible, accessible, consistent with "Create Listing" pattern, doesn't obstruct content.
-   - **Mobile:** Floating Action Button (FAB) at the bottom-right (bottom-left for RTL) — exactly like the screenshot shows with the pen icon + "منشور جديد" label. Fixed position, `z-50`, with shadow. Use `hidden md:flex` for desktop button and `flex md:hidden` for FAB.
-   - Both link to `/community/create`.
-
-8. **Route page** (`app/[locale]/(main)/community/page.tsx`):
-   - Add `generateMetadata` for SEO.
-   - Parse search params, render `CommunityFeedPage`.
-
-9. **Add to navbar:**
-   - Add `{ href: '/community', labelKey: 'community', allowedRoles: ['registered'] }` to `NAV_LINKS` in `components/layout/navbar/constants.ts`.
-   - Add translation keys for "Community" / "المجتمع" in navbar translations.
-
-### Spec Acceptance Criteria
-
-- Feed page renders at `/community` with category filter tabs + search
-- Infinite scroll loads more posts as user scrolls down
-- Category tabs filter posts by `post_category`
-- Search filters posts by title (ilike)
-- Create post button: FAB on mobile, inline on desktop
-- Empty state shown when no posts
-- Page is in the main navbar navigation
-- `generateMetadata` provides proper SEO title/description
-- Works in both en and ar
-
----
-
-## Phase 5 — `post-detail-modal`
-
-**Goal:** When the user clicks the comment icon (or taps the post card), open a modal showing the full post with all comments. Users can add, edit, and delete their own comments — Facebook-style.
-
-### Target Structure
+### Execution Order
 
 ```
-modules/community/
-  components/
-    post-detail-modal/
-      components/
-        comment-item/
-          hooks/
-            useCommentActions.ts    ← edit, delete, like comment
-          CommentItem.tsx           ← single comment with actions
-          index.ts
-        comment-form/
-          hooks/
-            useCommentForm.ts       ← form logic for add/edit
-          CommentForm.tsx           ← input for adding a comment
-          index.ts
-        comment-list/
-          CommentList.tsx           ← list of comments
-          index.ts
-      hooks/
-        usePostDetailModal.ts       ← modal state, fetch comments
-      types/
-        index.ts
-      PostDetailModal.tsx           ← the modal itself
-      index.ts
+Phase 1 (012) ──→ Phase 2 (013) ──→ Phase 3 (014) ──→ Phase 4 (015) ──→ Phase 5 (016)
+   Backend           Flag UI           Dashboard         Actions           Polish
+   ~1 day            ~2 days           ~3 days           ~2 days           ~1 day
 ```
 
-### What to do
-
-1. **Add `dialog.tsx` to `components/ui/`** — install shadcn Dialog component if not present (currently only `alert-dialog.tsx` and `sheet.tsx` exist). The Dialog is better than Sheet for this use case because it's a focused overlay with scroll.
-
-2. **`PostDetailModal.tsx`:**
-   - Uses shadcn `Dialog` (or `Sheet` from bottom on mobile for better UX).
-   - Shows: full post (title, content untruncated, category, author, published_at, attachments as image gallery or file links).
-   - Below the post: comment count + comment list + comment input.
-   - Scrollable content area.
-
-3. **`usePostDetailModal.ts`** hook:
-   - State: `isOpen`, `postId`, `comments[]`, `isLoading`.
-   - On open: fetch comments via `getPostCommentsAction(postId)`.
-   - Exposes: `openModal(postId)`, `closeModal`, `comments`, `addComment`, `updateComment`, `deleteComment`.
-   - Provide this via a Context so the feed page can trigger it from any PostCard.
-
-4. **`CommentItem.tsx`:**
-   - Shows: author avatar + name + relative time + comment content.
-   - If `is_edited`: show "(edited)" / "(معدل)" label next to the time.
-   - If current user is the author: show a three-dot menu (use shadcn `DropdownMenu`) with "Edit" and "Delete" options — Facebook-style.
-   - **Edit:** Inline edit mode — replace the comment text with a textarea pre-filled with current content + Save/Cancel buttons.
-   - **Delete:** Show `AlertDialog` confirmation ("Are you sure you want to delete this comment?" / "هل أنت متأكد من حذف هذا التعليق؟") → call `deleteCommentAction`.
-   - **Like comment:** Small heart button with count. Optimistic update via `toggleCommentLikeAction`.
-
-5. **`CommentForm.tsx`:**
-   - Text input + send button at the bottom of the modal (sticky).
-   - Uses `useForm` with a simple zod schema: `content: z.string().min(1).max(2000)`.
-   - On submit: call `addCommentAction` which uses `.rpc('add_comment', { p_post_id, p_content, p_parent_id })`. No author ID needed — the DB function uses `auth.uid()` internally.
-   - After success: append the new comment to the list optimistically (with current user's info already available client-side).
-   - Also used for **reply** — when replying to a comment, show "Replying to [name]" indicator + pass `parentCommentId`.
-
-6. **`CommentList.tsx`:**
-   - Renders flat list of `CommentItem` components.
-   - If `parent_comment_id` is used: group replies under parent comments with left-indentation (RTL: right-indentation). Keep V1 simple — flat display but show "↪ replying to [name]" prefix. Full threading can be V2.
-   - Empty state: "No comments yet — be the first!" / "لا توجد تعليقات بعد — كن أول من يعلق!".
-
-7. **Context provider — `PostDetailModalProvider`:**
-   - Wrap the community feed page with this provider.
-   - Any `PostCard` can call `openModal(postId)` via context.
-   - The modal component renders at the provider level (portal).
-
-### Comment type for the client:
-
-```ts
-export type CommentItem = {
-  comment_id: string;
-  content: string;
-  parent_comment_id: string | null;
-  is_edited: boolean;
-  edited_at: string | null;
-  created_at: string;
-  author: {
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    avatar_url: string | null;
-  };
-  like_count: number;
-  is_liked: boolean;
-};
-```
-
-### Spec Acceptance Criteria
-
-- Clicking comment icon on PostCard opens the modal with full post + comments
-- Comments load on modal open
-- User can add a comment (calls `add_comment` RPC with `p_post_id`, `p_content`, `p_parent_id`)
-- User can edit their own comment (inline edit with save/cancel)
-- User can delete their own comment (with AlertDialog confirmation)
-- Comment like with optimistic update
-- "(edited)" / "(معدل)" indicator on edited comments
-- Modal scrollable, comment input sticky at bottom
-- Works in en and ar (RTL)
-- Three-dot menu only visible for the comment author
-
----
-
-## Phase 6 — `profile-community-tab`
-
-**Goal:** Add a "My Posts" tab to the user's profile page showing their community posts with edit and delete actions.
-
-### Target Structure
-
-```
-modules/user/profile/components/profile-tabs/
-  profile-posts-tab/
-    types/
-      index.ts
-    ProfilePostsTab.tsx             ← server component
-    ProfilePostsTabClient.tsx       ← client component with list + actions
-    ProfilePostsTabSkeleton.tsx
-    ProfilePostsTabError.tsx
-    index.ts
-```
-
-### What to do
-
-1. **`ProfilePostsTab.tsx`** (server component):
-   - Fetch user's community posts via `getUserCommunityPostsAction({ userId, page, limit })`.
-   - Pass data to `ProfilePostsTabClient`.
-
-2. **`ProfilePostsTabClient.tsx`** (client component):
-   - Renders a list of simplified post cards (title, category badge, content preview, published_at, like/comment counts).
-   - If `isOwner`: show Edit (pencil icon → navigates to `/community/[postId]/edit`) and Delete (trash icon → AlertDialog confirmation → `deleteCommunityPostAction`).
-   - Same delete pattern as `ProfileListingsTabClient` with `deleteListingAction`.
-   - Pagination: use the same profile pagination pattern (nuqs `page` param), not infinite scroll, to stay consistent with the existing profile listings tab.
-
-3. **Update `ProfileTabs.tsx` and `ProfileTabsClient.tsx`:**
-   - Add a third tab: "My Posts" / "منشوراتي".
-   - Pass `postsContent` as a new prop alongside `listingsContent` and `bookmarkedContent`.
-   - The posts tab is visible to everyone viewing the profile (like listings), not just the owner.
-
-4. **Update `ProfileTabsClientProps`:**
-
-   ```ts
-   export type ProfileTabsClientProps = {
-     isOwner: boolean;
-     listingsContent: ReactNode;
-     bookmarkedContent: ReactNode; // owner-only
-     postsContent: ReactNode; // new — visible to all
-   };
-   ```
-
-5. **Update `ProfilePage.tsx`:**
-   - Pass `postsContent` to `ProfileTabs`.
-
-### Spec Acceptance Criteria
-
-- "My Posts" tab appears in profile for all users
-- Owner sees Edit + Delete actions on their posts
-- Delete uses AlertDialog confirmation
-- Edit navigates to `/community/[postId]/edit`
-- Pagination consistent with existing profile tabs pattern
-- Skeleton and error states for the tab
-- Translation keys for "My Posts" / "منشوراتي"
-
----
-
-## Phase 7 — `home-page-integration`
-
-**Goal:** Transform the home page from a listings-only page into a mixed landing page that connects both marketplace and community sections.
-
-### Suggestion for Best Home Page UX
-
-Currently `app/[locale]/(main)/page.tsx` renders `<ListingsPage />` directly. The home page should become a **hub** that gives users a taste of both sections and drives exploration. Recommended layout:
-
-```
-┌──────────────────────────────────────────────────────┐
-│                   Hero / Welcome Banner              │
-│      "Welcome to Gaza Tech Marketplace"              │
-│      (optional — can add later or skip)              │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  📦 Latest Listings                    "View All →"  │
-│  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐       │
-│  │ card   │ │ card   │ │ card   │ │ card   │       │
-│  └────────┘ └────────┘ └────────┘ └────────┘       │
-│                                                      │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  💬 Community Highlights               "View All →"  │
-│  ┌──────────────────────────────────────┐            │
-│  │ post card                            │            │
-│  ├──────────────────────────────────────┤            │
-│  │ post card                            │            │
-│  ├──────────────────────────────────────┤            │
-│  │ post card                            │            │
-│  └──────────────────────────────────────┘            │
-│                                                      │
-└──────────────────────────────────────────────────────┘
-```
-
-**Why this approach:**
-
-- Users immediately see both sections — marketplace and community.
-- "View All" links drive navigation to the full pages.
-- Keeps the home page lightweight (no infinite scroll, no filters — just a preview).
-- Each section loads independently with its own Suspense/ErrorBoundary.
-
-### Target Structure
-
-```
-modules/home/
-  components/
-    latest-listings/
-      LatestListings.tsx            ← server component, fetches 4 latest
-      LatestListingsSkeleton.tsx
-      index.ts
-    community-highlights/
-      CommunityHighlights.tsx       ← server component, fetches 3 latest posts
-      CommunityHighlightsSkeleton.tsx
-      index.ts
-  index.ts
-  HomePage.tsx
-
-app/[locale]/(main)/
-  page.tsx                          ← updated to render HomePage
-```
-
-### What to do
-
-1. **Create `modules/home/HomePage.tsx`:**
-   - Render two sections vertically: "Latest Listings" and "Community Highlights".
-   - Each section has a heading + "View All" / "عرض الكل" link.
-
-2. **`LatestListings.tsx`** (server component):
-   - Fetch 4 most recent published listings via `getListingsAction({ filters: {}, page: 1, limit: 4 })`.
-   - Render using the existing `ListingsGrid` component (already exists, renders listing cards).
-   - "View All" link → `/listings`.
-
-3. **`CommunityHighlights.tsx`** (server component):
-   - Fetch 3 most recent published community posts via `getCommunityPostsAction({ filters: {}, page: 1, limit: 3 })`.
-   - Render as `PostCard` list (same component from Phase 3).
-   - "View All" link → `/community`.
-
-4. **Update `app/[locale]/(main)/page.tsx`:**
-   - Change from rendering `<ListingsPage />` to rendering `<HomePage />`.
-   - The full listings page stays at `/listings` (route already exists at `app/[locale]/(main)/listings/page.tsx`).
-
-5. **Keep `/listings` working** — it already has its own dedicated route, so no changes needed.
-
-### Spec Acceptance Criteria
-
-- Home page shows latest 4 listings + latest 3 community posts
-- Each section has a heading + "View All" link
-- Listings link to `/listings`, community links to `/community`
-- Each section wrapped in its own `Suspense` + `ErrorBoundary` (independent loading)
-- Responsive: stacked on mobile, can be two-column on wide desktop (optional)
-- Translated headings and "View All" text
-
----
-
-## Phase 8 — `translations-and-polish`
-
-**Goal:** Add all translation keys, handle edge cases, RTL testing, and final polish.
-
-### What to do
-
-1. **Add translation keys to `messages/en.json` and `messages/ar.json`:**
-
-   | Namespace              | Keys (examples)                                                                                                                                                                   |
-   | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `Community.Feed`       | `title`, `searchPlaceholder`, `emptyTitle`, `emptyDescription`, `createFirstPost`, `errorTitle`, `errorDescription`                                                               |
-   | `Community.Categories` | `all`, `questions`, `tips`, `news`, `troubleshooting`                                                                                                                             |
-   | `Community.PostCard`   | `likeCount`, `commentCount`, `share`, `linkCopied`, `bookmark`, `bookmarkAdded`, `bookmarkRemoved`, `ago`                                                                         |
-   | `Community.PostDetail` | `comments`, `noComments`, `beFirst`, `addComment`, `commentPlaceholder`, `edit`, `delete`, `deleteConfirm`, `deleteConfirmMessage`, `cancel`, `save`, `edited`, `replyTo`, `send` |
-   | `Community.CreatePost` | `buttonLabel`                                                                                                                                                                     |
-   | `Profile.Tabs`         | `myPosts`                                                                                                                                                                         |
-   | `HomePage`             | `latestListings`, `communityHighlights`, `viewAll`                                                                                                                                |
-   | `Navbar`               | `community`                                                                                                                                                                       |
-
-2. **RTL-specific checks:**
-   - FAB position: bottom-left in RTL, bottom-right in LTR. Use `ltr:right-6 rtl:left-6`.
-   - Action bar icon order mirrors correctly.
-   - Category tabs horizontal scroll direction.
-   - Comment reply indentation: `ltr:ml-8 rtl:mr-8`.
-   - Avatar + name row aligns correctly.
-
-3. **Edge cases:**
-   - **Not logged in:** Hide like/bookmark/add-comment actions. On click, show toast "Please log in" / "يرجى تسجيل الدخول" or redirect to login.
-   - **Post author deleted account:** Show "Deleted User" / "مستخدم محذوف" with default avatar.
-   - **Empty attachments:** Don't render attachment section at all.
-   - **Very long title/content:** Proper truncation with `line-clamp-2` (title) and `line-clamp-2` (content).
-   - **Rapid like/bookmark clicks:** Ignore clicks while `isPending` is true from `useTransition`.
-   - **Delete own post from feed:** Remove the card from the list optimistically.
-   - **Comment count update:** After adding/deleting a comment, update the comment count on the PostCard (via callback from modal to feed).
-
-4. **Accessibility:**
-   - All interactive elements have `aria-label` with translated text.
-   - Modal has proper focus trap (Dialog component handles this).
-   - Comment form: `aria-live="polite"` region for screen reader announcements.
-   - Keyboard navigation: Tab through action buttons, Enter to activate.
-   - Skip to main content link (if not already present).
-
-5. **Performance considerations:**
-   - `PostCard` should be wrapped in `React.memo` to prevent unnecessary re-renders during infinite scroll.
-   - Comments fetched on modal open (lazy), not with the feed.
-   - Image attachments: use `next/image` with proper `width`/`height`/`sizes`.
-
-### Spec Acceptance Criteria
-
-- All visible text is translated in en + ar
-- RTL layout works correctly in Arabic
-- Edge cases handled gracefully
-- No untranslated strings visible in the UI
-- Accessibility: focus trap in modal, aria-labels, keyboard nav
-- Performance: memo on cards, lazy comment loading
-
----
-
-## Execution Order & Dependencies
-
-```
-Phase 1 (shared-infinite-scroll)
-   ↓
-Phase 2 (community-feed-queries)     ← can run in parallel with Phase 1
-   ↓
-Phase 3 (post-card-component)        ← depends on Phase 2 types
-   ↓
-Phase 4 (community-feed-page)        ← depends on Phase 1 + 2 + 3
-   ↓
-Phase 5 (post-detail-modal)          ← depends on Phase 2 + 3
-   ↓                                    can run in parallel with Phase 6 & 7
-Phase 6 (profile-community-tab)      ← depends on Phase 2 + 3
-   ↓
-Phase 7 (home-page-integration)      ← depends on Phase 2 + 3 + 4
-   ↓
-Phase 8 (translations-and-polish)    ← depends on all above
-```
-
-**Parallelizable:**
-
-- Phase 1 ‖ Phase 2
-- Phase 5 ‖ Phase 6 ‖ Phase 7 (after Phase 4)
-
----
-
-## Summary of All New Files
-
-```
-hooks/
-  useInfiniteScroll.ts                               ← Phase 1
-
-components/
-  infinite-scroll-sentinel/
-    InfiniteScrollSentinel.tsx                        ← Phase 1
-    index.ts
-  ui/
-    dialog.tsx                                       ← Phase 5
-
-modules/community/
-  feed/
-    components/
-      category-tabs/
-        CategoryTabs.tsx                             ← Phase 4
-        index.ts
-      community-search-bar/
-        CommunitySearchBar.tsx                       ← Phase 4
-        index.ts
-      post-feed/
-        PostFeed.tsx                                 ← Phase 4
-        PostFeedClient.tsx                           ← Phase 4
-        index.ts
-      create-post-button/
-        CreatePostButton.tsx                         ← Phase 4
-        index.ts
-    search-params.ts                                 ← Phase 4
-    CommunityFeedPage.tsx                            ← Phase 4
-    index.ts                                         ← Phase 4
-  components/
-    post-card/
-      hooks/
-        usePostActions.ts                            ← Phase 3
-      types/
-        index.ts                                     ← Phase 3
-      PostCard.tsx                                   ← Phase 3
-      PostCardSkeleton.tsx                           ← Phase 3
-      index.ts                                       ← Phase 3
-    post-detail-modal/
-      components/
-        comment-item/
-          hooks/
-            useCommentActions.ts                     ← Phase 5
-          CommentItem.tsx                            ← Phase 5
-          index.ts
-        comment-form/
-          hooks/
-            useCommentForm.ts                        ← Phase 5
-          CommentForm.tsx                            ← Phase 5
-          index.ts
-        comment-list/
-          CommentList.tsx                            ← Phase 5
-          index.ts
-      hooks/
-        usePostDetailModal.ts                        ← Phase 5
-      types/
-        index.ts                                     ← Phase 5
-      PostDetailModal.tsx                            ← Phase 5
-      PostDetailModalProvider.tsx                     ← Phase 5
-      index.ts                                       ← Phase 5
-
-modules/home/
-  components/
-    latest-listings/
-      LatestListings.tsx                             ← Phase 7
-      LatestListingsSkeleton.tsx                     ← Phase 7
-      index.ts
-    community-highlights/
-      CommunityHighlights.tsx                        ← Phase 7
-      CommunityHighlightsSkeleton.tsx                ← Phase 7
-      index.ts
-  HomePage.tsx                                       ← Phase 7
-  index.ts                                           ← Phase 7
-
-modules/user/profile/components/profile-tabs/
-  profile-posts-tab/
-    types/
-      index.ts                                       ← Phase 6
-    ProfilePostsTab.tsx                              ← Phase 6
-    ProfilePostsTabClient.tsx                        ← Phase 6
-    ProfilePostsTabSkeleton.tsx                      ← Phase 6
-    ProfilePostsTabError.tsx                         ← Phase 6
-    index.ts                                         ← Phase 6
-
-app/[locale]/(main)/community/
-  page.tsx                                           ← Phase 4
-```
-
-## Files Modified
-
-```
-modules/listings/home/components/load-more/LoadMore.tsx          ← Phase 1 (refactor to use shared hook)
-modules/community/queries.ts                                     ← Phase 2 (add 11 query functions)
-modules/community/actions.ts                                     ← Phase 2 (add 11 action wrappers)
-modules/community/types/index.ts                                 ← Phase 2 (add CommunityPostCardItem, CommentItem types)
-components/layout/navbar/constants.ts                            ← Phase 4 (add community nav link)
-modules/user/profile/components/profile-tabs/ProfileTabs.tsx     ← Phase 6 (add posts tab)
-modules/user/profile/components/profile-tabs/ProfileTabsClient.tsx ← Phase 6 (add posts tab)
-modules/user/profile/components/profile-tabs/types/index.ts      ← Phase 6 (update ProfileTabsClientProps)
-modules/user/profile/ProfilePage.tsx                             ← Phase 6 (pass postsContent)
-app/[locale]/(main)/page.tsx                                     ← Phase 7 (swap ListingsPage → HomePage)
-messages/en.json                                                 ← Phase 8 (add all new translation keys)
-messages/ar.json                                                 ← Phase 8 (add all new translation keys)
-```
-
-## Supabase Prerequisites
-
-```
-Run before Phase 2: npx supabase gen types   ← regenerate types/supabase.ts to include add_comment RPC
-```
+### Key Design Decisions
+
+| Decision                                   | Rationale                                                        |
+| ------------------------------------------ | ---------------------------------------------------------------- |
+| Reuse existing `reports` table             | All FKs already defined — no migration needed for base structure |
+| Follow verification-review pattern exactly | Proven 3-panel dashboard pattern, same RBAC, same slot structure |
+| `content_status = 'removed'` for hiding    | Already used in community posts; consistent soft-delete pattern  |
+| `is_deleted` for comments                  | Existing tombstone pattern preserves thread structure            |
+| `users.is_active` for bans                 | Already exists with `ban_reason` and `banned_expires_at`         |
+| Sheet (bottom-sheet) for report modal      | Matches screenshot design; mobile-friendly on the existing app   |
+| Report reasons as enum in Zod              | Type-safe, maps 1:1 to i18n keys, easy to extend                 |
+| No new tables                              | The existing schema already supports everything needed           |

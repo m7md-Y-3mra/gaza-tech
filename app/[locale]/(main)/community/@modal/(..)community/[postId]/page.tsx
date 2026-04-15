@@ -16,9 +16,6 @@
 
 import { getCommunityPostDetailAction } from '@/modules/community/actions';
 import { PostDetailModal } from '@/modules/community/components/post-detail-modal';
-import { PostDetailModalSkeleton } from '@/modules/community/components/post-detail-modal/components/post-detail-modal-skeleton/PostDetailModalSkeleton';
-import { Suspense } from 'react';
-
 export default async function PostDetailModalPage({
   params,
 }: {

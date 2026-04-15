@@ -7,12 +7,6 @@ import { FC, useRef } from 'react';
 import { ActiveFiltersProps } from './types';
 import { usePathname, useRouter } from 'next/navigation';
 
-const activeFilters = [
-  { id: 1, label: 'Price: $500 - $1000' },
-  { id: 2, label: 'Condition: New' },
-  { id: 3, label: 'Location: Gaza City' },
-];
-
 const ActiveFilters: FC<ActiveFiltersProps> = ({ searchParams }) => {
   const router = useRouter();
   const pathname = usePathname();

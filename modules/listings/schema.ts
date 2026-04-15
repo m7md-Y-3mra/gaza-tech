@@ -1,5 +1,4 @@
 import { z, ZodType } from 'zod';
-import { Database } from '@/types/supabase';
 import {
   Currency,
   CustomSpecificationType,

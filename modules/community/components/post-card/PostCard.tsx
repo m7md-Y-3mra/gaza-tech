@@ -12,6 +12,7 @@ import {
   Share2,
   Paperclip,
 } from 'lucide-react';
+import { ReportButton } from '@/modules/reports/components';
 import {
   CATEGORY_COLOR_MAP,
   AVATAR_PALETTE,
@@ -222,6 +223,15 @@ export function PostCard({ post }: PostCardProps) {
               aria-hidden="true"
             />
           </button>
+
+          {/* Report button */}
+          <ReportButton
+            contentType="post"
+            contentId={post.post_id}
+            contentOwnerId={post.author.id || ''}
+            size="sm"
+            className="p-1.5"
+          />
         </div>
       </div>
     </article>

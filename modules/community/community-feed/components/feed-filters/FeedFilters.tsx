@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { CATEGORY_TABS } from './constants';
 import { useFeedFilters } from './hooks/useFeedFilters';
 

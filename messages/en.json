@@ -152,7 +152,8 @@
       "arabic": "العربية",
       "toast": {
         "success": "Signed in successfully!",
-        "error": "Failed to sign in"
+        "error": "Failed to sign in",
+        "banned": "Your account has been banned. Please contact support."
       },
       "validation": {
         "emailInvalid": "Please enter a valid email address",
@@ -586,6 +587,12 @@
       "facebook": "Facebook",
       "website": "Website"
     },
+    "banned": {
+      "title": "Account Banned",
+      "description": "We're sorry, but your access to Gaza Tech has been restricted for the following reason:",
+      "contactSupport": "If you believe this is a mistake, please contact our support team.",
+      "logout": "Log Out"
+    },
     "Tabs": {
       "myListings": "My Listings",
       "myPosts": "My Posts",
@@ -644,7 +651,13 @@
     "signUp": "Sign Up",
     "logOut": "Log Out",
     "profile": "Profile",
+    "dashboard": "Dashboard",
     "myListings": "My Listings"
+  },
+  "DashboardSidebar": {
+    "backToSite": "Back to site",
+    "dashboard": "Dashboard",
+    "contentModeration": "Content Moderation"
   },
   "Chat": {
     "title": "AI Assistant",
@@ -855,6 +868,148 @@
     "errorState": {
       "title": "Failed to load posts",
       "retry": "Try Again"
+    }
+  },
+  "Report": {
+    "title": "Report Content",
+    "subtitle": "Help us understand what's wrong with this content. Your report is anonymous.",
+    "reason": "Reason",
+    "description": "Additional Details (Optional)",
+    "descriptionPlaceholder": "Provide more context to help our moderators...",
+    "submit": "Submit Report",
+    "submitting": "Submitting...",
+    "cancel": "Cancel",
+    "success": "Report submitted successfully. Thank you for helping keep our community safe.",
+    "alreadyReported": "You have already reported this content.",
+    "reasons": {
+      "spam": "Spam",
+      "inappropriate": "Inappropriate Content",
+      "harassment": "Harassment",
+      "misleading": "Misleading",
+      "fraud": "Fraud / Scam",
+      "hate_speech": "Hate Speech",
+      "other": "Other"
+    },
+    "errors": {
+      "failed": "Failed to submit report. Please try again.",
+      "notFound": "The content you are trying to report no longer exists."
+    }
+  },
+  "AdminUsers": {
+    "pageTitle": "User Management",
+    "pageDescription": "Browse and manage all registered users.",
+    "columns": {
+      "avatar": "Avatar",
+      "name": "Name",
+      "role": "Role",
+      "status": "Status",
+      "verified": "Verified",
+      "joined": "Joined",
+      "lastActive": "Last Active",
+      "actions": "Actions"
+    },
+    "roles": {
+      "registered": "Registered",
+      "verified_seller": "Verified Seller",
+      "moderator": "Moderator",
+      "admin": "Admin"
+    },
+    "status": {
+      "active": "Active",
+      "banned": "Banned"
+    },
+    "verified": {
+      "yes": "Verified",
+      "no": "Not Verified"
+    },
+    "search": {
+      "placeholder": "Search by name or email..."
+    },
+    "filters": {
+      "role": "Role",
+      "status": "Status",
+      "reset": "Reset",
+      "columns": "Columns"
+    },
+    "rowActions": {
+      "trigger": "Open menu",
+      "changeRole": "Change Role",
+      "ban": "Ban User",
+      "unban": "Unban User",
+      "viewDetails": "View Details"
+    },
+    "dialogs": {
+      "changeRole": {
+        "title": "Change User Role",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "ban": {
+        "title": "Ban User",
+        "reasonLabel": "Reason",
+        "reasonPlaceholder": "Enter the reason for banning this user...",
+        "submit": "Ban User",
+        "cancel": "Cancel"
+      },
+      "unban": {
+        "title": "Unban User",
+        "submit": "Unban User",
+        "cancel": "Cancel"
+      }
+    },
+    "bulk": {
+      "selectedCount": "{count} selected",
+      "changeRole": "Change Role",
+      "ban": "Ban",
+      "clear": "Clear",
+      "confirm": {
+        "changeRole": "Change role for {count} selected users?",
+        "ban": "Ban {count} selected users?"
+      }
+    },
+    "toast": {
+      "role": {
+        "success": "Role updated successfully.",
+        "error": "Failed to update role."
+      },
+      "ban": {
+        "success": "User banned successfully.",
+        "error": "Failed to ban user."
+      },
+      "unban": {
+        "success": "User unbanned successfully.",
+        "error": "Failed to unban user."
+      },
+      "bulk": {
+        "summary": "{ok} of {total} actions succeeded. {failed} failed."
+      }
+    },
+    "empty": {
+      "title": "No users found",
+      "description": "Try adjusting your search or filters."
+    },
+    "error": {
+      "title": "Failed to load users",
+      "retry": "Retry"
+    },
+    "userDetail": {
+      "sheetTitle": "User Details",
+      "tabs": {
+        "role": "Role",
+        "ban": "Ban",
+        "profile": "Profile"
+      },
+      "ban": {
+        "currentBanReason": "Current ban reason"
+      },
+      "profile": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "isVerified": "Verified Seller",
+        "save": "Save Changes",
+        "success": "Profile updated successfully.",
+        "error": "Failed to update profile."
+      }
     }
   }
 }
